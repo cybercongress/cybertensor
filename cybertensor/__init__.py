@@ -27,6 +27,8 @@ import nest_asyncio
 
 nest_asyncio.apply()
 
+from cosmpy.aerial.config import NetworkConfig
+
 # Cybertensor code and protocol version.
 __version__ = "0.1.0"
 version_split = __version__.split(".")
@@ -85,13 +87,38 @@ __pipaddress__ = "https://pypi.org/pypi/cybertensor/json"
 # Bostrom network address prefix
 __chain_address_prefix__ = "bostrom"
 
-__networks__ = ["local", "bostrom", "space-pussy"]
+__networks__ = ["local", "bostrom"]
 
-# __local_entrypoint__ = "ws://127.0.0.1:9944"
+__contracts__ = [
+    "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
+    "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
+]
 
-# __finney_entrypoint__ = "wss://entrypoint-finney.opentensor.ai:443"
-#
-# __finney_test_entrypoint__ = "wss://test.finney.opentensor.ai:443/"
+__local_network__ = NetworkConfig(
+            chain_id="localbostrom",
+            url="grpc+http://localhost:9090",
+            fee_minimum_gas_price=50000,
+            fee_denomination="boot",
+            staking_denomination="boot",
+            faucet_url="",
+        )
+
+__bostrom_network__ = NetworkConfig(
+            chain_id="bostrom",
+            url="grpc+http://localhost:9090",
+            fee_minimum_gas_price=5000,
+            fee_denomination="boot",
+            staking_denomination="boot",
+            faucet_url="",
+        )
+
+from pathlib import Path
+__contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
+__contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
+
+__token__ = 'boot'
+
+__default_gas__ = 1000000
 
 # change to emoji here
 __boot_symbol__: str = chr(0x03C4)

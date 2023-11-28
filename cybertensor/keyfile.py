@@ -35,11 +35,8 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from nacl import pwhash, secret
 from password_strength import PasswordPolicy
-# from substrateinterface.utils.ss58 import ss58_encode
 from termcolor import colored
 from rich.prompt import Confirm
-from cosmpy.crypto.keypairs import PrivateKey, PublicKey
-from cybertensor import Keypair
 from cybertensor import __chain_address_prefix__
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
@@ -88,7 +85,7 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "cybertensor.K
         )
 
     if "address" in keyfile_dict and keyfile_dict["address"] is not None:
-        return cybertensor.Keypair(address=keyfile_dict["address"])
+        return cybertensor.Keypair(address=keyfile_dict["address"], public_key=keyfile_dict["publicKey"])
 
     else:
         raise cybertensor.KeyFileError(
