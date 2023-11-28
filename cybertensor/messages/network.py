@@ -55,7 +55,6 @@ def register_subnetwork_message(
     """
     your_balance = cwtensor.client.query_bank_balance(wallet.coldkeypub.address, cybertensor.__token__)
     burn_cost = cwtensor.get_subnet_burn_cost()
-    # burn_cost = 0
     if burn_cost > your_balance:
         cybertensor.__console__.print(
             f"Your balance of: [green]{your_balance} {cybertensor.__token__}[/green] is not enough to pay the subnet lock cost of: [green]{burn_cost} {cybertensor.__token__}[/green]"
@@ -76,11 +75,14 @@ def register_subnetwork_message(
             "register_network": {}
         }
 
+
         response = cwtensor.contract.execute(
             create_register_network_msg,
              LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-             1000000,
-             "1000000000boot"
+             cybertensor.__default_gas__,
+             burn_cost.__str__().__add__(cybertensor.__token__)
+            # TODO need to catch error correctly
+            # "1boot"
          ).wait_to_complete()
 
         # We only wait here if we expect finalization.
@@ -89,17 +91,17 @@ def register_subnetwork_message(
 
         # process if registration successful
         if not response.response.is_successful():
-            cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(
-                    response.response.raw_log
-                )
-            )
+            # TODO catch error
+            # cybertensor.__console__.print(
+            #     ":cross_mark: [red]Failed[/red]: error:{}".format(
+            #         response.response.raw_log
+            #     )
+            # )
             time.sleep(0.5)
 
         # Successful registration, final check for membership
         else:
             cybertensor.__console__.print(
-                # f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {response.triggered_events[1].value['event']['attributes'][0]}[/green]"
                 f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {response.response.events.get('wasm').get('netuid_to_register')}[/green]"
             )
             return True
