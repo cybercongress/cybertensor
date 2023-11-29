@@ -12,7 +12,7 @@ clean-venv:
 clean:
 	rm -rf dist/ && \
 	rm -rf build/ && \
-	rm -rf bittensor.egg-info/ && \
+	rm -rf cybertensor.egg-info/ && \
 	rm -rf .pytest_cache/ && \
 	rm -rf lib/
 

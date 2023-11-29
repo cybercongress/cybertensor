@@ -24,11 +24,10 @@ pytest
 retry
 requests
 rich
-scalecodec==1.2.0
-substrate-interface==1.5.0
 termcolor
 torch>=1.13.1
 tqdm
 uvicorn==0.22.0
 wheel
 cosmpy>=0.9.1
+ecdsa<0.15
