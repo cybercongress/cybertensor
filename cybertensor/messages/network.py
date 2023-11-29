@@ -75,22 +75,34 @@ def register_subnetwork_message(
             "register_network": {}
         }
 
-
-        response = cwtensor.contract.execute(
-            create_register_network_msg,
-             LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-             cybertensor.__default_gas__,
-             burn_cost.__str__().__add__(cybertensor.__token__)
-            # TODO need to catch error correctly
-            # "1boot"
-         ).wait_to_complete()
+            
+        try:
+            response = cwtensor.contract.execute(
+                create_register_network_msg,
+                 LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
+                 cybertensor.__default_gas__,
+                 burn_cost.__str__().__add__(cybertensor.__token__)
+                # "1boot"
+                # TODO need to catch error correctly. CHECK the solution
+             ).wait_to_complete()
+        except Exception as e:
+            cybertensor.__console__.print(
+                f":cross_mark: [red]Failed[/red]: error:{e}"
+            )
+            response = None
 
         # We only wait here if we expect finalization.
         # if not wait_for_finalization and not wait_for_inclusion:
         #     return True
 
+        # process if error in the broadcast
+        if not response:
+            cybertensor.__console__.print(
+                ":cross_mark: [red]Failed[/red]: error: broadcast is failed"
+            )
+
         # process if registration successful
-        if not response.response.is_successful():
+        elif not response.response.is_successful():
             # TODO catch error
             # cybertensor.__console__.print(
             #     ":cross_mark: [red]Failed[/red]: error:{}".format(
