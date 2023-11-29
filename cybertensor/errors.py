@@ -78,6 +78,15 @@ class NotDelegateError(StakeError):
 
 
 class KeyFileError(Exception):
-    """Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid."""
+    r"""Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid."""
+    pass
 
+
+class ConfigurationError(Exception):
+    r"""Error raised when a private key is not found."""
+    pass
+
+
+class SetPasswordError(Exception):
+    r"""Error raised when a entered password is not valid."""
     pass

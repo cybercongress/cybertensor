@@ -21,8 +21,6 @@ import base64
 import json
 import stat
 import getpass
-import cybertensor
-from cybertensor.errors import KeyFileError
 from typing import Optional
 from pathlib import Path
 
@@ -37,6 +35,8 @@ from nacl import pwhash, secret
 from password_strength import PasswordPolicy
 from termcolor import colored
 from rich.prompt import Confirm
+
+import cybertensor
 from cybertensor import __chain_address_prefix__
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
@@ -119,16 +119,24 @@ def validate_password(password: str) -> bool:
     return True
 
 
-def ask_password_to_encrypt() -> str:
+def ask_password_to_encrypt(max_attempts: int = 3) -> str:
     """Prompts the user to enter a password for key encryption.
+    Args:
+        max_attempts ( int ):
+            Maximum number of password attempts
     Returns:
         password (str): The valid password entered by the user.
+    Raises:
+        SetPasswordError: Raised if entered password is not valid after maximum attempts
     """
-    valid = False
-    while not valid:
+    for _ in range(max_attempts):
         password = getpass.getpass("Specify password for key encryption: ")
         valid = validate_password(password)
-    return password
+        if valid:
+            return password
+    raise cybertensor.SetPasswordError(
+        "The entered password is invalid. The number of password entry attempts has reached {}.".format(max_attempts)
+    )
 
 
 def keyfile_data_is_encrypted_nacl(keyfile_data: bytes) -> bool:
@@ -196,6 +204,15 @@ def keyfile_data_encryption_method(keyfile_data: bytes) -> bool:
 
 
 def legacy_encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -> bytes:
+    """Legacy encrypts the passed keyfile data.
+    Args:
+        keyfile_data (bytes): The bytes to encrypt.
+        password (str, optional): The password used to encrypt the data. If None, asks for user input.
+    Returns:
+        encrypted_data (bytes): The encrypted data.
+    Raises:
+        SetPasswordError: Raised if entered password is not valid after maximum attempts
+    """
     password = ask_password_to_encrypt() if password is None else password
     console = cybertensor.__console__
     with console.status(
@@ -212,6 +229,8 @@ def encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -> bytes:
         password (str, optional): The password used to encrypt the data. If None, asks for user input.
     Returns:
         encrypted_data (bytes): The encrypted data.
+    Raises:
+        SetPasswordError: Raised if entered password is not valid after maximum attempts
     """
     password = cybertensor.ask_password_to_encrypt() if password is None else password
     password = bytes(password, "utf-8")
@@ -383,6 +402,7 @@ class keyfile:
             password (str, optional): The password used to encrypt the file. If None, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, or if the password is incorrect.
+            SetPasswordError: Raised if entered password is not valid after maximum attempts
         """
         self.make_dirs()
         keyfile_data = serialized_keypair_to_keyfile_data(keypair)
@@ -474,6 +494,8 @@ class keyfile:
         Raises:
             KeyFileError:
                 Raised if the file does not exists, is not readable, writable.
+            SetPasswordError:
+                Raised if entered password is not valid after maximum attempts
         Returns:
             result (bool):
                 return True if the keyfile is the most updated with nacl, else False.
@@ -527,7 +549,7 @@ class keyfile:
                             decrypted_keyfile_data = decrypt_keyfile_data(
                                 keyfile_data, coldkey_name=self.name, password=password
                             )
-                        except KeyFileError:
+                        except cybertensor.KeyFileError:
                             if not Confirm.ask(
                                     "Invalid password, retry and continue this keyfile update?"
                             ):
@@ -570,6 +592,7 @@ class keyfile:
             password (str, optional): The password for encryption. If None, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, or writable.
+            SetPasswordError: Raised if entered password is not valid after maximum attempts
         """
         if not self.exists_on_device():
             raise cybertensor.KeyFileError(
