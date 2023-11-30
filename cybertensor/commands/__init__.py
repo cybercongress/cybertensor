@@ -21,7 +21,7 @@ from munch import Munch, munchify
 defaults: Munch = munchify(
     {
         "netuid": 1,
-        "subtensor": {"network": "finney", "chain_endpoint": None, "_mock": False},
+        "subtensor": {"network": "local", "chain_endpoint": None, "_mock": False},
         "pow_register": {
             "num_processes": None,
             "update_interval": 50000,
@@ -91,7 +91,7 @@ from .wallets import (
 # from .transfer import TransferCommand
 # from .inspect import InspectCommand
 # from .metagraph import MetagraphCommand
-# from .list import ListCommand
+from .list import ListCommand
 # from .misc import UpdateCommand
 from .network import (
     RegisterSubnetworkCommand,

@@ -85,7 +85,7 @@ COMMANDS = {
         "aliases": ["w", "wallets"],
         "help": "Commands for managing and viewing wallets.",
         "commands": {
-            # "list": ListCommand,
+            "list": ListCommand,
             # "overview": OverviewCommand,
             # "transfer": TransferCommand,
             # "inspect": InspectCommand,
