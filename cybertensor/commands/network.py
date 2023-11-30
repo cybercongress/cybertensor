@@ -30,28 +30,36 @@ console = cybertensor.__console__
 
 class RegisterSubnetworkCommand:
     """
-    Executes the 'register_subnetwork' command to register a new subnetwork on the Bittensor network. This command facilitates the creation and registration of a subnetwork, which involves interaction with the user's wallet and the Bittensor cwtensor. It ensures that the user has the necessary credentials and configurations to successfully register a new subnetwork.
+    Executes the 'register_subnetwork' command to register a new subnetwork on the cybertensor network.
+    This command facilitates the creation and registration of a subnetwork, which involves interaction with the user's
+    wallet and the cybertensor cw-tensor. It ensures that the user has the necessary credentials and configurations
+    to successfully register a new subnetwork.
 
     Usage:
     Upon invocation, the command performs several key steps to register a subnetwork:
     1. It copies the user's current configuration settings.
     2. It accesses the user's wallet using the provided configuration.
-    3. It initializes the Bittensor cwtensor object with the user's configuration.
-    4. It then calls the `register_subnetwork` function of the cwtensor object, passing the user's wallet and a prompt setting based on the user's configuration.
+    3. It initializes the cybertensor cw-tensor object with the user's configuration.
+    4. It then calls the `register_subnetwork` function of the cw-tensor object, passing the user's wallet and a prompt
+    setting based on the user's configuration.
 
-    If the user's configuration does not specify a wallet name and 'no_prompt' is not set, the command will prompt the user to enter a wallet name. This name is then used in the registration process.
+    If the user's configuration does not specify a wallet name and 'no_prompt' is not set, the command will prompt
+    the user to enter a wallet name. This name is then used in the registration process.
 
     The command structure includes:
     - Copying the user's configuration.
     - Accessing and preparing the user's wallet.
-    - Initializing the Bittensor cwtensor.
+    - Initializing the cybertensor cw-tensor.
     - Registering the subnetwork with the necessary credentials.
 
     Example usage:
-    >>> btcli subnets create
+    >>> ctcli subnets create
 
     Note:
-    This command is intended for advanced users of the Bittensor network who wish to contribute by adding new subnetworks. It requires a clear understanding of the network's functioning and the roles of subnetworks. Users should ensure that they have secured their wallet and are aware of the implications of adding a new subnetwork to the Bittensor ecosystem.
+    This command is intended for advanced users of the Bittensor network who wish to contribute by adding new subnetworks.
+    It requires a clear understanding of the network's functioning and the roles of subnetworks. Users should ensure
+    that they have secured their wallet and are aware of the implications of adding a new subnetwork to the cybertensor
+    ecosystem.
     """
 
     @staticmethod
