@@ -31,3 +31,4 @@ uvicorn==0.22.0
 wheel
 cosmpy>=0.9.1
 ecdsa<0.15
+py-bip39-bindings

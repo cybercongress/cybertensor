@@ -1,5 +1,3 @@
-""" Standardize logging for cybertensor
-"""
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 cyber~Congress

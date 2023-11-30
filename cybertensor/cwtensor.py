@@ -21,6 +21,11 @@ import os
 import copy
 import torch
 import argparse
+
+from cosmpy.aerial.client import LedgerClient
+from cosmpy.aerial.config import NetworkConfig
+from cosmpy.aerial.contract import LedgerContract
+
 import cybertensor
 
 from retry import retry
@@ -43,6 +48,8 @@ from typing import List, Dict, Union, Optional, Tuple, TypedDict, Any
 #     custom_rpc_type_registry,
 # )
 from .errors import *
+from .messages.network import register_subnetwork_message
+
 # from .messages.network import (
 #     register_subnetwork_message,
 #     set_hyperparameter_message,
@@ -102,36 +109,26 @@ class cwtensor:
     def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         prefix_str = "" if prefix == None else prefix + "."
         try:
-            default_network = os.getenv("BT_SUBTENSOR_NETWORK") or "bostrom"
-            default_chain_endpoint = (
-                os.getenv("BT_SUBTENSOR_CHAIN_ENDPOINT")
-                or cybertensor.__finney_entrypoint__
-            )
+            default_network = os.getenv("CT_CYBER_NETWORK") or "local"
+            # default_contract_address = os.getenv("CT_CONTRACT_ADDRESS") or "bostrom1"
+
             parser.add_argument(
                 "--" + prefix_str + "cwtensor.network",
                 default=default_network,
                 type=str,
                 help="""The cwtensor network flag. The likely choices are:
-                                        -- finney (main network)
+                                        -- bostrom (main network)
                                         -- local (local running network)
-                                    If this option is set it overloads cwtensor.chain_endpoint with
-                                    an entry point node from that network.
                                     """,
             )
-            parser.add_argument(
-                "--" + prefix_str + "cwtensor.chain_endpoint",
-                default=default_chain_endpoint,
-                type=str,
-                help="""The cwtensor endpoint flag. If set, overrides the --network flag.
-                                    """,
-            )
-            parser.add_argument(
-                "--" + prefix_str + "cwtensor._mock",
-                default=False,
-                type=bool,
-                help="""If true, uses a mocked connection to the chain.
-                                    """,
-            )
+
+            # parser.add_argument(
+            #     "--" + prefix_str + "cwtensor.address",
+            #     default=default_contract_address,
+            #     type=str,
+            #     help="""The cwtensor contract flag.
+            #                         """,
+            # )
 
         except argparse.ArgumentError:
             # re-parsing arguments.
@@ -142,9 +139,8 @@ class cwtensor:
         """Determines the chain endpoint and network from the passed network or chain_endpoint.
         Args:
             network (str): The network flag. The likely choices are:
-                    -- finney (main network)
+                    -- bostrom (main network)
                     -- local (local running network)
-                    -- test (test network)
             chain_endpoint (str): The chain endpoint flag. If set, overrides the network argument.
         Returns:
             network (str): The network flag. The likely choices are:
@@ -152,97 +148,60 @@ class cwtensor:
         """
         if network == None:
             return None, None
-        if network in ["finney", "local", "test", "archive"]:
-            if network == "finney":
-                # Kiru Finney stagin network.
-                return network, cybertensor.__finney_entrypoint__
+        if network in ["local", "bostrom"]:
+            if network == "bostrom":
+                return network, cybertensor.__bostrom_network__, cybertensor.__contracts__[1]
             elif network == "local":
-                return network, cybertensor.__local_entrypoint__
-            elif network == "test":
-                return network, cybertensor.__finney_test_entrypoint__
-            elif network == "archive":
-                return network, cybertensor.__archive_entrypoint__
+                return network, cybertensor.__local_network__, cybertensor.__contracts__[0]
         else:
-            if (
-                network == cybertensor.__finney_entrypoint__
-                or "entrypoint-finney.opentensor.ai" in network
-            ):
-                return "finney", cybertensor.__finney_entrypoint__
-            elif (
-                network == cybertensor.__finney_test_entrypoint__
-                or "test.finney.opentensor.ai" in network
-            ):
-                return "test", cybertensor.__finney_test_entrypoint__
-            elif (
-                network == cybertensor.__archive_entrypoint__
-                or "archive.chain.opentensor.ai" in network
-            ):
-                return "archive", cybertensor.__archive_entrypoint__
-            elif "127.0.0.1" in network or "localhost" in network:
-                return "local", network
-            else:
-                return "unknown", network
+            return "unknown", {}, "unknown"
 
     @staticmethod
     def setup_config(network: str, config: cybertensor.config):
         if network != None:
             (
                 evaluated_network,
-                evaluated_endpoint,
+                evaluated_network_config,
+                evaluated_contract_address
             ) = cwtensor.determine_chain_endpoint_and_network(network)
         else:
-            if config.get("__is_set", {}).get("cwtensor.chain_endpoint"):
+            if config.get("__is_set", {}).get("cwtensor.network"):
                 (
                     evaluated_network,
-                    evaluated_endpoint,
-                ) = cwtensor.determine_chain_endpoint_and_network(
-                    config.cwtensor.chain_endpoint
-                )
-
-            elif config.get("__is_set", {}).get("cwtensor.network"):
-                (
-                    evaluated_network,
-                    evaluated_endpoint,
+                    evaluated_network_config,
+                    evaluated_contract_address
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     config.cwtensor.network
                 )
-
-            elif config.cwtensor.get("chain_endpoint"):
-                (
-                    evaluated_network,
-                    evaluated_endpoint,
-                ) = cwtensor.determine_chain_endpoint_and_network(
-                    config.cwtensor.chain_endpoint
-                )
-
             elif config.cwtensor.get("network"):
                 (
                     evaluated_network,
-                    evaluated_endpoint,
+                    evaluated_network_config,
+                    evaluated_contract_address
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     config.cwtensor.network
                 )
-
             else:
                 (
                     evaluated_network,
-                    evaluated_endpoint,
+                    evaluated_network_config,
+                    evaluated_contract_address
                 ) = cwtensor.determine_chain_endpoint_and_network(
-                    cybertensor.defaults.cwtensor.network
+                    # TODO set default
+                    "local"
                 )
 
         return (
-            cybertensor.utils.networking.get_formatted_ws_endpoint_url(
-                evaluated_endpoint
-            ),
             evaluated_network,
+            evaluated_network_config,
+            evaluated_contract_address,
         )
 
     def __init__(
-        self,
-        network: str = None,
-        config: "cybertensor.config" = None,
-        _mock: bool = False,
+            self,
+            network: str = None,
+            config: "cybertensor.config" = None,
+            _mock: bool = False,
     ) -> None:
         r"""Initializes a cwtensor chain interface.
         Args:
@@ -257,39 +216,48 @@ class cwtensor:
 
         # Determine config.cwtensor.chain_endpoint and config.cwtensor.network config.
         # If chain_endpoint is set, we override the network flag, otherwise, the chain_endpoint is assigned by the network.
-        # Argument importance: network > chain_endpoint > config.cwtensor.chain_endpoint > config.cwtensor.network
+        # Argument importance: network > config.cwtensor.network
         if config == None:
             config = cwtensor.config()
         self.config = copy.deepcopy(config)
 
         # Setup config.cwtensor.network and config.cwtensor.chain_endpoint
-        self.chain_endpoint, self.network = cwtensor.setup_config(network, config)
-
-        # Returns a mocked connection with a background chain connection.
-        self.config.cwtensor._mock = (
-            _mock
-            if _mock != None
-            else self.config.cwtensor.get("_mock", cybertensor.defaults.cwtensor._mock)
-        )
-        if self.config.cwtensor._mock:
-            config.cwtensor._mock = True
-            return cybertensor.cwtensor_mock.MockSubtensor()
+        self.network, self.network_config, self.contract_address = cwtensor.setup_config(network, config)
 
         # Set up params.
-        # self.substrate = SubstrateInterface(
-        #     ss58_format=cybertensor.__ss58_format__,
-        #     use_remote_preset=True,
-        #     url=self.chain_endpoint,
-        #     type_registry=cybertensor.__type_registry__,
-        # )
+        self.client = LedgerClient(self.network_config)
+        self.contract = LedgerContract(cybertensor.__contract_path__, self.client,
+                                       self.contract_address, None, cybertensor.__contract_schema_path__)
 
     def __str__(self) -> str:
-        if self.network == self.chain_endpoint:
-            # Connecting to chain endpoint without network known.
-            return "cwtensor({})".format(self.chain_endpoint)
-        else:
-            # Connecting to network with endpoint known.
-            return "cwtensor({}, {})".format(self.network, self.chain_endpoint)
+        # Connecting to network with endpoint known.
+        return "cwtensor({}, {}, {)".format(self.network, self.network_config, self.contract_address)
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    #################
+    #### Network ####
+    #################
+    def register_subnetwork(
+            self,
+            wallet: "cybertensor.wallet",
+            wait_for_inclusion: bool = False,
+            wait_for_finalization=True,
+            prompt: bool = False,
+    ) -> bool:
+        return register_subnetwork_message(
+            self,
+            wallet=wallet,
+            wait_for_inclusion=wait_for_inclusion,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def get_subnet_burn_cost(self, block: Optional[int] = None) -> int:
+        lock_cost = self.contract.query({"get_network_registration_cost": {}})
+
+        if lock_cost == None:
+            return None
+
+        return lock_cost

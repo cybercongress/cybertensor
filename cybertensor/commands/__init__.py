@@ -66,7 +66,11 @@ defaults: Munch = munchify(
 # from .stake import StakeCommand, StakeShow
 # from .unstake import UnStakeCommand
 # from .overview import OverviewCommand
-# from .register import PowRegisterCommand, RegisterCommand, RunFaucetCommand
+# from .register import (
+#     PowRegisterCommand,
+#     RegisterCommand,
+#     RunFaucetCommand
+# )
 # from .delegates import (
 #     NominateCommand,
 #     ListDelegatesCommand,
@@ -89,14 +93,14 @@ from .wallets import (
 # from .metagraph import MetagraphCommand
 # from .list import ListCommand
 # from .misc import UpdateCommand
-# from .network import (
-#     RegisterSubnetworkCommand,
-#     SubnetLockCostCommand,
-#     SubnetListCommand,
-#     SubnetSudoCommand,
-#     SubnetHyperparamsCommand,
-#     SubnetGetHyperparamsCommand,
-# )
+from .network import (
+    RegisterSubnetworkCommand,
+    # SubnetLockCostCommand,
+    # SubnetListCommand,
+    # SubnetSudoCommand,
+    # SubnetHyperparamsCommand,
+    # SubnetGetHyperparamsCommand,
+)
 # from .root import (
 #     RootRegisterCommand,
 #     RootList,

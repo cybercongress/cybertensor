@@ -18,6 +18,8 @@
 
 import sys
 import argparse
+
+
 import cybertensor
 from typing import List, Optional
 from .commands import *
@@ -32,7 +34,7 @@ ALIAS_TO_COMMAND = {
     # "stake": "stake",
     # "sudo": "sudo",
     # "legacy": "legacy",
-    # "s": "subnets",
+    "s": "subnets",
     # "r": "root",
     "w": "wallet",
     # "st": "stake",
@@ -45,20 +47,20 @@ ALIAS_TO_COMMAND = {
     # "sudos": "sudo",
 }
 COMMANDS = {
-    # "subnets": {
-    #     "name": "subnets",
-    #     "aliases": ["s", "subnet"],
-    #     "help": "Commands for managing and viewing subnetworks.",
-    #     "commands": {
-    #         "list": SubnetListCommand,
-    #         "metagraph": MetagraphCommand,
-    #         "lock_cost": SubnetLockCostCommand,
-    #         "create": RegisterSubnetworkCommand,
-    #         "pow_register": PowRegisterCommand,
-    #         "register": RegisterCommand,
-    #         "hyperparameters": SubnetHyperparamsCommand,
-    #     },
-    # },
+    "subnets": {
+        "name": "subnets",
+        "aliases": ["s", "subnet"],
+        "help": "Commands for managing and viewing subnetworks.",
+        "commands": {
+            # "list": SubnetListCommand,
+            # "metagraph": MetagraphCommand,
+            # "lock_cost": SubnetLockCostCommand,
+            "create": RegisterSubnetworkCommand,
+            # "pow_register": PowRegisterCommand,
+            # "register": RegisterCommand,
+            # "hyperparameters": SubnetHyperparamsCommand,
+        },
+    },
     # "root": {
     #     "name": "root",
     #     "aliases": ["r", "roots"],
