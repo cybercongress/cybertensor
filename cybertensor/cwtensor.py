@@ -243,7 +243,7 @@ class cwtensor:
     def register_subnetwork(
             self,
             wallet: "cybertensor.wallet",
-            wait_for_inclusion: bool = False,
+            wait_for_inclusion: bool = True,
             wait_for_finalization=True,
             prompt: bool = False,
     ) -> bool:
