@@ -95,11 +95,11 @@ from .list import ListCommand
 # from .misc import UpdateCommand
 from .network import (
     RegisterSubnetworkCommand,
-    # SubnetLockCostCommand,
-    # SubnetListCommand,
-    # SubnetSudoCommand,
-    # SubnetHyperparamsCommand,
-    # SubnetGetHyperparamsCommand,
+    SubnetLockCostCommand,
+    SubnetListCommand,
+    SubnetSudoCommand,
+    SubnetHyperparamsCommand,
+    SubnetGetHyperparamsCommand,
 )
 # from .root import (
 #     RootRegisterCommand,

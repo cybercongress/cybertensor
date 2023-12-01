@@ -81,9 +81,8 @@ def register_subnetwork_message(
                 create_register_network_msg,
                  LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
                  cybertensor.__default_gas__,
+                 # TODO add balance here when added
                  burn_cost.__str__().__add__(cybertensor.__token__)
-                # "1boot"
-                # TODO need to catch error correctly. CHECK the solution
              ).wait_to_complete()
         except Exception as e:
             cybertensor.__console__.print(
@@ -115,5 +114,103 @@ def register_subnetwork_message(
         else:
             cybertensor.__console__.print(
                 f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {response.response.events.get('wasm').get('netuid_to_register')}[/green]"
+            )
+            return True
+
+from ..commands.network import HYPERPARAMS
+
+
+def set_hyperparameter_message(
+    cwtensor: "cybertensor.cwtensor",
+    wallet: "cybertensor.wallet",
+    netuid: int,
+    parameter: str,
+    value,
+    wait_for_inclusion: bool = False,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -> bool:
+    r"""Sets a hyperparameter for a specific subnetwork.
+    Args:
+        wallet (cybertensor.wallet):
+            bittensor wallet object.
+        netuid (int):
+            Subnetwork uid.
+        parameter (str):
+            Hyperparameter name.
+        value (any):
+            New hyperparameter value.
+        wait_for_inclusion (bool):
+            If set, waits for the extrinsic to enter a block before returning true,
+            or returns false if the extrinsic fails to enter the block within the timeout.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or included in the block.
+            If we did not wait for finalization / inclusion, the response is true.
+    """
+
+    if cwtensor.get_subnet_owner(netuid) != wallet.coldkeypub.address:
+        cybertensor.__console__.print(
+            ":cross_mark: [red]This wallet doesn't own the specified subnet.[/red]"
+        )
+        return False
+
+    wallet.coldkey  # unlock coldkey
+
+    message = HYPERPARAMS.get(parameter)
+    if message == None:
+        cybertensor.__console__.print(
+            ":cross_mark: [red]Invalid hyperparameter specified.[/red]"
+        )
+        return False
+
+    with cybertensor.__console__.status(
+        f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
+    ):
+        sudo_msg = {
+            str(message): {"netuid": netuid, str(parameter): int(value)},
+        }
+
+        try:
+            response = cwtensor.contract.execute(
+                sudo_msg,
+                LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
+                cybertensor.__default_gas__,
+            ).wait_to_complete()
+        except Exception as e:
+            cybertensor.__console__.print(
+                f":cross_mark: [red]Failed[/red]: error:{e}"
+            )
+            response = None
+
+        # We only wait here if we expect finalization.
+        # if not wait_for_finalization and not wait_for_inclusion:
+        #     return True
+
+        # process if error in the broadcast
+        if not response:
+            cybertensor.__console__.print(
+                ":cross_mark: [red]Failed[/red]: error: broadcast is failed"
+            )
+
+        # process if registration successful
+        elif not response.response.is_successful():
+            # TODO catch error
+            # cybertensor.__console__.print(
+            #     ":cross_mark: [red]Failed[/red]: error:{}".format(
+            #         response.response.raw_log
+            #     )
+            # )
+            time.sleep(0.5)
+
+        # Successful registration, final check for membership
+        else:
+            cybertensor.__console__.print(
+                f":white_heavy_check_mark: [green]Hyper parameter {parameter} changed to {value}[/green]"
             )
             return True

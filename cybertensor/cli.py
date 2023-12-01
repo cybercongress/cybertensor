@@ -28,23 +28,23 @@ from .commands import *
 console = cybertensor.__console__
 
 ALIAS_TO_COMMAND = {
-    # "subnets": "subnets",
+    "subnets": "subnets",
     # "root": "root",
     "wallet": "wallet",
     # "stake": "stake",
-    # "sudo": "sudo",
+    "sudo": "sudo",
     # "legacy": "legacy",
     "s": "subnets",
     # "r": "root",
     "w": "wallet",
     # "st": "stake",
-    # "su": "sudo",
+    "su": "sudo",
     # "l": "legacy",
-    # "subnet": "subnets",
+    "subnet": "subnets",
     # "roots": "root",
-    # "wallets": "wallet",
+    "wallets": "wallet",
     # "stakes": "stake",
-    # "sudos": "sudo",
+    "sudos": "sudo",
 }
 COMMANDS = {
     "subnets": {
@@ -52,13 +52,13 @@ COMMANDS = {
         "aliases": ["s", "subnet"],
         "help": "Commands for managing and viewing subnetworks.",
         "commands": {
-            # "list": SubnetListCommand,
+            "list": SubnetListCommand,
             # "metagraph": MetagraphCommand,
-            # "lock_cost": SubnetLockCostCommand,
+            "lock_cost": SubnetLockCostCommand,
             "create": RegisterSubnetworkCommand,
             # "pow_register": PowRegisterCommand,
             # "register": RegisterCommand,
-            # "hyperparameters": SubnetHyperparamsCommand,
+            "hyperparameters": SubnetHyperparamsCommand,
         },
     },
     # "root": {
@@ -112,16 +112,16 @@ COMMANDS = {
     #         "remove": UnStakeCommand,
     #     },
     # },
-    # "sudo": {
-    #     "name": "sudo",
-    #     "aliases": ["su", "sudos"],
-    #     "help": "Commands for subnet management",
-    #     "commands": {
-    #         # "dissolve": None,
-    #         "set": SubnetSudoCommand,
-    #         "get": SubnetGetHyperparamsCommand,
-    #     },
-    # },
+    "sudo": {
+        "name": "sudo",
+        "aliases": ["su", "sudos"],
+        "help": "Commands for subnet management",
+        "commands": {
+            # "dissolve": None,
+            "set": SubnetSudoCommand,
+            "get": SubnetGetHyperparamsCommand,
+        },
+    },
     # "legacy": {
     #     "name": "legacy",
     #     "aliases": ["l"],

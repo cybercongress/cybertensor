@@ -120,10 +120,12 @@ __token__ = 'boot'
 
 __default_gas__ = 1000000
 
-# change to emoji here
-__boot_symbol__: str = chr(0x03C4)
+__boot_symbol__: str = "BOOT"
+__giga_boot_symbol__: str = "GBOOT"
 
-__oxygen_symbol__: str = chr(0x03C4)
+# change to emoji here
+# __boot_symbol__: str = chr(0x03C4)
+# __oxygen_symbol__: str = chr(0x03C4)
 
 # Block Explorers map network to explorer url
 # TODO update explorer presets
@@ -141,8 +143,8 @@ from .keypair import *
 from .wallet import *
 
 from .utils import *
-# from .utils.balance import Balance as Balance
-# from .chain_data import *
+from .utils.balance import Balance as Balance
+from .chain_data import *
 from .cwtensor import cwtensor as cwtensor
 from .cli import cli as cli, COMMANDS as ALL_COMMANDS
 from .ctlogging import logging as logging
