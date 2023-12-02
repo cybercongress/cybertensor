@@ -21,7 +21,7 @@ from munch import Munch, munchify
 defaults: Munch = munchify(
     {
         "netuid": 1,
-        "subtensor": {"network": "local", "chain_endpoint": None, "_mock": False},
+        "cwtensor": {"network": "local", "_mock": False},
         "pow_register": {
             "num_processes": None,
             "update_interval": 50000,
@@ -66,11 +66,11 @@ defaults: Munch = munchify(
 # from .stake import StakeCommand, StakeShow
 # from .unstake import UnStakeCommand
 # from .overview import OverviewCommand
-# from .register import (
-#     PowRegisterCommand,
-#     RegisterCommand,
-#     RunFaucetCommand
-# )
+from .register import (
+    PowRegisterCommand,
+    RegisterCommand,
+    # RunFaucetCommand
+)
 # from .delegates import (
 #     NominateCommand,
 #     ListDelegatesCommand,

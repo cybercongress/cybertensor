@@ -22,6 +22,7 @@ import time
 from cosmpy.aerial.client import Coin
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
+from cybertensor import Balance
 
 import cybertensor
 # import cybertensor.utils.networking as net
@@ -53,18 +54,18 @@ def register_subnetwork_message(
             flag is true if extrinsic was finalized or included in the block.
             If we did not wait for finalization / inclusion, the response is true.
     """
-    your_balance = cwtensor.client.query_bank_balance(wallet.coldkeypub.address, cybertensor.__token__)
-    burn_cost = cwtensor.get_subnet_burn_cost()
+    your_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+    burn_cost = Balance(cwtensor.get_subnet_burn_cost())
     if burn_cost > your_balance:
         cybertensor.__console__.print(
-            f"Your balance of: [green]{your_balance} {cybertensor.__token__}[/green] is not enough to pay the subnet lock cost of: [green]{burn_cost} {cybertensor.__token__}[/green]"
+            f"Your balance of: [green]{your_balance}[/green] is not enough to pay the subnet lock cost of: [green]{burn_cost}[/green]"
         )
         return False
 
     if prompt:
-        cybertensor.__console__.print(f"Your balance is: [green]{your_balance} {cybertensor.__token__}[/green]")
+        cybertensor.__console__.print(f"Your balance is: [green]{your_balance}[/green]")
         if not Confirm.ask(
-                f"Do you want to register a subnet for [green]{burn_cost} {cybertensor.__token__}[/green]?"
+                f"Do you want to register a subnet for [green]{burn_cost}[/green]?"
         ):
             return False
 
@@ -74,13 +75,16 @@ def register_subnetwork_message(
         create_register_network_msg = {
             "register_network": {}
         }
-        wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
-        gas = cybertensor.__default_gas__
-        # burn_cost = burn_cost.__str__().__add__(cybertensor.__token__)
-        burn_cost = '1boot'
-
-        if not wait_for_inclusion:
-            tx = cwtensor.contract.execute(create_register_network_msg, wallet, gas, burn_cost)
+            
+        try:
+            response = cwtensor.contract.execute(
+                create_register_network_msg,
+                 LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
+                 cybertensor.__default_gas__,
+                 # TODO need to rewrite str output of Balance
+                 burn_cost.__int__().__str__().__add__(cybertensor.__token__),
+             ).wait_to_complete()
+        except Exception as e:
             cybertensor.__console__.print(
                 f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation. Check the TX hash manually."
             )

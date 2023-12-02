@@ -204,7 +204,7 @@ class SubnetListCommand:
                     str(subnet.netuid),
                     str(subnet.subnetwork_n),
                     str(cybertensor.utils.formatting.millify(subnet.max_n)),
-                    f"{subnet.emission_value / cybertensor.utils.RAOPERTAO * 100:0.2f}%",
+                    f"{subnet.emission_value / cybertensor.utils.GIGA * 100:0.2f}%",
                     str(subnet.tempo),
                     f"{subnet.burn!s:8.8}",
                     str(cybertensor.utils.formatting.millify(subnet.difficulty)),

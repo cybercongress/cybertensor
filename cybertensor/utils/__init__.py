@@ -20,11 +20,10 @@
 from .wallet_utils import *
 import cybertensor
 import requests
-# from balance import *
 from .formatting import get_human_readable, millify
 
 
-RAOPERTAO = 1e9
+GIGA = 1e9
 U16_MAX = 65535
 U64_MAX = 18446744073709551615
 
