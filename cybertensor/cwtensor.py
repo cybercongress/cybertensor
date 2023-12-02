@@ -2,7 +2,7 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
 # Copyright © 2023 cyber~Congress
-import json
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
 # the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
@@ -21,9 +21,11 @@ import os
 import copy
 import torch
 import argparse
+import scalecodec
+import json
 
 from cosmpy.aerial.client import LedgerClient
-from cosmpy.aerial.config import NetworkConfig
+from cosmpy.crypto.address import Address
 from cosmpy.aerial.contract import LedgerContract
 
 import cybertensor
@@ -74,7 +76,7 @@ from .messages.network import register_subnetwork_message, set_hyperparameter_me
 # from .messages.root import root_register_message, set_root_weights_message
 # from .types import AxonServeCallParams, PrometheusServeCallParams
 # from .utils import U16_NORMALIZED_FLOAT, ss58_to_vec_u8
-# from .utils.balance import Balance
+from .utils.balance import Balance
 # from .utils.registration import POWSolution
 
 logger = logger.opt(colors=True)
@@ -147,8 +149,8 @@ class cwtensor:
             network (str): The network flag. The likely choices are:
             chain_endpoint (str): The chain endpoint flag. If set, overrides the network argument.
         """
-        if network == None:
-            return None, None
+        if network is None:
+            return None, None, None
         if network in ["local", "bostrom"]:
             if network == "bostrom":
                 return network, cybertensor.__bostrom_network__, cybertensor.__contracts__[1]
@@ -159,7 +161,7 @@ class cwtensor:
 
     @staticmethod
     def setup_config(network: str, config: cybertensor.config):
-        if network != None:
+        if network is not None:
             (
                 evaluated_network,
                 evaluated_network_config,
@@ -287,6 +289,36 @@ class cwtensor:
             return None
 
         return lock_cost
+
+    """ Returns the total stake held on a coldkey across all hotkeys including delegates"""
+
+    def get_total_stake_for_coldkey(self, address: str, block: Optional[int] = None) -> Optional[Balance]:
+        # TODO add stake query
+        return Balance(0)
+
+    def get_balance(self, address: str, block: Optional[int] = None) -> Balance:
+        r"""Returns the token balance for the passed address
+        Args:
+            address (cyber address format, default = 42):
+                chain address.
+            block (int):
+                Not used now! block number for getting balance.
+        Return:
+            balance (cybertensor.utils.balance.Balance):
+                account balance
+        """
+        try:
+            @retry(delay=2, tries=3, backoff=2, max_delay=4)
+            def make_cyber_call_with_retry() -> Balance:
+                return Balance(self.client.query_bank_all_balances(Address(address)))
+
+            balance = make_cyber_call_with_retry()
+        except scalecodec.exceptions.RemainingScaleBytesNotEmptyException:
+            cybertensor.logging.error(
+                "Your wallet it legacy formatted, you need to run ctcli stake --amount 0 to reformat it."
+            )
+            return Balance(0)
+        return balance
 
     # def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
     #     return self.query_subtensor("NetworksAdded", block, [netuid]).value
