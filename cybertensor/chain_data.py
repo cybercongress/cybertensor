@@ -63,7 +63,7 @@ class SubnetInfo:
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["SubnetInfo"]:
         # TODO check if this is correct if empty
-        decoded = [SubnetInfo.fix_decoded_values(d) for d in vec_any]
+        decoded = [SubnetInfo.fix_decoded_values(d) for d in vec_any if d is not None]
 
         return decoded
 
