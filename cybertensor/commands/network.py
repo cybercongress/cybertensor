@@ -457,7 +457,7 @@ class SubnetGetHyperparamsCommand:
     @staticmethod
     def run(cli):
         r"""View hyperparameters of a subnetwork."""
-        subtensor = cybertensor.cwtensor(config=cli.config)
+        cwtensor = cybertensor.cwtensor(config=cli.config)
         subnet: cybertensor.SubnetHyperparameters = cwtensor.get_subnet_hyperparameters(
             cli.config.netuid
         )

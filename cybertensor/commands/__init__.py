@@ -90,7 +90,7 @@ from .wallets import (
 )
 # from .transfer import TransferCommand
 # from .inspect import InspectCommand
-# from .metagraph import MetagraphCommand
+from .metagraph import MetagraphCommand
 from .list import ListCommand
 # from .misc import UpdateCommand
 from .network import (

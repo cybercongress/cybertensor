@@ -2,7 +2,7 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
 # Copyright © 2023 cyber~Congress
-import json
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
 # the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
@@ -20,6 +20,7 @@ import json
 import os
 import copy
 import torch
+import json
 import argparse
 
 from cosmpy.aerial.client import LedgerClient
@@ -313,7 +314,7 @@ class cwtensor:
             "coldkey": wallet.coldkeypub.address,
         }}
 
-        # TODO check decorator
+        # TODO check decorator and improve error handling
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
             if not wait_for_finalization:
@@ -322,7 +323,7 @@ class cwtensor:
                     LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__),
                     cybertensor.__default_gas__,
                 )
-                return True
+                return True, None
             else:
                 tx = self.contract.execute(
                     register_msg,
@@ -521,6 +522,24 @@ class cwtensor:
     #### Global Parameters ####
     ###########################
 
+    @property
+    def block(self) -> int:
+        r"""Returns current chain block.
+        Returns:
+            block (int):
+                Current chain block.
+        """
+        return self.get_current_block()
+
+    def total_issuance(self, block: Optional[int] = None) -> "Balance":
+        return Balance.from_boot(self.contract.query({"get_total_issuance": {}}))
+
+    def total_stake(self, block: Optional[int] = None) -> "Balance":
+        return Balance.from_boot(self.contract.query({"get_total_stake": {}}))
+
+    def tx_rate_limit(self, block: Optional[int] = None) -> Optional[int]:
+        return self.contract.query({"get_tx_rate_limit": {}})
+
     #####################################
     #### Network Parameters ####
     #####################################
@@ -536,7 +555,7 @@ class cwtensor:
     def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
         return self.contract.query({"get_subnet_exist": {"netuid": netuid}})
 
-    def get_total_subnets(self, block: Optional[int] = None) -> int:
+    def     get_total_subnets(self, block: Optional[int] = None) -> int:
 
         return self.contract.query({"get_total_networks": {}})
 
@@ -544,6 +563,7 @@ class cwtensor:
             self, netuid: int, block: Optional[int] = None
     ) -> Optional[float]:
         return Balance.from_boot(
+            # TODO what if zero
             self.contract.query({"get_emission_value_by_subnet": {"netuid": netuid}})
         )
 
@@ -722,6 +742,31 @@ class cwtensor:
             return []
 
         return NeuronInfoLite.list_from_list_any(resp)
+
+    def metagraph(
+            self,
+            netuid: int,
+            lite: bool = True,
+            block: Optional[int] = None,
+    ) -> "cybertensor.Metagraph":
+        r"""Returns a synced metagraph for the subnet.
+        Args:
+            netuid ( int ):
+                The network uid of the subnet to query.
+            lite (bool, default=True):
+                If true, returns a metagraph using the lite sync (no weights, no bonds)
+            block ( Optional[int] ):
+                block to sync from, or None for latest block.
+        Returns:
+            metagraph ( `bittensor.Metagraph` ):
+                The metagraph for the subnet at the block.
+        """
+        metagraph_ = cybertensor.metagraph(
+            network=self.network, netuid=netuid, lite=lite, sync=False
+        )
+        metagraph_.sync(block=block, lite=lite, cwtensor=self)
+
+        return metagraph_
 
     ################
     #### Legacy ####

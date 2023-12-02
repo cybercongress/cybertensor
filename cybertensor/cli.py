@@ -52,7 +52,7 @@ COMMANDS = {
         "help": "Commands for managing and viewing subnetworks.",
         "commands": {
             "list": SubnetListCommand,
-            # "metagraph": MetagraphCommand,
+            "metagraph": MetagraphCommand,
             "lock_cost": SubnetLockCostCommand,
             "create": RegisterSubnetworkCommand,
             "pow_register": PowRegisterCommand,
