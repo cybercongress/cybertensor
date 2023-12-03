@@ -18,22 +18,20 @@
 
 import sys
 import argparse
-import bittensor
-from cybertensor import Balance
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
-from .utils import check_netuid_set, check_for_cuda_reg_config
-
-from . import defaults
+from cybertensor import Balance
+from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
+from cybertensor.commands import defaults
 
 console = cybertensor.__console__
 
 
 class RegisterCommand:
     """
-    Executes the 'register' command to register a neuron on the Bittensor network by recycling some TAO (the network's native token).
-    This command is used to add a new neuron to a specified subnet within the network, contributing to the decentralization and robustness of Bittensor.
+    Executes the 'register' command to register a neuron on the cybertensor network by recycling some TAO (the network's native token).
+    This command is used to add a new neuron to a specified subnet within the network, contributing to the decentralization and robustness of cybertensor.
 
     Usage:
     Before registering, the command checks if the specified subnet exists and whether the user's balance is sufficient to cover the registration cost.
@@ -53,7 +51,7 @@ class RegisterCommand:
     - Cost to Register: The required amount of TAO needed to register on the specified subnet.
 
     Example usage:
-    >>> btcli subnets register --netuid 1
+    >>> ctcli subnets register --netuid 1
 
     Note:
     This command is critical for users who wish to contribute a new neuron to the network. It requires careful consideration of the subnet selection and
@@ -123,7 +121,7 @@ class RegisterCommand:
 
 class PowRegisterCommand:
     """
-    Executes the 'pow_register' command to register a neuron on the Bittensor network using Proof of Work (PoW).
+    Executes the 'pow_register' command to register a neuron on the cybertensor network using Proof of Work (PoW).
     This method is an alternative registration process that leverages computational work for securing a neuron's place on the network.
 
     Usage:
