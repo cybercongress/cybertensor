@@ -29,14 +29,14 @@ class ListCommand:
     """
     Executes the 'list' command which enumerates all wallets and their respective hotkeys
     present in the user's Bittensor configuration directory. The command organizes the
-    information in a tree structure, displaying each wallet along with the SS58 addresses
+    information in a tree structure, displaying each wallet along with the addresses
     for the coldkey public key and any hotkeys associated with it.
 
     Optional arguments:
     -p, --path: The path to the cybertensor configuration directory. Defaults to '~/.cybertensor'.
 
     The output is presented in a hierarchical tree format, with each wallet as a root node,
-    and any associated hotkeys as child nodes. The SS58 address is displayed for each
+    and any associated hotkeys as child nodes. The address is displayed for each
     coldkey and hotkey that is not encrypted and exists on the device.
 
     Usage:
@@ -90,7 +90,7 @@ class ListCommand:
                                 hotkey_for_name.hotkey_file.exists_on_device()
                                 and not hotkey_for_name.hotkey_file.is_encrypted()
                             ):
-                                hotkey_str = hotkey_for_name.hotkey.ss58_address
+                                hotkey_str = hotkey_for_name.hotkey.address
                             else:
                                 hotkey_str = "?"
                         except:

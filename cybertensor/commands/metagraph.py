@@ -61,8 +61,8 @@ class MetagraphCommand:
     the default network UID is used.
 
     Example usage:
-    >>> btcli metagraph --netuid 0 # Root network
-    >>> btcli metagraph --netuid 1 --subtensor.network test
+    >>> ctcli metagraph --netuid 0 # Root network
+    >>> ctcli metagraph --netuid 1 --subtensor.network test
 
     Note:
     This command provides a snapshot of the network's state at the time of calling.
