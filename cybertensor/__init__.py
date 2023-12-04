@@ -148,7 +148,7 @@ from .chain_data import *
 from .cwtensor import cwtensor as cwtensor
 from .cli import cli as cli, COMMANDS as ALL_COMMANDS
 from .ctlogging import logging as logging
-# from .metagraph import metagraph as metagraph
+from .metagraph import metagraph as metagraph
 # from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
 
 # from .synapse import *

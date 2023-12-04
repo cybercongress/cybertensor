@@ -23,7 +23,6 @@ import argparse
 import cybertensor
 from typing import List, Optional
 from .commands import *
-
 # Create a console instance for CLI display.
 console = cybertensor.__console__
 
@@ -53,11 +52,11 @@ COMMANDS = {
         "help": "Commands for managing and viewing subnetworks.",
         "commands": {
             "list": SubnetListCommand,
-            # "metagraph": MetagraphCommand,
+            "metagraph": MetagraphCommand,
             "lock_cost": SubnetLockCostCommand,
             "create": RegisterSubnetworkCommand,
-            # "pow_register": PowRegisterCommand,
-            # "register": RegisterCommand,
+            "pow_register": PowRegisterCommand,
+            "register": RegisterCommand,
             "hyperparameters": SubnetHyperparamsCommand,
         },
     },
@@ -98,8 +97,6 @@ COMMANDS = {
             "regen_hotkey": RegenHotkeyCommand,
             # "faucet": RunFaucetCommand,
             "update": UpdateWalletCommand,
-            # "set_identity": SetIdentityCommand,
-            # "get_identity": GetIdentityCommand,
         },
     },
     # "stake": {
