@@ -23,28 +23,27 @@ import argparse
 import cybertensor
 from typing import List, Optional
 from .commands import *
-
 # Create a console instance for CLI display.
 console = cybertensor.__console__
 
 ALIAS_TO_COMMAND = {
-    # "subnets": "subnets",
+    "subnets": "subnets",
     # "root": "root",
     "wallet": "wallet",
     # "stake": "stake",
-    # "sudo": "sudo",
+    "sudo": "sudo",
     # "legacy": "legacy",
     "s": "subnets",
     # "r": "root",
     "w": "wallet",
     # "st": "stake",
-    # "su": "sudo",
+    "su": "sudo",
     # "l": "legacy",
-    # "subnet": "subnets",
+    "subnet": "subnets",
     # "roots": "root",
-    # "wallets": "wallet",
+    "wallets": "wallet",
     # "stakes": "stake",
-    # "sudos": "sudo",
+    "sudos": "sudo",
 }
 COMMANDS = {
     "subnets": {
@@ -52,13 +51,13 @@ COMMANDS = {
         "aliases": ["s", "subnet"],
         "help": "Commands for managing and viewing subnetworks.",
         "commands": {
-            # "list": SubnetListCommand,
-            # "metagraph": MetagraphCommand,
-            # "lock_cost": SubnetLockCostCommand,
+            "list": SubnetListCommand,
+            "metagraph": MetagraphCommand,
+            "lock_cost": SubnetLockCostCommand,
             "create": RegisterSubnetworkCommand,
-            # "pow_register": PowRegisterCommand,
-            # "register": RegisterCommand,
-            # "hyperparameters": SubnetHyperparamsCommand,
+            "pow_register": PowRegisterCommand,
+            "register": RegisterCommand,
+            "hyperparameters": SubnetHyperparamsCommand,
         },
     },
     # "root": {
@@ -98,8 +97,6 @@ COMMANDS = {
             "regen_hotkey": RegenHotkeyCommand,
             # "faucet": RunFaucetCommand,
             "update": UpdateWalletCommand,
-            # "set_identity": SetIdentityCommand,
-            # "get_identity": GetIdentityCommand,
         },
     },
     # "stake": {
@@ -112,16 +109,16 @@ COMMANDS = {
     #         "remove": UnStakeCommand,
     #     },
     # },
-    # "sudo": {
-    #     "name": "sudo",
-    #     "aliases": ["su", "sudos"],
-    #     "help": "Commands for subnet management",
-    #     "commands": {
-    #         # "dissolve": None,
-    #         "set": SubnetSudoCommand,
-    #         "get": SubnetGetHyperparamsCommand,
-    #     },
-    # },
+    "sudo": {
+        "name": "sudo",
+        "aliases": ["su", "sudos"],
+        "help": "Commands for subnet management",
+        "commands": {
+            # "dissolve": None,
+            "set": SubnetSudoCommand,
+            "get": SubnetGetHyperparamsCommand,
+        },
+    },
     # "legacy": {
     #     "name": "legacy",
     #     "aliases": ["l"],

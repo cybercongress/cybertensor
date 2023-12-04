@@ -20,6 +20,12 @@
 from .wallet_utils import *
 import cybertensor
 import requests
+from .formatting import get_human_readable, millify
+
+
+GIGA = 1e9
+U16_MAX = 65535
+U64_MAX = 18446744073709551615
 
 def version_checking(timeout: int = 15):
     try:
@@ -49,3 +55,10 @@ def version_checking(timeout: int = 15):
         cybertensor.logging.error("Version check failed due to timeout")
     except requests.exceptions.RequestException as e:
         cybertensor.logging.error(f"Version check failed due to request failure: {e}")
+
+def U16_NORMALIZED_FLOAT(x: int) -> float:
+    return float(x) / float(U16_MAX)
+
+
+def U64_NORMALIZED_FLOAT(x: int) -> float:
+    return float(x) / float(U64_MAX)
