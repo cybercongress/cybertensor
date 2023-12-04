@@ -51,7 +51,7 @@ class OverviewCommand:
     - HOTKEY: The SS58 address of the hotkey.
     - UID: Unique identifier of the neuron.
     - ACTIVE: Indicates if the neuron is active.
-    - STAKE(τ): Amount of stake in the neuron, in Tao.
+    - STAKE(BOOT): Amount of stake in the neuron, in BOOT.
     - RANK: The rank of the neuron within the network.
     - TRUST: Trust score of the neuron.
     - CONSENSUS: Consensus score of the neuron.
@@ -162,7 +162,7 @@ class OverviewCommand:
         with console.status(
             ":satellite: Syncing with chain: [white]{}[/white] ...".format(
                 cli.config.cwtensor.get(
-                    "network", cybertensor.defaults.cwtensor.network
+                    "network", defaults.cwtensor.network
                 )
             )
         ):
@@ -330,7 +330,7 @@ class OverviewCommand:
                 nn: cybertensor.NeuronInfoLite
                 uid = nn.uid
                 active = nn.active
-                stake = nn.total_stake.tao
+                stake = nn.total_stake.boot
                 rank = nn.rank
                 trust = nn.trust
                 consensus = nn.consensus
@@ -542,8 +542,8 @@ class OverviewCommand:
 
         console.clear()
 
-        caption = "[italic][dim][white]Wallet balance: [green]\u03C4" + str(
-            total_balance.tao
+        caption = "[italic][dim][white]Wallet balance: [green]GBOOT" + str(
+            total_balance.gboot
         )
         grid.add_row(Align(caption, vertical="middle", align="center"))
 
