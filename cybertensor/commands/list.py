@@ -90,7 +90,7 @@ class ListCommand:
                                 hotkey_for_name.hotkey_file.exists_on_device()
                                 and not hotkey_for_name.hotkey_file.is_encrypted()
                             ):
-                                hotkey_str = hotkey_for_name.hotkey.ss58_address
+                                hotkey_str = hotkey_for_name.hotkey.address
                             else:
                                 hotkey_str = "?"
                         except:
