@@ -544,7 +544,7 @@ class cwtensor:
     #### Network Parameters ####
     #####################################
 
-    def get_subnet_burn_cost(self, block: Optional[int] = None) -> int:
+    def get_subnet_burn_cost(self, block: Optional[int] = None) -> Optional[int]:
         lock_cost = self.contract.query({"get_network_registration_cost": {}})
 
         if lock_cost is None:
@@ -587,19 +587,19 @@ class cwtensor:
 
     # def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
     #     return self.query_subtensor("NetworksAdded", block, [netuid]).value
-    #
-    # def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
-    #     subnet_netuids = []
-    #     result = self.query_map_subtensor("NetworksAdded", block)
-    #     if result.records:
-    #         for netuid, exists in result:
-    #             if exists:
-    #                 subnet_netuids.append(netuid.value)
-    #
-    #     return subnet_netuids
 
-    def     get_total_subnets(self, block: Optional[int] = None) -> int:
+    def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
+        subnet_netuids = []
+        return self.contract.query({"get_all_subnet_netuids": {}})
+        # print(result)
+        # if result.records:
+        #     for netuid, exists in result:
+        #         if exists:
+        #             subnet_netuids.append(netuid.value)
+        #
+        # return subnet_netuids
 
+    def get_total_subnets(self, block: Optional[int] = None) -> int:
         return self.contract.query({"get_total_networks": {}})
 
     def get_emission_value_by_subnet(
@@ -660,7 +660,7 @@ class cwtensor:
     def is_hotkey_registered_on_subnet(
             self, hotkey: str, netuid: int, block: Optional[int] = None
     ) -> bool:
-        return self.get_uid_for_hotkey_on_subnet(hotkey, netuid, block) != None
+        return self.get_uid_for_hotkey_on_subnet(hotkey, netuid, block) is not None
 
     def is_hotkey_registered(
             self,
