@@ -56,20 +56,21 @@ from .messages.network import (
 )
 from .messages.staking import add_stake_message, add_stake_multiple_message
 from .messages.unstaking import unstake_message, unstake_multiple_message
-# from .messages.serving import serve_message, serve_axon_message
+from .messages.serving import serve_message, serve_axon_message
 from .messages.registration import (
     register_message,
     burned_register_message,
 )
 # from .messages.transfer import transfer_message
 from .messages.set_weights import set_weights_message
-# from .messages.prometheus import prometheus_message
+from .messages.prometheus import prometheus_message
 from .messages.delegation import (
     delegate_message,
     nominate_message,
     undelegate_message,
 )
 from .messages.root import root_register_message, set_root_weights_message
+from .types import AxonServeCallParams, PrometheusServeCallParams
 from .utils import U16_NORMALIZED_FLOAT
 from .utils.balance import Balance
 from .utils.registration import POWSolution
@@ -604,6 +605,121 @@ class cwtensor:
     #################
     #### Serving ####
     #################
+
+    def serve(
+            self,
+            wallet: "cybertensor.wallet",
+            ip: str,
+            port: int,
+            protocol: int,
+            netuid: int,
+            placeholder1: int = 0,
+            placeholder2: int = 0,
+            wait_for_finalization=True,
+            prompt: bool = False,
+    ) -> bool:
+        return serve_message(
+            self,
+            wallet,
+            ip,
+            port,
+            protocol,
+            netuid,
+            placeholder1,
+            placeholder2,
+            wait_for_finalization,
+        )
+
+    def serve_axon(
+            self,
+            netuid: int,
+            axon: "cybertensor.axon",
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        return serve_axon_message(
+            self, netuid, axon, wait_for_finalization
+        )
+
+    def _do_serve_axon(
+            self,
+            wallet: "cybertensor.wallet",
+            call_params: AxonServeCallParams,
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(call_params, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(call_params, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
+
+    def serve_prometheus(
+            self,
+            wallet: "cybertensor.wallet",
+            port: int,
+            netuid: int,
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        return prometheus_message(
+            self,
+            wallet=wallet,
+            port=port,
+            netuid=netuid,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+    def _do_serve_prometheus(
+            self,
+            wallet: "cybertensor.wallet",
+            call_params: PrometheusServeCallParams,
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:
+        """
+        Sends a serve prometheus extrinsic to the chain.
+        Args:
+            wallet (:obj:`bittensor.wallet`): Wallet object.
+            call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
+            wait_for_finalization (:obj:`bool`): If true, waits for finalization.
+        Returns:
+            success (:obj:`bool`): True if serve prometheus was successful.
+            error (:obj:`Optional[str]`): Error message if serve prometheus failed, None otherwise.
+        """
+
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(call_params, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(call_params, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
 
     #################
     #### Staking ####

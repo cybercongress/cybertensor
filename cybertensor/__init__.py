@@ -149,22 +149,22 @@ from .cwtensor import cwtensor as cwtensor
 from .cli import cli as cli, COMMANDS as ALL_COMMANDS
 from .ctlogging import logging as logging
 from .metagraph import metagraph as metagraph
-# from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
+from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
 
-# from .synapse import *
-# from .stream import *
+from .synapse import *
+from .stream import *
 from .tensor import *
-# from .axon import axon as axon
-# from .dendrite import dendrite as dendrite
+from .axon import axon as axon
+from .dendrite import dendrite as dendrite
 
 # from .mock.keyfile_mock import MockKeyfile as MockKeyfile
 # from .mock.subtensor_mock import MockSubtensor as MockSubtensor
 # from .mock.wallet_mock import MockWallet as MockWallet
 
 configs = [
-    # axon.config(),
+    axon.config(),
     cybertensor.config(),
-    # PriorityThreadPoolExecutor.config(),
+    PriorityThreadPoolExecutor.config(),
     wallet.config(),
     logging.config(),
 ]
