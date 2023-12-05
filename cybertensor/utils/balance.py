@@ -20,6 +20,8 @@
 
 from typing import Union
 
+from cosmpy.aerial.client import Coin
+
 import cybertensor
 
 
@@ -41,21 +43,34 @@ class Balance:
     boot: int
     gboot: float
 
-    def __init__(self, balance: Union[int, float]):
+    def __init__(self, balance: Union[int, float, Coin, list[Coin]]):
         """
         Initialize a Balance object. If balance is an int, it's assumed to be in boot.
         If balance is a float, it's assumed to be in gboot.
+        If balance is a cosmpy.aerial.client.Coin, the amount of boot is retrieved.
+        If balance is a list of cosmpy.aerial.client.Coin, the amount of boot is retrieved.
 
         Args:
-            balance: The initial balance, in either boot (if an int) or gboot (if a float).
+            balance: The initial balance, in either boot (if an int, cosmpy.aerial.client.Coin, list of Coin),
+            or gboot (if a float).
         """
         if isinstance(balance, int):
             self.boot = balance
         elif isinstance(balance, float):
             # Assume gboot value for the float
             self.boot = int(balance * pow(10, 9))
+        elif isinstance(balance, Coin):
+            self.boot = int(balance.amount) if balance.denom == Balance.boot_unit.lower() else 0
+        elif isinstance(balance, list):
+            self.boot = 0
+            for _coin in balance:
+                assert isinstance(_coin, Coin)
+                if _coin.denom == Balance.boot_unit.lower():
+                    self.boot = int(_coin.amount)
+                    break
         else:
-            raise TypeError("balance must be an int (boot) or a float (gboot)")
+            raise TypeError("balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, "
+                            "or list of cosmpy.aerial.client.Coin")
 
     @property
     def gboot(self):
@@ -233,6 +248,9 @@ class Balance:
     def __float__(self) -> float:
         return self.gboot
 
+    def __list__(self) -> list:
+        return [Coin(amount=self.boot, denom=Balance.boot_unit.lower())]
+
     def __nonzero__(self) -> bool:
         return bool(self.boot)
 
@@ -284,3 +302,17 @@ class Balance:
             A Balance object representing the given amount.
         """
         return Balance(amount)
+
+    @staticmethod
+    def from_coin(coin: Coin):
+        """
+        Given coin (cosmpy.aerial.client.Coin), return Balance object with boot(int) and gboot(float),
+        where boot = int(gboot*pow(10,9))
+
+        Args:
+            coin: The Coin item.
+
+        Returns:
+            A Balance object representing the given coin item.
+        """
+        return Balance(coin)
