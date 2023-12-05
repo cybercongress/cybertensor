@@ -20,14 +20,14 @@
 
 from rich.console import Console
 from rich.traceback import install
-
+from pathlib import Path
 # Install and apply nest asyncio to allow the async functions
 # to run in a .ipynb
 import nest_asyncio
 
-nest_asyncio.apply()
-
 from cosmpy.aerial.config import NetworkConfig
+
+nest_asyncio.apply()
 
 # Cybertensor code and protocol version.
 __version__ = "0.1.0"
@@ -82,7 +82,8 @@ __blocktime__ = 6
 __pipaddress__ = "https://pypi.org/pypi/cybertensor/json"
 
 # Raw github url for delegates registry file
-# __delegates_details_url__: str = "https://raw.githubusercontent.com/opentensor/bittensor-delegates/main/public/delegates.json"
+#  TODO add data to github
+__delegates_details_url__: str = "https://raw.githubusercontent.com/cybercongress/cybertensor/main/public/delegates.json"
 
 # Bostrom network address prefix
 __chain_address_prefix__ = "bostrom"
@@ -91,34 +92,32 @@ __networks__ = ["local", "bostrom"]
 
 __contracts__ = [
     "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
-    "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
 ]
 
 __local_network__ = NetworkConfig(
-            chain_id="localbostrom",
-            url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=50000,
-            fee_denomination="boot",
-            staking_denomination="boot",
-            faucet_url="",
-        )
+    chain_id="localbostrom",
+    url="grpc+http://localhost:9090",
+    fee_minimum_gas_price=50000,
+    fee_denomination="boot",
+    staking_denomination="boot",
+    faucet_url="",
+)
 
 __bostrom_network__ = NetworkConfig(
-            chain_id="bostrom",
-            url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=5000,
-            fee_denomination="boot",
-            staking_denomination="boot",
-            faucet_url="",
-        )
+    chain_id="bostrom",
+    url="grpc+http://localhost:9090",
+    fee_minimum_gas_price=5000,
+    fee_denomination="boot",
+    staking_denomination="boot",
+    faucet_url="",
+)
 
-from pathlib import Path
 __contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
 __contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
 
-__token__ = 'boot'
+__token__ = "boot"
 
-__default_gas__ = 1000000
+__default_gas__ = 1_000_000
 
 __boot_symbol__: str = "BOOT"
 __giga_boot_symbol__: str = "GBOOT"
@@ -136,12 +135,10 @@ __network_explorer_map__ = {
 }
 
 from .errors import *
-
 from .config import *
 from .keyfile import *
 from .keypair import *
 from .wallet import *
-
 from .utils import *
 from .utils.balance import Balance as Balance
 from .chain_data import *
@@ -150,20 +147,18 @@ from .cli import cli as cli, COMMANDS as ALL_COMMANDS
 from .ctlogging import logging as logging
 from .metagraph import metagraph as metagraph
 # from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
-
 # from .synapse import *
 # from .stream import *
 # from .tensor import *
 # from .axon import axon as axon
 # from .dendrite import dendrite as dendrite
-
 # from .mock.keyfile_mock import MockKeyfile as MockKeyfile
 # from .mock.subtensor_mock import MockSubtensor as MockSubtensor
 # from .mock.wallet_mock import MockWallet as MockWallet
 
 configs = [
     # axon.config(),
-    cybertensor.config(),
+    config(),
     # PriorityThreadPoolExecutor.config(),
     wallet.config(),
     logging.config(),

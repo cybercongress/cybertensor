@@ -19,10 +19,7 @@
 
 import os
 import copy
-import torch
-import json
 import argparse
-import scalecodec
 from retry import retry
 from loguru import logger
 from typing import List, Dict, Union, Optional, Tuple, TypedDict, Any
@@ -36,11 +33,10 @@ from cosmpy.crypto.keypairs import PrivateKey
 
 import cybertensor
 
-from .chain_data import SubnetInfo, SubnetHyperparameters
 # Local imports.
 from .chain_data import (
     NeuronInfo,
-    # DelegateInfo,
+    DelegateInfo,
     # PrometheusInfo,
     SubnetInfo,
     SubnetHyperparameters,
@@ -349,7 +345,7 @@ class cwtensor:
             wait_for_finalization: bool = True,
             prompt: bool = False,
     ) -> bool:
-        """Registers the wallet to chain by recycling TAO."""
+        """Registers the wallet to chain by recycling BOOT."""
         return burned_register_message(
             cwtensor=self,
             wallet=wallet,
@@ -507,12 +503,7 @@ class cwtensor:
     """ Returns network Tempo hyper parameter """
 
     def tempo(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
-        tempo = self.contract.query({"get_tempo": {"netuid": netuid}})
-
-        if tempo is None:
-            return None
-
-        return tempo
+        return self.contract.query({"get_tempo": {"netuid": netuid}})
 
     ##########################
     #### Account functions ###
@@ -572,32 +563,13 @@ class cwtensor:
             balance (cybertensor.utils.balance.Balance):
                 account balance
         """
-        try:
-            @retry(delay=2, tries=3, backoff=2, max_delay=4)
-            def make_cyber_call_with_retry() -> Balance:
-                return Balance.from_boot(self.client.query_bank_balance(Address(address), cybertensor.__token__))
-
-            balance = make_cyber_call_with_retry()
-        except scalecodec.exceptions.RemainingScaleBytesNotEmptyException:
-            cybertensor.logging.error(
-                "Your wallet it legacy formatted, you need to run ctcli stake --amount 0 to reformat it."
-            )
-            return Balance(0)
-        return balance
+        return Balance.from_boot(self.client.query_bank_balance(Address(address), cybertensor.__token__))
 
     # def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
     #     return self.query_subtensor("NetworksAdded", block, [netuid]).value
 
     def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
-        subnet_netuids = []
         return self.contract.query({"get_all_subnet_netuids": {}})
-        # print(result)
-        # if result.records:
-        #     for netuid, exists in result:
-        #         if exists:
-        #             subnet_netuids.append(netuid.value)
-        #
-        # return subnet_netuids
 
     def get_total_subnets(self, block: Optional[int] = None) -> int:
         return self.contract.query({"get_total_networks": {}})
@@ -643,6 +615,23 @@ class cwtensor:
     ####################
     #### Nomination ####
     ####################
+
+    def get_delegated(
+        self, address: str, block: Optional[int] = None
+    ) -> List[Tuple[DelegateInfo, Balance]]:
+        """Returns the list of delegates that a given delegatee address is staked to."""
+    
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry(delegatee: str):
+            return self.contract.query({"get_delegated": {"delegatee": delegatee}})
+
+        result = make_call_with_retry(delegatee=address)
+    
+        if result in (None, []):
+            return []
+    
+        return DelegateInfo.delegated_list_from_vec_u8(result)
+
 
     ###########################
     #### Stake Information ####
