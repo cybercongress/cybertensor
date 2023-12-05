@@ -47,8 +47,8 @@ class OverviewCommand:
     The command offers various options to customize the output. Users can filter the displayed data by specific netuids,
     sort by different criteria, and choose to include all wallets in the user's configuration directory. The output is
     presented in a tabular format with the following columns:
-    - COLDKEY: The SS58 address of the coldkey.
-    - HOTKEY: The SS58 address of the hotkey.
+    - COLDKEY: The address of the coldkey.
+    - HOTKEY: The address of the hotkey.
     - UID: Unique identifier of the neuron.
     - ACTIVE: Indicates if the neuron is active.
     - STAKE(BOOT): Amount of stake in the neuron, in BOOT.
@@ -62,7 +62,7 @@ class OverviewCommand:
     - VPERMIT: Indicates if the neuron has a validator permit.
     - UPDATED: Time since last update.
     - AXON: IP address and port of the neuron.
-    - HOTKEY_SS58: Human-readable representation of the hotkey.
+    - HOTKEY: Human-readable representation of the hotkey.
 
     Example usage:
     >>> ctcli wallet overview
@@ -499,7 +499,7 @@ class OverviewCommand:
                 "[overline white]AXON", justify="left", style="dim blue", no_wrap=True
             )
             table.add_column(
-                "[overline white]HOTKEY_SS58", style="dim blue", no_wrap=False
+                "[overline white]HOTKEY", style="dim blue", no_wrap=False
             )
             table.show_footer = True
 
@@ -592,7 +592,7 @@ class OverviewCommand:
 
             # Pull all stake for our coldkey
             all_stake_info_for_coldkey = cwtensor.get_stake_info_for_coldkey(
-                coldkey_ss58=coldkey_wallet.coldkeypub.address
+                coldkey=coldkey_wallet.coldkeypub.address
             )
 
             ## Filter out hotkeys that are in our wallets
@@ -600,9 +600,9 @@ class OverviewCommand:
             def _filter_stake_info(stake_info: "cybertensor.StakeInfo") -> bool:
                 if stake_info.stake == 0:
                     return False  # Skip hotkeys that we have no stake with.
-                if stake_info.hotkey_ss58 in all_hotkey_addresses:
+                if stake_info.hotkey in all_hotkey_addresses:
                     return False  # Skip hotkeys that are in our wallets.
-                if cwtensor.is_hotkey_delegate(hotkey_ss58=stake_info.hotkey_ss58):
+                if cwtensor.is_hotkey_delegate(hotkey=stake_info.hotkey):
                     return False  # Skip hotkeys that are delegates, they show up in btcli my_delegates table.
 
                 return True
@@ -668,7 +668,7 @@ class OverviewCommand:
             default=[],
             type=str,
             nargs="*",
-            help="""Specify the hotkeys by name or ss58 address. (e.g. hk1 hk2 hk3)""",
+            help="""Specify the hotkeys by name or address. (e.g. hk1 hk2 hk3)""",
         )
         overview_parser.add_argument(
             "--all_hotkeys",

@@ -503,7 +503,12 @@ class cwtensor:
     """ Returns network Tempo hyper parameter """
 
     def tempo(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
-        return self.contract.query({"get_tempo": {"netuid": netuid}})
+        tempo = self.contract.query({"get_tempo": {"netuid": netuid}})
+
+        if tempo is None:
+            return None
+
+        return tempo
 
     ##########################
     #### Account functions ###
@@ -551,19 +556,6 @@ class cwtensor:
     def get_total_stake_for_coldkey(self, address: str, block: Optional[int] = None) -> Optional[Balance]:
         # TODO add stake query
         return Balance(0)
-
-    def get_balance(self, address: str, block: Optional[int] = None) -> Balance:
-        r"""Returns the token balance for the passed address
-        Args:
-            address (cyber address format, default = 42):
-                chain address.
-            block (int):
-                Not used now! block number for getting balance.
-        Return:
-            balance (cybertensor.utils.balance.Balance):
-                account balance
-        """
-        return Balance.from_boot(self.client.query_bank_balance(Address(address), cybertensor.__token__))
 
     # def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
     #     return self.query_subtensor("NetworksAdded", block, [netuid]).value
@@ -620,16 +612,16 @@ class cwtensor:
         self, address: str, block: Optional[int] = None
     ) -> List[Tuple[DelegateInfo, Balance]]:
         """Returns the list of delegates that a given delegatee address is staked to."""
-    
+
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry(delegatee: str):
             return self.contract.query({"get_delegated": {"delegatee": delegatee}})
 
         result = make_call_with_retry(delegatee=address)
-    
+
         if result in (None, []):
             return []
-    
+
         return DelegateInfo.delegated_list_from_vec_u8(result)
 
 
@@ -800,9 +792,28 @@ class cwtensor:
 
         return metagraph_
 
-    ################
-    #### Legacy ####
-    ################
+    #################
+    #### General ####
+    #################
+
+    def get_balance(self, address: str, block: Optional[int] = None) -> Balance:
+        r"""Returns the token balance for the passed address
+        Args:
+            address (cyber address):
+                chain address.
+            block (int):
+                Not used now! block number for getting balance.
+        Return:
+            balance (cybertensor.utils.balance.Balance):
+                account balance
+        """
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry() -> Balance:
+            return Balance.from_boot(self.client.query_bank_balance(Address(address), cybertensor.__token__))
+
+        balance = make_call_with_retry()
+
+        return balance
 
     # TODO rewrite logic
     def get_current_block(self) -> int:
