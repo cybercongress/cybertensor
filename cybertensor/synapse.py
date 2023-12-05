@@ -187,7 +187,7 @@ class TerminalInfo(pydantic.BaseModel):
     # The cybertensor version on the terminal as an int.
     hotkey: Optional[str] = pydantic.Field(
         title="hotkey",
-        description="The ss58 encoded hotkey string of the terminal wallet.",
+        description="The hotkey string of the terminal wallet.",
         examples="5EnjDGNqqWnuL2HCAdxeEtN2oqtXZw6BMBe936Kfy2PFz1J1",
         default=None,
         allow_mutation=True,

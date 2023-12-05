@@ -348,7 +348,7 @@ class metagraph(torch.nn.Module):
         Args:
             block (int, optional): Block number to sync. If None, the current block is used.
             lite (bool): Whether to use lite version of the metagraph.
-            cwtensor (cybertensor.cwtensor, optional): Subtensor object to use for syncing.
+            cwtensor (cybertensor.cwtensor, optional): cwtensor object to use for syncing.
 
         Returns:
             metagraph: Updated metagraph object.

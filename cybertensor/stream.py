@@ -31,7 +31,7 @@ class BTStreamingResponseModel(BaseModel):
 
 class StreamingSynapse(cybertensor.Synapse, ABC):
     """
-    The StreamingSynapse class is designed to be subclassed for handling streaming responses in the Bittensor network.
+    The StreamingSynapse class is designed to be subclassed for handling streaming responses in the Cybertensor network.
     It provides abstract methods that must be implemented by the subclass to deserialize, process streaming responses,
     and extract JSON data. It also includes a method to create a streaming response object.
     """
@@ -42,7 +42,7 @@ class StreamingSynapse(cybertensor.Synapse, ABC):
     class BTStreamingResponse(_StreamingResponse):
         """
         BTStreamingResponse is a specialized subclass of the Starlette StreamingResponse designed to handle the streaming
-        of tokens within the Bittensor network. It is used internally by the StreamingSynapse class to manage the response
+        of tokens within the Cybertensor network. It is used internally by the StreamingSynapse class to manage the response
         streaming process, including sending headers and calling the token streamer provided by the subclass.
 
         This class is not intended to be directly instantiated or modified by developers subclassing StreamingSynapse.

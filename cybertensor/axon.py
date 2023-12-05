@@ -621,7 +621,7 @@ class axon:
         Args:
             netuid: int
                 The subnet uid to register on.
-            cwtensor: Optional[ cybertensor.Subtensor ]
+            cwtensor: Optional[ cybertensor.cwtensor ]
                 The cwtensor connection to use for serving.
         Returns:
             cybertensor.axon: The served Axon instance.

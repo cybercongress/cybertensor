@@ -57,7 +57,7 @@ def show_delegates(
     width: Optional[int] = None,
 ):
     """
-    Displays a formatted table of Bittensor network delegates with detailed statistics
+    Displays a formatted table of Cybertensor network delegates with detailed statistics
     to the console. The table is sorted by total stake in descending order and provides
     a snapshot of delegate performance and status, helping users make informed decisions
     for staking or nominating.
@@ -89,7 +89,7 @@ def show_delegates(
     - Desc: A brief description provided by the delegate.
 
     Usage:
-    This function is typically used within the Bittensor CLI to show current delegate
+    This function is typically used within the Cybertensor CLI to show current delegate
     options to users who are considering where to stake their tokens.
 
     Example usage:
@@ -228,7 +228,7 @@ def show_delegates(
 class DelegateStakeCommand:
     """
     Executes the 'delegate' command, which stakes GBOOT to a specified delegate on the
-    Bittensor network. This action allocates the user's GBOOT to support a delegate,
+    Cybertensor network. This action allocates the user's GBOOT to support a delegate,
     potentially earning staking rewards in return.
 
     Optional Arguments:
@@ -251,7 +251,7 @@ class DelegateStakeCommand:
 
     Note:
     This command modifies the blockchain state and may incur transaction fees. It requires
-    user confirmation and interaction, and is designed to be used within the Bittensor CLI
+    user confirmation and interaction, and is designed to be used within the Cybertensor CLI
     environment. The user should ensure the delegate's address and the amount to be staked
     are correct before executing the command.
     """
@@ -355,7 +355,7 @@ class DelegateStakeCommand:
 class DelegateUnstakeCommand:
     """
     Executes the 'undelegate' command, allowing users to withdraw their staked GBOOT from
-    a delegate on the Bittensor network. This process is known as "undelegating" and it
+    a delegate on the Cybertensor network. This process is known as "undelegating" and it
     reverses the delegation process, freeing up the staked tokens.
 
     Optional Arguments:
@@ -370,7 +370,7 @@ class DelegateUnstakeCommand:
 
     Usage:
     The user must provide the delegate's address and the amount of GBOOT to undelegate.
-    The function will then send a transaction to the Bittensor network to process the
+    The function will then send a transaction to the Cybertensor network to process the
     undelegation.
 
     Example usage:
@@ -482,7 +482,7 @@ class DelegateUnstakeCommand:
 
 class ListDelegatesCommand:
     """
-    Displays a formatted table of Bittensor network delegates, providing a comprehensive
+    Displays a formatted table of Cybertensor network delegates, providing a comprehensive
     overview of delegate statistics and information. This table helps users make informed
     decisions on which delegates to allocate their GBOOT stake.
 
@@ -514,7 +514,7 @@ class ListDelegatesCommand:
     >>> ctcli root list_delegates --cwtensor.network finney # can also be `test` or `local`
 
     Note:
-    This function is part of the Bittensor CLI tools and is intended for use within a console
+    This function is part of the Cybertensor CLI tools and is intended for use within a console
     application. It prints directly to the console and does not return any value.
     """
 
@@ -562,7 +562,7 @@ class ListDelegatesCommand:
 class NominateCommand:
     """
     Executes the 'nominate' command, which facilitates a wallet to become a delegate
-    on the Bittensor network. This command handles the nomination process, including
+    on the Cybertensor network. This command handles the nomination process, including
     wallet unlocking and verification of the hotkey's current delegate status.
 
     The command performs several checks:
@@ -653,9 +653,9 @@ class NominateCommand:
 
 class MyDelegatesCommand:
     """
-    Executes the 'my_delegates' command within the Bittensor CLI, which retrieves and
+    Executes the 'my_delegates' command within the Cybertensor CLI, which retrieves and
     displays a table of delegated stakes from a user's wallet(s) to various delegates
-    on the Bittensor network. The command provides detailed insights into the user's
+    on the Cybertensor network. The command provides detailed insights into the user's
     staking activities and the performance of their chosen delegates.
 
     Optional Arguments:
@@ -679,7 +679,7 @@ class MyDelegatesCommand:
     The command also sums and prints the total amount of GBOOT delegated across all wallets.
 
     Usage:
-    The command can be run as part of the Bittensor CLI suite of tools and requires
+    The command can be run as part of the Cybertensor CLI suite of tools and requires
     no parameters if a single wallet is used. If multiple wallets are present, the
     --all flag can be specified to aggregate information across all wallets.
 

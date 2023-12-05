@@ -105,7 +105,7 @@ def delegate_message(
     r"""Delegates the specified amount of stake to the passed delegate.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object.
+            cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
@@ -246,7 +246,7 @@ def undelegate_message(
     r"""Un-delegates stake from the passed delegate.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object.
+            cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):

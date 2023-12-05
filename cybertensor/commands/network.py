@@ -62,7 +62,7 @@ class RegisterSubnetworkCommand:
     >>> ctcli subnets create
 
     Note:
-    This command is intended for advanced users of the Bittensor network who wish to contribute by adding new subnetworks.
+    This command is intended for advanced users of the Cybertensor network who wish to contribute by adding new subnetworks.
     It requires a clear understanding of the network's functioning and the roles of subnetworks. Users should ensure
     that they have secured their wallet and are aware of the implications of adding a new subnetwork to the cybertensor
     ecosystem.
@@ -98,29 +98,29 @@ class RegisterSubnetworkCommand:
 
 class SubnetLockCostCommand:
     """
-    Executes the 'lock_cost' command to view the locking cost required for creating a new subnetwork on the Bittensor network. This command is designed to provide users with the current cost of registering a new subnetwork, which is a critical piece of information for anyone considering expanding the network's infrastructure.
+    Executes the 'lock_cost' command to view the locking cost required for creating a new subnetwork on the Cybertensor network. This command is designed to provide users with the current cost of registering a new subnetwork, which is a critical piece of information for anyone considering expanding the network's infrastructure.
 
     The current implementation anneals the cost of creating a subnet over a period of two days. If the cost is unappealing currently, check back in a day or two to see if it has reached an amenble level.
 
     Usage:
     Upon invocation, the command performs the following operations:
-    1. It copies the user's current Bittensor configuration.
-    2. It initializes the Bittensor subtensor object with this configuration.
-    3. It then retrieves the subnet lock cost using the `get_subnet_burn_cost()` method from the subtensor object.
+    1. It copies the user's current Cybertensor configuration.
+    2. It initializes the Cybertensor cwtensor object with this configuration.
+    3. It then retrieves the subnet lock cost using the `get_subnet_burn_cost()` method from the cwtensor object.
     4. The cost is displayed to the user in a readable format, indicating the amount of cryptocurrency required to lock for registering a new subnetwork.
 
     In case of any errors during the process (e.g., network issues, configuration problems), the command will catch these exceptions and inform the user that it failed to retrieve the lock cost, along with the specific error encountered.
 
     The command structure includes:
-    - Copying and using the user's configuration for Bittensor.
-    - Retrieving the current subnet lock cost from the Bittensor network.
+    - Copying and using the user's configuration for Cybertensor.
+    - Retrieving the current subnet lock cost from the Cybertensor network.
     - Displaying the cost in a user-friendly manner.
 
     Example usage:
     >>> ctcli subnets lock_cost
 
     Note:
-    This command is particularly useful for users who are planning to contribute to the Bittensor network by adding new subnetworks. Understanding the lock cost is essential for these users to make informed decisions about their potential contributions and investments in the network.
+    This command is particularly useful for users who are planning to contribute to the Cybertensor network by adding new subnetworks. Understanding the lock cost is essential for these users to make informed decisions about their potential contributions and investments in the network.
     """
 
     @staticmethod
@@ -154,34 +154,34 @@ class SubnetLockCostCommand:
 
 class SubnetListCommand:
     """
-    Executes the 'list' command to list all subnets and their detailed information on the Bittensor network.
+    Executes the 'list' command to list all subnets and their detailed information on the Cybertensor network.
     This command is designed to provide users with comprehensive information about each subnet within the
     network, including its unique identifier (netuid), the number of neurons, maximum neuron capacity,
     emission rate, tempo, recycle register cost (burn), proof of work (PoW) difficulty, and the name or
-    SS58 address of the subnet owner.
+ address of the subnet owner.
 
     Usage:
     Upon invocation, the command performs the following actions:
-    1. It initializes the Bittensor subtensor object with the user's configuration.
+    1. It initializes the Cybertensor cwtensor object with the user's configuration.
     2. It retrieves a list of all subnets in the network along with their detailed information.
     3. The command compiles this data into a table format, displaying key information about each subnet.
 
     In addition to the basic subnet details, the command also fetches delegate information to provide the
-    name of the subnet owner where available. If the owner's name is not available, the owner's SS58
+    name of the subnet owner where available. If the owner's name is not available, the owner's
     address is displayed.
 
     The command structure includes:
-    - Initializing the Bittensor subtensor and retrieving subnet information.
+    - Initializing the Cybertensor cwtensor and retrieving subnet information.
     - Calculating the total number of neurons across all subnets.
     - Constructing a table that includes columns for NETUID, N (current neurons), MAX_N (maximum neurons),
-        EMISSION, TEMPO, BURN, POW (proof of work difficulty), and SUDO (owner's name or SS58 address).
+        EMISSION, TEMPO, BURN, POW (proof of work difficulty), and SUDO (owner's name or address).
     - Displaying the table with a footer that summarizes the total number of subnets and neurons.
 
     Example usage:
     >>> ctcli subnets list
 
     Note:
-    This command is particularly useful for users seeking an overview of the Bittensor network's structure
+    This command is particularly useful for users seeking an overview of the Cybertensor network's structure
     and the distribution of its resources and ownership information for each subnet.
     """
 
@@ -274,7 +274,7 @@ HYPERPARAMS = {
 
 class SubnetSudoCommand:
     """
-    Executes the 'set' command to set hyperparameters for a specific subnet on the Bittensor network.
+    Executes the 'set' command to set hyperparameters for a specific subnet on the Cybertensor network.
     This command allows subnet owners to modify various hyperparameters of theirs subnet, such as its tempo,
     emission rates, and other network-specific settings.
 
@@ -340,7 +340,7 @@ class SubnetSudoCommand:
 class SubnetHyperparamsCommand:
     """
     Executes the 'hyperparameters' command to view the current hyperparameters of a specific subnet on
-    the Bittensor network. This command is useful for users who wish to understand the configuration and
+    the Cybertensor network. This command is useful for users who wish to understand the configuration and
     operational parameters of a particular subnet.
 
     Usage:
@@ -421,11 +421,11 @@ class SubnetHyperparamsCommand:
 
 class SubnetGetHyperparamsCommand:
     """
-    Executes the 'get' command to retrieve the hyperparameters of a specific subnet on the Bittensor network.
+    Executes the 'get' command to retrieve the hyperparameters of a specific subnet on the Cybertensor network.
     This command is similar to the 'hyperparameters' command but may be used in different contexts within the CLI.
 
     Usage:
-    The command connects to the Bittensor network, queries the specified subnet, and returns a detailed list
+    The command connects to the Cybertensor network, queries the specified subnet, and returns a detailed list
     of all its hyperparameters. This includes crucial operational parameters that determine the subnet's
     performance and interaction within the network.
 

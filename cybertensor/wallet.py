@@ -53,7 +53,7 @@ def display_mnemonic_msg(keypair: Keypair, key_type: str):
 
 class wallet:
     """
-    Bittensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
+    Cybertensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
     The coldkey is the user's primary key for holding stake in their wallet
     and is the only way that users can access Tao. Coldkeys can hold tokens and should be encrypted on your device.
     The coldkey must be used to stake and unstake funds from a running node. The hotkey, on the other hand, is only used

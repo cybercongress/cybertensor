@@ -86,8 +86,8 @@ class ParamWithTypes(TypedDict):
 class cwtensor:
     """Factory Class for cybertensor.cwtensor
 
-    The Subtensor class handles interactions with the substrate cwtensor chain.
-    By default, the Subtensor class connects to the Finney which serves as the main cybertensor network.
+    The cwtensor class handles interactions with the substrate cwtensor chain.
+    By default, the cwtensor class connects to the Finney which serves as the main cybertensor network.
     """
 
     @staticmethod
@@ -692,7 +692,7 @@ class cwtensor:
         """
         Sends a serve prometheus extrinsic to the chain.
         Args:
-            wallet (:obj:`bittensor.wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization.
         Returns:
@@ -770,7 +770,7 @@ class cwtensor:
         """Sends a stake extrinsic to the chain.
         Args:
             wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
-            hotkey (:obj:`str`): Hotkey ss58 address to stake to.
+            hotkey (:obj:`str`): Hotkey address to stake to.
             amount (:obj:`Balance`): Amount to stake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
         Returns:
@@ -851,7 +851,7 @@ class cwtensor:
         """Sends an unstake extrinsic to the chain.
         Args:
             wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
-            hotkey (:obj:`str`): Hotkey ss58 address to unstake from.
+            hotkey (:obj:`str`): Hotkey address to unstake from.
             amount (:obj:`Balance`): Amount to unstake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
         Returns:

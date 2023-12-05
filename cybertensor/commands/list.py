@@ -28,7 +28,7 @@ console = cybertensor.__console__
 class ListCommand:
     """
     Executes the 'list' command which enumerates all wallets and their respective hotkeys
-    present in the user's Bittensor configuration directory. The command organizes the
+    present in the user's Cybertensor configuration directory. The command organizes the
     information in a tree structure, displaying each wallet along with the addresses
     for the coldkey public key and any hotkeys associated with it.
 
@@ -48,7 +48,7 @@ class ListCommand:
 
     Note:
     This command is read-only and does not modify the filesystem or the network state. It is
-    intended for use within the Bittensor CLI to provide a quick overview of the user's wallets.
+    intended for use within the Cybertensor CLI to provide a quick overview of the user's wallets.
     """
 
     @staticmethod
@@ -113,5 +113,4 @@ class ListCommand:
     def add_args(parser: argparse.ArgumentParser):
         list_parser = parser.add_parser("list", help="""List wallets""")
         cybertensor.wallet.add_args(list_parser)
-        # TODO add subtensor
-        # cybertensor.subtensor.add_args(list_parser)
+        cybertensor.cwtensor.add_args(list_parser)

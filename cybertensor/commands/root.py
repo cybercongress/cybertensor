@@ -35,7 +35,7 @@ console = cybertensor.__console__
 
 class RootRegisterCommand:
     """
-    Executes the 'register' command to register a wallet to the root network of the Bittensor network.
+    Executes the 'register' command to register a wallet to the root network of the Cybertensor network.
     This command is used to formally acknowledge a wallet's participation in the network's root layer.
 
     Usage:
@@ -48,7 +48,7 @@ class RootRegisterCommand:
     >>> ctcli root register
 
     Note:
-    This command is important for users seeking to engage deeply with the Bittensor network, particularly in aspects related to network governance and decision-making.
+    This command is important for users seeking to engage deeply with the Cybertensor network, particularly in aspects related to network governance and decision-making.
     It is a straightforward process but requires the user to have an initialized and configured wallet.
     """
 
@@ -82,7 +82,7 @@ class RootRegisterCommand:
 
 class RootList:
     """
-    Executes the 'list' command to display the members of the root network on the Bittensor network.
+    Executes the 'list' command to display the members of the root network on the Cybertensor network.
     This command provides an overview of the neurons that constitute the network's foundational layer.
 
     Usage:
@@ -106,7 +106,7 @@ class RootList:
     ...
 
     Note:
-    This command is useful for users interested in understanding the composition and governance structure of the Bittensor network's root layer.
+    This command is useful for users interested in understanding the composition and governance structure of the Cybertensor network's root layer.
     It provides insights into which neurons hold significant influence and responsibility within the network.
     """
 
@@ -203,7 +203,7 @@ class RootList:
 
 class RootSetWeightsCommand:
     """
-    Executes the 'weights' command to set the weights for the root network on the Bittensor network.
+    Executes the 'weights' command to set the weights for the root network on the Cybertensor network.
     This command is used by network senators to influence the distribution of network rewards and responsibilities.
 
     Usage:
@@ -292,7 +292,7 @@ class RootSetWeightsCommand:
 
 class RootGetWeightsCommand:
     """
-    Executes the 'get_weights' command to retrieve the weights set for the root network on the Bittensor network.
+    Executes the 'get_weights' command to retrieve the weights set for the root network on the Cybertensor network.
     This command provides visibility into how network responsibilities and rewards are distributed among various subnets.
 
     Usage:
@@ -319,7 +319,7 @@ class RootGetWeightsCommand:
     ...
 
     Note:
-    This command is essential for users interested in the governance and operational dynamics of the Bittensor network.
+    This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
     It offers transparency into how network rewards and responsibilities are allocated across different subnets.
     """
 

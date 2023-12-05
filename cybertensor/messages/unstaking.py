@@ -35,7 +35,7 @@ def __do_remove_stake_single(
     Executes an unstake call to the chain using the wallet and amount specified.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object.
+            Cybertensor wallet object.
         hotkey (str):
             Hotkey address to unstake from.
         amount (cybertensor.Balance):

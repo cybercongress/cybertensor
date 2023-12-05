@@ -31,11 +31,11 @@ console = cybertensor.__console__
 
 class StakeCommand:
     """
-    Executes the 'add' command to stake tokens to one or more hotkeys from a user's coldkey on the Bittensor network.
+    Executes the 'add' command to stake tokens to one or more hotkeys from a user's coldkey on the Cybertensor network.
     This command is used to allocate tokens to different hotkeys, securing their position and influence on the network.
 
     Usage:
-    Users can specify the amount to stake, the hotkeys to stake to (either by name or SS58 address),
+    Users can specify the amount to stake, the hotkeys to stake to (either by name or address),
     and whether to stake to all hotkeys. The command checks for sufficient balance and hotkey registration
     before proceeding with the staking process.
 
@@ -44,7 +44,7 @@ class StakeCommand:
     - --uid (int): The unique identifier of the neuron to which the stake is to be added.
     - --amount (float): The amount of TAO tokens to stake.
     - --max_stake (float): Sets the maximum amount of TAO to have staked in each hotkey.
-    - --hotkeys (list): Specifies hotkeys by name or SS58 address to stake to.
+    - --hotkeys (list): Specifies hotkeys by name or address to stake to.
     - --all_hotkeys (bool): When set, stakes to all hotkeys associated with the wallet, excluding any specified in --hotkeys.
 
     The command prompts for confirmation before executing the staking operation.
@@ -330,7 +330,7 @@ def _get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
 
 class StakeShow:
     """
-    Executes the 'show' command to list all stake accounts associated with a user's wallet on the Bittensor network.
+    Executes the 'show' command to list all stake accounts associated with a user's wallet on the Cybertensor network.
     This command provides a comprehensive view of the stakes associated with both hotkeys and delegates linked to the user's coldkey.
 
     Usage:
@@ -351,7 +351,7 @@ class StakeShow:
     >>> ctcli stake show --all
 
     Note:
-    This command is essential for users who wish to monitor their stake distribution and returns across various accounts on the Bittensor network.
+    This command is essential for users who wish to monitor their stake distribution and returns across various accounts on the Cybertensor network.
     It provides a clear and detailed overview of the user's staking activities.
     """
 
@@ -379,7 +379,7 @@ class StakeShow:
                 wallet: The wallet object to fetch the stake account details for.
 
             Returns:
-                A dictionary mapping SS58 addresses to their respective stake account details.
+                A dictionary mapping addresses to their respective stake account details.
             """
             cwtensor = cybertensor.cwtensor(config=cli.config)
 

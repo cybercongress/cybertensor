@@ -27,7 +27,7 @@ import cybertensor
 
 class Balance:
     """
-    Represents the bittensor balance of the wallet, stored as boot (int).
+    Represents the cybertensor balance of the wallet, stored as boot (int).
     This class provides a way to interact with balances in two different units: boot and gboot.
     It provides methods to convert between these units, as well as to perform arithmetic and comparison operations.
 
