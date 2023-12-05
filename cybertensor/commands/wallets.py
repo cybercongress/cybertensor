@@ -824,7 +824,3 @@ class WalletBalanceCommand:
                 choices=cybertensor.__networks__,
             )
             config.cwtensor.network = str(network)
-            (
-                _,
-                config.cwtensor.chain_endpoint,
-            ) = cybertensor.cwtensor.determine_chain_endpoint_and_network(str(network))

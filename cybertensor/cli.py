@@ -82,10 +82,10 @@ COMMANDS = {
         "help": "Commands for managing and viewing wallets.",
         "commands": {
             "list": ListCommand,
-            # "overview": OverviewCommand,
+            "overview": OverviewCommand,
             # "transfer": TransferCommand,
             # "inspect": InspectCommand,
-            # "balance": WalletBalanceCommand,
+            "balance": WalletBalanceCommand,
             "create": WalletCreateCommand,
             "new_hotkey": NewHotkeyCommand,
             "new_coldkey": NewColdkeyCommand,

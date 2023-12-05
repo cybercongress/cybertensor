@@ -63,9 +63,9 @@ defaults: Munch = munchify(
     }
 )
 
+from .overview import OverviewCommand
 from .stake import StakeCommand, StakeShow
 from .unstake import UnStakeCommand
-# from .overview import OverviewCommand
 from .register import (
     PowRegisterCommand,
     RegisterCommand,

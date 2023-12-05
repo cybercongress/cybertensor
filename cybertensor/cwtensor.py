@@ -22,20 +22,18 @@ import copy
 import torch
 import json
 import argparse
+from retry import retry
+from loguru import logger
+from typing import List, Dict, Union, Optional, Tuple, TypedDict, Any
 
 from cosmpy.aerial.client import LedgerClient
+from cosmpy.crypto.address import Address
 from cosmpy.aerial.config import NetworkConfig
 from cosmpy.aerial.contract import LedgerContract
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from cybertensor import Balance
-
 import cybertensor
-
-from retry import retry
-from loguru import logger
-from typing import List, Dict, Union, Optional, Tuple, TypedDict, Any
 
 # Local imports.
 from .chain_data import (
@@ -107,7 +105,7 @@ class cwtensor:
 
     @classmethod
     def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
-        prefix_str = "" if prefix == None else prefix + "."
+        prefix_str = "" if prefix is None else prefix + "."
         try:
             default_network = os.getenv("CT_CYBER_NETWORK") or "local"
             # default_contract_address = os.getenv("CT_CONTRACT_ADDRESS") or "bostrom1"
@@ -135,7 +133,7 @@ class cwtensor:
             pass
 
     @staticmethod
-    def determine_chain_endpoint_and_network(network: str):
+    def determine_chain_endpoint_and_network(network: str) -> [Optional[str], Optional[NetworkConfig], Optional[str]]:
         """Determines the chain endpoint and network from the passed network or chain_endpoint.
         Args:
             network (str): The network flag. The likely choices are:
@@ -146,8 +144,8 @@ class cwtensor:
             network (str): The network flag. The likely choices are:
             chain_endpoint (str): The chain endpoint flag. If set, overrides the network argument.
         """
-        if network == None:
-            return None, None
+        if network is None:
+            return None, None, None
         if network in ["local", "bostrom"]:
             if network == "bostrom":
                 return network, cybertensor.__bostrom_network__, cybertensor.__contracts__[1]
@@ -158,7 +156,7 @@ class cwtensor:
 
     @staticmethod
     def setup_config(network: str, config: cybertensor.config):
-        if network != None:
+        if network is not None:
             (
                 evaluated_network,
                 evaluated_network_config,
@@ -217,7 +215,7 @@ class cwtensor:
         # Determine config.cwtensor.chain_endpoint and config.cwtensor.network config.
         # If chain_endpoint is set, we override the network flag, otherwise, the chain_endpoint is assigned by the network.
         # Argument importance: network > config.cwtensor.network
-        if config == None:
+        if config is None:
             config = cwtensor.config()
         self.config = copy.deepcopy(config)
 
@@ -842,7 +840,7 @@ class cwtensor:
     def burn(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
         burn = self.contract.query({"get_burn": {"netuid": netuid}})
 
-        if burn == None:
+        if burn is None:
             return None
 
         return burn
@@ -852,7 +850,7 @@ class cwtensor:
     def difficulty(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
         difficulty = self.contract.query({"get_difficulty": {"netuid": netuid}})
 
-        if difficulty == None:
+        if difficulty is None:
             return None
 
         return difficulty
@@ -864,7 +862,7 @@ class cwtensor:
     ) -> Optional[int]:
         min_allowed_weights = self.contract.query({"get_min_allowed_weights": {"netuid": netuid}})
 
-        if min_allowed_weights == None:
+        if min_allowed_weights is None:
             return None
 
         return min_allowed_weights
@@ -876,17 +874,17 @@ class cwtensor:
     ) -> Optional[float]:
         max_weight_limit = self.contract.query({"get_max_weight_limit": {"netuid": netuid}})
 
-        if max_weight_limit == None:
+        if max_weight_limit is None:
             return None
 
         return U16_NORMALIZED_FLOAT(max_weight_limit)
 
     """ Returns network Tempo hyper parameter """
 
-    def tempo(self, netuid: int, block: Optional[int] = None) -> int:
+    def tempo(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
         tempo = self.contract.query({"get_tempo": {"netuid": netuid}})
 
-        if tempo == None:
+        if tempo is None:
             return None
 
         return tempo
@@ -1009,16 +1007,20 @@ class cwtensor:
     #### Network Parameters ####
     #####################################
 
-    def get_subnet_burn_cost(self, block: Optional[int] = None) -> int:
+    def get_subnet_burn_cost(self, block: Optional[int] = None) -> Optional[int]:
         lock_cost = self.contract.query({"get_network_registration_cost": {}})
 
-        if lock_cost == None:
+        if lock_cost is None:
             return None
 
         return lock_cost
 
     def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
         return self.contract.query({"get_subnet_exist": {"netuid": netuid}})
+
+    def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
+        subnet_netuids = []
+        return self.contract.query({"get_all_subnet_netuids": {}})
 
     def get_total_subnets(self, block: Optional[int] = None) -> int:
         return self.contract.query({"get_total_networks": {}})
@@ -1170,7 +1172,7 @@ class cwtensor:
     def is_hotkey_registered_on_subnet(
             self, hotkey: str, netuid: int, block: Optional[int] = None
     ) -> bool:
-        return self.get_uid_for_hotkey_on_subnet(hotkey, netuid, block) != None
+        return self.get_uid_for_hotkey_on_subnet(hotkey, netuid, block) is not None
 
     def is_hotkey_registered(
             self,
@@ -1178,7 +1180,7 @@ class cwtensor:
             netuid: Optional[int] = None,
             block: Optional[int] = None,
     ) -> bool:
-        if netuid == None:
+        if netuid is None:
             return self.is_hotkey_registered_any(hotkey, block)
         else:
             return self.is_hotkey_registered_on_subnet(hotkey, netuid, block)
@@ -1240,7 +1242,7 @@ class cwtensor:
             neuron (Optional[NeuronInfo]):
                 neuron metadata associated with uid or None if it does not exist.
         """
-        if uid == None:
+        if uid is None:
             return NeuronInfo._null_neuron()
 
         resp = self.contract.query({"get_neuron": {"netuid": netuid, "uid": uid}})
@@ -1337,22 +1339,28 @@ class cwtensor:
 
         return w_map
 
-    ################
-    #### Legacy ####
-    ################
+    #################
+    #### General ####
+    #################
 
-    def get_balance(self, address: str, block: int = None) -> Balance:
-        r"""Returns the balance of an address.
+    def get_balance(self, address: str, block: Optional[int] = None) -> Balance:
+        r"""Returns the token balance for the passed address
         Args:
-            address ( str ):
-                The address to query for.
-            block ( int ):
-                The block to query at.
-        Returns:
-            balance ( Balance ):
-                The balance of the address.
+            address (cyber address):
+                chain address.
+            block (int):
+                Not used now! block number for getting balance.
+        Return:
+            balance (cybertensor.utils.balance.Balance):
+                account balance
         """
-        return Balance.from_boot(self.client.query_bank_balance(address, cybertensor.__token__))
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry() -> Balance:
+            return Balance.from_boot(self.client.query_bank_balance(Address(address), cybertensor.__token__))
+
+        balance = make_call_with_retry()
+
+        return balance
 
     # TODO rewrite logic
     def get_current_block(self) -> int:
