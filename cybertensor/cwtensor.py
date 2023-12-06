@@ -20,7 +20,6 @@
 import os
 import copy
 import torch
-import json
 import argparse
 from retry import retry
 from loguru import logger
@@ -598,7 +597,6 @@ class cwtensor:
             netuid=netuid,
             parameter=parameter,
             value=value,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
             prompt=prompt,
         )
