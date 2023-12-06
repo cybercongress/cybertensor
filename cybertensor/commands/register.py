@@ -100,9 +100,15 @@ class RegisterCommand:
 
     @classmethod
     def check_config(cls, config: "cybertensor.config"):
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
+
+        if not config.is_set("wallet.hotkey") and not config.no_prompt:
+            hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
 
     @classmethod
     def add_args(cls, parser: argparse.ArgumentParser):
