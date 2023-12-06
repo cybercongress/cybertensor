@@ -1,5 +1,3 @@
-""" Utils for handling local network with ip and ports.
-"""
 # The MIT License (MIT)
 # Copyright © 2021-2022 Yuma Rao
 # Copyright © 2022-2023 Opentensor Foundation
@@ -28,6 +26,8 @@ import requests
 
 from loguru import logger
 
+""" Utils for handling local network with ip and ports.
+"""
 
 def int_to_ip(int_val: int) -> str:
     r"""Maps an integer to a unique ip-string

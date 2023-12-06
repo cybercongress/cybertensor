@@ -24,11 +24,14 @@ class AxonServeCallParams(TypedDict):
     Axon serve chain call parameters.
     """
 
+    netuid: int
     version: int
     ip: int
     port: int
     ip_type: int
-    netuid: int
+    protocol: int
+    placeholder1: int
+    placeholder2: int
 
 
 class PrometheusServeCallParams(TypedDict):
@@ -36,8 +39,8 @@ class PrometheusServeCallParams(TypedDict):
     Prometheus serve chain call parameters.
     """
 
+    netuid: int
     version: int
     ip: int
     port: int
     ip_type: int
-    netuid: int

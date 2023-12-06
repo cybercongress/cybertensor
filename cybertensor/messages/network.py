@@ -33,7 +33,7 @@ def register_subnetwork_message(
     r"""Registers a new subnetwork
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the transaction to be finalized on the chain before returning true,
             or returns false if the transaction fails to be finalized within the timeout.
@@ -114,7 +114,7 @@ def set_hyperparameter_message(
     r"""Sets a hyperparameter for a specific subnetwork.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             Subnetwork uid.
         parameter (str):

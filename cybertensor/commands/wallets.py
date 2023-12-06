@@ -154,10 +154,10 @@ class RegenColdkeyCommand:
 class RegenColdkeypubCommand:
     """
     Executes the 'regen_coldkeypub' command to regenerate the public part of a coldkey (coldkeypub) for a wallet on the Cybertensor network.
-    This command is used when a user needs to recreate their coldkeypub from an existing public key or SS58 address.
+    This command is used when a user needs to recreate their coldkeypub from an existing public key or address.
 
     Usage:
-    The command requires either a public key in hexadecimal format or an SS58 address to regenerate the coldkeypub.
+    The command requires either a public key in hexadecimal format or an address to regenerate the coldkeypub.
     It optionally allows overwriting an existing coldkeypub file.
 
     Optional arguments:

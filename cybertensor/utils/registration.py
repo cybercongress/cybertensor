@@ -467,7 +467,7 @@ def _solve_for_difficulty_fast(
     Solves the POW for registration using multiprocessing.
     Args:
         cwtensor
-            Subtensor to connect to for block information and to submit.
+            cwtensor to connect to for block information and to submit.
         wallet:
             wallet to use for registration.
         netuid: int
@@ -673,7 +673,7 @@ def _get_block_with_retry(
 
     Args:
         cwtensor (:obj:`cybertensor.cwtensor`, `required`):
-            The subtensor object to use to get the block number, difficulty, and block hash.
+            The cwtensor object to use to get the block number, difficulty, and block hash.
 
         netuid (:obj:`int`, `required`):
             The netuid of the network to get the block number, difficulty, and block hash from.
@@ -739,7 +739,7 @@ def _check_for_newest_block_and_update(
 
     Args:
         cwtensor (:obj:`cybertensor.cwtensor`, `required`):
-            The subtensor object to use for getting the current block.
+            The cwtensor object to use for getting the current block.
         netuid (:obj:`int`, `required`):
             The netuid to use for retrieving the difficulty.
         old_block_number (:obj:`int`, `required`):
@@ -812,7 +812,7 @@ def _solve_for_difficulty_fast_cuda(
     Solves the registration fast using CUDA
     Args:
         cwtensor: cybertensor.cwtensor
-            The subtensor node to grab blocks
+            The cwtensor node to grab blocks
         wallet: cybertensor.wallet
             The wallet to register
         netuid: int
@@ -1034,10 +1034,10 @@ def create_pow(
     log_verbose: bool = False,
 ) -> Optional[Dict[str, Any]]:
     """
-    Creates a proof of work for the given subtensor and wallet.
+    Creates a proof of work for the given cwtensor and wallet.
     Args:
-        cwtensor (:obj:`cybertensor.cwtensor.subtensor`, `required`):
-            The subtensor to create a proof of work for.
+        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+            The cwtensor to create a proof of work for.
         wallet (:obj:`cybertensor.wallet.wallet`, `required`):
             The wallet to create a proof of work for.
         netuid (:obj:`int`, `required`):

@@ -35,7 +35,7 @@ def add_stake_message(
     r"""Adds the specified amount of stake to passed hotkey uid.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object.
+            cybertensor wallet object.
         hotkey (Optional[str]):
             address of the hotkey account to stake to
             defaults to the wallet's hotkey.
@@ -210,7 +210,7 @@ def add_stake_multiple_message(
     r"""Adds stake to each hotkey in the list, using each amount, from a common coldkey.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object for the coldkey.
+            cybertensor wallet object for the coldkey.
         hotkeys (List[str]):
             List of hotkeys to stake to.
         amounts (List[Union[Balance, float]]):
@@ -433,7 +433,7 @@ def __do_add_stake_single(
     Executes a stake call to the chain using the wallet and amount specified.
     Args:
         wallet (cybertensor.wallet):
-            Bittensor wallet object.
+            cybertensor wallet object.
         hotkey (str):
             Hotkey to stake to.
         amount (cybertensor.Balance):

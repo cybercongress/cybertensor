@@ -34,7 +34,7 @@ class MetagraphCommand:
 
     Optional arguments:
     --netuid: The netuid of the network to query. Defaults to the default network UID.
-    --subtensor.network: The name of the network to query. Defaults to the default network name.
+    --cwtensor.network: The name of the network to query. Defaults to the default network name.
 
     The table displayed includes the following columns for each neuron:
     - UID: Unique identifier of the neuron.
@@ -62,12 +62,12 @@ class MetagraphCommand:
 
     Example usage:
     >>> ctcli metagraph --netuid 0 # Root network
-    >>> ctcli metagraph --netuid 1 --subtensor.network test
+    >>> ctcli metagraph --netuid 1 --cwtensor.network test
 
     Note:
     This command provides a snapshot of the network's state at the time of calling.
     It is useful for network analysis and diagnostics. It is intended to be used as
-    part of the Bittensor CLI and not as a standalone function within user code.
+    part of the Cybertensor CLI and not as a standalone function within user code.
     """
 
     @staticmethod

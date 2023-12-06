@@ -45,7 +45,7 @@ def register_message(
     r"""Registers the wallet to chain.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.
         wait_for_finalization (bool):
@@ -223,7 +223,7 @@ def burned_register_message(
     r"""Registers the wallet to chain by recycling TAO.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.
         wait_for_finalization (bool):

@@ -147,7 +147,7 @@ class PowRegisterCommand:
     - --pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
     - --pow_register.cuda.TPB (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
 
-    The command also supports additional wallet and subtensor arguments, enabling further customization of the registration process.
+    The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.
 
     Example usage:
     >>> ctcli subnets pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
@@ -287,7 +287,7 @@ class PowRegisterCommand:
         #     and not config.no_prompt
         # ):
         #     config.cwtensor.network = Prompt.ask(
-        #         "Enter subtensor network",
+        #         "Enter cwtensor network",
         #         choices=cybertensor.__networks__,
         #         default=defaults.cwtensor.network,
         #     )

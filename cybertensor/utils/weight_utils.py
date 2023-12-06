@@ -217,7 +217,7 @@ def process_weights_for_netuid(
     cybertensor.logging.debug("process_weights_for_netuid()")
     cybertensor.logging.debug("weights", weights)
     cybertensor.logging.debug("netuid", netuid)
-    cybertensor.logging.debug("subtensor", cwtensor)
+    cybertensor.logging.debug("cwtensor", cwtensor)
     cybertensor.logging.debug("metagraph", metagraph)
 
     # Get latest metagraph from chain if metagraph is None.
@@ -228,7 +228,7 @@ def process_weights_for_netuid(
     if not isinstance(weights, torch.FloatTensor):
         weights = weights.type(torch.float32)
 
-    # Network configuration parameters from an subtensor.
+    # Network configuration parameters from an cwtensor.
     # These parameters determine the range of acceptable weights for each neuron.
     quantile = exclude_quantile / U16_MAX
     min_allowed_weights = cwtensor.min_allowed_weights(netuid=netuid)
