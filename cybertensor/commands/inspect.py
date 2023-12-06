@@ -157,7 +157,7 @@ class InspectCommand:
         for wallet in tqdm(wallets):
             delegates: List[
                 Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
-            ] = cwtensor.get_delegated(address=wallet.coldkeypub.address)
+            ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
             cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)

@@ -80,14 +80,16 @@ class RegisterCommand:
         # Check balance is sufficient
         if balance < current_recycle:
             cybertensor.__console__.print(
-                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle} TAO[/red]"
+                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]"
             )
             sys.exit(1)
 
         if not cli.config.no_prompt:
             if (
                 Confirm.ask(
-                    f"Your balance is: [bold green]{balance}[/bold green]\nThe cost to register by recycle is [bold red]{current_recycle}[/bold red]\nDo you want to continue?",
+                    f"Your balance is: [bold green]{balance}[/bold green]\n"
+                    f"The cost to register by recycle is [bold red]{current_recycle}[/bold red]\n"
+                    f"Do you want to continue?",
                     default=False,
                 )
                 == False

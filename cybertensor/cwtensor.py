@@ -1022,7 +1022,8 @@ class cwtensor:
     def get_total_stake_for_coldkey(
             self, address: str, block: Optional[int] = None
     ) -> Optional["Balance"]:
-        return Balance.from_boot(self.contract.query({"get_total_stake_for_coldkey": {"address": address}}))
+        resp = self.contract.query({"get_total_stake_for_coldkey": {"address": address}})
+        return Balance.from_boot(resp) if resp is not None else Balance(0)
 
     """ Returns the stake under a coldkey - hotkey pairing """
 
@@ -1030,10 +1031,7 @@ class cwtensor:
             self, hotkey: str, coldkey: str, block: Optional[int] = None
     ) -> Optional["Balance"]:
         resp = self.contract.query({"get_stake_for_coldkey_and_hotkey": {"coldkey": coldkey, "hotkey": hotkey}})
-        if resp is None:
-            return None
-        else:
-            return Balance.from_boot(resp)
+        return Balance.from_boot(resp) if resp is not None else Balance(0)
 
     """ Returns a list of stake tuples (coldkey, balance) for each delegating coldkey including the owner"""
 
@@ -1133,6 +1131,7 @@ class cwtensor:
         return lock_cost
 
     def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
+        assert isinstance(netuid, int)
         return self.contract.query({"get_subnet_exist": {"netuid": netuid}})
 
     def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
@@ -1245,11 +1244,11 @@ class cwtensor:
         return all_delegates_details
 
     def get_delegated(
-            self, coldkey: str, block: Optional[int] = None
+            self, delegatee: str, block: Optional[int] = None
     ) -> List[Tuple[DelegateInfo, Balance]]:
-        """Returns the list of delegates that a given coldkey is staked to."""
+        """Returns the list of delegates that a given delegatee is staked to."""
 
-        result = self.contract.query({"get_delegated": {"delegatee": coldkey}})
+        result = self.contract.query({"get_delegated": {"delegatee": delegatee}})
 
         if result in (None, []):
             return []
