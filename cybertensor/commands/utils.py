@@ -49,32 +49,31 @@ def check_netuid_set(
     cwtensor: "cybertensor.cwtensor",
     allow_none: bool = False,
 ):
-    if cwtensor.network != "nakamoto":
-        all_netuids = [str(netuid) for netuid in cwtensor.get_subnets()]
-        if len(all_netuids) == 0:
-            console.print(":cross_mark:[red]There are no open networks.[/red]")
-            sys.exit()
+    all_netuids = [str(netuid) for netuid in cwtensor.get_subnets()]
+    if len(all_netuids) == 0:
+        console.print(":cross_mark:[red]There are no open networks.[/red]")
+        sys.exit()
 
-        # Make sure netuid is set.
-        if not config.is_set("netuid"):
-            if not config.no_prompt:
-                netuid = IntListPrompt.ask(
-                    "Enter netuid", choices=all_netuids, default=str(all_netuids[0])
-                )
-            else:
-                netuid = str(defaults.netuid) if not allow_none else "None"
+    # Make sure netuid is set.
+    if not config.is_set("netuid"):
+        if not config.no_prompt:
+            netuid = IntListPrompt.ask(
+                "Enter netuid", choices=all_netuids, default=str(all_netuids[0])
+            )
         else:
-            netuid = config.netuid
+            netuid = str(defaults.netuid) if not allow_none else "None"
+    else:
+        netuid = config.netuid
 
-        if isinstance(netuid, str) and netuid.lower() in ["none"] and allow_none:
-            config.netuid = None
-        else:
-            if isinstance(netuid, list):
-                netuid = netuid[0]
-            try:
-                config.netuid = int(netuid)
-            except:
-                raise ValueError('netuid must be an integer or "None" (if applicable)')
+    if isinstance(netuid, str) and netuid.lower() in ["none"] and allow_none:
+        config.netuid = None
+    else:
+        if isinstance(netuid, list):
+            netuid = netuid[0]
+        try:
+            config.netuid = int(netuid)
+        except:
+            raise ValueError('netuid must be an integer or "None" (if applicable)')
 
 
 def check_for_cuda_reg_config(config: "cybertensor.config") -> None:
@@ -190,7 +189,6 @@ class DelegatesDetails:
             signature=json["signature"],
         )
 
-
 def _get_delegates_details_from_github(
     requests_get, url: str
 ) -> Dict[str, DelegatesDetails]:
@@ -207,7 +205,7 @@ def _get_delegates_details_from_github(
     else:
         return {}
 
-
+# TODO revisist
 def get_delegates_details(url: str) -> Optional[Dict[str, DelegatesDetails]]:
     try:
         return _get_delegates_details_from_github(requests.get, url)

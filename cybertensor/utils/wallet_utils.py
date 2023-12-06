@@ -37,3 +37,18 @@ def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes]) -> bo
 
     # TODO
     return True
+
+def is_valid_address(address: str) -> bool:
+    """
+    Checks if the given address is a valid address.
+
+    Args:
+        address(str): The address to check.
+
+    Returns:
+        True if the address is a valid address for Cybertensor, False otherwise.
+    """
+    if len(address) != 46:
+        return False
+    # TODO
+    return True

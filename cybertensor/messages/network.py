@@ -7,46 +7,36 @@
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
 # the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
 # and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
 # The above copyright notice and this permission notice shall be included in all copies or substantial portions of
 # the Software.
-
 # THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 # THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 # THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-import json
+
 import time
 
-from cosmpy.aerial.client import Coin
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
-from cybertensor import Balance
-
-import cybertensor
-# import cybertensor.utils.networking as net
-from dataclasses import asdict
 from rich.prompt import Confirm
 
+import cybertensor
+from cybertensor import Balance
 
 def register_subnetwork_message(
         cwtensor: "cybertensor.cwtensor",
         wallet: "cybertensor.wallet",
-        wait_for_inclusion: bool = True,
-        wait_for_finalization: bool = False,
+        wait_for_finalization: bool = True,
         prompt: bool = False,
 ) -> bool:
     r"""Registers a new subnetwork
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
-        wait_for_inclusion (bool):
-            If set, waits for the extrinsic to enter a block before returning true,
-            or returns false if the extrinsic fails to enter the block within the timeout.
+            cybertensor wallet object.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the transaction to be finalized on the chain before returning true,
+            or returns false if the transaction fails to be finalized within the timeout.
         prompt (bool):
             If true, the call waits for confirmation from the user before proceeding.
     Returns:
@@ -75,21 +65,17 @@ def register_subnetwork_message(
         create_register_network_msg = {
             "register_network": {}
         }
-            
-        try:
-            response = cwtensor.contract.execute(
-                create_register_network_msg,
-                 LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-                 cybertensor.__default_gas__,
-                 # TODO need to rewrite str output of Balance
-                 burn_cost.__int__().__str__().__add__(cybertensor.__token__),
-             ).wait_to_complete()
-        except Exception as e:
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+        funds = burn_cost.__int__().__str__().__add__(cybertensor.__token__)
+
+        if not wait_for_finalization:
+            tx = cwtensor.contract.execute(create_register_network_msg, signer_wallet, gas, funds)
             cybertensor.__console__.print(
-                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation. Check the TX hash manually."
+                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without finalization confirmation..."
             )
         else:
-            tx = cwtensor.contract.execute(create_register_network_msg, wallet, gas, burn_cost)
+            tx = cwtensor.contract.execute(create_register_network_msg, signer_wallet, gas, funds)
             cybertensor.__console__.print(
                 f":satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete..."
             )
@@ -97,70 +83,47 @@ def register_subnetwork_message(
                 tx.wait_to_complete()
                 if tx.response.is_successful():
                     cybertensor.__console__.print(
-                        f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {tx.response.events.get('wasm').get('netuid_to_register')} tx: {tx.tx_hash}[/green]"
+                        f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {tx.response.events.get('wasm').get('netuid_to_register')}[/green]"
                     )
                     return True
                 else:
                     cybertensor.__console__.print(
                         f":cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}"
                     )
+                    time.sleep(0.5)
                     return False
             except Exception as e:
                 cybertensor.__console__.print(
-                        f":cross_mark: [red]Failed[/red]: error:{e}"
-                    )
+                    f":cross_mark: [red]Failed[/red]: error:{e}"
+                )
                 return False
 
-        # process if registration successful
-
-        # -- executed in try-except section --
-
-        # if not tx.response.is_successful():
-        #     # TODO catch error. RECHECK TODO
-        #     cybertensor.__console__.print(
-        #         f":cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}"
-        #     )
-        #     time.sleep(0.5)
-
-        # Successful registration, final check for membership
-
-        # -- executed in try-except section --
-
-        # else:
-        #     cybertensor.__console__.print(
-        #         f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {tx.response.events.get('wasm').get('netuid_to_register')} tx: {tx.tx_hash}[/green]"
-        #     )
-        #     return True
 
 from ..commands.network import HYPERPARAMS
 
 
 def set_hyperparameter_message(
-    cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
-    netuid: int,
-    parameter: str,
-    value,
-    wait_for_inclusion: bool = True,
-    wait_for_finalization: bool = True,
-    prompt: bool = False,
+        cwtensor: "cybertensor.cwtensor",
+        wallet: "cybertensor.wallet",
+        netuid: int,
+        parameter: str,
+        value,
+        wait_for_finalization: bool = True,
+        prompt: bool = False,
 ) -> bool:
     r"""Sets a hyperparameter for a specific subnetwork.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             Subnetwork uid.
         parameter (str):
             Hyperparameter name.
         value (any):
             New hyperparameter value.
-        wait_for_inclusion (bool):
-            If set, waits for the extrinsic to enter a block before returning true,
-            or returns false if the extrinsic fails to enter the block within the timeout.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the transaction to be finalized on the chain before returning true,
+            or returns false if the transaction fails to be finalized within the timeout.
         prompt (bool):
             If true, the call waits for confirmation from the user before proceeding.
     Returns:
@@ -185,21 +148,21 @@ def set_hyperparameter_message(
         return False
 
     with cybertensor.__console__.status(
-        f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
+            f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
     ):
         sudo_msg = {
             str(message): {"netuid": netuid, str(parameter): int(value)},
         }
-        wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
         gas = cybertensor.__default_gas__
 
-        if not wait_for_inclusion:
-            tx = cwtensor.contract.execute(sudo_msg, wallet, gas)
+        if not wait_for_finalization:
+            tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
             cybertensor.__console__.print(
-                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation. Check the TX hash manually."
+                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation..."
             )
         else:
-            tx = cwtensor.contract.execute(sudo_msg, wallet, gas)
+            tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
             cybertensor.__console__.print(
                 f":satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete..."
             )
@@ -207,56 +170,17 @@ def set_hyperparameter_message(
                 tx.wait_to_complete()
                 if tx.response.is_successful():
                     cybertensor.__console__.print(
-                        f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {tx.response.events.get('wasm').get('netuid_to_register')} tx: {tx.tx_hash}[/green]"
+                        f":white_heavy_check_mark: [green]Hyper parameter {parameter} changed to {value}[/green]"
                     )
                     return True
                 else:
                     cybertensor.__console__.print(
                         f":cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}"
                     )
+                    time.sleep(0.5)
                     return False
             except Exception as e:
                 cybertensor.__console__.print(
-                        f":cross_mark: [red]Failed[/red]: error:{e}"
-                    )
+                    f":cross_mark: [red]Failed[/red]: error:{e}"
+                )
                 return False
-
-
-        # try:
-        #     response = cwtensor.contract.execute(
-        #         sudo_msg,
-        #         LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-        #         cybertensor.__default_gas__,
-        #     ).wait_to_complete()
-        # except Exception as e:
-        #     cybertensor.__console__.print(
-        #         f":cross_mark: [red]Failed[/red]: error:{e}"
-        #     )
-        #     response = None
-
-        # We only wait here if we expect finalization.
-        # if not wait_for_finalization and not wait_for_inclusion:
-        #     return True
-
-        # process if error in the broadcast
-        # if not response:
-        #     cybertensor.__console__.print(
-        #         ":cross_mark: [red]Failed[/red]: error: broadcast is failed"
-        #     )
-
-        # process if registration successful
-        # elif not response.response.is_successful():
-            # TODO catch error
-            # cybertensor.__console__.print(
-            #     ":cross_mark: [red]Failed[/red]: error:{}".format(
-            #         response.response.raw_log
-            #     )
-            # )
-            # time.sleep(0.5)
-
-        # Successful registration, final check for membership
-        # else:
-        #     cybertensor.__console__.print(
-        #         f":white_heavy_check_mark: [green]Hyper parameter {parameter} changed to {value}[/green]"
-        #     )
-        #     return True

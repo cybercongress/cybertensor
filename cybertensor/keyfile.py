@@ -559,7 +559,7 @@ class keyfile:
             else:
                 if print_result:
                     cybertensor.__console__.print(
-                        f'\n:cross_mark: Keyfile is outdated, please update with "btcli wallet update" \n:key: {self}'
+                        f'\n:cross_mark: Keyfile is outdated, please update with "ctcli wallet update" \n:key: {self}'
                     )
                 return False
         return False

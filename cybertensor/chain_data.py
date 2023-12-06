@@ -104,7 +104,7 @@ class NeuronInfo:
         return cls(**neuron_info_decoded)
 
     @classmethod
-    def from_list_any(cls, list_any: List[int]) -> "NeuronInfo":
+    def from_list_any(cls, list_any: List[Any]) -> "NeuronInfo":
         r"""Returns a NeuronInfo object from a vec_u8."""
         if len(list_any) == 0:
             return NeuronInfo._null_neuron()
@@ -114,7 +114,7 @@ class NeuronInfo:
         return decoded
 
     @classmethod
-    def list_from_list_any(cls, vec_any: List[int]) -> List["NeuronInfo"]:
+    def list_from_list_any(cls, vec_any: List[Any]) -> List["NeuronInfo"]:
         r"""Returns a list of NeuronInfo objects from a vec_u8."""
 
         decoded_list = [
@@ -254,7 +254,7 @@ class NeuronInfoLite:
         return cls(**neuron_info_decoded)
 
     @classmethod
-    def from_list_any(cls, list_any: List[int]) -> "NeuronInfoLite":
+    def from_list_any(cls, list_any: List[Any]) -> "NeuronInfoLite":
         r"""Returns a NeuronInfoLite object from a vec_u8."""
         if len(list_any) == 0:
             return NeuronInfoLite._null_neuron()
@@ -264,7 +264,7 @@ class NeuronInfoLite:
         return decoded
 
     @classmethod
-    def list_from_list_any(cls, vec_any: List[int]) -> List["NeuronInfoLite"]:
+    def list_from_list_any(cls, vec_any: List[Any]) -> List["NeuronInfoLite"]:
         r"""Returns a list of NeuronInfoLite objects from a vec_u8."""
 
         decoded_list = [
@@ -432,6 +432,133 @@ class AxonInfo:
         return cls(**dict(parameter_dict))
 
 @dataclass
+class DelegateInfo:
+    r"""
+    Dataclass for delegate info.
+    """
+    hotkey: str  # Hotkey of delegate
+    total_stake: Balance  # Total stake of the delegate
+    nominators: List[
+        Tuple[str, Balance]
+    ]  # List of nominators of the delegate and their stake
+    owner: str  # Coldkey of owner
+    take: float  # Take of the delegate as a percentage
+    validator_permits: List[
+        int
+    ]  # List of subnets that the delegate is allowed to validate on
+    registrations: List[int]  # List of subnets that the delegate is registered on
+    return_per_1000: Balance  # Return per 1000 tao of the delegate over a day
+    total_daily_return: Balance  # Total daily return of the delegate
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Any) -> "DelegateInfo":
+        r"""Fixes the decoded values."""
+
+        return cls(
+            hotkey=decoded["delegate"],
+            owner=decoded["owner"],
+            take=U16_NORMALIZED_FLOAT(decoded["take"]),
+            nominators=[
+                (
+                    nom[0],
+                    Balance.from_boot(nom[1]),
+                )
+                for nom in decoded["nominators"]
+            ],
+            total_stake=Balance.from_boot(
+                sum([nom[1] for nom in decoded["nominators"]])
+            ),
+            validator_permits=decoded["validator_permits"],
+            registrations=decoded["registrations"],
+            return_per_1000=Balance.from_boot(decoded["return_per_1000"]),
+            total_daily_return=Balance.from_boot(decoded["total_daily_return"]),
+        )
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -> Optional["DelegateInfo"]:
+        r"""Returns a DelegateInfo object from a vec_u8."""
+
+        decoded = DelegateInfo.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -> List["DelegateInfo"]:
+        r"""Returns a list of DelegateInfo objects from a vec_u8."""
+
+        decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+    @classmethod
+    def delegated_list_from_list_any(
+        cls, vec_any: List[Any]
+    ) -> List[Tuple["DelegateInfo", Balance]]:
+        r"""Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+        This is the list of delegates that the user has delegated to, and the amount of stake delegated.
+        """
+
+        decoded = [
+            (DelegateInfo.fix_decoded_values(d), Balance.from_boot(s))
+            for d, s in vec_any
+        ]
+
+        return decoded
+
+
+@dataclass
+class StakeInfo:
+    r"""
+    Dataclass for stake info.
+    """
+    hotkey: str  # Hotkey address
+    coldkey: str  # Coldkey address
+    stake: Balance  # Stake for the hotkey-coldkey pair
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Any) -> "StakeInfo":
+        r"""Fixes the decoded values."""
+
+        return cls(
+            hotkey=decoded["hotkey"],
+            coldkey=decoded["coldkey"],
+            stake=Balance.from_boot(decoded["stake"]),
+        )
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -> Optional["StakeInfo"]:
+        r"""Returns a StakeInfo object from a vec_u8."""
+        if len(list_any) == 0:
+            return None
+
+        decoded = StakeInfo.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_of_tuple_from_list_any(
+        cls, vec_any: List[Any]
+    ) -> Dict[str, List["StakeInfo"]]:
+        r"""Returns a list of StakeInfo objects from a vec_any."""
+
+        stake_map = {
+            account_id: [
+                StakeInfo.fix_decoded_values(d) for d in stake_info
+            ]
+            for account_id, stake_info in vec_any
+        }
+
+        return stake_map
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -> List["StakeInfo"]:
+        r"""Returns a list of StakeInfo objects from a vec_u8."""
+
+        decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+@dataclass
 class SubnetInfo:
     r"""
     Dataclass for subnet info.
@@ -582,3 +709,54 @@ class SubnetHyperparameters:
         r"""Returns a SubnetHyperparameters object from a torch parameter_dict."""
         return cls(**dict(parameter_dict))
 
+@dataclass
+class IPInfo:
+    r"""
+    Dataclass for associated IP Info.
+    """
+    ip: str
+    ip_type: int
+    protocol: int
+
+    def encode(self) -> Dict[str, Any]:
+        r"""Returns a dictionary of the IPInfo object that can be encoded."""
+        return {
+            "ip": net.ip_to_int(
+                self.ip
+            ),  # IP type and protocol are encoded together as a u8
+            "ip_type_and_protocol": ((self.ip_type << 4) + self.protocol) & 0xFF,
+        }
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -> Optional["IPInfo"]:
+        r"""Returns a IPInfo object from a vec_u8."""
+        if len(list_any) == 0:
+            return None
+
+        return IPInfo.fix_decoded_values(list_any)
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -> List["IPInfo"]:
+        r"""Returns a list of IPInfo objects from a vec_u8."""
+
+        decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Dict) -> "IPInfo":
+        r"""Returns a SubnetInfo object from a decoded IPInfo dictionary."""
+        return IPInfo(
+            ip=cybertensor.utils.networking.int_to_ip(decoded["ip"]),
+            ip_type=decoded["ip_type_and_protocol"] >> 4,
+            protocol=decoded["ip_type_and_protocol"] & 0xF,
+        )
+
+    def to_parameter_dict(self) -> "torch.nn.ParameterDict":
+        r"""Returns a torch tensor of the subnet info."""
+        return torch.nn.ParameterDict(self.__dict__)
+
+    @classmethod
+    def from_parameter_dict(cls, parameter_dict: "torch.nn.ParameterDict") -> "IPInfo":
+        r"""Returns a IPInfo object from a torch parameter_dict."""
+        return cls(**dict(parameter_dict))

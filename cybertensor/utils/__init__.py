@@ -30,7 +30,7 @@ U64_MAX = 18446744073709551615
 def version_checking(timeout: int = 15):
     try:
         cybertensor.logging.debug(
-            f"Checking latest Bittensor version at: {cybertensor.__pipaddress__}"
+            f"Checking latest Cybertensor version at: {cybertensor.__pipaddress__}"
         )
 
         # TODO update when will be released

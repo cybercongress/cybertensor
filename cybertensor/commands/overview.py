@@ -603,7 +603,7 @@ class OverviewCommand:
                 if stake_info.hotkey in all_hotkey_addresses:
                     return False  # Skip hotkeys that are in our wallets.
                 if cwtensor.is_hotkey_delegate(hotkey=stake_info.hotkey):
-                    return False  # Skip hotkeys that are delegates, they show up in btcli my_delegates table.
+                    return False  # Skip hotkeys that are delegates, they show up in ctcli my_delegates table.
 
                 return True
 

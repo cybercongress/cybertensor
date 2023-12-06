@@ -18,6 +18,7 @@
 
 import sys
 import argparse
+from cybertensor import Balance
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
@@ -99,9 +100,15 @@ class RegisterCommand:
 
     @classmethod
     def check_config(cls, config: "cybertensor.config"):
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
+
+        if not config.is_set("wallet.hotkey") and not config.no_prompt:
+            hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
 
     @classmethod
     def add_args(cls, parser: argparse.ArgumentParser):
@@ -140,10 +147,10 @@ class PowRegisterCommand:
     - --pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
     - --pow_register.cuda.TPB (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
 
-    The command also supports additional wallet and subtensor arguments, enabling further customization of the registration process.
+    The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.
 
     Example usage:
-    >>> btcli pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
+    >>> ctcli subnets pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
 
     Note:
     This command is suited for users with adequate computational resources to participate in PoW registration. It requires a sound understanding
@@ -280,16 +287,17 @@ class PowRegisterCommand:
         #     and not config.no_prompt
         # ):
         #     config.cwtensor.network = Prompt.ask(
-        #         "Enter subtensor network",
+        #         "Enter cwtensor network",
         #         choices=cybertensor.__networks__,
         #         default=defaults.cwtensor.network,
         #     )
-        #     _, endpoint = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+        #     _, network_config, contract_address = cybertensor.cwtensor.determine_chain_endpoint_and_network(
         #         config.cwtensor.network
         #     )
-        #     config.cwtensor.chain_endpoint = endpoint
-        #
-        # check_netuid_set(config, subtensor=cybertensor.cwtensor(config=config))
+        #     config.cwtensor.network_config = network_config
+        #     config.cwtensor.contract_address = contract_address
+
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)

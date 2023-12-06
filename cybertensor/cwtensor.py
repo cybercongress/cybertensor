@@ -19,6 +19,8 @@
 
 import os
 import copy
+import torch
+import json
 import argparse
 from retry import retry
 from loguru import logger
@@ -37,41 +39,38 @@ import cybertensor
 from .chain_data import (
     NeuronInfo,
     DelegateInfo,
-    # PrometheusInfo,
+    PrometheusInfo,
     SubnetInfo,
     SubnetHyperparameters,
-    # StakeInfo,
+    StakeInfo,
     NeuronInfoLite,
-    # AxonInfo,
-    # ProposalVoteData,
-    # ProposalCallData,
-    # IPInfo,
-    # custom_rpc_type_registry,
+    AxonInfo,
+    IPInfo,
 )
+from .commands.utils import DelegatesDetails
 from .errors import *
 
 from .messages.network import (
     register_subnetwork_message,
     set_hyperparameter_message,
 )
-# from .messages.staking import add_stake_message, add_stake_multiple_message
-# from .messages.unstaking import unstake_message, unstake_multiple_message
-# from .messages.serving import serve_message, serve_axon_message
+from .messages.staking import add_stake_message, add_stake_multiple_message
+from .messages.unstaking import unstake_message, unstake_multiple_message
+from .messages.serving import serve_message, serve_axon_message
 from .messages.registration import (
     register_message,
     burned_register_message,
-    # run_faucet_message,
 )
 # from .messages.transfer import transfer_message
-# from .messages.set_weights import set_weights_message
-# from .messages.prometheus import prometheus_message
-# from .messages.delegation import (
-#     delegate_message,
-#     nominate_message,
-#     undelegate_message,
-# )
-# from .messages.root import root_register_message, set_root_weights_message
-# from .types import AxonServeCallParams, PrometheusServeCallParams
+from .messages.set_weights import set_weights_message
+from .messages.prometheus import prometheus_message
+from .messages.delegation import (
+    delegate_message,
+    nominate_message,
+    undelegate_message,
+)
+from .messages.root import root_register_message, set_root_weights_message
+from .types import AxonServeCallParams, PrometheusServeCallParams
 from .utils import U16_NORMALIZED_FLOAT
 from .utils.balance import Balance
 from .utils.registration import POWSolution
@@ -87,8 +86,8 @@ class ParamWithTypes(TypedDict):
 class cwtensor:
     """Factory Class for cybertensor.cwtensor
 
-    The Subtensor class handles interactions with the substrate cwtensor chain.
-    By default, the Subtensor class connects to the Finney which serves as the main bittensor network.
+    The cwtensor class handles interactions with the substrate cwtensor chain.
+    By default, the cwtensor class connects to the Finney which serves as the main cybertensor network.
     """
 
     @staticmethod
@@ -239,10 +238,201 @@ class cwtensor:
     #####################
     #### Delegation #####
     #####################
+    def nominate(
+            self,
+            wallet: "cybertensor.wallet",
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        """Becomes a delegate for the hotkey."""
+        return nominate_message(
+            cwtensor=self,
+            wallet=wallet,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+    def _do_nominate(
+            self,
+            wallet: "cybertensor.wallet",
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        nominate_msg = {"become_delegate": {"hotkey": wallet.hotkey.address}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(nominate_msg, signer_wallet, gas)
+                return True
+            else:
+                tx = self.contract.execute(nominate_msg, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True
+                    else:
+                        raise NominationError(tx.response.logs)
+                except Exception as e:
+                    raise NominationError(e.__str__())
+
+        return make_call_with_retry()
+
+    def delegate(
+            self,
+            wallet: "cybertensor.wallet",
+            delegate: Optional[str] = None,
+            amount: Union[Balance, float] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Adds the specified amount of stake to the passed delegate using the passed wallet."""
+        return delegate_message(
+            cwtensor=self,
+            wallet=wallet,
+            delegate=delegate,
+            amount=amount,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def _do_delegation(
+            self,
+            wallet: "cybertensor.wallet",
+            delegate: str,
+            amount: "Balance",
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        delegation_msg = {"add_stake": {"hotkey": delegate}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+        funds = amount.boot.__str__().__add__(cybertensor.__token__)
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(delegation_msg, signer_wallet, gas, funds)
+                return True
+            else:
+                tx = self.contract.execute(delegation_msg, signer_wallet, gas, funds)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True
+                    else:
+                        raise StakeError(tx.response.code)
+                except Exception as e:
+                    raise StakeError(e.__str__())
+
+        return make_call_with_retry()
+
+    def undelegate(
+            self,
+            wallet: "cybertensor.wallet",
+            delegate: Optional[str] = None,
+            amount: Union[Balance, float] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Removes the specified amount of stake from the passed delegate using the passed wallet."""
+        return undelegate_message(
+            cwtensor=self,
+            wallet=wallet,
+            delegate=delegate,
+            amount=amount,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def _do_undelegation(
+            self,
+            wallet: "cybertensor.wallet",
+            delegate: str,
+            amount: "Balance",
+            wait_for_finalization: bool = True,
+    ) -> bool:
+
+        undelegation_msg = {"remove_stake": {"hotkey": delegate, "amount": amount.boot}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(undelegation_msg, signer_wallet, gas)
+                return True
+            else:
+                tx = self.contract.execute(undelegation_msg, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True
+                    else:
+                        raise StakeError(tx.response.code)
+                except Exception as e:
+                    raise StakeError(e.__str__())
+
+        return make_call_with_retry()
 
     #####################
     #### Set Weights ####
     #####################
+
+    def set_weights(
+            self,
+            wallet: "cybertensor.wallet",
+            netuid: int,
+            uids: Union[torch.LongTensor, list],
+            weights: Union[torch.FloatTensor, list],
+            version_key: int = cybertensor.__version_as_int__,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        return set_weights_message(
+            cwtensor=self,
+            wallet=wallet,
+            netuid=netuid,
+            uids=uids,
+            weights=weights,
+            version_key=version_key,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def _do_set_weights(
+            self,
+            wallet: "cybertensor.wallet",
+            uids: List[int],
+            vals: List[int],
+            netuid: int,
+            version_key: int = cybertensor.__version_as_int__,
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:  # (success, error_message)
+        set_weights_msg = {"set_weights": {
+            "netuid": netuid,
+            "dests": uids,
+            "weights": vals,
+            "version_key": version_key,
+        }}
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(set_weights_msg, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(set_weights_msg, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
 
     ######################
     #### Registration ####
@@ -251,7 +441,6 @@ class cwtensor:
             self,
             wallet: "cybertensor.wallet",
             netuid: int,
-            wait_for_inclusion: bool = False,
             wait_for_finalization: bool = True,
             prompt: bool = False,
             max_allowed_attempts: int = 3,
@@ -268,7 +457,6 @@ class cwtensor:
             cwtensor=self,
             wallet=wallet,
             netuid=netuid,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
             prompt=prompt,
             max_allowed_attempts=max_allowed_attempts,
@@ -286,7 +474,6 @@ class cwtensor:
             netuid: int,
             wallet: "cybertensor.wallet",
             pow_result: POWSolution,
-            wait_for_inclusion: bool = False,
             wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         """Sends a (POW) register extrinsic to the chain.
@@ -294,7 +481,6 @@ class cwtensor:
             netuid (int): the subnet to register on.
             wallet (cybertensor.wallet): the wallet to register.
             pow_result (POWSolution): the pow result to register.
-            wait_for_inclusion (bool): if true, waits for the extrinsic to be included in a block.
             wait_for_finalization (bool): if true, waits for the extrinsic to be finalized.
         Returns:
             success (bool): True if the extrinsic was included in a block.
@@ -309,23 +495,17 @@ class cwtensor:
             "hotkey": wallet.hotkey.address,
             "coldkey": wallet.coldkeypub.address,
         }}
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
 
         # TODO check decorator and improve error handling
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
             if not wait_for_finalization:
-                tx = self.contract.execute(
-                    register_msg,
-                    LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__),
-                    cybertensor.__default_gas__,
-                )
+                self.contract.execute(register_msg, signer_wallet, gas)
                 return True, None
             else:
-                tx = self.contract.execute(
-                    register_msg,
-                    LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__),
-                    cybertensor.__default_gas__,
-                )
+                tx = self.contract.execute(register_msg, signer_wallet, gas)
                 try:
                     tx.wait_to_complete()
                     if tx.response.is_successful():
@@ -341,7 +521,6 @@ class cwtensor:
             self,
             wallet: "cybertensor.wallet",
             netuid: int,
-            wait_for_inclusion: bool = False,
             wait_for_finalization: bool = True,
             prompt: bool = False,
     ) -> bool:
@@ -350,7 +529,6 @@ class cwtensor:
             cwtensor=self,
             wallet=wallet,
             netuid=netuid,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
             prompt=prompt,
         )
@@ -360,28 +538,20 @@ class cwtensor:
             netuid: int,
             burn: int,
             wallet: "cybertensor.wallet",
-            wait_for_inclusion: bool = False,
             wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         burned_register_msg = {"burned_register": {"netuid": netuid, "hotkey": wallet.hotkey.address}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+        funds = burn.__str__().__add__(cybertensor.__token__)
 
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
             if not wait_for_finalization:
-                tx = self.contract.execute(
-                    burned_register_msg,
-                    LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-                    cybertensor.__default_gas__,
-                    burn.__str__().__add__(cybertensor.__token__)
-                )
-                return True
+                self.contract.execute(burned_register_msg, signer_wallet, gas, funds)
+                return True, None
             else:
-                tx = self.contract.execute(
-                    burned_register_msg,
-                    LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__),
-                    cybertensor.__default_gas__,
-                    burn.__str__().__add__(cybertensor.__token__)
-                )
+                tx = self.contract.execute(burned_register_msg, signer_wallet, gas, funds)
                 try:
                     tx.wait_to_complete()
                     if tx.response.is_successful():
@@ -403,14 +573,12 @@ class cwtensor:
     def register_subnetwork(
             self,
             wallet: "cybertensor.wallet",
-            wait_for_inclusion: bool = True,
             wait_for_finalization=True,
             prompt: bool = False,
     ) -> bool:
         return register_subnetwork_message(
             self,
             wallet=wallet,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
             prompt=prompt,
         )
@@ -421,7 +589,6 @@ class cwtensor:
             netuid: int,
             parameter: str,
             value,
-            wait_for_inclusion: bool = False,
             wait_for_finalization=True,
             prompt: bool = False,
     ) -> bool:
@@ -440,17 +607,346 @@ class cwtensor:
     #### Serving ####
     #################
 
+    def serve(
+            self,
+            wallet: "cybertensor.wallet",
+            ip: str,
+            port: int,
+            protocol: int,
+            netuid: int,
+            placeholder1: int = 0,
+            placeholder2: int = 0,
+            wait_for_finalization=True,
+            prompt: bool = False,
+    ) -> bool:
+        return serve_message(
+            self,
+            wallet,
+            ip,
+            port,
+            protocol,
+            netuid,
+            placeholder1,
+            placeholder2,
+            wait_for_finalization,
+        )
+
+    def serve_axon(
+            self,
+            netuid: int,
+            axon: "cybertensor.axon",
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        return serve_axon_message(
+            self, netuid, axon, wait_for_finalization
+        )
+
+    def _do_serve_axon(
+            self,
+            wallet: "cybertensor.wallet",
+            call_params: AxonServeCallParams,
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(call_params, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(call_params, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
+
+    def serve_prometheus(
+            self,
+            wallet: "cybertensor.wallet",
+            port: int,
+            netuid: int,
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        return prometheus_message(
+            self,
+            wallet=wallet,
+            port=port,
+            netuid=netuid,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+    def _do_serve_prometheus(
+            self,
+            wallet: "cybertensor.wallet",
+            call_params: PrometheusServeCallParams,
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:
+        """
+        Sends a serve prometheus extrinsic to the chain.
+        Args:
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
+            call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
+            wait_for_finalization (:obj:`bool`): If true, waits for finalization.
+        Returns:
+            success (:obj:`bool`): True if serve prometheus was successful.
+            error (:obj:`Optional[str]`): Error message if serve prometheus failed, None otherwise.
+        """
+
+        signer_wallet = LocalWallet(PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(call_params, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(call_params, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
+
     #################
     #### Staking ####
     #################
+    def add_stake(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkey: Optional[str] = None,
+            amount: Union[Balance, float] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Adds the specified amount of stake to passed hotkey uid."""
+        return add_stake_message(
+            cwtensor=self,
+            wallet=wallet,
+            hotkey=hotkey,
+            amount=amount,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def add_stake_multiple(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkeys: List[str],
+            amounts: List[Union[Balance, float]] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Adds stake to each hotkey in the list, using each amount, from a common coldkey."""
+        return add_stake_multiple_message(
+            self,
+            wallet,
+            hotkeys,
+            amounts,
+            wait_for_finalization,
+            prompt,
+        )
+
+    def _do_stake(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkey: str,
+            amount: Balance,
+            wait_for_finalization: bool = True,
+    ) -> bool:
+        """Sends a stake extrinsic to the chain.
+        Args:
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
+            hotkey (:obj:`str`): Hotkey address to stake to.
+            amount (:obj:`Balance`): Amount to stake.
+            wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
+        Returns:
+            success (:obj:`bool`): True if the extrinsic was successful.
+        Raises:
+            StakeError: If the extrinsic failed.
+        """
+
+        add_stake_msg = {"add_stake": {"hotkey": hotkey}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+        funds = amount.boot.__str__().__add__(cybertensor.__token__)
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(add_stake_msg, signer_wallet, gas, funds)
+                return True
+            else:
+                tx = self.contract.execute(add_stake_msg, signer_wallet, gas, funds)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True
+                    else:
+                        raise StakeError(tx.response.code)
+                except Exception as e:
+                    raise StakeError(e.__str__())
+
+        return make_call_with_retry()
 
     ###################
     #### Unstaking ####
     ###################
+    def unstake_multiple(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkeys: List[str],
+            amounts: List[Union[Balance, float]] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Removes stake from each hotkey in the list, using each amount, to a common coldkey."""
+        return unstake_multiple_message(
+            self,
+            wallet,
+            hotkeys,
+            amounts,
+            wait_for_finalization,
+            prompt,
+        )
+
+    def unstake(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkey: Optional[str] = None,
+            amount: Union[Balance, float] = None,
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Removes stake into the wallet coldkey from the specified hotkey uid."""
+        return unstake_message(
+            self,
+            wallet,
+            hotkey,
+            amount,
+            wait_for_finalization,
+            prompt,
+        )
+
+    def _do_unstake(
+            self,
+            wallet: "cybertensor.wallet",
+            hotkey: str,
+            amount: Balance,
+            wait_for_finalization: bool = False,
+    ) -> bool:
+        """Sends an unstake extrinsic to the chain.
+        Args:
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
+            hotkey (:obj:`str`): Hotkey address to unstake from.
+            amount (:obj:`Balance`): Amount to unstake.
+            wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
+        Returns:
+            success (:obj:`bool`): True if the extrinsic was successful.
+        Raises:
+            StakeError: If the extrinsic failed.
+        """
+
+        remove_stake_msg = {"remove_stake": {"hotkey": hotkey, "amount": amount.boot}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(remove_stake_msg, signer_wallet, gas)
+                return True
+            else:
+                tx = self.contract.execute(remove_stake_msg, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True
+                    else:
+                        raise StakeError(tx.response.code)
+                except Exception as e:
+                    raise StakeError(e.__str__())
+
+        return make_call_with_retry()
 
     ##############
     #### Root ####
     ##############
+
+    def root_register(
+            self,
+            wallet: "cybertensor.wallet",
+            wait_for_finalization: bool = True,
+            prompt: bool = False,
+    ) -> bool:
+        """Registers the wallet to root network."""
+        return root_register_message(
+            cwtensor=self,
+            wallet=wallet,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def _do_root_register(
+            self,
+            wallet: "cybertensor.wallet",
+            wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str]]:
+        root_register_msg = {"root_register": {"hotkey": wallet.hotkey.address}}
+        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        gas = cybertensor.__default_gas__
+
+        @retry(delay=2, tries=3, backoff=2, max_delay=4)
+        def make_call_with_retry():
+            if not wait_for_finalization:
+                self.contract.execute(root_register_msg, signer_wallet, gas)
+                return True, None
+            else:
+                tx = self.contract.execute(root_register_msg, signer_wallet, gas)
+                try:
+                    tx.wait_to_complete()
+                    if tx.response.is_successful():
+                        return True, None
+                    else:
+                        return False, tx.response.code
+                except Exception as e:
+                    return False, e.__str__()
+
+        return make_call_with_retry()
+
+    def root_set_weights(
+            self,
+            wallet: "cybertensor.wallet",
+            netuids: Union[torch.LongTensor, list],
+            weights: Union[torch.FloatTensor, list],
+            version_key: int = 0,
+            wait_for_finalization: bool = False,
+            prompt: bool = False,
+    ) -> bool:
+        """Sets weights for the root network."""
+        return set_root_weights_message(
+            cwtensor=self,
+            wallet=wallet,
+            netuids=netuids,
+            weights=weights,
+            version_key=version_key,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
 
     #####################################
     #### Hyper parameter calls. ####
@@ -514,6 +1010,94 @@ class cwtensor:
     #### Account functions ###
     ##########################
 
+    """ Returns the total stake held on a hotkey including delegative """
+
+    def get_total_stake_for_hotkey(
+            self, address: str, block: Optional[int] = None
+    ) -> Optional["Balance"]:
+        return Balance.from_boot(self.contract.query({"get_total_stake_for_hotkey": {"address": address}}))
+
+    """ Returns the total stake held on a coldkey across all hotkeys including delegates"""
+
+    def get_total_stake_for_coldkey(
+            self, address: str, block: Optional[int] = None
+    ) -> Optional["Balance"]:
+        return Balance.from_boot(self.contract.query({"get_total_stake_for_coldkey": {"address": address}}))
+
+    """ Returns the stake under a coldkey - hotkey pairing """
+
+    def get_stake_for_coldkey_and_hotkey(
+            self, hotkey: str, coldkey: str, block: Optional[int] = None
+    ) -> Optional["Balance"]:
+        resp = self.contract.query({"get_stake_for_coldkey_and_hotkey": {"coldkey": coldkey, "hotkey": hotkey}})
+        if resp is None:
+            return None
+        else:
+            return Balance.from_boot(resp)
+
+    """ Returns a list of stake tuples (coldkey, balance) for each delegating coldkey including the owner"""
+
+    def get_stake(
+            self, hotkey: str, block: Optional[int] = None
+    ) -> List[Tuple[str, "Balance"]]:
+        return [
+            (r[0].value, Balance.from_boot(r[1].value))
+            for r in self.contract.query({"get_stake": {"hotkey": hotkey}})
+        ]
+
+    """ Returns true if the hotkey is known by the chain and there are accounts. """
+
+    def does_hotkey_exist(self, hotkey: str, block: Optional[int] = None) -> bool:
+        return self.contract.query({"get_hotkey_exist": {"hotkey": hotkey}})
+
+    """ Returns the coldkey owner of the passed hotkey """
+
+    def get_hotkey_owner(
+            self, hotkey: str, block: Optional[int] = None
+    ) -> Optional[str]:
+        # TODO remove one call
+        if self.does_hotkey_exist(hotkey, block):
+            return self.contract.query({"get_hotkey_owner": {"hotkey": hotkey}})
+        else:
+            return None
+
+    """ Returns the axon information for this hotkey account """
+
+    def get_axon_info(
+            self, netuid: int, hotkey: str, block: Optional[int] = None
+    ) -> Optional[AxonInfo]:
+        result = self.contract.query({"get_axon_info": {"netuid": netuid, "hotkey": hotkey}})
+
+        if result != None:
+            return AxonInfo(
+                ip=cybertensor.utils.networking.int_to_ip(result.value["ip"]),
+                ip_type=result.value["ip_type"],
+                port=result.value["port"],
+                protocol=result.value["protocol"],
+                version=result.value["version"],
+                placeholder1=result.value["placeholder1"],
+                placeholder2=result.value["placeholder2"],
+            )
+        else:
+            return None
+
+    """ Returns the prometheus information for this hotkey account """
+
+    def get_prometheus_info(
+            self, netuid: int, hotkey: str, block: Optional[int] = None
+    ) -> Optional[PrometheusInfo]:
+        result = self.contract.query({"get_prometheus_info": {"netuid": netuid, "hotkey": hotkey}})
+        if result != None:
+            return PrometheusInfo(
+                ip=cybertensor.utils.networking.int_to_ip(result.value["ip"]),
+                ip_type=result.value["ip_type"],
+                port=result.value["port"],
+                version=result.value["version"],
+                block=result.value["block"],
+            )
+        else:
+            return None
+
     ###########################
     #### Global Parameters ####
     ###########################
@@ -551,16 +1135,8 @@ class cwtensor:
     def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
         return self.contract.query({"get_subnet_exist": {"netuid": netuid}})
 
-    """ Returns the total stake held on a coldkey across all hotkeys including delegates"""
-
-    def get_total_stake_for_coldkey(self, address: str, block: Optional[int] = None) -> Optional[Balance]:
-        # TODO add stake query
-        return Balance(0)
-
-    # def subnet_exists(self, netuid: int, block: Optional[int] = None) -> bool:
-    #     return self.query_subtensor("NetworksAdded", block, [netuid]).value
-
     def get_all_subnet_netuids(self, block: Optional[int] = None) -> List[int]:
+        subnet_netuids = []
         return self.contract.query({"get_all_subnet_netuids": {}})
 
     def get_total_subnets(self, block: Optional[int] = None) -> int:
@@ -608,26 +1184,98 @@ class cwtensor:
     #### Nomination ####
     ####################
 
-    def get_delegated(
-        self, address: str, block: Optional[int] = None
-    ) -> List[Tuple[DelegateInfo, Balance]]:
-        """Returns the list of delegates that a given delegatee address is staked to."""
+    def is_hotkey_delegate(self, hotkey: str, block: Optional[int] = None) -> bool:
+        return hotkey in [
+            info.hotkey for info in self.get_delegates(block=block)
+        ]
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry(delegatee: str):
-            return self.contract.query({"get_delegated": {"delegatee": delegatee}})
+    def get_delegate_take(
+            self, hotkey: str, block: Optional[int] = None
+    ) -> Optional[float]:
+        return U16_NORMALIZED_FLOAT(
+            self.contract.query({"get_delegate_take": {"hotkey": hotkey}})
+        )
 
-        result = make_call_with_retry(delegatee=address)
+    def get_nominators_for_hotkey(
+            self, hotkey: str, block: Optional[int] = None
+    ) -> List[Tuple[str, Balance]]:
+        result = self.contract.query({"get_stake": {"hotkey": hotkey}})
+        if result != None:
+            return [(record[0].value, record[1].value) for record in result]
+        else:
+            return 0
+
+    def get_delegate_by_hotkey(
+            self, hotkey: str, block: Optional[int] = None
+    ) -> Optional[DelegateInfo]:
+        result = self.contract.query({"get_delegate": {"delegate": hotkey}})
+
+        if result in (None, []):
+            return None
+
+        return DelegateInfo.from_list_any(result)
+
+    def get_delegates(self, block: Optional[int] = None) -> List[DelegateInfo]:
+        result = self.contract.query({"get_delegates": {}})
 
         if result in (None, []):
             return []
 
-        return DelegateInfo.delegated_list_from_vec_u8(result)
+        return DelegateInfo.list_from_list_any(result)
 
+    # TODO revisit
+    def get_delegates_details_from_chain(
+            self, block: Optional[int] = None
+    ) -> Dict[str, DelegatesDetails]:
+        result = self.contract.query({"get_delegates": {}})
+
+        # if result in (None, []):
+        #     return []
+
+        all_delegates_details = {}
+        for i in result:
+            all_delegates_details[i["delegate"]] = DelegatesDetails.from_json(
+                {
+                    "name": "mock",
+                    "url": "mock",
+                    "description": "mock",
+                    "signature": "mock"
+                }
+            )
+        return all_delegates_details
+
+    def get_delegated(
+            self, coldkey: str, block: Optional[int] = None
+    ) -> List[Tuple[DelegateInfo, Balance]]:
+        """Returns the list of delegates that a given coldkey is staked to."""
+
+        result = self.contract.query({"get_delegated": {"delegatee": coldkey}})
+
+        if result in (None, []):
+            return []
+
+        return DelegateInfo.delegated_list_from_list_any(result)
 
     ###########################
     #### Stake Information ####
     ###########################
+
+    def get_stake_info_for_coldkey(
+            self, coldkey: str, block: Optional[int] = None
+    ) -> List[StakeInfo]:
+        """Returns the list of StakeInfo objects for this coldkey"""
+
+        result = self.contract.query({"get_stake_info_for_coldkey": {"coldkey": coldkey}})
+
+        return StakeInfo.list_from_list_any(result)
+
+    def get_stake_info_for_coldkeys(
+            self, coldkey_list: List[str], block: Optional[int] = None
+    ) -> Dict[str, List[StakeInfo]]:
+        """Returns the list of StakeInfo objects for all coldkeys in the list."""
+        result = self.contract.query({"get_stake_info_for_coldkeys": {"coldkeys": coldkey_list}})
+
+        return StakeInfo.list_of_tuple_from_vec_u8(result)
 
     ########################################
     #### Neuron information per subnet ####
@@ -782,7 +1430,7 @@ class cwtensor:
             block ( Optional[int] ):
                 block to sync from, or None for latest block.
         Returns:
-            metagraph ( `bittensor.Metagraph` ):
+            metagraph ( `cybertensor.Metagraph` ):
                 The metagraph for the subnet at the block.
         """
         metagraph_ = cybertensor.metagraph(
@@ -791,6 +1439,22 @@ class cwtensor:
         metagraph_.sync(block=block, lite=lite, cwtensor=self)
 
         return metagraph_
+
+    def weights(
+            self, netuid: int, block: Optional[int] = None
+    ) -> List[Tuple[int, List[Tuple[int, int]]]]:
+        w_map = []
+
+        # TODO test and debug this later
+        # weights = self.contract.query({"get_weights": {"netuid": netuid}})
+        weights_sparse = self.contract.query({"get_weights_sparse": {"netuid": netuid}})
+        # print(f"weights: {weights}")
+        # print(f"weights: {weights_sparse}")
+        if weights_sparse != None:
+            for uid, w in enumerate(weights_sparse):
+                w_map.append((uid, w))
+
+        return w_map
 
     #################
     #### General ####

@@ -31,7 +31,6 @@ def register_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "cybertensor.wallet",
     netuid: int,
-    wait_for_inclusion: bool = False,
     wait_for_finalization: bool = True,
     prompt: bool = False,
     max_allowed_attempts: int = 3,
@@ -46,12 +45,9 @@ def register_message(
     r"""Registers the wallet to chain.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.
-        wait_for_inclusion (bool):
-            If set, waits for the extrinsic to enter a block before returning true,
-            or returns false if the extrinsic fails to enter the block within the timeout.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.
@@ -163,7 +159,6 @@ def register_message(
                         netuid=netuid,
                         wallet=wallet,
                         pow_result=pow_result,
-                        wait_for_inclusion=wait_for_inclusion,
                         wait_for_finalization=wait_for_finalization,
                     )
                     success, err_msg = result
@@ -222,19 +217,15 @@ def burned_register_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "cybertensor.wallet",
     netuid: int,
-    wait_for_inclusion: bool = False,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
     r"""Registers the wallet to chain by recycling TAO.
     Args:
         wallet (cybertensor.wallet):
-            bittensor wallet object.
+            cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.
-        wait_for_inclusion (bool):
-            If set, waits for the extrinsic to enter a block before returning true,
-            or returns false if the extrinsic fails to enter the block within the timeout.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.
@@ -286,7 +277,6 @@ def burned_register_message(
             netuid=netuid,
             burn=burn_amount.__int__(),
             wallet=wallet,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
         )
 

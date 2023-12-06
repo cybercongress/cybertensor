@@ -52,7 +52,7 @@ class config(DefaultMunch):
                 Default value for the Config. Defaults to None.
                 This default will be returned for attributes that are undefined.
         Returns:
-            config (bittensor.config):
+            config (cybertensor.config):
                 Nested config object created from parser arguments.
     """
 

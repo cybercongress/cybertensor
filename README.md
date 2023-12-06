@@ -32,7 +32,7 @@ cyber keys add validator --recover --home ./home
 3. Deploy code and instantiate contract:
 ```
 cyber tx wasm store cybernet.wasm --from validator --home ./home --chain-id localbostrom --gas 7000000 --broadcast-mode block -y --keyring-backend test
-cyber tx wasm instantiate 1 "{}" --from validator --home ./home --chain-id localbostrom --gas 5000000 --label cybernet1 --no-admin --broadcast-mode block -y --keyring-backend test
+cyber tx wasm instantiate 1 "{}" --from validator --home ./home --chain-id localbostrom --gas 5000000 --label cybernet1 --admin bostrom1phaxpevm5wecex2jyaqty2a4v02qj7qm5n94ug --broadcast-mode block -y --keyring-backend test
 ```
 4. Send tokens to contract and activate (with dmn):
 ```
