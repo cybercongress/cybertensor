@@ -117,7 +117,7 @@ class SubnetLockCostCommand:
     - Displaying the cost in a user-friendly manner.
 
     Example usage:
-    >>> btcli subnets lock_cost
+    >>> ctcli subnets lock_cost
 
     Note:
     This command is particularly useful for users who are planning to contribute to the Bittensor network by adding new subnetworks. Understanding the lock cost is essential for these users to make informed decisions about their potential contributions and investments in the network.
@@ -178,7 +178,7 @@ class SubnetListCommand:
     - Displaying the table with a footer that summarizes the total number of subnets and neurons.
 
     Example usage:
-    >>> btcli subnets list
+    >>> ctcli subnets list
 
     Note:
     This command is particularly useful for users seeking an overview of the Bittensor network's structure
@@ -193,9 +193,12 @@ class SubnetListCommand:
 
         rows = []
         total_neurons = 0
+        # TODO revisist
         # delegate_info: Optional[Dict[str, DelegatesDetails]] = get_delegates_details(
         #     url=cybertensor.__delegates_details_url__
         # )
+
+        delegate_info: Optional[Dict[str, DelegatesDetails]] = cwtensor.get_delegates()
 
         for subnet in subnets:
             total_neurons += subnet.max_n
@@ -208,8 +211,9 @@ class SubnetListCommand:
                     str(subnet.tempo),
                     f"{subnet.burn!s:8.8}",
                     str(cybertensor.utils.formatting.millify(subnet.difficulty)),
-                    # TODO back to this
+                    # TODO revisit
                     # f"{delegate_info[subnet.owner_ss58].name if subnet.owner_ss58 in delegate_info else subnet.owner_ss58}",
+                    f"{delegate_info[subnet.owner].owner if subnet.owner in delegate_info else subnet.owner}",
                 )
             )
         table = Table(
@@ -280,7 +284,7 @@ class SubnetSudoCommand:
     to the specified subnet.
 
     Example usage:
-    >>> btcli sudo set --netuid 1 --param immunity_period --value 5000
+    >>> ctcli sudo set --netuid 1 --param immunity_period --value 5000
 
     Note:
     This command requires the user to specify the subnet identifier (netuid) and both the hyperparameter
@@ -345,7 +349,7 @@ class SubnetHyperparamsCommand:
     the subnet's behavior.
 
     Example usage:
-    >>> btcli subnets hyperparameters --netuid 1
+    >>> ctcli subnets hyperparameters --netuid 1
 
     Subnet Hyperparameters - NETUID: 1 - finney
     HYPERPARAMETER            VALUE
@@ -426,7 +430,7 @@ class SubnetGetHyperparamsCommand:
     performance and interaction within the network.
 
     Example usage:
-    >>> btcli sudo get --netuid 1
+    >>> ctcli sudo get --netuid 1
 
     Subnet Hyperparameters - NETUID: 1 - finney
     HYPERPARAMETER            VALUE

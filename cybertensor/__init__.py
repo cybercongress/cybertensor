@@ -97,7 +97,7 @@ __contracts__ = [
 __local_network__ = NetworkConfig(
             chain_id="localbostrom",
             url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=50000,
+            fee_minimum_gas_price=0.1,
             fee_denomination="boot",
             staking_denomination="boot",
             faucet_url="",
@@ -106,7 +106,7 @@ __local_network__ = NetworkConfig(
 __bostrom_network__ = NetworkConfig(
             chain_id="bostrom",
             url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=5000,
+            fee_minimum_gas_price=0.1,
             fee_denomination="boot",
             staking_denomination="boot",
             faucet_url="",
@@ -153,7 +153,7 @@ from .metagraph import metagraph as metagraph
 
 # from .synapse import *
 # from .stream import *
-# from .tensor import *
+from .tensor import *
 # from .axon import axon as axon
 # from .dendrite import dendrite as dendrite
 

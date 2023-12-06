@@ -4,6 +4,7 @@
 # Copyright © 2021-2022 Yuma Rao
 # Copyright © 2022-2023 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies
+# Copyright © 2023 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
