@@ -31,7 +31,7 @@ console = cybertensor.__console__
 
 class RegisterCommand:
     """
-    Executes the 'register' command to register a neuron on the cybertensor network by recycling some TAO (the network's native token).
+    Executes the 'register' command to register a neuron on the cybertensor network by recycling some GBOOT (the network's native token).
     This command is used to add a new neuron to a specified subnet within the network, contributing to the decentralization and robustness of cybertensor.
 
     Usage:
@@ -39,7 +39,7 @@ class RegisterCommand:
     The registration cost is determined by the current recycle amount for the specified subnet. If the balance is insufficient or the subnet does not exist,
     the command will exit with an appropriate error message.
 
-    If the preconditions are met, and the user confirms the transaction (if 'no_prompt' is not set), the command proceeds to register the neuron by burning the required amount of TAO.
+    If the preconditions are met, and the user confirms the transaction (if 'no_prompt' is not set), the command proceeds to register the neuron by burning the required amount of GBOOT.
 
     The command structure includes:
     - Verification of subnet existence.
@@ -48,8 +48,8 @@ class RegisterCommand:
     - Execution of the registration process.
 
     Columns Displayed in the Confirmation Prompt:
-    - Balance: The current balance of the user's wallet in TAO.
-    - Cost to Register: The required amount of TAO needed to register on the specified subnet.
+    - Balance: The current balance of the user's wallet in GBOOT.
+    - Cost to Register: The required amount of GBOOT needed to register on the specified subnet.
 
     Example usage:
     >>> ctcli subnets register --netuid 1
@@ -61,7 +61,7 @@ class RegisterCommand:
 
     @staticmethod
     def run(cli):
-        r"""Register neuron by recycling some TAO."""
+        r"""Register neuron by recycling some GBOOT."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
         cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
