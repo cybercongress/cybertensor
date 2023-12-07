@@ -82,9 +82,9 @@ class RegenColdkeyCommand:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
         if (
-            config.mnemonic == None
-            and config.get("seed", d=None) == None
-            and config.get("json", d=None) == None
+            config.mnemonic is None
+            and config.get("seed", d=None) is None
+            and config.get("json", d=None) is None
         ):
             prompt_answer = Prompt.ask("Enter mnemonic, seed, or json file location")
             if prompt_answer.startswith("0x"):
@@ -94,7 +94,7 @@ class RegenColdkeyCommand:
             else:
                 config.json = prompt_answer
 
-        if config.get("json", d=None) and config.get("json_password", d=None) == None:
+        if config.get("json", d=None) and config.get("json_password", d=None) is None:
             config.json_password = Prompt.ask(
                 "Enter json backup password", password=True
             )
@@ -187,7 +187,7 @@ class RegenColdkeypubCommand:
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
-        if config.address == None and config.public_key_hex == None:
+        if config.address is None and config.public_key_hex is None:
             prompt_answer = Prompt.ask(
                 "Enter the address or the public key in hex"
             )
@@ -296,9 +296,9 @@ class RegenHotkeyCommand:
             hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
             config.wallet.hotkey = str(hotkey)
         if (
-            config.mnemonic == None
-            and config.get("seed", d=None) == None
-            and config.get("json", d=None) == None
+            config.mnemonic is None
+            and config.get("seed", d=None) is None
+            and config.get("json", d=None) is None
         ):
             prompt_answer = Prompt.ask("Enter mnemonic, seed, or json file location")
             if prompt_answer.startswith("0x"):
@@ -308,7 +308,7 @@ class RegenHotkeyCommand:
             else:
                 config.json = prompt_answer
 
-        if config.get("json", d=None) and config.get("json_password", d=None) == None:
+        if config.get("json", d=None) and config.get("json_password", d=None) is None:
             config.json_password = Prompt.ask(
                 "Enter json backup password", password=True
             )

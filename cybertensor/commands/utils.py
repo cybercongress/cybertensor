@@ -189,6 +189,7 @@ class DelegatesDetails:
             signature=json["signature"],
         )
 
+
 def _get_delegates_details_from_github(
     requests_get, url: str
 ) -> Dict[str, DelegatesDetails]:
@@ -204,6 +205,7 @@ def _get_delegates_details_from_github(
         return all_delegates_details
     else:
         return {}
+
 
 # TODO revisist
 def get_delegates_details(url: str) -> Optional[Dict[str, DelegatesDetails]]:

@@ -19,17 +19,20 @@
 # DEALINGS IN THE SOFTWARE.
 
 from typing import Union, Optional
+import re
 
-from .. import __chain_address_prefix__
-from .. import Keypair
+from cosmpy.aerial.client import Coin
+from cosmpy.crypto.address import Address
+
+import cybertensor
 
 
-def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes]) -> bool:
+def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Address]) -> bool:
     """
     Checks if the given address is a valid destination address.
 
     Args:
-        address(Union[str, bytes]): The address to check.
+        address(Union[str, bytes, cosmpy.crypto.address.Address]): The address to check.
 
     Returns:
         True if the address is a valid destination address, False otherwise.
@@ -38,17 +41,48 @@ def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes]) -> bo
     # TODO
     return True
 
-def is_valid_address(address: str) -> bool:
+
+def is_valid_address(address: Union[str, Address]) -> bool:
     """
     Checks if the given address is a valid address.
 
     Args:
-        address(str): The address to check.
+        address(str, cosmpy.crypto.address.Address): The address to check.
 
     Returns:
         True if the address is a valid address for Cybertensor, False otherwise.
     """
-    if len(address) != 46:
-        return False
-    # TODO
-    return True
+    try:
+        Address(address)
+        if address.startswith(cybertensor.__chain_address_prefix__):
+            return True
+    except RuntimeError:
+        pass
+    return False
+
+
+def coin_from_str(string: str) -> Coin:
+    """Creates a new :class:`cosmpy.aerial.client.Coin` from a coin-format string. Must match the format:
+    ``10000boot`` (``int``-Coin)
+
+    >>> int_coin = coin_from_str("10000boot")
+    >>> int_coin.denom
+    'boot'
+    >>> int_coin.amount
+    10000
+
+    Args:
+        string (str): string to convert
+
+    Raises:
+        ValueError: if string is in wrong format
+
+    Returns:
+        cosmpy.aerial.client.Coin: converted string
+    """
+    pattern = r"^(\-?[0-9]+(\.[0-9]+)?)([0-9a-zA-Z/]+)$"
+    match = re.match(pattern, string)
+    if match is None:
+        raise ValueError(f"failed to parse Coin: {string}")
+    else:
+        return Coin(match.group(3), match.group(1))
