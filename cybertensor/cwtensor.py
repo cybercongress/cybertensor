@@ -60,7 +60,7 @@ from .messages.registration import (
     register_message,
     burned_register_message,
 )
-# from .messages.transfer import transfer_message
+from .messages.transfer import transfer_message
 from .messages.set_weights import set_weights_message
 from .messages.prometheus import prometheus_message
 from .messages.delegation import (
@@ -70,7 +70,7 @@ from .messages.delegation import (
 )
 from .messages.root import root_register_message, set_root_weights_message
 from .types import AxonServeCallParams, PrometheusServeCallParams
-from .utils import U16_NORMALIZED_FLOAT
+from .utils import U16_NORMALIZED_FLOAT, coin_from_str
 from .utils.balance import Balance
 from .utils.registration import POWSolution
 
@@ -565,6 +565,82 @@ class cwtensor:
     ##################
     #### Transfer ####
     ##################
+    def transfer(
+        self,
+        wallet: "cybertensor.wallet",
+        dest: str,
+        amount: Union[Balance, float],
+        wait_for_inclusion: bool = True,
+        wait_for_finalization: bool = False,
+        prompt: bool = False,
+    ) -> bool:
+        """Transfers funds from this wallet to the destination public key address"""
+        return transfer_message(
+            cwtensor=self,
+            wallet=wallet,
+            dest=dest,
+            amount=amount,
+            wait_for_inclusion=wait_for_inclusion,
+            wait_for_finalization=wait_for_finalization,
+            prompt=prompt,
+        )
+
+    def get_transfer_fee(
+        self, gas_limit: int = cybertensor.__default_transfer_gas__
+    ) -> Balance:
+        return Balance.from_coin(
+            coin_from_str(
+                self.client.estimate_fee_from_gas(
+                    gas_limit=gas_limit)
+            )
+        )
+
+    def _do_transfer(
+        self,
+        wallet: "cybertensor.wallet",
+        dest: Address,
+        transfer_balance: Balance,
+        wait_for_inclusion: bool = True,
+        wait_for_finalization: bool = True,
+    ) -> Tuple[bool, Optional[str], Optional[str]]:
+        """Sends a transfer extrinsic to the chain.
+        Args:
+            wallet (:obj:`bittensor.wallet`): Wallet object.
+            dest (:obj:`str`): Destination public key address.
+            transfer_balance (:obj:`Balance`): Amount to transfer.
+            wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.
+            wait_for_finalization (:obj:`bool`): If true, waits for finalization.
+        Returns:
+            success (:obj:`bool`): True if transfer was successful.
+            tx_hash (:obj:`str`): Tx hash of the transfer.
+                (On success and if wait_for_ finalization/inclusion is True)
+            error (:obj:`str`): Error message if transfer failed.
+        """
+        signer_wallet = LocalWallet(
+            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+        )
+        tx = self.client.send_tokens(
+            destination=dest,
+            amount=transfer_balance.boot,
+            denom=cybertensor.__token__,
+            sender=signer_wallet,
+            gas_limit=cybertensor.__default_transfer_gas__)
+
+        if not wait_for_finalization and not wait_for_inclusion:
+            return True, None, None
+
+        tx.wait_to_complete()
+
+        if tx.response.height:
+            tx_hash = tx.response.hash
+            return True, tx_hash, None
+        else:
+            return False, None, tx.response.raw_log
+
+    def get_existential_deposit(self, block: Optional[int] = None) -> Optional[Balance]:
+        """Returns the existential deposit for the chain."""
+        # TODO Is it needed?
+        return Balance.from_boot(0)
 
     #################
     #### Network ####

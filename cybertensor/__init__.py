@@ -119,6 +119,7 @@ __contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema
 __token__ = "boot"
 
 __default_gas__ = 1_000_000
+__default_transfer_gas__ = 100_000
 
 __boot_symbol__: str = "BOOT"
 __giga_boot_symbol__: str = "GBOOT"

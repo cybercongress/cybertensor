@@ -83,7 +83,7 @@ COMMANDS = {
         "commands": {
             "list": ListCommand,
             "overview": OverviewCommand,
-            # "transfer": TransferCommand,
+            "transfer": TransferCommand,
             "inspect": InspectCommand,
             "balance": WalletBalanceCommand,
             "create": WalletCreateCommand,

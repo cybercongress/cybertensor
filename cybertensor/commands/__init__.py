@@ -88,7 +88,7 @@ from .wallets import (
     WalletCreateCommand,
     WalletBalanceCommand,
 )
-# from .transfer import TransferCommand
+from .transfer import TransferCommand
 from .inspect import InspectCommand
 from .metagraph import MetagraphCommand
 from .list import ListCommand

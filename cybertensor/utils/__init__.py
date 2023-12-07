@@ -17,15 +17,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from .wallet_utils import *
-import cybertensor
 import requests
+from typing import Dict
+
+import cybertensor
+from .wallet_utils import *
 from .formatting import get_human_readable, millify
 
 
 GIGA = 1e9
 U16_MAX = 65535
 U64_MAX = 18446744073709551615
+
 
 def version_checking(timeout: int = 15):
     try:
@@ -56,9 +59,61 @@ def version_checking(timeout: int = 15):
     except requests.exceptions.RequestException as e:
         cybertensor.logging.error(f"Version check failed due to request failure: {e}")
 
+
 def U16_NORMALIZED_FLOAT(x: int) -> float:
     return float(x) / float(U16_MAX)
 
 
 def U64_NORMALIZED_FLOAT(x: int) -> float:
     return float(x) / float(U64_MAX)
+
+
+def get_explorer_root_url_by_network_from_map(
+    network: str, network_map: Dict[str, str]
+) -> Optional[str]:
+    r"""
+    Returns the explorer root url for the given network name from the given network map.
+
+    Args:
+        network(str): The network to get the explorer url for.
+        network_map(Dict[str, str]): The network map to get the explorer url from.
+
+    Returns:
+        The explorer url for the given network.
+        Or None if the network is not in the network map.
+    """
+    explorer_url: Optional[str] = None
+    if network in network_map:
+        explorer_url = network_map[network]
+
+    return explorer_url
+
+
+def get_explorer_url_for_network(
+    network: str, tx_hash: str, network_map: Dict[str, str]
+) -> Optional[str]:
+    r"""
+    Returns the explorer url for the given block hash and network.
+
+    Args:
+        network(str): The network to get the explorer url for.
+        tx_hash(str): The transaction hash to get the explorer url for.
+        network_map(Dict[str, str]): The network map to get the explorer url from.
+
+    Returns:
+        The explorer url for the given block hash and network.
+        Or None if the network is not known.
+    """
+
+    explorer_url: Optional[str] = None
+    # Will be None if the network is not known. i.e. not in network_map
+    explorer_root_url: Optional[str] = get_explorer_root_url_by_network_from_map(
+        network, network_map
+    )
+
+    if explorer_root_url is not None:
+        # We are on a known network.
+        # TODO add network in explorer_url
+        explorer_url = f"{explorer_root_url}/network/bostrom/tx/{tx_hash}"
+
+    return explorer_url
