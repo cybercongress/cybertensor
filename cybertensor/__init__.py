@@ -20,14 +20,14 @@
 
 from rich.console import Console
 from rich.traceback import install
-
+from pathlib import Path
 # Install and apply nest asyncio to allow the async functions
 # to run in a .ipynb
 import nest_asyncio
 
-nest_asyncio.apply()
-
 from cosmpy.aerial.config import NetworkConfig
+
+nest_asyncio.apply()
 
 # Cybertensor code and protocol version.
 __version__ = "0.1.0"
@@ -82,7 +82,8 @@ __blocktime__ = 6
 __pipaddress__ = "https://pypi.org/pypi/cybertensor/json"
 
 # Raw github url for delegates registry file
-# __delegates_details_url__: str = "https://raw.githubusercontent.com/opentensor/bittensor-delegates/main/public/delegates.json"
+#  TODO add data to github
+__delegates_details_url__: str = "https://raw.githubusercontent.com/cybercongress/cybertensor/main/public/delegates.json"
 
 # Bostrom network address prefix
 __chain_address_prefix__ = "bostrom"
@@ -95,30 +96,29 @@ __contracts__ = [
 ]
 
 __local_network__ = NetworkConfig(
-            chain_id="localbostrom",
-            url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=0.1,
-            fee_denomination="boot",
-            staking_denomination="boot",
-            faucet_url="",
-        )
+    chain_id="localbostrom",
+    url="grpc+http://localhost:9090",
+    fee_minimum_gas_price=0.1,
+    fee_denomination="boot",
+    staking_denomination="boot",
+    faucet_url="",
+)
 
 __bostrom_network__ = NetworkConfig(
-            chain_id="bostrom",
-            url="grpc+http://localhost:9090",
-            fee_minimum_gas_price=0.1,
-            fee_denomination="boot",
-            staking_denomination="boot",
-            faucet_url="",
-        )
+    chain_id="bostrom",
+    url="grpc+http://localhost:9090",
+    fee_minimum_gas_price=0.1,
+    fee_denomination="boot",
+    staking_denomination="boot",
+    faucet_url="",
+)
 
-from pathlib import Path
 __contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
 __contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
 
-__token__ = 'boot'
+__token__ = "boot"
 
-__default_gas__ = 1000000
+__default_gas__ = 1_000_000
 
 __boot_symbol__: str = "BOOT"
 __giga_boot_symbol__: str = "GBOOT"
@@ -136,12 +136,10 @@ __network_explorer_map__ = {
 }
 
 from .errors import *
-
 from .config import *
 from .keyfile import *
 from .keypair import *
 from .wallet import *
-
 from .utils import *
 from .utils.balance import Balance as Balance
 from .chain_data import *

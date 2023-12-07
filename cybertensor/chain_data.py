@@ -16,17 +16,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 import torch
-# from cybertensor import SubnetHyperparameters
-
-import cybertensor
-
 import json
-from enum import Enum
 from dataclasses import dataclass, asdict
 from typing import List, Tuple, Dict, Optional, Any, TypedDict, Union
 
+import cybertensor
+# from cybertensor import SubnetHyperparameters
 from .utils import networking as net, U16_MAX, U16_NORMALIZED_FLOAT, GIGA
 from .utils.balance import Balance
+
 
 # Dataclasses for chain data.
 @dataclass
@@ -709,6 +707,7 @@ class SubnetHyperparameters:
     ) -> "SubnetInfo":
         r"""Returns a SubnetHyperparameters object from a torch parameter_dict."""
         return cls(**dict(parameter_dict))
+
 
 @dataclass
 class IPInfo:
