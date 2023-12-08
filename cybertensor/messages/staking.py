@@ -40,7 +40,7 @@ def add_stake_message(
             address of the hotkey account to stake to
             defaults to the wallet's hotkey.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as Tao.
+            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.

@@ -30,7 +30,7 @@ console = cybertensor.__console__
 
 class UnStakeCommand:
     """
-    Executes the 'remove' command to unstake TAO tokens from one or more hotkeys and transfer them back to the user's coldkey on the Cybertensor network.
+    Executes the 'remove' command to unstake GBOOT tokens from one or more hotkeys and transfer them back to the user's coldkey on the Cybertensor network.
     This command is used to withdraw tokens previously staked to different hotkeys.
 
     Usage:
@@ -39,9 +39,9 @@ class UnStakeCommand:
 
     Optional arguments:
     - --all (bool): When set, unstakes all staked tokens from the specified hotkeys.
-    - --amount (float): The amount of TAO tokens to unstake.
+    - --amount (float): The amount of GBOOT tokens to unstake.
     - --hotkey_address (str): The address of the hotkey to unstake from.
-    - --max_stake (float): Sets the maximum amount of TAO to remain staked in each hotkey.
+    - --max_stake (float): Sets the maximum amount of GBOOT to remain staked in each hotkey.
     - --hotkeys (list): Specifies hotkeys by name or address to unstake from.
     - --all_hotkeys (bool): When set, unstakes from all hotkeys associated with the wallet, excluding any specified in --hotkeys.
 
@@ -86,15 +86,15 @@ class UnStakeCommand:
             else:
                 hotkeys = str(config.wallet.hotkey)
             if not Confirm.ask(
-                "Unstake all Tao from: [bold]'{}'[/bold]?".format(hotkeys)
+                "Unstake all GBOOT from: [bold]'{}'[/bold]?".format(hotkeys)
             ):
-                amount = Prompt.ask("Enter Tao amount to unstake")
+                amount = Prompt.ask("Enter GBOOT amount to unstake")
                 config.unstake_all = False
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        ":cross_mark:[red] Invalid Tao amount[/red] [bold white]{}[/bold white]".format(
+                        ":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
                             amount
                         )
                     )
@@ -124,7 +124,7 @@ class UnStakeCommand:
             required=False,
             action="store",
             default=None,
-            help="""Specify the maximum amount of Tao to have staked in each hotkey.""",
+            help="""Specify the maximum amount of GBOOT to have staked in each hotkey.""",
         )
         unstake_parser.add_argument(
             "--hotkeys",

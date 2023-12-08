@@ -446,7 +446,7 @@ class DelegateInfo:
         int
     ]  # List of subnets that the delegate is allowed to validate on
     registrations: List[int]  # List of subnets that the delegate is registered on
-    return_per_1000: Balance  # Return per 1000 tao of the delegate over a day
+    return_per_1000: Balance  # Return per 1000 gboot of the delegate over a day
     total_daily_return: Balance  # Total daily return of the delegate
 
     @classmethod

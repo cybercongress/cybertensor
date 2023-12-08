@@ -85,7 +85,7 @@ def unstake_message(
             address of the hotkey to unstake from.
             by default, the wallet hotkey is used.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as tao.
+            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
         wait_for_finalization (bool):
             if set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.
@@ -257,7 +257,7 @@ def unstake_multiple_message(
         ]
 
         if sum(amount.gboot for amount in amounts) == 0:
-            # Staking 0 tao
+            # Staking 0 GBOOT
             return True
 
     # Unlock coldkey.

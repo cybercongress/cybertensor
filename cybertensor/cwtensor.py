@@ -523,7 +523,7 @@ class cwtensor:
             wait_for_finalization: bool = True,
             prompt: bool = False,
     ) -> bool:
-        """Registers the wallet to chain by recycling BOOT."""
+        """Registers the wallet to chain by recycling GBOOT."""
         return burned_register_message(
             cwtensor=self,
             wallet=wallet,

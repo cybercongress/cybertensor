@@ -220,7 +220,7 @@ def burned_register_message(
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
-    r"""Registers the wallet to chain by recycling TAO.
+    r"""Registers the wallet to chain by recycling GBOOT.
     Args:
         wallet (cybertensor.wallet):
             cybertensor wallet object.

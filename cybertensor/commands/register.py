@@ -80,7 +80,7 @@ class RegisterCommand:
         # Check balance is sufficient
         if balance < current_recycle:
             cybertensor.__console__.print(
-                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]"
+                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle} GBOOT[/red]"
             )
             sys.exit(1)
 
