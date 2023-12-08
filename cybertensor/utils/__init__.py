@@ -37,22 +37,22 @@ def version_checking(timeout: int = 15):
         )
 
         # TODO update when will be released
-        # response = requests.get(cybertensor.__pipaddress__, timeout=timeout)
-        # latest_version = response.json()["info"]["version"]
-        # version_split = latest_version.split(".")
-        # latest_version_as_int = (
-        #     (100 * int(version_split[0]))
-        #     + (10 * int(version_split[1]))
-        #     + (1 * int(version_split[2]))
-        # )
-        #
-        # if latest_version_as_int > cybertensor.__version_as_int__:
-        #     print(
-        #         "\u001b[33mCybertensor Version: Current {}/Latest {}\nPlease update to the latest version at your earliest convenience. "
-        #         "Run the following command to upgrade:\n\n\u001b[0mpython -m pip install --upgrade cybertensor".format(
-        #             cybertensor.__version__, latest_version
-        #         )
-        #     )
+        response = requests.get(cybertensor.__pipaddress__, timeout=timeout)
+        latest_version = response.json()["info"]["version"]
+        version_split = latest_version.split(".")
+        latest_version_as_int = (
+            (100 * int(version_split[0]))
+            + (10 * int(version_split[1]))
+            + (1 * int(version_split[2]))
+        )
+
+        if latest_version_as_int > cybertensor.__version_as_int__:
+            print(
+                "\u001b[33mCybertensor Version: Current {}/Latest {}\nPlease update to the latest version at your earliest convenience. "
+                "Run the following command to upgrade:\n\n\u001b[0mpython -m pip install --upgrade cybertensor".format(
+                    cybertensor.__version__, latest_version
+                )
+            )
 
     except requests.exceptions.Timeout:
         cybertensor.logging.error("Version check failed due to timeout")

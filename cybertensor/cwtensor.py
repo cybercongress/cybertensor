@@ -605,7 +605,7 @@ class cwtensor:
     ) -> Tuple[bool, Optional[str], Optional[str]]:
         """Sends a transfer extrinsic to the chain.
         Args:
-            wallet (:obj:`bittensor.wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             dest (:obj:`str`): Destination public key address.
             transfer_balance (:obj:`Balance`): Amount to transfer.
             wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.
