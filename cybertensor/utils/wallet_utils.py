@@ -18,8 +18,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from typing import Union, Optional
 import re
+from typing import Union
 
 from cosmpy.aerial.client import Coin
 from cosmpy.crypto.address import Address

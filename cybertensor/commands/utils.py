@@ -16,14 +16,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
 import os
-import torch
-import cybertensor
-from typing import List, Dict, Any, Optional
-from rich.prompt import Confirm, Prompt, PromptBase
-import requests
+import sys
 from dataclasses import dataclass
+from typing import List, Dict, Any, Optional
+
+import requests
+import torch
+from rich.prompt import Confirm, PromptBase
+
+import cybertensor
 from . import defaults
 
 console = cybertensor.__console__
@@ -80,7 +82,7 @@ def check_for_cuda_reg_config(config: "cybertensor.config") -> None:
     """Checks, when CUDA is available, if the user would like to register with their CUDA device."""
     if torch.cuda.is_available():
         if not config.no_prompt:
-            if config.pow_register.cuda.get("use_cuda") == None:  # flag not set
+            if config.pow_register.cuda.get("use_cuda") is None:  # flag not set
                 # Ask about cuda registration only if a CUDA device is available.
                 cuda = Confirm.ask("Detected CUDA device, use CUDA for registration?\n")
                 config.pow_register.cuda.use_cuda = cuda

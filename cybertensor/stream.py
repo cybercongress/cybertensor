@@ -1,11 +1,12 @@
-import cybertensor
-
-from starlette.responses import StreamingResponse as _StreamingResponse
-from starlette.responses import Response
-from starlette.types import Send, Receive, Scope
-from typing import Callable, Awaitable, List
-from pydantic import BaseModel
 from abc import ABC, abstractmethod
+from typing import Callable, Awaitable
+
+from pydantic import BaseModel
+from starlette.responses import Response
+from starlette.responses import StreamingResponse as _StreamingResponse
+from starlette.types import Send, Receive, Scope
+
+import cybertensor
 
 
 class BTStreamingResponseModel(BaseModel):

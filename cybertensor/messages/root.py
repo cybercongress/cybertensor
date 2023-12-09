@@ -17,15 +17,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import cybertensor
-
 import time
-import torch
-from rich.prompt import Confirm
 from typing import Union, List
-import cybertensor.utils.weight_utils as weight_utils
 
+import torch
 from loguru import logger
+from rich.prompt import Confirm
+
+import cybertensor
+import cybertensor.utils.weight_utils as weight_utils
 
 logger = logger.opt(colors=True)
 
@@ -58,13 +58,13 @@ def root_register_message(
     )
     if is_registered:
         cybertensor.__console__.print(
-            f":white_heavy_check_mark: [green]Already registered on root network.[/green]"
+            ":white_heavy_check_mark: [green]Already registered on root network.[/green]"
         )
         return True
 
     if prompt:
         # Prompt user for confirmation.
-        if not Confirm.ask(f"Register to root network?"):
+        if not Confirm.ask("Register to root network?"):
             return False
 
     with cybertensor.__console__.status(":satellite: Registering to root network..."):
@@ -73,9 +73,9 @@ def root_register_message(
             wait_for_finalization=wait_for_finalization,
         )
 
-        if success != True or success == False:
+        if success != True or success is False:
             cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(err_msg)
+                f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
             time.sleep(0.5)
 
@@ -141,9 +141,8 @@ def set_root_weights_message(
     non_zero_weights = weights[non_zero_weight_idx]
     if non_zero_weights.numel() < min_allowed_weights:
         raise ValueError(
-            "The minimum number of weights required to set weights is {}, got {}".format(
-                min_allowed_weights, non_zero_weights.numel()
-            )
+            f"The minimum number of weights required to set weights is {min_allowed_weights}, "
+            f"got {non_zero_weights.numel()}"
         )
 
     # Normalize the weights to max value.
@@ -157,16 +156,14 @@ def set_root_weights_message(
     # Ask before moving on.
     if prompt:
         if not Confirm.ask(
-            "Do you want to set the following root weights?:\n[bold white]  weights: {}\n  uids: {}[/bold white ]?".format(
-                formatted_weights, netuids
-            )
+            f"Do you want to set the following root weights?:\n"
+            f"[bold white]  weights: {formatted_weights}\n"
+            f"  uids: {netuids}[/bold white ]?"
         ):
             return False
 
     with cybertensor.__console__.status(
-        ":satellite: Setting root weights on [white]{}[/white] ...".format(
-            cwtensor.network
-        )
+        f":satellite: Setting root weights on [white]{cwtensor.network}[/white] ..."
     ):
         try:
             weight_uids, weight_vals = weight_utils.convert_weights_and_uids_for_emit(
@@ -186,7 +183,7 @@ def set_root_weights_message(
             if not wait_for_finalization:
                 return True
 
-            if success == True:
+            if success is True:
                 cybertensor.__console__.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
@@ -197,20 +194,20 @@ def set_root_weights_message(
                 return True
             else:
                 cybertensor.__console__.print(
-                    ":cross_mark: [red]Failed[/red]: error:{}".format(error_message)
+                    f":cross_mark: [red]Failed[/red]: error:{error_message}"
                 )
                 cybertensor.logging.warning(
                     prefix="Set weights",
-                    sufix="<red>Failed: </red>" + str(error_message),
+                    sufix=f"<red>Failed: </red>{error_message}",
                 )
                 return False
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
             cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(e)
+                f":cross_mark: [red]Failed[/red]: error:{e}"
             )
             cybertensor.logging.warning(
-                prefix="Set weights", sufix="<red>Failed: </red>" + str(e)
+                prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
             )
             return False

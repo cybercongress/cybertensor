@@ -78,6 +78,5 @@ class NotDelegateError(StakeError):
 
 
 class KeyFileError(Exception):
-    """Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid."""
-
+    r"""Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid."""
     pass

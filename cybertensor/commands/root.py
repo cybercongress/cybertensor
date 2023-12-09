@@ -16,19 +16,19 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
-import re
-import torch
-import typing
 import argparse
-import numpy as np
-import cybertensor
+import re
+import typing
 from typing import List, Optional, Dict
-from rich.prompt import Prompt, Confirm
-from rich.table import Table
-from .utils import get_delegates_details, DelegatesDetails, DelegatesDetails
 
+import numpy as np
+import torch
+from rich.prompt import Prompt
+from rich.table import Table
+
+import cybertensor
 from . import defaults
+from .utils import DelegatesDetails
 
 console = cybertensor.__console__
 

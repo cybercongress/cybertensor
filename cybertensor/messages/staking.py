@@ -17,10 +17,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import cybertensor
-from rich.prompt import Confirm
 from time import sleep
-from typing import List, Dict, Union, Optional
+from typing import List, Union, Optional
+
+from rich.prompt import Confirm
+
+import cybertensor
 from cybertensor.utils.balance import Balance
 
 
@@ -68,19 +70,17 @@ def add_stake_message(
     own_hotkey: bool
 
     with cybertensor.__console__.status(
-        ":satellite: Syncing with chain: [white]{}[/white] ...".format(
-            cwtensor.network
-        )
+        f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
         # Get hotkey owner
         hotkey_owner = cwtensor.get_hotkey_owner(hotkey)
         own_hotkey = wallet.coldkeypub.address == hotkey_owner
         if not own_hotkey:
-            # This is not the wallet's own hotkey so we are delegating.
+            # This is not the wallet's own hotkey, so we are delegating.
             if not cwtensor.is_hotkey_delegate(hotkey):
                 raise cybertensor.errors.NotDelegateError(
-                    "Hotkey: {} is not a delegate.".format(hotkey)
+                    f"Hotkey: {hotkey} is not a delegate."
                 )
 
             # Get hotkey take
@@ -92,7 +92,7 @@ def add_stake_message(
         )
 
     # Convert to cybertensor.Balance
-    if amount == None:
+    if amount is None:
         # Stake it all.
         staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
     elif not isinstance(amount, cybertensor.Balance):
@@ -109,9 +109,10 @@ def add_stake_message(
     # Check enough to stake.
     if staking_balance > old_balance:
         cybertensor.__console__.print(
-            ":cross_mark: [red]Not enough stake[/red]:[bold white]\n  balance:{}\n  amount: {}\n  coldkey: {}[/bold white]".format(
-                old_balance, staking_balance, wallet.name
-            )
+            f":cross_mark: [red]Not enough stake[/red]:[bold white]\n"
+            f"  balance:{old_balance}\n"
+            f"  amount: {staking_balance}\n"
+            f"  coldkey: {wallet.name}[/bold white]"
         )
         return False
 
@@ -120,24 +121,24 @@ def add_stake_message(
         if not own_hotkey:
             # We are delegating.
             if not Confirm.ask(
-                "Do you want to delegate:[bold white]\n  amount: {}\n  to: {}\n  take: {}\n  owner: {}[/bold white]".format(
-                    staking_balance, wallet.hotkey_str, hotkey_take, hotkey_owner
-                )
+                f"Do you want to delegate:[bold white]\n"
+                f"  amount: {staking_balance}\n"
+                f"  to: {wallet.hotkey_str}\n"
+                f"  take: {hotkey_take}\n"
+                f"  owner: {hotkey_owner}[/bold white]"
             ):
                 return False
         else:
             if not Confirm.ask(
-                "Do you want to stake:[bold white]\n  amount: {}\n  to: {}[/bold white]".format(
-                    staking_balance, wallet.hotkey_str
-                )
+                f"Do you want to stake:[bold white]\n"
+                f"  amount: {staking_balance}\n"
+                f"  to: {wallet.hotkey_str}[/bold white]"
             ):
                 return False
 
     try:
         with cybertensor.__console__.status(
-            ":satellite: Staking to: [bold white]{}[/bold white] ...".format(
-                cwtensor.network
-            )
+            f":satellite: Staking to: [bold white]{cwtensor.network}[/bold white] ..."
         ):
             staking_response: bool = __do_add_stake_single(
                 cwtensor=cwtensor,
@@ -147,7 +148,7 @@ def add_stake_message(
                 wait_for_finalization=wait_for_finalization,
             )
 
-        if staking_response == True:  # If we successfully staked.
+        if staking_response is True:  # If we successfully staked.
             # We only wait here if we expect finalization.
             if not wait_for_finalization:
                 return True
@@ -156,13 +157,9 @@ def add_stake_message(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
             with cybertensor.__console__.status(
-                ":satellite: Checking Balance on: [white]{}[/white] ...".format(
-                    cwtensor.network
-                )
+                f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
             ):
-                new_balance = cwtensor.get_balance(
-                    address=wallet.coldkeypub.address
-                )
+                new_balance = cwtensor.get_balance(address=wallet.coldkeypub.address)
                 block = cwtensor.get_current_block()
                 new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
                     coldkey=wallet.coldkeypub.address,
@@ -171,14 +168,12 @@ def add_stake_message(
                 )  # Get current stake
 
                 cybertensor.__console__.print(
-                    "Balance:\n  [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                        old_balance, new_balance
-                    )
+                    f"Balance:\n"
+                    f"  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
                 )
                 cybertensor.__console__.print(
-                    "Stake:\n  [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                        old_stake, new_stake
-                    )
+                    f"Stake:\n"
+                    f"  [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]"
                 )
                 return True
         else:
@@ -189,13 +184,11 @@ def add_stake_message(
 
     except cybertensor.errors.NotRegisteredError as e:
         cybertensor.__console__.print(
-            ":cross_mark: [red]Hotkey: {} is not registered.[/red]".format(
-                wallet.hotkey_str
-            )
+            f":cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]"
         )
         return False
     except cybertensor.errors.StakeError as e:
-        cybertensor.__console__.print(":cross_mark: [red]Stake Error: {}[/red]".format(e))
+        cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
         return False
 
 
@@ -249,7 +242,9 @@ def add_stake_multiple_message(
     else:
         # Convert to Balance
         amounts = [
-            cybertensor.Balance.from_gboot(amount) if isinstance(amount, float) else amount
+            cybertensor.Balance.from_gboot(amount)
+            if isinstance(amount, float)
+            else amount
             for amount in amounts
         ]
 
@@ -262,9 +257,7 @@ def add_stake_multiple_message(
 
     old_stakes = []
     with cybertensor.__console__.status(
-        ":satellite: Syncing with chain: [white]{}[/white] ...".format(
-            cwtensor.network
-        )
+        f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
 
@@ -303,7 +296,7 @@ def add_stake_multiple_message(
     ):
         staking_all = False
         # Convert to cybertensor.Balance
-        if amount == None:
+        if amount is None:
             # Stake it all.
             staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
             staking_all = True
@@ -315,18 +308,17 @@ def add_stake_multiple_message(
         # Check enough to stake
         if staking_balance > old_balance:
             cybertensor.__console__.print(
-                ":cross_mark: [red]Not enough balance[/red]: [green]{}[/green] to stake: [blue]{}[/blue] from coldkey: [white]{}[/white]".format(
-                    old_balance, staking_balance, wallet.name
-                )
+                f":cross_mark: [red]Not enough balance[/red]: [green]{old_balance}[/green] "
+                f"to stake: [blue]{staking_balance}[/blue] from coldkey: [white]{wallet.name}[/white]"
             )
             continue
 
         # Ask before moving on.
         if prompt:
             if not Confirm.ask(
-                "Do you want to stake:\n[bold white]  amount: {}\n  hotkey: {}[/bold white ]?".format(
-                    staking_balance, wallet.hotkey_str
-                )
+                f"Do you want to stake:\n"
+                f"[bold white]  amount: {staking_balance}\n"
+                f"  hotkey: {wallet.hotkey_str}[/bold white ]?"
             ):
                 continue
 
@@ -339,7 +331,7 @@ def add_stake_multiple_message(
                 wait_for_finalization=wait_for_finalization,
             )
 
-            if staking_response == True:  # If we successfully staked.
+            if staking_response is True:  # If we successfully staked.
                 # We only wait here if we expect finalization.
 
                 if idx < len(hotkeys) - 1:
@@ -347,9 +339,8 @@ def add_stake_multiple_message(
                     tx_rate_limit_blocks = cwtensor.tx_rate_limit()
                     if tx_rate_limit_blocks > 0:
                         cybertensor.__console__.print(
-                            ":hourglass: [yellow]Waiting for tx rate limit: [white]{}[/white] blocks[/yellow]".format(
-                                tx_rate_limit_blocks
-                            )
+                            f":hourglass: [yellow]Waiting for tx rate limit: [white]{tx_rate_limit_blocks}[/white] "
+                            f"blocks[/yellow]"
                         )
                         sleep(tx_rate_limit_blocks * 12)  # 12 seconds per block
 
@@ -376,9 +367,7 @@ def add_stake_multiple_message(
                     wallet.coldkeypub.address, block=block
                 )
                 cybertensor.__console__.print(
-                    "Stake ({}): [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                        hotkey, old_stake, new_stake
-                    )
+                    f"Stake ({hotkey}): [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]"
                 )
                 old_balance = new_balance
                 successful_stakes += 1
@@ -394,28 +383,20 @@ def add_stake_multiple_message(
 
         except cybertensor.errors.NotRegisteredError as e:
             cybertensor.__console__.print(
-                ":cross_mark: [red]Hotkey: {} is not registered.[/red]".format(
-                    hotkey
-                )
+                f":cross_mark: [red]Hotkey: {hotkey} is not registered.[/red]"
             )
             continue
         except cybertensor.errors.StakeError as e:
-            cybertensor.__console__.print(
-                ":cross_mark: [red]Stake Error: {}[/red]".format(e)
-            )
+            cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
             continue
 
     if successful_stakes != 0:
         with cybertensor.__console__.status(
-            ":satellite: Checking Balance on: ([white]{}[/white] ...".format(
-                cwtensor.network
-            )
+            f":satellite: Checking Balance on: ([white]{cwtensor.network}[/white] ..."
         ):
             new_balance = cwtensor.get_balance(wallet.coldkeypub.address)
         cybertensor.__console__.print(
-            "Balance: [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                old_balance, new_balance
-            )
+            f"Balance: [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
         )
         return True
 
@@ -466,7 +447,7 @@ def __do_add_stake_single(
         # Verify that the hotkey is a delegate.
         if not cwtensor.is_hotkey_delegate(hotkey=hotkey):
             raise cybertensor.errors.NotDelegateError(
-                "Hotkey: {} is not a delegate.".format(hotkey)
+                f"Hotkey: {hotkey} is not a delegate."
             )
 
     success = cwtensor._do_stake(

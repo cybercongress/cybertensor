@@ -1,12 +1,14 @@
+import datetime
 import math
 import time
+from typing import List, Dict, Set
+
 import torch
 from rich import print as rich_print
-from rich.table import Table
 from rich.errors import MarkupError
 from rich.style import Style
-from typing import List, Tuple, Callable, Dict, Any, Union, Set
-import datetime
+from rich.table import Table
+
 import cybertensor
 
 

@@ -16,13 +16,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import os
-import copy
 import argparse
-import cybertensor
+import copy
+import os
+from typing import Optional, Union, Tuple, Dict, overload
+
 from termcolor import colored
+
+import cybertensor
 from cybertensor.keypair import Keypair
-from typing import Optional, Union, List, Tuple, Dict, overload
 from cybertensor.utils import is_valid_cybertensor_address_or_public_key
 
 
@@ -43,12 +45,14 @@ def display_mnemonic_msg(keypair: Keypair, key_type: str):
             "red",
         )
     )
-    print("The mnemonic to the new {} is:\n\n{}\n".format(key_type, mnemonic_green))
     print(
-        "You can use the mnemonic to recreate the key in case it gets lost. The command to use to regenerate the key using this mnemonic is:"
+        f"The mnemonic to the new {key_type} is:\n"
+        f"\n"
+        f"{mnemonic_green}\n"
+        f"You can use the mnemonic to recreate the key in case it gets lost. "
+        f"The command to use to regenerate the key using this mnemonic is:\n"
+        f"ctcli w regen_{key_type} --mnemonic {mnemonic}\n"
     )
-    print("ctcli w regen_{} --mnemonic {}".format(key_type, mnemonic))
-    print("")
 
 
 class wallet:
@@ -91,7 +95,7 @@ class wallet:
             parser (argparse.ArgumentParser): Argument parser object.
             prefix (str): Argument prefix.
         """
-        prefix_str = "" if prefix == None else prefix + "."
+        prefix_str = "" if prefix is None else prefix + "."
         try:
             default_name = os.getenv("CT_WALLET_NAME") or "default"
             default_hotkey = os.getenv("CT_WALLET_NAME") or "default"
@@ -163,7 +167,7 @@ class wallet:
         Returns:
             str: The string representation.
         """
-        return "wallet({}, {}, {})".format(self.name, self.hotkey_str, self.path)
+        return f"wallet({self.name}, {self.hotkey_str}, {self.path})"
 
     def __repr__(self):
         """
@@ -303,7 +307,9 @@ class wallet:
         Returns:
             cybertensor.keyfile: The coldkeypub file.
         """
-        self._coldkeypub = cybertensor.Keypair(address=keypair.address, public_key=keypair.public_key)
+        self._coldkeypub = cybertensor.Keypair(
+            address=keypair.address, public_key=keypair.public_key
+        )
         self.coldkeypub_file.set_keypair(
             self._coldkeypub, encrypt=encrypt, overwrite=overwrite
         )
@@ -376,7 +382,7 @@ class wallet:
             KeyFileError: Raised if the file is corrupt of non-existent.
             CryptoKeyError: Raised if the user enters an incorrec password for an encrypted keyfile.
         """
-        if self._hotkey == None:
+        if self._hotkey is None:
             self._hotkey = self.hotkey_file.keypair
         return self._hotkey
 
@@ -390,7 +396,7 @@ class wallet:
             KeyFileError: Raised if the file is corrupt of non-existent.
             CryptoKeyError: Raised if the user enters an incorrec password for an encrypted keyfile.
         """
-        if self._coldkey == None:
+        if self._coldkey is None:
             self._coldkey = self.coldkey_file.keypair
         return self._coldkey
 
@@ -404,7 +410,7 @@ class wallet:
             KeyFileError: Raised if the file is corrupt of non-existent.
             CryptoKeyError: Raised if the user enters an incorrect password for an encrypted keyfile.
         """
-        if self._coldkeypub == None:
+        if self._coldkeypub is None:
             self._coldkeypub = self.coldkeypub_file.keypair
         return self._coldkeypub
 
@@ -635,14 +641,10 @@ class wallet:
             if not suppress:
                 display_mnemonic_msg(keypair, "coldkey")
         elif seed is not None:
-            raise ValueError(
-                "Not implemented"
-            )
+            raise ValueError("Not implemented")
         else:
             # json is not None
-            raise ValueError(
-                "Not implemented"
-            )
+            raise ValueError("Not implemented")
 
         self.set_coldkey(keypair, encrypt=use_password, overwrite=overwrite)
         self.set_coldkeypub(keypair, overwrite=overwrite)
@@ -728,14 +730,10 @@ class wallet:
             if not suppress:
                 display_mnemonic_msg(keypair, "hotkey")
         elif seed is not None:
-            raise ValueError(
-                "Not implemented"
-            )
+            raise ValueError("Not implemented")
         else:
             # json is not None
-            raise ValueError(
-                "Not implemented"
-            )
+            raise ValueError("Not implemented")
 
         self.set_hotkey(keypair, encrypt=use_password, overwrite=overwrite)
         return self

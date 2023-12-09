@@ -17,13 +17,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+from typing import Dict, Optional
+
 import requests
-from typing import Dict
 
-import cybertensor
-from .wallet_utils import *
 from .formatting import get_human_readable, millify
-
+from .wallet_utils import *
 
 GIGA = 1e9
 U16_MAX = 65535

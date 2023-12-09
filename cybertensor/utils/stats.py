@@ -46,7 +46,7 @@ class AmountPerSecondRollingAverage:
 
     def event(self, amount):
         """Update self.value (the moving average) with the new_value"""
-        if self.last_update == None:
+        if self.last_update is None:
             self.last_update = time.time()
         else:
             now = time.time()
@@ -69,7 +69,7 @@ class EventsPerSecondRollingAverage:
 
     def event(self):
         """Update self.value (the moving average) with the new_value"""
-        if self.last_update == None:
+        if self.last_update is None:
             self.last_update = time.time()
         else:
             now = time.time()

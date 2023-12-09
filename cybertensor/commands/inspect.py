@@ -16,16 +16,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import os
 import argparse
-from tqdm import tqdm
-from rich.table import Table
-from rich.prompt import Prompt
+import os
 from typing import List, Tuple, Optional, Dict
 
+from rich.prompt import Prompt
+from rich.table import Table
+from tqdm import tqdm
+
 import cybertensor
-from .utils import get_delegates_details, DelegatesDetails
 from . import defaults
+from .utils import get_delegates_details, DelegatesDetails
 
 console = cybertensor.__console__
 

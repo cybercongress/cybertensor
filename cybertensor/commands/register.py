@@ -16,15 +16,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
 import argparse
-from cybertensor import Balance
+import sys
+
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
 from cybertensor import Balance
-from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
 from cybertensor.commands import defaults
+from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
 
 console = cybertensor.__console__
 
@@ -92,7 +92,7 @@ class RegisterCommand:
                     f"Do you want to continue?",
                     default=False,
                 )
-                == False
+                is False
             ):
                 sys.exit(1)
 

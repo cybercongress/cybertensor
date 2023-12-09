@@ -17,17 +17,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import ast
-import sys
-import torch
-import json
 import base64
+import json
+import sys
 import typing
-import hashlib
+from typing import Optional, List, Any
+
 import pydantic
 from pydantic.schema import schema
+
 import cybertensor
-from typing import Optional, List, Any
 
 
 def get_size(obj, seen=None) -> int:
@@ -77,7 +76,7 @@ def cast_int(raw: str) -> int:
         int or None: The converted integer, or None if the input was None.
 
     """
-    return int(raw) if raw != None else raw
+    return int(raw) if raw is not None else raw
 
 
 def cast_float(raw: str) -> float:
@@ -94,7 +93,7 @@ def cast_float(raw: str) -> float:
         float or None: The converted float, or None if the input was None.
 
     """
-    return float(raw) if raw != None else raw
+    return float(raw) if raw is not None else raw
 
 
 class TerminalInfo(pydantic.BaseModel):

@@ -16,28 +16,29 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import os
 import base64
-import json
-import stat
 import getpass
-import cybertensor
-from cybertensor.errors import KeyFileError
-from typing import Optional
+import json
+import os
+import stat
 from pathlib import Path
+from typing import Optional
 
-from ansible_vault import Vault
 from ansible.parsing.vault import AnsibleVaultError
+from ansible_vault import Vault
 from cryptography.exceptions import InvalidSignature, InvalidKey
 from cryptography.fernet import Fernet, InvalidToken
-from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from nacl import pwhash, secret
 from password_strength import PasswordPolicy
-from termcolor import colored
 from rich.prompt import Confirm
+from termcolor import colored
+
+import cybertensor
 from cybertensor import __chain_address_prefix__
+from cybertensor.errors import KeyFileError
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
 
@@ -73,9 +74,7 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "cybertensor.K
     except:
         string_value = str(keyfile_data)
         raise cybertensor.KeyFileError(
-            "Keypair could not be created from keyfile data: {}".format(
-                string_value
-            )
+            "Keypair could not be created from keyfile data: {}".format(string_value)
         )
 
     if "secretPhrase" in keyfile_dict and keyfile_dict["secretPhrase"] is not None:
@@ -85,7 +84,9 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "cybertensor.K
         )
 
     if "address" in keyfile_dict and keyfile_dict["address"] is not None:
-        return cybertensor.Keypair(address=keyfile_dict["address"], public_key=keyfile_dict["publicKey"])
+        return cybertensor.Keypair(
+            address=keyfile_dict["address"], public_key=keyfile_dict["publicKey"]
+        )
 
     else:
         raise cybertensor.KeyFileError(
@@ -171,9 +172,9 @@ def keyfile_data_is_encrypted(keyfile_data: bytes) -> bool:
         is_encrypted (bool): True if the data is encrypted.
     """
     return (
-            keyfile_data_is_encrypted_nacl(keyfile_data)
-            or keyfile_data_is_encrypted_ansible(keyfile_data)
-            or keyfile_data_is_encrypted_legacy(keyfile_data)
+        keyfile_data_is_encrypted_nacl(keyfile_data)
+        or keyfile_data_is_encrypted_ansible(keyfile_data)
+        or keyfile_data_is_encrypted_legacy(keyfile_data)
     )
 
 
@@ -199,7 +200,7 @@ def legacy_encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -> by
     password = ask_password_to_encrypt() if password is None else password
     console = cybertensor.__console__
     with console.status(
-            ":exclamation_mark: Encrypting key with legacy encrpytion method..."
+        ":exclamation_mark: Encrypting key with legacy encrpytion method..."
     ):
         vault = Vault(password)
     return vault.vault.encrypt(keyfile_data)
@@ -237,7 +238,7 @@ def get_coldkey_password_from_environment(coldkey_name: str) -> Optional[str]:
     """
     for env_var in os.environ:
         if env_var.upper().startswith("BT_COLD_PW_") and env_var.upper().endswith(
-                coldkey_name.upper()
+            coldkey_name.upper()
         ):
             return os.getenv(env_var)
 
@@ -245,7 +246,7 @@ def get_coldkey_password_from_environment(coldkey_name: str) -> Optional[str]:
 
 
 def decrypt_keyfile_data(
-        keyfile_data: bytes, password: str = None, coldkey_name: Optional[str] = None
+    keyfile_data: bytes, password: str = None, coldkey_name: Optional[str] = None
 ) -> bytes:
     """Decrypts the passed keyfile data using ansible vault.
     Args:
@@ -280,7 +281,7 @@ def decrypt_keyfile_data(
                     memlimit=pwhash.argon2i.MEMLIMIT_SENSITIVE,
                 )
                 box = secret.SecretBox(key)
-                decrypted_keyfile_data = box.decrypt(keyfile_data[len("$NACL"):])
+                decrypted_keyfile_data = box.decrypt(keyfile_data[len("$NACL") :])
             # Ansible decrypt.
             elif keyfile_data_is_encrypted_ansible(keyfile_data):
                 vault = Vault(password)
@@ -369,11 +370,11 @@ class keyfile:
         return self._read_keyfile_data_from_file()
 
     def set_keypair(
-            self,
-            keypair: "cybertensor.Keypair",
-            encrypt: bool = True,
-            overwrite: bool = False,
-            password: str = None,
+        self,
+        keypair: "cybertensor.Keypair",
+        encrypt: bool = True,
+        overwrite: bool = False,
+        password: str = None,
     ):
         """Writes the keypair to the file and optionally encrypts data.
         Args:
@@ -463,7 +464,7 @@ class keyfile:
         return choice == "y"
 
     def check_and_update_encryption(
-            self, print_result: bool = True, no_prompt: bool = False
+        self, print_result: bool = True, no_prompt: bool = False
     ):
         """Check the version of keyfile and update if needed.
         Args:
@@ -497,7 +498,7 @@ class keyfile:
 
             # If the key is not nacl encrypted.
             if keyfile_data_is_encrypted(
-                    keyfile_data
+                keyfile_data
             ) and not keyfile_data_is_encrypted_nacl(keyfile_data):
                 terminate = False
                 cybertensor.__console__.print(
@@ -513,13 +514,13 @@ class keyfile:
                         )
                         stored_mnemonic = Confirm.ask("Have you stored the mnemonic?")
                         if not stored_mnemonic and not Confirm.ask(
-                                "You must proceed with a stored mnemonic, retry and continue this keyfile update?"
+                            "You must proceed with a stored mnemonic, retry and continue this keyfile update?"
                         ):
                             terminate = True
                             break
 
                     decrypted_keyfile_data = None
-                    while decrypted_keyfile_data == None and not terminate:
+                    while decrypted_keyfile_data is None and not terminate:
                         try:
                             password = getpass.getpass(
                                 "\nEnter password to update keyfile: "
@@ -529,7 +530,7 @@ class keyfile:
                             )
                         except KeyFileError:
                             if not Confirm.ask(
-                                    "Invalid password, retry and continue this keyfile update?"
+                                "Invalid password, retry and continue this keyfile update?"
                             ):
                                 terminate = True
                                 break

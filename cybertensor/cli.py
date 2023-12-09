@@ -16,13 +16,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
 import argparse
-
+import sys
+from typing import List, Optional
 
 import cybertensor
-from typing import List, Optional
 from .commands import *
+
 # Create a console instance for CLI display.
 console = cybertensor.__console__
 
@@ -150,7 +150,7 @@ class cli:
         cybertensor.turn_console_on()
 
         # If no config is provided, create a new one from args.
-        if config == None:
+        if config is None:
             config = cli.create_config(args)
 
         self.config = config
@@ -245,7 +245,7 @@ class cli:
             command_data = COMMANDS[command]
 
             if isinstance(command_data, dict):
-                if config["subcommand"] != None:
+                if config["subcommand"] is not None:
                     command_data["commands"][config["subcommand"]].check_config(config)
                 else:
                     console.print(
