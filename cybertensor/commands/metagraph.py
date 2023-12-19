@@ -25,8 +25,7 @@ from .utils import check_netuid_set
 
 console = cybertensor.__console__
 
-
-# TODO change rao and tao in table to boot and gigaboot
+# TODO change tokens in table to boot and gigaboot
 class MetagraphCommand:
     """
     Executes the 'metagraph' command to retrieve and display the entire metagraph

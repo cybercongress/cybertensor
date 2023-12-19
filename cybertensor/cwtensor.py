@@ -553,7 +553,7 @@ class cwtensor:
         wait_for_finalization: bool = True,
         prompt: bool = False,
     ) -> bool:
-        """Registers the wallet to chain by recycling BOOT."""
+        """Registers the wallet to chain by recycling GBOOT."""
         return burned_register_message(
             cwtensor=self,
             wallet=wallet,
@@ -638,7 +638,7 @@ class cwtensor:
     ) -> Tuple[bool, Optional[str], Optional[str]]:
         """Sends a transfer extrinsic to the chain.
         Args:
-            wallet (:obj:`bittensor.wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             dest (:obj:`str`): Destination public key address.
             transfer_balance (:obj:`Balance`): Amount to transfer.
             wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.

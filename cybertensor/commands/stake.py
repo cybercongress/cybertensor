@@ -41,8 +41,8 @@ class StakeCommand:
     Optional arguments:
     - --all (bool): When set, stakes all available tokens from the coldkey.
     - --uid (int): The unique identifier of the neuron to which the stake is to be added.
-    - --amount (float): The amount of TAO tokens to stake.
-    - --max_stake (float): Sets the maximum amount of TAO to have staked in each hotkey.
+    - --amount (float): The amount of GBOOT tokens to stake.
+    - --max_stake (float): Sets the maximum amount of GBOOT to have staked in each hotkey.
     - --hotkeys (list): Specifies hotkeys by name or address to stake to.
     - --all_hotkeys (bool): When set, stakes to all hotkeys associated with the wallet, excluding any specified in --hotkeys.
 
@@ -342,8 +342,8 @@ class StakeShow:
     - Coldkey: The coldkey associated with the wallet.
     - Balance: The balance of the coldkey.
     - Account: The name of the hotkey or delegate.
-    - Stake: The amount of TAO staked to the hotkey or delegate.
-    - Rate: The rate of return on the stake, typically shown in TAO per day.
+    - Stake: The amount of GBOOT staked to the hotkey or delegate.
+    - Rate: The rate of return on the stake, typically shown in GBOOT per day.
 
     Example usage:
     >>> ctcli stake show --all

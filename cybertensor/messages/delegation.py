@@ -108,7 +108,7 @@ def delegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as Tao.
+            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.
@@ -242,7 +242,7 @@ def undelegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to unstake as cybertensor balance, or float interpreted as Tao.
+            Amount to unstake as cybertensor balance, or float interpreted as GBOOT.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
             or returns false if the extrinsic fails to be finalized within the timeout.
