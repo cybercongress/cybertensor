@@ -18,12 +18,19 @@
 from typing import Optional, Union
 
 from bip39 import bip39_generate, bip39_validate
+from scalecodec.base import ScaleBytes
 
-from cosmpy.crypto.keypairs import PrivateKey, PublicKey
+from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.address import Address
+from cosmpy.crypto.keypairs import PrivateKey, PublicKey
 from cosmpy.mnemonic import derive_child_key_from_mnemonic, COSMOS_HD_PATH, validate_mnemonic_and_normalise
 
+from cybertensor import ConfigurationError
+
+__all__ = ['Keypair']
+
 DEFAULT_PREFIX = "bostrom"
+
 
 class Keypair:
 
@@ -97,7 +104,7 @@ class Keypair:
     @classmethod
     def create_from_mnemonic(cls, mnemonic: str, prefix: Optional[str] = None) -> 'Keypair':
         """
-        Create a Keypair for given memonic
+        Create a Keypair for given mnemonic
 
         Parameters
         ----------
@@ -147,9 +154,34 @@ class Keypair:
             prefix=prefix
         )
 
+    def sign(self, data: Union[ScaleBytes, bytes, str]) -> bytes:
+        """
+        Creates a signature for given data
+
+        Parameters
+        ----------
+        data: data to sign in `Scalebytes`, bytes or hex string format
+
+        Returns
+        -------
+        signature in bytes
+
+        """
+
+        if type(data) is ScaleBytes:
+            data = bytes(data.data)
+        elif data[0:2] == '0x':
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+
+        if not self.private_key:
+            raise ConfigurationError('No private key set to create signatures')
+
+        return LocalWallet(PrivateKey(self.private_key)).signer().sign(message=data)
+
     def __repr__(self):
         if self.address:
             return '<Keypair (address={})>'.format(self.address)
         else:
             return '<Keypair (public_key={})>'.format(self.public_key)
-

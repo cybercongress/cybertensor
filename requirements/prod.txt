@@ -24,6 +24,7 @@ pytest
 retry
 requests
 rich
+scalecodec==1.2.0
 termcolor
 torch>=1.13.1
 tqdm
