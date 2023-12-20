@@ -24,11 +24,12 @@ from rich.prompt import Confirm
 import cybertensor
 from cybertensor import Balance
 
+
 def register_subnetwork_message(
-        cwtensor: "cybertensor.cwtensor",
-        wallet: "cybertensor.wallet",
-        wait_for_finalization: bool = True,
-        prompt: bool = False,
+    cwtensor: "cybertensor.cwtensor",
+    wallet: "cybertensor.wallet",
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
 ) -> bool:
     r"""Registers a new subnetwork
     Args:
@@ -48,34 +49,40 @@ def register_subnetwork_message(
     burn_cost = Balance(cwtensor.get_subnet_burn_cost())
     if burn_cost > your_balance:
         cybertensor.__console__.print(
-            f"Your balance of: [green]{your_balance}[/green] is not enough to pay the subnet lock cost of: [green]{burn_cost}[/green]"
+            f"Your balance of: [green]{your_balance}[/green] is not enough to pay the subnet lock cost of: "
+            f"[green]{burn_cost}[/green]"
         )
         return False
 
     if prompt:
         cybertensor.__console__.print(f"Your balance is: [green]{your_balance}[/green]")
         if not Confirm.ask(
-                f"Do you want to register a subnet for [green]{burn_cost}[/green]?"
+            f"Do you want to register a subnet for [green]{burn_cost}[/green]?"
         ):
             return False
 
     wallet.coldkey  # unlock coldkey
 
     with cybertensor.__console__.status(":satellite: Registering subnet..."):
-        create_register_network_msg = {
-            "register_network": {}
-        }
-        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        create_register_network_msg = {"register_network": {}}
+        signer_wallet = LocalWallet(
+            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+        )
         gas = cybertensor.__default_gas__
         funds = burn_cost.__int__().__str__().__add__(cybertensor.__token__)
 
         if not wait_for_finalization:
-            tx = cwtensor.contract.execute(create_register_network_msg, signer_wallet, gas, funds)
+            tx = cwtensor.contract.execute(
+                create_register_network_msg, signer_wallet, gas, funds
+            )
             cybertensor.__console__.print(
-                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without finalization confirmation..."
+                f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without finalization "
+                f"confirmation..."
             )
         else:
-            tx = cwtensor.contract.execute(create_register_network_msg, signer_wallet, gas, funds)
+            tx = cwtensor.contract.execute(
+                create_register_network_msg, signer_wallet, gas, funds
+            )
             cybertensor.__console__.print(
                 f":satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete..."
             )
@@ -83,7 +90,8 @@ def register_subnetwork_message(
                 tx.wait_to_complete()
                 if tx.response.is_successful():
                     cybertensor.__console__.print(
-                        f":white_heavy_check_mark: [green]Registered subnetwork with netuid: {tx.response.events.get('wasm').get('netuid_to_register')}[/green]"
+                        f":white_heavy_check_mark: [green]Registered subnetwork with netuid: "
+                        f"{tx.response.events.get('wasm').get('netuid_to_register')}[/green]"
                     )
                     return True
                 else:
@@ -103,13 +111,13 @@ from ..commands.network import HYPERPARAMS
 
 
 def set_hyperparameter_message(
-        cwtensor: "cybertensor.cwtensor",
-        wallet: "cybertensor.wallet",
-        netuid: int,
-        parameter: str,
-        value,
-        wait_for_finalization: bool = True,
-        prompt: bool = False,
+    cwtensor: "cybertensor.cwtensor",
+    wallet: "cybertensor.wallet",
+    netuid: int,
+    parameter: str,
+    value,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
 ) -> bool:
     r"""Sets a hyperparameter for a specific subnetwork.
     Args:
@@ -141,19 +149,21 @@ def set_hyperparameter_message(
     wallet.coldkey  # unlock coldkey
 
     message = HYPERPARAMS.get(parameter)
-    if message == None:
+    if message is None:
         cybertensor.__console__.print(
             ":cross_mark: [red]Invalid hyperparameter specified.[/red]"
         )
         return False
 
     with cybertensor.__console__.status(
-            f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
+        f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
     ):
         sudo_msg = {
             str(message): {"netuid": netuid, str(parameter): int(value)},
         }
-        signer_wallet = LocalWallet(PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__)
+        signer_wallet = LocalWallet(
+            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+        )
         gas = cybertensor.__default_gas__
 
         if not wait_for_finalization:

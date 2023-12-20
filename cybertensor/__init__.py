@@ -18,14 +18,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from rich.console import Console
-from rich.traceback import install
 from pathlib import Path
+
 # Install and apply nest asyncio to allow the async functions
 # to run in a .ipynb
 import nest_asyncio
-
 from cosmpy.aerial.config import NetworkConfig
+from rich.console import Console
+from rich.traceback import install
 
 nest_asyncio.apply()
 
@@ -155,10 +155,6 @@ from .stream import *
 from .tensor import *
 from .axon import axon as axon
 from .dendrite import dendrite as dendrite
-
-# from .mock.keyfile_mock import MockKeyfile as MockKeyfile
-# from .mock.subtensor_mock import MockSubtensor as MockSubtensor
-# from .mock.wallet_mock import MockWallet as MockWallet
 
 configs = [
     axon.config(),

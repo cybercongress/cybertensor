@@ -17,14 +17,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import numpy
-import torch
 import base64
-import pytest
+from typing import Optional, Union, List
+
 import msgpack
-import pydantic
 import msgpack_numpy
-from typing import Dict, Optional, Tuple, Union, List, Callable
+import numpy
+import pydantic
+import torch
 
 TORCH_DTYPES = {
     "torch.float16": torch.float16,

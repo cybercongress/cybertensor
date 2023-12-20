@@ -60,7 +60,9 @@ class Balance:
             # Assume gboot value for the float
             self.boot = int(balance * pow(10, 9))
         elif isinstance(balance, Coin):
-            self.boot = int(balance.amount) if balance.denom == Balance.boot_unit.lower() else 0
+            self.boot = (
+                int(balance.amount) if balance.denom == Balance.boot_unit.lower() else 0
+            )
         elif isinstance(balance, list):
             self.boot = 0
             for _coin in balance:
@@ -69,8 +71,10 @@ class Balance:
                     self.boot = int(_coin.amount)
                     break
         else:
-            raise TypeError("balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, "
-                            "or list of cosmpy.aerial.client.Coin")
+            raise TypeError(
+                "balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, "
+                "or list of cosmpy.aerial.client.Coin"
+            )
 
     @property
     def gboot(self):

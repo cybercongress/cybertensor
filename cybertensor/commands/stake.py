@@ -16,15 +16,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
 import argparse
+import sys
+
+from rich.prompt import Confirm
+
 import cybertensor
-from tqdm import tqdm
-from rich.prompt import Confirm, Prompt
 from cybertensor.utils.balance import Balance
-from typing import List, Union, Optional, Dict, Tuple
 from .utils import get_hotkey_wallets_for_wallet
-from . import defaults
 
 console = cybertensor.__console__
 
@@ -279,15 +278,14 @@ class StakeCommand:
 
 
 ### Stake list.
-import json
 import argparse
 import cybertensor
 from tqdm import tqdm
 from rich.table import Table
 from rich.prompt import Prompt
-from typing import Dict, Union, List, Tuple
+from typing import Union
 from concurrent.futures import ThreadPoolExecutor
-from .utils import check_netuid_set, get_delegates_details, DelegatesDetails
+from .utils import DelegatesDetails
 from . import defaults
 
 console = cybertensor.__console__
@@ -358,7 +356,7 @@ class StakeShow:
     @staticmethod
     def run(cli):
         r"""Show all stake accounts."""
-        if cli.config.get("all", d=False) == True:
+        if cli.config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
             wallets = [cybertensor.wallet(config=cli.config)]

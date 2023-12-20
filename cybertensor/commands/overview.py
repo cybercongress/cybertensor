@@ -17,21 +17,23 @@
 # DEALINGS IN THE SOFTWARE.
 
 import argparse
-import cybertensor
-from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor
+from typing import List, Optional, Dict, Tuple
+
 from fuzzywuzzy import fuzz
 from rich.align import Align
-from rich.table import Table
 from rich.prompt import Prompt
-from typing import List, Optional, Dict, Tuple
+from rich.table import Table
+from tqdm import tqdm
+
+import cybertensor
+from . import defaults
 from .utils import (
     get_hotkey_wallets_for_wallet,
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
 )
-from . import defaults
 
 console = cybertensor.__console__
 

@@ -17,9 +17,10 @@
 # DEALINGS IN THE SOFTWARE.
 
 import argparse
-import cybertensor
-from rich.prompt import Prompt
+
 from rich.table import Table
+
+import cybertensor
 from .utils import check_netuid_set
 
 console = cybertensor.__console__

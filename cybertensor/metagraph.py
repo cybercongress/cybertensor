@@ -19,11 +19,13 @@
 # DEALINGS IN THE SOFTWARE.
 
 import os
-import torch
-import cybertensor
 from os import listdir
 from os.path import join
 from typing import List, Optional
+
+import torch
+
+import cybertensor
 
 
 def get_save_dir(network: str, netuid: int) -> str:

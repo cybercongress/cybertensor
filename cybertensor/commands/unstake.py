@@ -17,13 +17,15 @@
 # DEALINGS IN THE SOFTWARE.
 
 import sys
-import cybertensor
-from tqdm import tqdm
-from rich.prompt import Confirm, Prompt
-from cybertensor.utils.balance import Balance
 from typing import List, Union, Optional, Tuple
-from .utils import get_hotkey_wallets_for_wallet
+
+from rich.prompt import Confirm, Prompt
+from tqdm import tqdm
+
+import cybertensor
+from cybertensor.utils.balance import Balance
 from . import defaults
+from .utils import get_hotkey_wallets_for_wallet
 
 console = cybertensor.__console__
 
@@ -222,7 +224,7 @@ class UnStakeCommand:
             hotkey_stake: Balance = cwtensor.get_stake_for_coldkey_and_hotkey(
                 hotkey=hotkey[1], coldkey=wallet.coldkeypub.address
             )
-            if unstake_amount_gigaboot == None:
+            if unstake_amount_gigaboot is None:
                 unstake_amount_gigaboot = hotkey_stake.gboot
             if cli.config.get("max_stake"):
                 # Get the current stake of the hotkey from this coldkey.

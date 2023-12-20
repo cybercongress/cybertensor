@@ -18,7 +18,7 @@
 import torch
 import json
 from dataclasses import dataclass, asdict
-from typing import List, Tuple, Dict, Optional, Any, TypedDict, Union
+from typing import List, Tuple, Dict, Optional, Any
 
 import cybertensor
 # from cybertensor import SubnetHyperparameters
@@ -363,7 +363,7 @@ class AxonInfo:
         return net.ip__str__(self.ip_type, self.ip, self.port)
 
     def __eq__(self, other: "AxonInfo"):
-        if other == None:
+        if other is None:
             return False
         if (
             self.version == other.version

@@ -2,7 +2,6 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
 # Copyright © 2023 cyber~Congress
-from cybertensor import Balance
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -18,12 +17,14 @@ from cybertensor import Balance
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import cybertensor
+import time
+from typing import List, Union, Optional, Tuple
 
 import torch
-import time
 from rich.prompt import Confirm
-from typing import List, Union, Optional, Tuple
+
+import cybertensor
+from cybertensor import Balance
 from cybertensor.utils.registration import POWSolution, create_pow
 
 
@@ -74,9 +75,7 @@ def register_message(
     """
     if not cwtensor.subnet_exists(netuid):
         cybertensor.__console__.print(
-            ":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{}[/bold white] does not exist.".format(
-                netuid
-            )
+            f":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{netuid}[/bold white] does not exist."
         )
         return False
 
@@ -94,11 +93,10 @@ def register_message(
 
     if prompt:
         if not Confirm.ask(
-            "Continue Registration?\n  hotkey:     [bold white]{}[/bold white]\n  coldkey:    [bold white]{}[/bold white]\n  network:    [bold white]{}[/bold white]".format(
-                wallet.hotkey.address,
-                wallet.coldkeypub.address,
-                cwtensor.network,
-            )
+            f"Continue Registration?\n"
+            f"  hotkey:     [bold white]{wallet.hotkey.address}[/bold white]\n"
+            f"  coldkey:    [bold white]{wallet.coldkeypub.address}[/bold white]\n"
+            f"  network:    [bold white]{cwtensor.network}[/bold white]"
         ):
             return False
 
@@ -106,7 +104,7 @@ def register_message(
     attempts = 1
     while True:
         cybertensor.__console__.print(
-            ":satellite: Registering...({}/{})".format(attempts, max_allowed_attempts)
+            f":satellite: Registering...({attempts}/{max_allowed_attempts})"
         )
         # Solve latest POW.
         if cuda:
@@ -163,7 +161,7 @@ def register_message(
                     )
                     success, err_msg = result
 
-                    if success != True or success == False:
+                    if success != True or success is False:
                         if "key is already registered" in err_msg:
                             # Error meant that the key is already registered.
                             cybertensor.__console__.print(
@@ -172,7 +170,7 @@ def register_message(
                             return True
 
                         cybertensor.__console__.print(
-                            ":cross_mark: [red]Failed[/red]: error:{}".format(err_msg)
+                            f":cross_mark: [red]Failed[/red]: error:{err_msg}"
                         )
                         time.sleep(0.5)
 
@@ -203,9 +201,7 @@ def register_message(
             # Failed registration, retry pow
             attempts += 1
             cybertensor.__console__.print(
-                ":satellite: Failed registration, retrying pow ...({}/{})".format(
-                    attempts, max_allowed_attempts
-                )
+                f":satellite: Failed registration, retrying pow ...({attempts}/{max_allowed_attempts})"
             )
         else:
             # Failed to register after max attempts.
@@ -238,9 +234,7 @@ def burned_register_message(
     """
     if not cwtensor.subnet_exists(netuid):
         cybertensor.__console__.print(
-            ":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{}[/bold white] does not exist.".format(
-                netuid
-            )
+            f":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{netuid}[/bold white] does not exist."
         )
         return False
 
@@ -257,13 +251,11 @@ def burned_register_message(
         burn_amount = Balance(cwtensor.burn(netuid=netuid))
         if not neuron.is_null:
             cybertensor.__console__.print(
-                ":white_heavy_check_mark: [green]Already Registered[/green]:\n"
-                "uid: [bold white]{}[/bold white]\n"
-                "netuid: [bold white]{}[/bold white]\n"
-                "hotkey: [bold white]{}[/bold white]\n"
-                "coldkey: [bold white]{}[/bold white]".format(
-                    neuron.uid, neuron.netuid, neuron.hotkey, neuron.coldkey
-                )
+                f":white_heavy_check_mark: [green]Already Registered[/green]:\n"
+                f"uid: [bold white]{neuron.uid}[/bold white]\n"
+                f"netuid: [bold white]{neuron.netuid}[/bold white]\n"
+                f"hotkey: [bold white]{neuron.hotkey}[/bold white]\n"
+                f"coldkey: [bold white]{neuron.coldkey}[/bold white]"
             )
             return True
 
@@ -280,9 +272,9 @@ def burned_register_message(
             wait_for_finalization=wait_for_finalization,
         )
 
-        if success != True or success == False:
+        if success is not True:
             cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(err_msg)
+                f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
             time.sleep(0.5)
 
@@ -294,9 +286,8 @@ def burned_register_message(
             )
 
             cybertensor.__console__.print(
-                "Balance:\n  [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                    old_balance, new_balance
-                )
+                f"Balance:\n"
+                f"  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
             )
             is_registered = cwtensor.is_hotkey_registered(
                 netuid=netuid, hotkey=wallet.hotkey.address

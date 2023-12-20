@@ -18,36 +18,37 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import os
-import uuid
-import copy
-import json
-import time
-import base64
-import asyncio
-import inspect
-import uvicorn
 import argparse
-import traceback
-import threading
-import cybertensor
+import asyncio
 import contextlib
-
+import copy
+import inspect
+import json
+import os
+import threading
+import time
+import traceback
+import uuid
 from inspect import signature, Signature, Parameter
+from typing import Optional, Tuple, Callable, Any
+
+import uvicorn
+from fastapi import FastAPI, APIRouter, Depends
 from fastapi.responses import JSONResponse
-from substrateinterface import Keypair
-from fastapi import FastAPI, APIRouter, Request, Response, Depends
-from starlette.types import Scope, Message
-from starlette.responses import Response
-from starlette.requests import Request
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
-from typing import Dict, Optional, Tuple, Union, List, Callable, Any
+from starlette.requests import Request
+from starlette.responses import Response
+from substrateinterface import Keypair
+
+import cybertensor
 
 """ Create and init Axon, which services Forward and Backward requests from other neurons.
 """
 
 """ FastAPI server that runs in a thread. 
 """
+
+
 class FastAPIThreadedServer(uvicorn.Server):
     should_exit: bool = False
     is_running: bool = False
@@ -196,7 +197,9 @@ class axon:
             config = axon.config()
         config = copy.deepcopy(config)
         config.axon.ip = ip or config.axon.get("ip", cybertensor.defaults.axon.ip)
-        config.axon.port = port or config.axon.get("port", cybertensor.defaults.axon.port)
+        config.axon.port = port or config.axon.get(
+            "port", cybertensor.defaults.axon.port
+        )
         config.axon.external_ip = external_ip or config.axon.get(
             "external_ip", cybertensor.defaults.axon.external_ip
         )
@@ -218,12 +221,12 @@ class axon:
         self.port = self.config.axon.port
         self.external_ip = (
             self.config.axon.external_ip
-            if self.config.axon.external_ip != None
+            if self.config.axon.external_ip is not None
             else cybertensor.utils.networking.get_external_ip()
         )
         self.external_port = (
             self.config.axon.external_port
-            if self.config.axon.external_port != None
+            if self.config.axon.external_port is not None
             else self.config.axon.port
         )
         self.full_address = str(self.config.axon.ip) + ":" + str(self.config.axon.port)
@@ -626,7 +629,7 @@ class axon:
         Returns:
             cybertensor.axon: The served Axon instance.
         """
-        if cwtensor == None:
+        if cwtensor is None:
             cwtensor = cybertensor.cwtensor()
         cwtensor.serve_axon(netuid=netuid, axon=self)
         return self

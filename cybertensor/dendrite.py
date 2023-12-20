@@ -21,13 +21,15 @@
 from __future__ import annotations
 
 import asyncio
-import uuid
 import time
-import torch
+import uuid
+from typing import Optional, List, Union, AsyncGenerator, Any
+
 import aiohttp
-import cybertensor
+import torch
 from fastapi import Response
-from typing import Union, Optional, List, Union, AsyncGenerator, Any
+
+import cybertensor
 
 
 class dendrite(torch.nn.Module):
@@ -248,7 +250,9 @@ class dendrite(torch.nn.Module):
         deserialize: bool = True,
         run_async: bool = True,
         streaming: bool = False,
-    ) -> List[Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]]:
+    ) -> List[
+        Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]
+    ]:
         """
         Asynchronously sends requests to one or multiple Axons and collates their responses.
 
@@ -299,7 +303,9 @@ class dendrite(torch.nn.Module):
 
         async def query_all_axons(
             is_stream: bool,
-        ) -> Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]:
+        ) -> Union[
+            AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+        ]:
             """
             Handles requests for all axons, either in streaming or non-streaming mode.
 

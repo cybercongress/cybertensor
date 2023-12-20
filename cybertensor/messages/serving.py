@@ -17,10 +17,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 import json
-import cybertensor
-from dataclasses import asdict
-import cybertensor.utils.networking as net
+
 from rich.prompt import Confirm
+
+import cybertensor
+import cybertensor.utils.networking as net
 from cybertensor.types import AxonServeCallParams
 
 
@@ -106,9 +107,8 @@ def serve_message(
         output["coldkey"] = wallet.coldkeypub.address
         output["hotkey"] = wallet.hotkey.address
         if not Confirm.ask(
-            "Do you want to serve axon:\n  [bold white]{}[/bold white]".format(
-                json.dumps(output, indent=4, sort_keys=True)
-            )
+            f"Do you want to serve axon:\n"
+            f"  [bold white]{json.dumps(output, indent=4, sort_keys=True)}[/bold white]"
         ):
             return False
 
@@ -122,7 +122,7 @@ def serve_message(
     )
 
     if wait_for_finalization:
-        if success == True:
+        if success is True:
             cybertensor.logging.debug(
                 f"Axon served with: AxonInfo({wallet.hotkey.address},{ip}:{port}) on {cwtensor.network}:{netuid} "
             )
@@ -164,23 +164,19 @@ def serve_axon_message(
     external_port = axon.external_port
 
     # ---- Get external ip ----
-    if axon.external_ip == None:
+    if axon.external_ip is None:
         try:
             external_ip = net.get_external_ip()
             cybertensor.__console__.print(
-                ":white_heavy_check_mark: [green]Found external ip: {}[/green]".format(
-                    external_ip
-                )
+                f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )
             cybertensor.logging.success(
-                prefix="External IP", sufix="<blue>{}</blue>".format(external_ip)
+                prefix="External IP", sufix=f"<blue>{external_ip}</blue>"
             )
-        except Exception as E:
+        except Exception as e:
             raise RuntimeError(
-                "Unable to attain your external ip. Check your internet connection. error: {}".format(
-                    E
-                )
-            ) from E
+                f"Unable to attain your external ip. Check your internet connection. error: {e}"
+            ) from e
     else:
         external_ip = axon.external_ip
 

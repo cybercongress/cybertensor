@@ -16,23 +16,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import sys
-import os
 import argparse
-import cybertensor
-from typing import List, Optional
-from rich.table import Table
-from rich.prompt import Prompt
-from rich.prompt import Confirm
-from rich.console import Text
-from tqdm import tqdm
-from substrateinterface.exceptions import SubstrateRequestException
-from .utils import get_delegates_details, DelegatesDetails
-from . import defaults
-
 import os
+import sys
 from typing import List, Dict, Optional
 
+from rich.console import Text
+from rich.prompt import Confirm
+from rich.prompt import Prompt
+from rich.table import Table
+from substrateinterface.exceptions import SubstrateRequestException
+from tqdm import tqdm
+
+import cybertensor
+from . import defaults
+from .utils import DelegatesDetails
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
@@ -697,7 +695,7 @@ class MyDelegatesCommand:
     def run(cli):
         """Delegates stake to a chain delegate."""
         config = cli.config.copy()
-        if config.get("all", d=None) == True:
+        if config.get("all", d=None) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
             wallets = [cybertensor.wallet(config=config)]

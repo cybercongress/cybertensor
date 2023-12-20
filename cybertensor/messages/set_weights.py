@@ -17,14 +17,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import cybertensor
+from typing import Union
 
 import torch
-from rich.prompt import Confirm
-from typing import Union
-import cybertensor.utils.weight_utils as weight_utils
-
 from loguru import logger
+from rich.prompt import Confirm
+
+import cybertensor
+import cybertensor.utils.weight_utils as weight_utils
 
 logger = logger.opt(colors=True)
 
@@ -75,14 +75,14 @@ def set_weights_message(
     # Ask before moving on.
     if prompt:
         if not Confirm.ask(
-            "Do you want to set weights:\n[bold white]  weights: {}\n  uids: {}[/bold white ]?".format(
-                [float(v / 65535) for v in weight_vals], weight_uids
-            )
+            f"Do you want to set weights:\n"
+            f"[bold white]  weights: {[float(v / 65535) for v in weight_vals]}\n"
+            f"  uids: {weight_uids}[/bold white ]?"
         ):
             return False
 
     with cybertensor.__console__.status(
-        ":satellite: Setting weights on [white]{}[/white] ...".format(cwtensor.network)
+        f":satellite: Setting weights on [white]{cwtensor.network}[/white] ..."
     ):
         try:
             success, error_message = cwtensor._do_set_weights(
@@ -97,31 +97,29 @@ def set_weights_message(
             if not wait_for_finalization:
                 return True
 
-            if success == True:
+            if success is True:
                 cybertensor.__console__.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
                 cybertensor.logging.success(
                     prefix="Set weights",
-                    sufix="<green>Finalized: </green>" + str(success),
+                    sufix=f"<green>Finalized: </green>{success}",
                 )
                 return True
             else:
                 cybertensor.__console__.print(
-                    ":cross_mark: [red]Failed[/red]: error:{}".format(error_message)
+                    f":cross_mark: [red]Failed[/red]: error:{error_message}",
                 )
                 cybertensor.logging.warning(
                     prefix="Set weights",
-                    sufix="<red>Failed: </red>" + str(error_message),
+                    sufix=f"<red>Failed: </red>{error_message}",
                 )
                 return False
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(e)
-            )
+            cybertensor.__console__.print(f":cross_mark: [red]Failed[/red]: error:{e}")
             cybertensor.logging.warning(
-                prefix="Set weights", sufix="<red>Failed: </red>" + str(e)
+                prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
             )
             return False

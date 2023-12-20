@@ -17,13 +17,16 @@
 # DEALINGS IN THE SOFTWARE.
 
 import argparse
-import cybertensor
 import os
 import sys
+from typing import Optional, List
+
 from rich.prompt import Prompt, Confirm
 from rich.table import Table
-from typing import Optional, List
+
+import cybertensor
 from . import defaults
+
 
 # TODO rewrite to use raw pubkey against hex or rewrite keypair/keyfile to use hex
 
@@ -61,7 +64,7 @@ class RegenColdkeyCommand:
         if cli.config.get("json"):
             file_name: str = cli.config.get("json")
             if not os.path.exists(file_name) or not os.path.isfile(file_name):
-                raise ValueError("File {} does not exist".format(file_name))
+                raise ValueError(f"File {file_name} does not exist")
             with open(cli.config.get("json"), "r") as f:
                 json_str = f.read()
 
@@ -271,7 +274,7 @@ class RegenHotkeyCommand:
         if cli.config.get("json"):
             file_name: str = cli.config.get("json")
             if not os.path.exists(file_name) or not os.path.isfile(file_name):
-                raise ValueError("File {} does not exist".format(file_name))
+                raise ValueError(f"File {file_name} does not exist")
             with open(cli.config.get("json"), "r") as f:
                 json_str = f.read()
 
@@ -640,7 +643,7 @@ class UpdateWalletCommand:
     def run(cli):
         """Check if any of the wallets needs an update."""
         config = cli.config.copy()
-        if config.get("all", d=False) == True:
+        if config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
             wallets = [cybertensor.wallet(config=config)]
@@ -668,14 +671,14 @@ class UpdateWalletCommand:
 
     @staticmethod
     def check_config(config: "cybertensor.Config"):
-        if config.get("all", d=False) == False:
+        if config.get("all", d=False) is False:
             if not config.no_prompt:
                 if Confirm.ask("Do you want to update all legacy wallets?"):
                     config["all"] = True
 
         # Ask the user to specify the wallet if the wallet name is not clear.
         if (
-            config.get("all", d=False) == False
+            config.get("all", d=False) is False
             and config.wallet.get("name") == cybertensor.defaults.wallet.name
             and not config.no_prompt
         ):

@@ -18,17 +18,25 @@
 from typing import Optional, Union
 
 from bip39 import bip39_generate, bip39_validate
-
-from cosmpy.crypto.keypairs import PrivateKey, PublicKey
 from cosmpy.crypto.address import Address
-from cosmpy.mnemonic import derive_child_key_from_mnemonic, COSMOS_HD_PATH, validate_mnemonic_and_normalise
+from cosmpy.crypto.keypairs import PrivateKey, PublicKey
+from cosmpy.mnemonic import (
+    derive_child_key_from_mnemonic,
+    COSMOS_HD_PATH,
+    validate_mnemonic_and_normalise,
+)
 
-DEFAULT_PREFIX = "bostrom"
+import cybertensor
+
 
 class Keypair:
-
-    def __init__(self, address: str = None, public_key: Union[bytes, str] = None, private_key: Union[bytes, str] = None,
-                 prefix: Optional[str] = None):
+    def __init__(
+        self,
+        address: str = None,
+        public_key: Union[bytes, str] = None,
+        private_key: Union[bytes, str] = None,
+        prefix: Optional[str] = None,
+    ):
         """
         Allows generation of Keypairs from a variety of input combination, such as a public/private key combination,
         mnemonic or URI containing soft and hard derivation paths. With these Keypairs data can be signed and verified
@@ -41,20 +49,20 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = DEFAULT_PREFIX
+            prefix = cybertensor.__chain_address_prefix__
 
         self.prefix = prefix
 
         if private_key:
             if type(private_key) is str:
-                private_key = bytes.fromhex(private_key.replace('0x', ''))
+                private_key = bytes.fromhex(private_key.replace("0x", ""))
 
             private_key_obj = PrivateKey(private_key)
             public_key = private_key_obj.public_key.public_key
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
         if not public_key:
-            raise ValueError('No public key provided')
+            raise ValueError("No public key provided")
 
         self.public_key: bytes = public_key
 
@@ -77,7 +85,7 @@ class Keypair:
         -------
         str: Seed phrase
         """
-        return bip39_generate(words, 'en')
+        return bip39_generate(words, "en")
 
     @classmethod
     def validate_mnemonic(cls, mnemonic: str) -> bool:
@@ -92,12 +100,14 @@ class Keypair:
         -------
         bool
         """
-        return bip39_validate(mnemonic, 'en')
+        return bip39_validate(mnemonic, "en")
 
     @classmethod
-    def create_from_mnemonic(cls, mnemonic: str, prefix: Optional[str] = None) -> 'Keypair':
+    def create_from_mnemonic(
+        cls, mnemonic: str, prefix: Optional[str] = None
+    ) -> "Keypair":
         """
-        Create a Keypair for given memonic
+        Create a Keypair for given mnemonic
 
         Parameters
         ----------
@@ -110,7 +120,7 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = DEFAULT_PREFIX
+            prefix = cybertensor.__chain_address_prefix__
 
         mnemonic = validate_mnemonic_and_normalise(mnemonic)
 
@@ -124,8 +134,8 @@ class Keypair:
 
     @classmethod
     def create_from_private_key(
-            cls, private_key: Union[bytes, str], prefix: Optional[str] = None
-    ) -> 'Keypair':
+        cls, private_key: Union[bytes, str], prefix: Optional[str] = None
+    ) -> "Keypair":
         """
         Creates Keypair for specified public/private keys
         Parameters
@@ -139,17 +149,16 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = DEFAULT_PREFIX
+            prefix = cybertensor.__chain_address_prefix__
 
         return cls(
             public_key=PrivateKey(private_key).public_key.public_key,
             private_key=private_key,
-            prefix=prefix
+            prefix=prefix,
         )
 
     def __repr__(self):
         if self.address:
-            return '<Keypair (address={})>'.format(self.address)
+            return f"<Keypair (address={self.address})>"
         else:
-            return '<Keypair (public_key={})>'.format(self.public_key)
-
+            return f"<Keypair (public_key={self.public_key})>"

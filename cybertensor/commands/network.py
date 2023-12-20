@@ -16,20 +16,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import time
 import argparse
+from typing import List, Optional, Dict
 
-from cybertensor import SubnetInfo
+from rich.prompt import Prompt
+from rich.table import Table
 
 import cybertensor
 from . import defaults
-from rich.prompt import Prompt
-from rich.table import Table
-from typing import List, Optional, Dict
-
-from .. import cwtensor
-
-from .utils import get_delegates_details, DelegatesDetails, check_netuid_set
+from .utils import DelegatesDetails, check_netuid_set
 
 console = cybertensor.__console__
 

@@ -16,9 +16,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import torch
-import cybertensor
 from typing import Tuple, List
+
+import torch
+
+import cybertensor
 
 U32_MAX = 4294967295
 U16_MAX = 65535
@@ -221,7 +223,7 @@ def process_weights_for_netuid(
     cybertensor.logging.debug("metagraph", metagraph)
 
     # Get latest metagraph from chain if metagraph is None.
-    if metagraph == None:
+    if metagraph is None:
         metagraph = cwtensor.metagraph(netuid)
 
     # Cast weights to floats.

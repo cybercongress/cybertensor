@@ -18,20 +18,20 @@
 # DEALINGS IN THE SOFTWARE.
 
 
-from rich.prompt import Confirm
-from typing import List, Dict, Union
+from typing import Union
 
 from cosmpy.crypto.address import Address
+from rich.prompt import Confirm
 
 import cybertensor
-from ..utils.balance import Balance
 from ..utils import is_valid_address
+from ..utils.balance import Balance
 
 
 def transfer_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "cybertensor.wallet",
-    dest: Address,
+    dest: Union[Address, str],
     amount: Union[Balance, float],
     wait_for_inclusion: bool = True,
     wait_for_finalization: bool = False,
@@ -42,8 +42,8 @@ def transfer_message(
     Args:
         wallet (cybertensor.wallet):
             cybertensor wallet object to make transfer from.
-        dest (cosmpy.crypto.address.Address):
-            Destination public key address of reciever.
+        dest (Union[cosmpy.crypto.address.Address, str]):
+            Destination public key address of a receiver.
         amount (Union[Balance, int]):
             Amount to stake as cybertensor balance, or float interpreted as GBOOT.
         wait_for_inclusion (bool):
@@ -64,9 +64,7 @@ def transfer_message(
     # Validate destination address.
     if not is_valid_address(dest):
         cybertensor.__console__.print(
-            ":cross_mark: [red]Invalid destination address[/red]:[bold white]\n  {}[/bold white]".format(
-                dest
-            )
+            f":cross_mark: [red]Invalid destination address[/red]:[bold white]\n  {dest}[/bold white]"
         )
         return False
 
@@ -95,25 +93,28 @@ def transfer_message(
     # Check if we have enough balance.
     if account_balance < (transfer_balance + fee + existential_deposit):
         cybertensor.__console__.print(
-            ":cross_mark: [red]Not enough balance[/red]:[bold white]\n  balance: {}\n  amount: {}\n  for fee: {}[/bold white]".format(
-                account_balance, transfer_balance, fee
-            )
+            f":cross_mark: [red]Not enough balance[/red]:[bold white]\n"
+            f"  balance: {account_balance}\n"
+            f"  amount: {transfer_balance}\n"
+            f"  for fee: {fee}[/bold white]"
         )
         return False
 
     # Ask before moving on.
     if prompt:
         if not Confirm.ask(
-            "Do you want to transfer:[bold white]\n  amount: {}\n  from: {}:{}\n  to: {}\n  for fee: {}[/bold white]".format(
-                transfer_balance, wallet.name, wallet.coldkey.address, dest, fee
-            )
+            f"Do you want to transfer:[bold white]\n"
+            f"  amount: {transfer_balance}\n"
+            f"  from: {wallet.name}:{wallet.coldkey.address}\n"
+            f"  to: {dest}\n"
+            f"  for fee: {fee}[/bold white]"
         ):
             return False
 
     with cybertensor.__console__.status(":satellite: Transferring..."):
         success, tx_hash, err_msg = cwtensor._do_transfer(
             wallet,
-            dest,
+            Address(dest),
             transfer_balance,
             wait_for_finalization=wait_for_finalization,
             wait_for_inclusion=wait_for_inclusion,
@@ -123,29 +124,26 @@ def transfer_message(
             cybertensor.__console__.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            cybertensor.__console__.print(
-                "[green]Tx Hash: {}[/green]".format(tx_hash)
-            )
+            cybertensor.__console__.print(f"[green]Tx Hash: {tx_hash}[/green]")
 
             explorer_url = cybertensor.utils.get_explorer_url_for_network(
                 cwtensor.network, tx_hash, cybertensor.__network_explorer_map__
             )
             if explorer_url is not None:
                 cybertensor.__console__.print(
-                    "[green]Explorer Link: {}[/green]".format(explorer_url)
+                    f"[green]Explorer Link: {explorer_url}[/green]"
                 )
         else:
             cybertensor.__console__.print(
-                ":cross_mark: [red]Failed[/red]: error:{}".format(err_msg)
+                f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
 
     if success:
         with cybertensor.__console__.status(":satellite: Checking Balance..."):
             new_balance = cwtensor.get_balance(wallet.coldkey.address)
             cybertensor.__console__.print(
-                "Balance:\n  [blue]{}[/blue] :arrow_right: [green]{}[/green]".format(
-                    account_balance, new_balance
-                )
+                f"Balance:\n"
+                f"  [blue]{account_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
             )
             return True
 
