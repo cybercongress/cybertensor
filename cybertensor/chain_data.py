@@ -208,7 +208,7 @@ class NeuronInfoLite:
     # weights: List[List[int]]
     # bonds: List[List[int]] No weights or bonds in lite version
     prometheus_info: "PrometheusInfo"
-    axon_info: "axon_info"
+    axon_info: "AxonInfo"
     pruning_score: int
     is_null: bool = False
 
@@ -426,7 +426,7 @@ class AxonInfo:
     @classmethod
     def from_parameter_dict(
         cls, parameter_dict: "torch.nn.ParameterDict"
-    ) -> "axon_info":
+    ) -> "AxonInfo":
         r"""Returns an axon_info object from a torch parameter_dict."""
         return cls(**dict(parameter_dict))
 

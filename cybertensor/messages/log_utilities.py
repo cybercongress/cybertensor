@@ -2,6 +2,7 @@ import datetime
 import math
 import time
 from typing import List, Dict, Set
+from prometheus_client import Counter, Info, Histogram, Gauge
 
 import torch
 from rich import print as rich_print
@@ -675,7 +676,7 @@ class ValidatorPrometheus:
 
     def __init__(self, config):
         self.config = config
-        self.info = Info("neuron_info", "Info sumamries for the running server-miner.")
+        self.info = Info("neuron_info", "Info summaries for the running server-miner.")
         self.gauges = Gauge(
             "validator_gauges",
             "Gauges for the running validator.",
