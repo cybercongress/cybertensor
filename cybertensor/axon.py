@@ -739,6 +739,9 @@ class AxonMiddleware(BaseHTTPMiddleware):
 
         # Catch the error case where axon is not configured to handle the request.
         except KeyError:
+            # Extracts the request name from the URL path.
+            request_name = request.url.path.split("/")[1]
+
             # Log key error.
             cybertensor.logging.error(
                 f"Key Error: Synapse name {request_name} not found."
