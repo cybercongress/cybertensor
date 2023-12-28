@@ -219,18 +219,16 @@ class StakeCommand:
             and not config.get("max_stake")
         ):
             if not Confirm.ask(
-                "Stake all GBOOT from account: [bold]'{}'[/bold]?".format(
-                    config.wallet.get("name", defaults.wallet.name)
-                )
+                f"Stake all {cybertensor.__giga_boot_symbol__} "
+                f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask("Enter GBOOT amount to stake")
+                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        ":cross_mark:[red]Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
-                            amount
-                        )
+                        f":cross_mark:[red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
@@ -251,7 +249,7 @@ class StakeCommand:
             required=False,
             action="store",
             default=None,
-            help="""Specify the maximum amount of GBOOT to have staked in each hotkey.""",
+            help=f"""Specify the maximum amount of {cybertensor.__giga_boot_symbol__} to have staked in each hotkey.""",
         )
         stake_parser.add_argument(
             "--hotkeys",

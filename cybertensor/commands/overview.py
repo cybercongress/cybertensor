@@ -544,9 +544,7 @@ class OverviewCommand:
 
         console.clear()
 
-        caption = "[italic][dim][white]Wallet balance: [green]GBOOT" + str(
-            total_balance.gboot
-        )
+        caption = f"[italic][dim][white]Wallet balance: [green]{cybertensor.__giga_boot_symbol__}{total_balance.gboot}"
         grid.add_row(Align(caption, vertical="middle", align="center"))
 
         # Print the entire table/grid

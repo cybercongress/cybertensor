@@ -47,10 +47,9 @@ def version_checking(timeout: int = 15):
 
         if latest_version_as_int > cybertensor.__version_as_int__:
             print(
-                "\u001b[33mCybertensor Version: Current {}/Latest {}\nPlease update to the latest version at your earliest convenience. "
-                "Run the following command to upgrade:\n\n\u001b[0mpython -m pip install --upgrade cybertensor".format(
-                    cybertensor.__version__, latest_version
-                )
+                f"\u001b[33mCybertensor Version: Current {cybertensor.__version__}/Latest {latest_version}\n"
+                f"Please update to the latest version at your earliest convenience. "
+                f"Run the following command to upgrade:\n\n\u001b[0mpython -m pip install --upgrade cybertensor"
             )
 
     except requests.exceptions.Timeout:

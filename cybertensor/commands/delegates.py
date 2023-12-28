@@ -332,18 +332,16 @@ class DelegateStakeCommand:
         # Get amount.
         if not config.get("amount") and not config.get("stake_all"):
             if not Confirm.ask(
-                "Stake all GBOOT from account: [bold]'{}'[/bold]?".format(
-                    config.wallet.get("name", defaults.wallet.name)
-                )
+                f"Stake all {cybertensor.__giga_boot_symbol__} "
+                f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask("Enter GBOOT amount to stake")
+                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        ":cross_mark: [red]Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
-                            amount
-                        )
+                        f":cross_mark: [red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
@@ -443,9 +441,7 @@ class DelegateUnstakeCommand:
 
             if len(delegates) == 0:
                 console.print(
-                    ":cross_mark: [red]There are no delegates on {}[/red]".format(
-                        cwtensor.network
-                    )
+                    f":cross_mark: [red]There are no delegates on {cwtensor.network}[/red]"
                 )
                 sys.exit(1)
 
@@ -453,25 +449,21 @@ class DelegateUnstakeCommand:
             show_delegates(config, delegates, prev_delegates=prev_delegates)
             delegate_index = Prompt.ask("Enter delegate index")
             config.delegatekey = str(delegates[int(delegate_index)].hotkey)
-            console.print(
-                "Selected: [yellow]{}[/yellow]".format(config.delegatekey)
-            )
+            console.print(f"Selected: [yellow]{config.delegatekey}[/yellow]")
 
         # Get amount.
         if not config.get("amount") and not config.get("unstake_all"):
             if not Confirm.ask(
-                "Unstake all GBOOT to account: [bold]'{}'[/bold]?".format(
-                    config.wallet.get("name", defaults.wallet.name)
-                )
+                f"Unstake all {cybertensor.__giga_boot_symbol__} "
+                f"to account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask("Enter GBOOT amount to unstake")
+                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to unstake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        ":cross_mark: [red]Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
-                            amount
-                        )
+                        f":cross_mark: [red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
@@ -826,7 +818,7 @@ class MyDelegatesCommand:
                     )
 
         cybertensor.__console__.print(table)
-        cybertensor.__console__.print("Total delegated GBOOT: {}".format(total_delegated))
+        cybertensor.__console__.print(f"Total delegated {cybertensor.__giga_boot_symbol__}: {total_delegated}")
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):

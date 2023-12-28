@@ -86,14 +86,15 @@ __pipaddress__ = "https://pypi.org/pypi/cybertensor/json"
 __delegates_details_url__: str = "https://raw.githubusercontent.com/cybercongress/cybertensor/main/public/delegates.json"
 
 # Bostrom network address prefix
-__chain_address_prefix__ = "bostrom"
+__chain_address_prefix__ = "pussy"
 
-__networks__ = ["local", "bostrom"]
+__networks__ = ["local", "space-pussy", "bostrom"]
 
-__contracts__ = [
-    "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
-    "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
-]
+__contracts__ = {
+    "space-pussy": "pussy1rjc39ngzhzjfwjcd803qc74l4355gz3nas84x5szcl0f0sukeskskdzdak",
+    "local": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
+    "bostrom": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
+}
 
 __local_network__ = NetworkConfig(
     chain_id="localbostrom",
@@ -106,23 +107,32 @@ __local_network__ = NetworkConfig(
 
 __bostrom_network__ = NetworkConfig(
     chain_id="bostrom",
-    url="grpc+http://localhost:9090",
-    fee_minimum_gas_price=0.1,
+    url="grpc+http://grpc.bostrom.cybernode.ai:1443",
+    fee_minimum_gas_price=0.01,
     fee_denomination="boot",
     staking_denomination="boot",
+    faucet_url="",
+)
+
+__space_pussy_network__ = NetworkConfig(
+    chain_id="space-pussy",
+    url="grpc+https://grpc.space-pussy.cybernode.ai:1443",
+    fee_minimum_gas_price=0.01,
+    fee_denomination="pussy",
+    staking_denomination="pussy",
     faucet_url="",
 )
 
 __contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
 __contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
 
-__token__ = "boot"
+__token__ = "pussy"
 
 __default_gas__ = 1_000_000
 __default_transfer_gas__ = 100_000
 
-__boot_symbol__: str = "BOOT"
-__giga_boot_symbol__: str = "GBOOT"
+__boot_symbol__: str = "PUSSY"
+__giga_boot_symbol__: str = "GPUSSY"
 
 # change to emoji here
 # __boot_symbol__: str = chr(0x03C4)

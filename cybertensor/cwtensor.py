@@ -144,18 +144,24 @@ class cwtensor:
         """
         if network is None:
             return None, None, None
-        if network in ["local", "bostrom"]:
+        if network in ["local", "bostrom", "space-pussy"]:
             if network == "bostrom":
                 return (
                     network,
                     cybertensor.__bostrom_network__,
-                    cybertensor.__contracts__[1],
+                    cybertensor.__contracts__[network],
+                )
+            elif network == "space-pussy":
+                return (
+                    network,
+                    cybertensor.__space_pussy_network__,
+                    cybertensor.__contracts__[network],
                 )
             elif network == "local":
                 return (
                     network,
                     cybertensor.__local_network__,
-                    cybertensor.__contracts__[0],
+                    cybertensor.__contracts__[network],
                 )
         else:
             return "unknown", {}, "unknown"
