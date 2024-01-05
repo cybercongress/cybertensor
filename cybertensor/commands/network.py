@@ -17,6 +17,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 import argparse
+import re
 from typing import List, Optional, Dict
 
 from rich.prompt import Prompt
@@ -25,6 +26,7 @@ from rich.table import Table
 import cybertensor
 from . import defaults
 from .utils import DelegatesDetails, check_netuid_set
+import torch
 
 console = cybertensor.__console__
 
@@ -491,3 +493,66 @@ class SubnetGetHyperparamsCommand:
             "--netuid", dest="netuid", type=int, required=False, default=False
         )
         cybertensor.cwtensor.add_args(parser)
+
+class SubnetSetWeightsCommand:
+    """
+
+    Optional arguments:
+    - --uids (str): A comma-separated list of uids for which weights are to be set.
+    - --weights (str): Corresponding weights for the specified netuids, in comma-separated format.
+    - --netuid (str): Corresponding subnet for which weights are to be set.
+
+    Example usage:
+    >>> ctcli subnet weights --uids 1,2,3 --weights 0.3,0.3,0.4
+    """
+
+    @staticmethod
+    def run(cli):
+        r"""Set weights for root network."""
+        wallet = cybertensor.wallet(config=cli.config)
+        cwtensor = cybertensor.cwtensor(config=cli.config)
+
+        # Parse from string
+        uids = torch.tensor(
+            list(map(int, re.split(r"[ ,]+", cli.config.uids))), dtype=torch.long
+        )
+        weights = torch.tensor(
+            list(map(float, re.split(r"[ ,]+", cli.config.weights))),
+            dtype=torch.float32,
+        )
+
+        # Run the set weights operation.
+        cwtensor.set_weights(
+            wallet=wallet,
+            netuid=cli.config.netuid,
+            uids=uids,
+            weights=weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser("weights", help="""Set weights for subnet.""")
+        parser.add_argument("--uids", dest="uids", type=str, required=False)
+        parser.add_argument("--weights", dest="weights", type=str, required=False)
+        parser.add_argument(
+            "--netuid", dest="netuid", type=int, required=False, default=False
+        )
+
+        cybertensor.wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: "cybertensor.config"):
+        if not config.is_set("wallet.name") and not config.no_prompt:
+            wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set("wallet.hotkey") and not config.no_prompt:
+            hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.is_set("netuid") and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config))
