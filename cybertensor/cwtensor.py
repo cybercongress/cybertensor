@@ -103,7 +103,7 @@ class cwtensor:
     def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         prefix_str = "" if prefix is None else prefix + "."
         try:
-            default_network = os.getenv("CT_CYBER_NETWORK") or "local"
+            default_network = os.getenv("CT_CYBER_NETWORK") or "space-pussy"
             # default_contract_address = os.getenv("CT_CONTRACT_ADDRESS") or "bostrom1"
 
             parser.add_argument(
@@ -113,6 +113,7 @@ class cwtensor:
                 help="""The cwtensor network flag. The likely choices are:
                                         -- bostrom (main network)
                                         -- local (local running network)
+                                        -- space-pussy (space-pussy network)
                                     """,
             )
 
@@ -137,10 +138,11 @@ class cwtensor:
             network (str): The network flag. The likely choices are:
                     -- bostrom (main network)
                     -- local (local running network)
-            chain_endpoint (str): The chain endpoint flag. If set, overrides the network argument.
+                    -- space-pussy (space-pussy network)
         Returns:
-            network (str): The network flag. The likely choices are:
-            chain_endpoint (str): The chain endpoint flag. If set, overrides the network argument.
+            network (str): The network flag.
+            network_config (NetworkConfig): The chain network config.
+            contract_address (str): Cybernet contract address
         """
         if network is None:
             return None, None, None
@@ -198,7 +200,7 @@ class cwtensor:
                     evaluated_contract_address,
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     # TODO set default
-                    "local"
+                    "space-pussy"
                 )
 
         return (
@@ -219,8 +221,9 @@ class cwtensor:
                 cybertensor.cwtensor.config()
             network (default='local or ws://127.0.0.1:9946', type=str)
                 The cwtensor network flag. The likely choices are:
+                        -- bostrom (main network)
                         -- local (local running network)
-                        -- finney (main network)
+                        -- space-pussy (space-pussy network)
                 or cwtensor endpoint flag. If set, overrides the network argument.
         """
 

@@ -6,13 +6,12 @@
 
 ## Install
 
-From source:
+1. From source:
 ```bash
 git clone https://github.com/cybercongress/cybertensor.git
 python3 -m pip install -e cybertensor/
 ```
-
-To test your installation, type:
+2. To test your installation, type:
 ```bash
 ctcli --help
 ```
@@ -21,6 +20,32 @@ or using python
 import cybertensor
 ```
 
+## Space Pussy setup
+
+1. Clone:
+```bash
+git clone https://github.com/cybercongress/cybertensor.git
+cd cybertensor
+git checkout add-space-pussy-network
+```
+2. [Optional] Create and activate a virtual environment:
+```bash
+python3 -m venv venv
+. venv/bin/activate
+```
+3. Install from the source
+```bash
+python3 -m pip install -e .
+```
+
+4. To test your installation, type:
+```bash
+ctcli --help
+```
+or using python
+```python
+import cybertensor
+```
 
 ## Dev setup
 1. Use localbostrom:
