@@ -91,7 +91,7 @@ __chain_address_prefix__ = "pussy"
 __networks__ = ["local", "space-pussy", "bostrom"]
 
 __contracts__ = {
-    "space-pussy": "pussy1qmrykk37a7j67hpaa7yzt08qsvu7hyqk4kqlpaylhe6yhudrzzcsp5ysx3",
+    "space-pussy": "pussy13xxjfq8p3kht26fn4s9jg8c5407xpphhle2744gwe4rgh2y47n4q7f7x63",
     "local": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
     "bostrom": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
 }
