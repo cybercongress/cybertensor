@@ -21,7 +21,7 @@ from munch import Munch, munchify
 defaults: Munch = munchify(
     {
         "netuid": 1,
-        "cwtensor": {"network": "local", "_mock": False},
+        "cwtensor": {"network": "space-pussy", "_mock": False},
         "pow_register": {
             "num_processes": None,
             "update_interval": 50000,
