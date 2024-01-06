@@ -441,7 +441,7 @@ class StakeShow:
                 A dictionary of stakes related to delegates.
             """
             delegates = cwtensor.get_delegated(
-                coldkey=wallet.coldkeypub.address
+                delegatee=wallet.coldkeypub.address
             )
             stakes = {}
             for dele, staked in delegates:

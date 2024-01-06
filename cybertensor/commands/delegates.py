@@ -740,7 +740,7 @@ class MyDelegatesCommand:
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
             delegates = cwtensor.get_delegated(
-                coldkey=wallet.coldkeypub.address
+                delegatee=wallet.coldkeypub.address
             )
 
             my_delegates = {}  # hotkey, amount

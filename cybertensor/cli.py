@@ -22,6 +22,7 @@ from typing import List, Optional
 
 import cybertensor
 from .commands import *
+from .commands.network import SubnetSetWeightsCommand
 
 # Create a console instance for CLI display.
 console = cybertensor.__console__
@@ -58,6 +59,7 @@ COMMANDS = {
             "pow_register": PowRegisterCommand,
             "register": RegisterCommand,
             "hyperparameters": SubnetHyperparamsCommand,
+            "weights": SubnetSetWeightsCommand,
         },
     },
     "root": {
