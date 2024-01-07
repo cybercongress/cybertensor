@@ -228,6 +228,8 @@ class cwtensor:
         self.network_explorer = self.network_config.network_explorer
         self.address_prefix = self.network_config.address_prefix
         self.contract_address = self.network_config.contract_address
+        self.token_symbol = self.network_config.token_symbol
+        self.giga_token_symbol = self.network_config.giga_token_symbol
 
         # Set up params.
         self.client = LedgerClient(cfg=self.network_config)

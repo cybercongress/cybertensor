@@ -279,7 +279,7 @@ class DelegateStakeCommand:
             dest="delegatekey",
             type=str,
             required=False,
-            help="""The address of the choosen delegate""",
+            help="""The address of the chosen delegate""",
         )
         delegate_stake_parser.add_argument(
             "--all", dest="stake_all", action="store_true"
@@ -311,9 +311,7 @@ class DelegateStakeCommand:
 
             if len(delegates) == 0:
                 console.print(
-                    ":cross_mark: [red]There are no delegates on {}[/red]".format(
-                        cwtensor.network
-                    )
+                    f":cross_mark: [red]There are no delegates on {cwtensor.network}[/red]"
                 )
                 sys.exit(1)
 

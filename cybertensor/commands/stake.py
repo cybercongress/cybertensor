@@ -172,7 +172,8 @@ class StakeCommand:
                 f"Do you want to stake to the following keys from {wallet.name}:\n"
                 + "".join(
                     [
-                        f"    [bold white]- {hotkey[0] + ':' if hotkey[0] else ''}{hotkey[1]}: {f'{amount} {cybertensor.__giga_boot_symbol__}' if amount else 'All'}[/bold white]\n"
+                        f"    [bold white]- {hotkey[0] + ':' if hotkey[0] else ''}{hotkey[1]}: "
+                        f"{f'{amount} {cwtensor.giga_token_symbol}' if amount else 'All'}[/bold white]\n"
                         for hotkey, amount in zip(final_hotkeys, final_amounts)
                     ]
                 )

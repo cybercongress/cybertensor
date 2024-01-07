@@ -78,27 +78,31 @@ def debug(on: bool = True):
 
 class NetworkConfigCwTensor(NetworkConfig):
     def __init__(
-            self,
-            chain_id: str,
-            fee_minimum_gas_price: Union[int, float],
-            fee_denomination: str,
-            staking_denomination: str,
-            url: str,
-            token: str,
-            network_explorer: str,
-            address_prefix: str,
-            contract_address: str,
-            faucet_url: Optional[str] = None
+        self,
+        chain_id: str,
+        fee_minimum_gas_price: Union[int, float],
+        fee_denomination: str,
+        staking_denomination: str,
+        url: str,
+        token: str,
+        token_symbol: str,
+        giga_token_symbol: str,
+        network_explorer: str,
+        address_prefix: str,
+        contract_address: str,
+        faucet_url: Optional[str] = None,
     ):
-
         super().__init__(
             chain_id,
             fee_minimum_gas_price,
             fee_denomination,
             staking_denomination,
             url,
-            faucet_url)
+            faucet_url,
+        )
         self.token = token
+        self.token_symbol = token_symbol
+        self.giga_token_symbol = giga_token_symbol
         self.network_explorer = network_explorer
         self.address_prefix = address_prefix
         self.contract_address = contract_address
@@ -129,6 +133,8 @@ __local_network__ = NetworkConfigCwTensor(
     staking_denomination="boot",
     faucet_url="",
     token="boot",
+    token_symbol="BOOT",
+    giga_token_symbol="GBOOT",
     network_explorer="http://localhost:3000",
     address_prefix="bostrom",
     contract_address="bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
@@ -142,6 +148,8 @@ __bostrom_network__ = NetworkConfigCwTensor(
     staking_denomination="boot",
     faucet_url="",
     token="boot",
+    token_symbol="BOOT",
+    giga_token_symbol="GBOOT",
     network_explorer="https://cyb.ai",
     address_prefix="bostrom",
     contract_address="bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
@@ -155,6 +163,8 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     staking_denomination="pussy",
     faucet_url="",
     token="pussy",
+    token_symbol="PUSSY",
+    giga_token_symbol="GPUSSY",
     network_explorer="https://cyb.ai",
     address_prefix="pussy",
     contract_address="pussy1slvcc3rcfpngn7uxsj8h06jx7h8r88dfecwm3afk6z0svlm6syjsm3wm6m",
