@@ -19,6 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 from pathlib import Path
+from typing import Optional, Union
 
 # Install and apply nest asyncio to allow the async functions
 # to run in a .ipynb
@@ -75,7 +76,35 @@ def debug(on: bool = True):
     logging.set_debug(on)
 
 
-# Substrate chain block time (seconds).
+class NetworkConfigCwTensor(NetworkConfig):
+    def __init__(
+            self,
+            chain_id: str,
+            fee_minimum_gas_price: Union[int, float],
+            fee_denomination: str,
+            staking_denomination: str,
+            url: str,
+            token: str,
+            network_explorer: str,
+            address_prefix: str,
+            contract_address: str,
+            faucet_url: Optional[str] = None
+    ):
+
+        super().__init__(
+            chain_id,
+            fee_minimum_gas_price,
+            fee_denomination,
+            staking_denomination,
+            url,
+            faucet_url)
+        self.token = token
+        self.network_explorer = network_explorer
+        self.address_prefix = address_prefix
+        self.contract_address = contract_address
+
+
+# Chain block time (seconds).
 __blocktime__ = 6
 
 # Pip address for versioning
@@ -85,66 +114,57 @@ __pipaddress__ = "https://pypi.org/pypi/cybertensor/json"
 #  TODO add data to github
 __delegates_details_url__: str = "https://raw.githubusercontent.com/cybercongress/cybertensor/main/public/delegates.json"
 
-# Bostrom network address prefix
+#  TODO move to NetworkConfigCwTensor
 __chain_address_prefix__ = "pussy"
+__boot_symbol__: str = "PUSSY"
+__giga_boot_symbol__: str = "GPUSSY"
 
-__networks__ = ["local", "space-pussy", "bostrom"]
+__networks__ = ["local", "bostrom", "space-pussy"]
 
-__contracts__ = {
-    "space-pussy": "pussy13xxjfq8p3kht26fn4s9jg8c5407xpphhle2744gwe4rgh2y47n4q7f7x63",
-    "local": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
-    "bostrom": "bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt"
-}
-
-__local_network__ = NetworkConfig(
+__local_network__ = NetworkConfigCwTensor(
     chain_id="localbostrom",
     url="grpc+http://localhost:9090",
     fee_minimum_gas_price=0.1,
     fee_denomination="boot",
     staking_denomination="boot",
     faucet_url="",
+    token="boot",
+    network_explorer="http://localhost:3000",
+    address_prefix="bostrom",
+    contract_address="bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
 )
 
-__bostrom_network__ = NetworkConfig(
+__bostrom_network__ = NetworkConfigCwTensor(
     chain_id="bostrom",
     url="grpc+http://grpc.bostrom.cybernode.ai:1443",
     fee_minimum_gas_price=0.01,
     fee_denomination="boot",
     staking_denomination="boot",
     faucet_url="",
+    token="boot",
+    network_explorer="https://cyb.ai",
+    address_prefix="bostrom",
+    contract_address="bostrom14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sww4mxt",
 )
 
-__space_pussy_network__ = NetworkConfig(
+__space_pussy_network__ = NetworkConfigCwTensor(
     chain_id="space-pussy",
     url="grpc+https://grpc.space-pussy.cybernode.ai:1443",
     fee_minimum_gas_price=0.01,
     fee_denomination="pussy",
     staking_denomination="pussy",
     faucet_url="",
+    token="pussy",
+    network_explorer="https://cyb.ai",
+    address_prefix="pussy",
+    contract_address="pussy1slvcc3rcfpngn7uxsj8h06jx7h8r88dfecwm3afk6z0svlm6syjsm3wm6m",
 )
 
 __contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
 __contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
 
-__token__ = "pussy"
-
 __default_gas__ = 1_000_000
 __default_transfer_gas__ = 100_000
-
-__boot_symbol__: str = "PUSSY"
-__giga_boot_symbol__: str = "GPUSSY"
-
-# change to emoji here
-# __boot_symbol__: str = chr(0x03C4)
-# __oxygen_symbol__: str = chr(0x03C4)
-
-# Block Explorers map network to explorer url
-# TODO update explorer presets
-__network_explorer_map__ = {
-    "local": "https://cyb.ai",
-    "bostrom": "https://cyb.ai",
-    "space-pussy": "https://cyb.ai",
-}
 
 from .errors import *
 from .config import *

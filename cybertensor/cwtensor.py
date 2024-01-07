@@ -24,7 +24,6 @@ from typing import List, Dict, Union, Optional, Tuple, TypedDict
 
 import torch
 from cosmpy.aerial.client import LedgerClient
-from cosmpy.aerial.config import NetworkConfig
 from cosmpy.aerial.contract import LedgerContract
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.address import Address
@@ -71,11 +70,6 @@ from .utils.balance import Balance
 from .utils.registration import POWSolution
 
 logger = logger.opt(colors=True)
-
-
-class ParamWithTypes(TypedDict):
-    name: str  # Name of the parameter.
-    type: str  # ScaleType string of the parameter.
 
 
 class cwtensor:
@@ -132,7 +126,7 @@ class cwtensor:
     @staticmethod
     def determine_chain_endpoint_and_network(
         network: str,
-    ) -> [Optional[str], Optional[NetworkConfig], Optional[str]]:
+    ) -> [Optional[str], Optional["cybertensor.NetworkConfigCwTensor"]]:
         """Determines the chain endpoint and network from the passed network or chain_endpoint.
         Args:
             network (str): The network flag. The likely choices are:
@@ -141,47 +135,41 @@ class cwtensor:
                     -- space-pussy (space-pussy network)
         Returns:
             network (str): The network flag.
-            network_config (NetworkConfig): The chain network config.
-            contract_address (str): Cybernet contract address
+            network_config (cybertensor.NetworkConfigCwTensor): The chain network config.
         """
         if network is None:
-            return None, None, None
+            return None, None
         if network in ["local", "bostrom", "space-pussy"]:
             if network == "bostrom":
                 return (
                     network,
                     cybertensor.__bostrom_network__,
-                    cybertensor.__contracts__[network],
                 )
             elif network == "space-pussy":
                 return (
                     network,
                     cybertensor.__space_pussy_network__,
-                    cybertensor.__contracts__[network],
                 )
             elif network == "local":
                 return (
                     network,
                     cybertensor.__local_network__,
-                    cybertensor.__contracts__[network],
                 )
         else:
-            return "unknown", {}, "unknown"
+            return "unknown", {}
 
     @staticmethod
-    def setup_config(network: str, config: cybertensor.config):
+    def setup_config(network: str, config: "cybertensor.config"):
         if network is not None:
             (
                 evaluated_network,
                 evaluated_network_config,
-                evaluated_contract_address,
             ) = cwtensor.determine_chain_endpoint_and_network(network)
         else:
             if config.get("__is_set", {}).get("cwtensor.network"):
                 (
                     evaluated_network,
                     evaluated_network_config,
-                    evaluated_contract_address,
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     config.cwtensor.network
                 )
@@ -189,7 +177,6 @@ class cwtensor:
                 (
                     evaluated_network,
                     evaluated_network_config,
-                    evaluated_contract_address,
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     config.cwtensor.network
                 )
@@ -197,7 +184,6 @@ class cwtensor:
                 (
                     evaluated_network,
                     evaluated_network_config,
-                    evaluated_contract_address,
                 ) = cwtensor.determine_chain_endpoint_and_network(
                     # TODO set default
                     "space-pussy"
@@ -206,7 +192,6 @@ class cwtensor:
         return (
             evaluated_network,
             evaluated_network_config,
-            evaluated_contract_address,
         )
 
     def __init__(
@@ -238,17 +223,20 @@ class cwtensor:
         (
             self.network,
             self.network_config,
-            self.contract_address,
         ) = cwtensor.setup_config(network, config)
+        self.token = self.network_config.token
+        self.network_explorer = self.network_config.network_explorer
+        self.address_prefix = self.network_config.address_prefix
+        self.contract_address = self.network_config.contract_address
 
         # Set up params.
-        self.client = LedgerClient(self.network_config)
+        self.client = LedgerClient(cfg=self.network_config)
         self.contract = LedgerContract(
-            cybertensor.__contract_path__,
-            self.client,
-            self.contract_address,
-            None,
-            cybertensor.__contract_schema_path__,
+            path=cybertensor.__contract_path__,
+            client=self.client,
+            address=self.contract_address,
+            digest=None,
+            schema_path=cybertensor.__contract_schema_path__,
         )
 
     def __str__(self) -> str:
@@ -282,7 +270,7 @@ class cwtensor:
     ) -> bool:
         nominate_msg = {"become_delegate": {"hotkey": wallet.hotkey.address}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -331,10 +319,10 @@ class cwtensor:
     ) -> bool:
         delegation_msg = {"add_stake": {"hotkey": delegate}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
-        funds = amount.boot.__str__().__add__(cybertensor.__token__)
+        funds = amount.boot.__str__().__add__(self.token)
 
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
@@ -381,7 +369,7 @@ class cwtensor:
     ) -> bool:
         undelegation_msg = {"remove_stake": {"hotkey": delegate, "amount": amount.boot}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -446,7 +434,7 @@ class cwtensor:
             }
         }
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -532,7 +520,7 @@ class cwtensor:
             }
         }
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -582,10 +570,10 @@ class cwtensor:
             "burned_register": {"netuid": netuid, "hotkey": wallet.hotkey.address}
         }
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
-        funds = burn.__str__().__add__(cybertensor.__token__)
+        funds = burn.__str__().__add__(self.token)
 
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
@@ -659,12 +647,12 @@ class cwtensor:
             error (:obj:`str`): Error message if transfer failed.
         """
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         tx = self.client.send_tokens(
             destination=dest,
             amount=transfer_balance.boot,
-            denom=cybertensor.__token__,
+            denom=self.token,
             sender=signer_wallet,
             gas_limit=cybertensor.__default_transfer_gas__,
         )
@@ -764,7 +752,7 @@ class cwtensor:
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -819,7 +807,7 @@ class cwtensor:
         """
 
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -901,10 +889,10 @@ class cwtensor:
 
         add_stake_msg = {"add_stake": {"hotkey": hotkey}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
-        funds = amount.boot.__str__().__add__(cybertensor.__token__)
+        funds = amount.boot.__str__().__add__(self.token)
 
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry():
@@ -984,7 +972,7 @@ class cwtensor:
 
         remove_stake_msg = {"remove_stake": {"hotkey": hotkey, "amount": amount.boot}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -1031,7 +1019,7 @@ class cwtensor:
     ) -> Tuple[bool, Optional[str]]:
         root_register_msg = {"root_register": {"hotkey": wallet.hotkey.address}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
         gas = cybertensor.__default_gas__
 
@@ -1617,7 +1605,7 @@ class cwtensor:
         @retry(delay=2, tries=3, backoff=2, max_delay=4)
         def make_call_with_retry() -> Balance:
             return Balance.from_boot(
-                self.client.query_bank_balance(Address(address), cybertensor.__token__)
+                self.client.query_bank_balance(Address(address), self.token)
             )
 
         balance = make_call_with_retry()
