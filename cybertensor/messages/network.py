@@ -33,6 +33,8 @@ def register_subnetwork_message(
 ) -> bool:
     r"""Registers a new subnetwork
     Args:
+        cwtensor (cybertensor.cwtensor):
+            the CWTensor
         wallet (cybertensor.wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
@@ -66,10 +68,10 @@ def register_subnetwork_message(
     with cybertensor.__console__.status(":satellite: Registering subnet..."):
         create_register_network_msg = {"register_network": {}}
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
         )
         gas = cybertensor.__default_gas__
-        funds = burn_cost.__int__().__str__().__add__(cybertensor.__token__)
+        funds = burn_cost.__int__().__str__().__add__(cwtensor.token)
 
         if not wait_for_finalization:
             tx = cwtensor.contract.execute(
@@ -121,6 +123,8 @@ def set_hyperparameter_message(
 ) -> bool:
     r"""Sets a hyperparameter for a specific subnetwork.
     Args:
+        cwtensor (cybertensor.cwtensor):
+            the CWTensor
         wallet (cybertensor.wallet):
             cybertensor wallet object.
         netuid (int):
@@ -162,7 +166,7 @@ def set_hyperparameter_message(
             str(message): {"netuid": netuid, str(parameter): int(value)},
         }
         signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), cybertensor.__chain_address_prefix__
+            PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
         )
         gas = cybertensor.__default_gas__
 
