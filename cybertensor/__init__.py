@@ -167,7 +167,7 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     giga_token_symbol="GPUSSY",
     network_explorer="https://cyb.ai",
     address_prefix="pussy",
-    contract_address="pussy1slvcc3rcfpngn7uxsj8h06jx7h8r88dfecwm3afk6z0svlm6syjsm3wm6m",
+    contract_address="pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9",
 )
 
 __contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
