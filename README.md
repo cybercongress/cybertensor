@@ -26,7 +26,7 @@ import cybertensor
 ```bash
 git clone https://github.com/cybercongress/cybertensor.git
 cd cybertensor
-git checkout add-space-pussy-network
+git checkout optimize_network_config
 ```
 2. [Optional] Create and activate a virtual environment:
 ```bash

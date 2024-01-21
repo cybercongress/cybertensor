@@ -70,7 +70,7 @@ class RegisterSubnetworkCommand:
         r"""Register a subnetwork"""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         # Call register command.
         cwtensor.register_subnetwork(
             wallet=wallet,
@@ -124,7 +124,7 @@ class SubnetLockCostCommand:
     def run(cli):
         r"""View locking cost of creating a new subnetwork"""
         config = cli.config.copy()
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         try:
             cybertensor.__console__.print(
                 f"Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]"
@@ -294,7 +294,7 @@ class SubnetSudoCommand:
         r"""Set subnet hyperparameters."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         print("\n")
         SubnetHyperparamsCommand.run(cli)
         if not config.is_set("param") and not config.no_prompt:

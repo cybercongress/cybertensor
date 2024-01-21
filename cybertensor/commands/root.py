@@ -157,7 +157,7 @@ class RootList:
             no_wrap=True,
         )
         table.add_column(
-            "[overline white]STAKE(\u03C4)",
+            f"[overline white]STAKE({cwtensor.giga_token_symbol})",
             footer_style="overline white",
             justify="right",
             style="green",

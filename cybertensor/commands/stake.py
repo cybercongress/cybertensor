@@ -61,7 +61,7 @@ class StakeCommand:
         r"""Stake token of amount to hotkey(s)."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_stake_to: List[Tuple[Optional[str], str]] = []
@@ -200,6 +200,7 @@ class StakeCommand:
 
     @classmethod
     def check_config(cls, config: "cybertensor.config"):
+
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -365,9 +366,10 @@ class StakeShow:
         #     Dict[str, DelegatesDetails]
         # ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
 
+        cwtensor = cybertensor.cwtensor(config=cli.config)
         registered_delegate_info: Optional[
             Dict[str, DelegatesDetails]
-        ] = cybertensor.cwtensor(config=cli.config).get_delegates()
+        ] = cwtensor.get_delegates()
 
         def get_stake_accounts(wallet) -> Dict[str, Dict[str, Union[str, Balance]]]:
             """Get stake account details for the given wallet.
@@ -500,7 +502,7 @@ class StakeShow:
         )
         table.add_column(
             "[overline white]Balance",
-            "\u03C4{:.5f}".format(total_balance),
+            f"{cwtensor.giga_token_symbol}{total_balance:.5f}",
             footer_style="overline white",
             style="green",
         )
@@ -509,13 +511,13 @@ class StakeShow:
         )
         table.add_column(
             "[overline white]Stake",
-            "\u03C4{:.5f}".format(total_stake),
+            f"{cwtensor.giga_token_symbol}{total_stake:.5f}",
             footer_style="overline white",
             style="green",
         )
         table.add_column(
             "[overline white]Rate",
-            "\u03C4{:.5f}/d".format(total_rate),
+            f"{cwtensor.giga_token_symbol}{total_rate:.5f}/d",
             footer_style="overline white",
             style="green",
         )

@@ -64,7 +64,7 @@ class RegisterCommand:
         r"""Register neuron by recycling some GBOOT."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):

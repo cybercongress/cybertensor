@@ -144,10 +144,10 @@ def show_delegates(
         "[overline white]NOMINATORS", justify="center", style="green", no_wrap=True
     )
     table.add_column(
-        "[overline white]DELEGATE STAKE(\u03C4)", justify="right", no_wrap=True
+        f"[overline white]DELEGATE STAKE({cwtensor.giga_token_symbol})", justify="right", no_wrap=True
     )
     table.add_column(
-        "[overline white]TOTAL STAKE(\u03C4)",
+        f"[overline white]TOTAL STAKE({cwtensor.giga_token_symbol})",
         justify="right",
         style="green",
         no_wrap=True,
@@ -156,7 +156,7 @@ def show_delegates(
     table.add_column("[overline white]VPERMIT", justify="right", no_wrap=False)
     table.add_column("[overline white]TAKE", style="white", no_wrap=True)
     table.add_column(
-        "[overline white]NOMINATOR/(24h)/k\u03C4", style="green", justify="center"
+        f"[overline white]NOMINATOR/(24h)/k{cwtensor.giga_token_symbol}", style="green", justify="center"
     )
     table.add_column("[overline white]DELEGATE/(24h)", style="green", justify="center")
     table.add_column("[overline white]Desc", style="rgb(50,163,219)")
@@ -259,7 +259,7 @@ class DelegateStakeCommand:
         """Delegates stake to a chain delegate."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         cwtensor.delegate(
             wallet=wallet,
             delegate=config.get("delegatekey"),
@@ -330,15 +330,15 @@ class DelegateStakeCommand:
         # Get amount.
         if not config.get("amount") and not config.get("stake_all"):
             if not Confirm.ask(
-                f"Stake all {cybertensor.__giga_boot_symbol__} "
+                f"Stake all {cwtensor.giga_token_symbol} "
                 f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
+                amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to stake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        f":cross_mark: [red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
                         f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
@@ -383,7 +383,7 @@ class DelegateUnstakeCommand:
         """Undelegates stake from a chain delegate."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         cwtensor.undelegate(
             wallet=wallet,
             delegate=config.get("delegatekey"),
@@ -452,15 +452,15 @@ class DelegateUnstakeCommand:
         # Get amount.
         if not config.get("amount") and not config.get("unstake_all"):
             if not Confirm.ask(
-                f"Unstake all {cybertensor.__giga_boot_symbol__} "
+                f"Unstake all {cwtensor.giga_token_symbol} "
                 f"to account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to unstake")
+                amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to unstake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        f":cross_mark: [red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
                         f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
@@ -689,7 +689,7 @@ class MyDelegatesCommand:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
             wallets = [cybertensor.wallet(config=config)]
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
 
         table = Table(show_footer=True, pad_edge=False, box=None, expand=True)
         table.add_column(
@@ -710,7 +710,7 @@ class MyDelegatesCommand:
             style="bold green",
         )
         table.add_column(
-            "[overline green]\u03C4/24h",
+            f"[overline green]{cwtensor.giga_token_symbol}/24h",
             footer_style="overline green",
             style="bold green",
         )
@@ -718,10 +718,10 @@ class MyDelegatesCommand:
             "[overline white]NOMS", justify="center", style="green", no_wrap=True
         )
         table.add_column(
-            "[overline white]OWNER STAKE(\u03C4)", justify="right", no_wrap=True
+            f"[overline white]OWNER STAKE({cwtensor.giga_token_symbol})", justify="right", no_wrap=True
         )
         table.add_column(
-            "[overline white]TOTAL STAKE(\u03C4)",
+            f"[overline white]TOTAL STAKE({cwtensor.giga_token_symbol})",
             justify="right",
             style="green",
             no_wrap=True,
@@ -730,7 +730,7 @@ class MyDelegatesCommand:
             "[overline white]SUBNETS", justify="right", style="white", no_wrap=True
         )
         table.add_column("[overline white]VPERMIT", justify="right", no_wrap=True)
-        table.add_column("[overline white]24h/k\u03C4", style="green", justify="center")
+        table.add_column(f"[overline white]24h/k{cwtensor.giga_token_symbol}", style="green", justify="center")
         table.add_column("[overline white]Desc", style="rgb(50,163,219)")
         total_delegated = 0
 
@@ -816,7 +816,7 @@ class MyDelegatesCommand:
                     )
 
         cybertensor.__console__.print(table)
-        cybertensor.__console__.print(f"Total delegated {cybertensor.__giga_boot_symbol__}: {total_delegated}")
+        cybertensor.__console__.print(f"Total delegated {cwtensor.giga_token_symbol}: {total_delegated}")
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
