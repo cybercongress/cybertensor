@@ -25,7 +25,6 @@ from rich.console import Text
 from rich.prompt import Confirm
 from rich.prompt import Prompt
 from rich.table import Table
-from substrateinterface.exceptions import SubstrateRequestException
 from tqdm import tqdm
 
 import cybertensor
@@ -301,7 +300,7 @@ class DelegateStakeCommand:
                     prev_delegates = cwtensor.get_delegates(
                         max(0, cwtensor.block - 1200)
                     )
-                except SubstrateRequestException:
+                except RuntimeError:
                     prev_delegates = None
 
             if prev_delegates is None:
@@ -429,7 +428,7 @@ class DelegateUnstakeCommand:
                     prev_delegates = cwtensor.get_delegates(
                         max(0, cwtensor.block - 1200)
                     )
-                except SubstrateRequestException:
+                except RuntimeError:
                     prev_delegates = None
 
             if prev_delegates is None:
@@ -520,7 +519,7 @@ class ListDelegatesCommand:
             delegates: List[cybertensor.DelegateInfo] = cwtensor.get_delegates()
             try:
                 prev_delegates = cwtensor.get_delegates(max(0, cwtensor.block - 1200))
-            except SubstrateRequestException:
+            except RuntimeError:
                 prev_delegates = None
 
         if prev_delegates is None:
