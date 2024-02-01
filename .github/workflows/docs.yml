@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - add_docs
     # Alternative: only build for tags.
     # tags:
     #   - '*'
