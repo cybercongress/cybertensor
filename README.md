@@ -8,6 +8,15 @@
 ## [Yuma Consensus](https://github.com/opentensor/subtensor/blob/f0a3da50fd7e949ca0d5284200cb80fdd25a79e3/docs/consensus.md)
 ## [Deployed contract](https://deploy-preview-1081--rebyc.netlify.app/contracts/pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9)
 
+## Game of Tensors subnet ideas:
+1. Subnet for ambassadors
+2. Subnet for knowledge domains
+3. Subnet for network infrastructure operators
+4. Subnet for relayers infrastructure operators
+5. Your idea here
+
+```When? Soon```
+
 ## Install
 
 1. From source:
