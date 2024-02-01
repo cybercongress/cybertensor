@@ -38,9 +38,9 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
-from substrateinterface import Keypair
 
 import cybertensor
+from cybertensor.keypair import Keypair
 
 """ Create and init Axon, which services Forward and Backward requests from other neurons.
 """
