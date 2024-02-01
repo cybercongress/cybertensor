@@ -20,13 +20,14 @@ import argparse
 import re
 from typing import List, Optional, Dict
 
+import numpy as np
+import torch
 from rich.prompt import Prompt
 from rich.table import Table
 
 import cybertensor
 from . import defaults
 from .utils import DelegatesDetails, check_netuid_set
-import torch
 
 console = cybertensor.__console__
 
@@ -569,5 +570,123 @@ class SubnetSetWeightsCommand:
             hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
             config.wallet.hotkey = str(hotkey)
 
+        if not config.is_set("netuid") and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config))
+
+class SubnetGetWeightsCommand:
+    """
+    Executes the 'get_weights' command to retrieve the weights set for the subnet network on the Cybertensor network.
+    This command provides visibility into how operator responsibilities and rewards are distributed among
+    various operators.
+
+    Usage:
+    The command outputs a table listing the weights assigned to each operator within the subnet.
+    This information is crucial for understanding the current influence and reward distribution among the operators.
+
+    Optional arguments:
+    - None. The command fetches weight information based on the cwtensor configuration.
+
+    Example usage:
+    >>> ctcli subnet get_weights
+
+                                            Subnet Operators Weights
+    UIDS        0        1        2       3        4        5       8        9       11     13      18       19
+    1    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    2          -   40.00%    5.00%  10.00%   10.00%   10.00%  10.00%    5.00%        -      -  10.00%        -
+    3          -        -   25.00%       -   25.00%        -  25.00%        -        -      -  25.00%        -
+    4          -        -    7.00%   7.00%   20.00%   20.00%  20.00%        -    6.00%      -  20.00%        -
+    5          -   20.00%        -  10.00%   15.00%   15.00%  15.00%    5.00%        -      -  10.00%   10.00%
+    6          -        -        -       -   10.00%   10.00%  25.00%   25.00%        -      -  30.00%        -
+    7          -   60.00%        -       -   20.00%        -       -        -   20.00%      -       -        -
+    8          -   49.35%        -   7.18%   13.59%   21.14%   1.53%    0.12%    7.06%  0.03%       -        -
+    9    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    ...
+
+    Note:
+    This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
+    It offers transparency into how network rewards and responsibilities are allocated across different operators.
+    """
+
+    @staticmethod
+    def run(cli):
+        r"""Get weights for root network."""
+        cwtensor = cybertensor.cwtensor(config=cli.config)
+        weights = cwtensor.weights(cli.config.netuid)
+
+        table = Table(show_footer=False)
+        table.title = "[white]Subnet Operators Weights"
+        table.add_column(
+            "[white]UIDS",
+            header_style="overline white",
+            footer_style="overline white",
+            style="rgb(50,163,219)",
+            no_wrap=True,
+        )
+
+        # TODO refactor netuids to uids, copy-pasted from root command code, need refactoring with attention to naming
+        uid_to_weights = {}
+        netuids = set()
+        for matrix in weights:
+            [uid, weights_data] = matrix
+
+            if not len(weights_data):
+                uid_to_weights[uid] = {}
+                normalized_weights = []
+            else:
+                normalized_weights = np.array(weights_data)[:, 1] / max(
+                    np.sum(weights_data, axis=0)[1], 1
+                )
+
+            for weight_data, normalized_weight in zip(weights_data, normalized_weights):
+                [netuid, _] = weight_data
+                netuids.add(netuid)
+                if uid not in uid_to_weights:
+                    uid_to_weights[uid] = {}
+
+                uid_to_weights[uid][netuid] = normalized_weight
+
+        for netuid in netuids:
+            table.add_column(
+                f"[white]{netuid}",
+                header_style="overline white",
+                footer_style="overline white",
+                justify="right",
+                style="green",
+                no_wrap=True,
+            )
+
+        for uid in uid_to_weights:
+            row = [str(uid)]
+
+            uid_weights = uid_to_weights[uid]
+            for netuid in netuids:
+                if netuid in uid_weights:
+                    normalized_weight = uid_weights[netuid]
+                    row.append("{:0.2f}%".format(normalized_weight * 100))
+                else:
+                    row.append("-")
+            table.add_row(*row)
+
+        table.show_footer = True
+
+        table.box = None
+        table.pad_edge = False
+        table.width = None
+        cybertensor.__console__.print(table)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            "get_weights", help="""Get weights for subnet network."""
+        )
+        parser.add_argument(
+            "--netuid", dest="netuid", type=int, required=False, default=False
+        )
+
+        cybertensor.wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: "cybertensor.config"):
         if not config.is_set("netuid") and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))

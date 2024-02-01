@@ -4,6 +4,10 @@
     <img alt="Python" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue">
 </p>
 
+## [Step-by-step guide](./docs/basic-flow.md)
+## [Yuma Consensus](https://github.com/opentensor/subtensor/blob/f0a3da50fd7e949ca0d5284200cb80fdd25a79e3/docs/consensus.md)
+## [Deployed contract](https://deploy-preview-1081--rebyc.netlify.app/contracts/pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9)
+
 ## Install
 
 1. From source:

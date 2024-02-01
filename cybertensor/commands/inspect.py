@@ -102,6 +102,8 @@ class InspectCommand:
     part of the cybertensor CLI and not as a standalone function within user code.
     """
 
+    # TODO if wallet have saved addresses with different network prefixes, than run with flag --all command will fail
+
     @staticmethod
     def run(cli) -> None:
         r"""Inspect a cold, hot pair."""
@@ -164,10 +166,10 @@ class InspectCommand:
             cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)
             table.add_row(wallet.name, str(cold_balance), "", "", "", "", "", "", "")
             for dele, staked in delegates:
-                if dele.hotkey_ss58 in registered_delegate_info:
-                    delegate_name = registered_delegate_info[dele.hotkey_ss58].name
+                if dele.hotkey in registered_delegate_info:
+                    delegate_name = registered_delegate_info[dele.hotkey].name
                 else:
-                    delegate_name = dele.hotkey_ss58
+                    delegate_name = dele.hotkey
                 table.add_row(
                     "",
                     "",
