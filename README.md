@@ -53,7 +53,7 @@ git clone https://github.com/cybercongress/localbostrom
 cd localbostrom
 ./hard_restart.sh
 ```
-2. Add mnemonics from localbostrom's README to local keystore:
+2. Add mnemonics from [localbostrom's](https://github.com/cybercongress/localbostrom?tab=readme-ov-file#accounts) README to local keystore:
 ```bash
 cyber keys add validator --recover --home ./home
 ```
