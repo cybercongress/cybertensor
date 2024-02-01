@@ -22,7 +22,7 @@ from typing import List, Optional
 
 import cybertensor
 from .commands import *
-from .commands.network import SubnetSetWeightsCommand
+from .commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
 
 # Create a console instance for CLI display.
 console = cybertensor.__console__
@@ -60,6 +60,7 @@ COMMANDS = {
             "register": RegisterCommand,
             "hyperparameters": SubnetHyperparamsCommand,
             "weights": SubnetSetWeightsCommand,
+            "get_weights": SubnetGetWeightsCommand,
         },
     },
     "root": {
