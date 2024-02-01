@@ -70,7 +70,7 @@ class RegisterSubnetworkCommand:
         r"""Register a subnetwork"""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         # Call register command.
         cwtensor.register_subnetwork(
             wallet=wallet,
@@ -124,7 +124,7 @@ class SubnetLockCostCommand:
     def run(cli):
         r"""View locking cost of creating a new subnetwork"""
         config = cli.config.copy()
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         try:
             cybertensor.__console__.print(
                 f"Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]"
@@ -294,7 +294,7 @@ class SubnetSudoCommand:
         r"""Set subnet hyperparameters."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
         print("\n")
         SubnetHyperparamsCommand.run(cli)
         if not config.is_set("param") and not config.no_prompt:
@@ -494,23 +494,38 @@ class SubnetGetHyperparamsCommand:
         )
         cybertensor.cwtensor.add_args(parser)
 
+
 class SubnetSetWeightsCommand:
     """
-
     Optional arguments:
     - --uids (str): A comma-separated list of uids for which weights are to be set.
     - --weights (str): Corresponding weights for the specified netuids, in comma-separated format.
     - --netuid (str): Corresponding subnet for which weights are to be set.
 
     Example usage:
-    >>> ctcli subnet weights --uids 1,2,3 --weights 0.3,0.3,0.4
+    >>> ctcli subnet weights --uids 0,1,2 --weights 0.3,0.3,0.4
     """
 
     @staticmethod
     def run(cli):
-        r"""Set weights for root network."""
+        r"""Set weights for subnetwork."""
         wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
+
+        # Get values if not set.
+        example_uids = range(3)
+        if not cli.config.is_set("uids"):
+            example = ", ".join(map(str, example_uids)) + " ..."
+            cli.config.uids = Prompt.ask(f"Enter uids (e.g. {example})")
+
+        if not cli.config.is_set("weights"):
+            example = (
+                ", ".join(
+                    map(str, ["{:.2f}".format(float(1 / len(example_uids))) for _ in example_uids])
+                )
+                + " ..."
+            )
+            cli.config.weights = Prompt.ask(f"Enter weights (e.g. {example})")
 
         # Parse from string
         uids = torch.tensor(

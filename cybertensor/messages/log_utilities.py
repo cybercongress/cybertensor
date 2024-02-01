@@ -609,7 +609,7 @@ class ValidatorLogger:
             f"{f'UID [bright_cyan]{uid}[/bright_cyan]'.center(16 + len('[bright_cyan][/bright_cyan]'))} | "
             f"Updated [yellow]{current_block - metagraph.last_update[uid]}[/yellow] [dim]blocks ago[/dim] | "
             f"Dividends [green not bold]{metagraph.dividends[uid]:.5f}[/green not bold] | "
-            f"Stake \u03C4[magenta not bold]{metagraph.total_stake[uid]:.5f}[/magenta not bold] "
+            f"Stake {cybertensor.__giga_boot_symbol__}[magenta not bold]{metagraph.total_stake[uid]:.5f}[/magenta not bold] "
             f"[dim](retrieved [yellow]{current_block - start_block}[/yellow] blocks ago from {network})[/dim]"
         )
 

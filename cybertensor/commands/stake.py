@@ -61,7 +61,7 @@ class StakeCommand:
         r"""Stake token of amount to hotkey(s)."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_stake_to: List[Tuple[Optional[str], str]] = []
@@ -172,7 +172,8 @@ class StakeCommand:
                 f"Do you want to stake to the following keys from {wallet.name}:\n"
                 + "".join(
                     [
-                        f"    [bold white]- {hotkey[0] + ':' if hotkey[0] else ''}{hotkey[1]}: {f'{amount} {cybertensor.__giga_boot_symbol__}' if amount else 'All'}[/bold white]\n"
+                        f"    [bold white]- {hotkey[0] + ':' if hotkey[0] else ''}{hotkey[1]}: "
+                        f"{f'{amount} {cwtensor.giga_token_symbol}' if amount else 'All'}[/bold white]\n"
                         for hotkey, amount in zip(final_hotkeys, final_amounts)
                     ]
                 )
@@ -199,6 +200,7 @@ class StakeCommand:
 
     @classmethod
     def check_config(cls, config: "cybertensor.config"):
+
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -219,18 +221,16 @@ class StakeCommand:
             and not config.get("max_stake")
         ):
             if not Confirm.ask(
-                "Stake all GBOOT from account: [bold]'{}'[/bold]?".format(
-                    config.wallet.get("name", defaults.wallet.name)
-                )
+                f"Stake all {cybertensor.__giga_boot_symbol__} "
+                f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
             ):
-                amount = Prompt.ask("Enter GBOOT amount to stake")
+                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
                 try:
                     config.amount = float(amount)
                 except ValueError:
                     console.print(
-                        ":cross_mark:[red]Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
-                            amount
-                        )
+                        f":cross_mark:[red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                        f"[bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
@@ -251,7 +251,7 @@ class StakeCommand:
             required=False,
             action="store",
             default=None,
-            help="""Specify the maximum amount of GBOOT to have staked in each hotkey.""",
+            help=f"""Specify the maximum amount of {cybertensor.__giga_boot_symbol__} to have staked in each hotkey.""",
         )
         stake_parser.add_argument(
             "--hotkeys",
@@ -366,9 +366,10 @@ class StakeShow:
         #     Dict[str, DelegatesDetails]
         # ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
 
+        cwtensor = cybertensor.cwtensor(config=cli.config)
         registered_delegate_info: Optional[
             Dict[str, DelegatesDetails]
-        ] = cybertensor.cwtensor(config=cli.config).get_delegates()
+        ] = cwtensor.get_delegates()
 
         def get_stake_accounts(wallet) -> Dict[str, Dict[str, Union[str, Balance]]]:
             """Get stake account details for the given wallet.
@@ -501,7 +502,7 @@ class StakeShow:
         )
         table.add_column(
             "[overline white]Balance",
-            "\u03C4{:.5f}".format(total_balance),
+            f"{cwtensor.giga_token_symbol}{total_balance:.5f}",
             footer_style="overline white",
             style="green",
         )
@@ -510,13 +511,13 @@ class StakeShow:
         )
         table.add_column(
             "[overline white]Stake",
-            "\u03C4{:.5f}".format(total_stake),
+            f"{cwtensor.giga_token_symbol}{total_stake:.5f}",
             footer_style="overline white",
             style="green",
         )
         table.add_column(
             "[overline white]Rate",
-            "\u03C4{:.5f}/d".format(total_rate),
+            f"{cwtensor.giga_token_symbol}{total_rate:.5f}/d",
             footer_style="overline white",
             style="green",
         )

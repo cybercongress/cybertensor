@@ -64,7 +64,7 @@ class RegisterCommand:
         r"""Register neuron by recycling some GBOOT."""
         config = cli.config.copy()
         wallet = cybertensor.wallet(config=cli.config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=config)
+        cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
@@ -80,7 +80,7 @@ class RegisterCommand:
         # Check balance is sufficient
         if balance < current_recycle:
             cybertensor.__console__.print(
-                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle} GBOOT[/red]"
+                f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]"
             )
             sys.exit(1)
 

@@ -127,7 +127,7 @@ def transfer_message(
             cybertensor.__console__.print(f"[green]Tx Hash: {tx_hash}[/green]")
 
             explorer_url = cybertensor.utils.get_explorer_url_for_network(
-                cwtensor.network, tx_hash, cybertensor.__network_explorer_map__
+                cwtensor.network, tx_hash, cwtensor.network_explorer
             )
             if explorer_url is not None:
                 cybertensor.__console__.print(

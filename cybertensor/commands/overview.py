@@ -424,8 +424,8 @@ class OverviewCommand:
             )
             if last_subnet:
                 table.add_column(
-                    f"[overline white]STAKE({cybertensor.__giga_boot_symbol__})",
-                    f"{cybertensor.__giga_boot_symbol__}{total_stake:.5f}",
+                    f"[overline white]STAKE({cwtensor.giga_token_symbol})",
+                    f"{cwtensor.giga_token_symbol}{total_stake:.5f}",
                     footer_style="overline white",
                     justify="right",
                     style="green",
@@ -434,7 +434,7 @@ class OverviewCommand:
             else:
                 # No footer for non-last subnet.
                 table.add_column(
-                    f"[overline white]STAKE({cybertensor.__giga_boot_symbol__})",
+                    f"[overline white]STAKE({cwtensor.giga_token_symbol})",
                     justify="right",
                     style="green",
                     no_wrap=True,
@@ -480,8 +480,8 @@ class OverviewCommand:
                 no_wrap=True,
             )
             table.add_column(
-                f"[overline white]EMISSION({cybertensor.__giga_boot_symbol__})",
-                f"{cybertensor.__giga_boot_symbol__}{total_emission:_}",
+                f"[overline white]EMISSION({cwtensor.giga_token_symbol})",
+                f"{cwtensor.giga_token_symbol}{total_emission:_}",
                 footer_style="overline white",
                 justify="right",
                 style="green",
@@ -544,9 +544,7 @@ class OverviewCommand:
 
         console.clear()
 
-        caption = "[italic][dim][white]Wallet balance: [green]GBOOT" + str(
-            total_balance.gboot
-        )
+        caption = f"[italic][dim][white]Wallet balance: [green]{cwtensor.giga_token_symbol}{total_balance.gboot}"
         grid.add_row(Align(caption, vertical="middle", align="center"))
 
         # Print the entire table/grid

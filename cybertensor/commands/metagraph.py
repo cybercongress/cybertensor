@@ -148,8 +148,8 @@ class MetagraphCommand:
             style="yellow",
         )
         table.add_column(
-            "[overline white]STAKE(\u03C4)",
-            "\u03C4{:.5f}".format(total_stake),
+            f"[overline white]STAKE({cwtensor.giga_token_symbol})",
+            f"{cwtensor.giga_token_symbol}{total_stake:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -157,7 +157,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]RANK",
-            "{:.5f}".format(total_rank),
+            f"{total_rank:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -165,7 +165,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]TRUST",
-            "{:.5f}".format(total_trust),
+            f"{total_trust:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -173,7 +173,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]CONSENSUS",
-            "{:.5f}".format(total_consensus),
+            f"{total_consensus:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -181,7 +181,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]INCENTIVE",
-            "{:.5f}".format(total_incentive),
+            f"{total_incentive:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -189,7 +189,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]DIVIDENDS",
-            "{:.5f}".format(total_dividends),
+            f"{total_dividends:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -197,7 +197,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]EMISSION(\u03C1)",
-            "\u03C1{}".format(int(total_emission)),
+            f"\u03C1{int(total_emission)}",
             footer_style="overline white",
             justify="right",
             style="green",
@@ -205,7 +205,7 @@ class MetagraphCommand:
         )
         table.add_column(
             "[overline white]VTRUST",
-            "{:.5f}".format(total_validator_trust),
+            f"{total_validator_trust:.5f}",
             footer_style="overline white",
             justify="right",
             style="green",
