@@ -494,23 +494,38 @@ class SubnetGetHyperparamsCommand:
         )
         cybertensor.cwtensor.add_args(parser)
 
+
 class SubnetSetWeightsCommand:
     """
-
     Optional arguments:
     - --uids (str): A comma-separated list of uids for which weights are to be set.
     - --weights (str): Corresponding weights for the specified netuids, in comma-separated format.
     - --netuid (str): Corresponding subnet for which weights are to be set.
 
     Example usage:
-    >>> ctcli subnet weights --uids 1,2,3 --weights 0.3,0.3,0.4
+    >>> ctcli subnet weights --uids 0,1,2 --weights 0.3,0.3,0.4
     """
 
     @staticmethod
     def run(cli):
-        r"""Set weights for root network."""
+        r"""Set weights for subnetwork."""
         wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
+
+        # Get values if not set.
+        example_uids = range(3)
+        if not cli.config.is_set("uids"):
+            example = ", ".join(map(str, example_uids)) + " ..."
+            cli.config.uids = Prompt.ask(f"Enter uids (e.g. {example})")
+
+        if not cli.config.is_set("weights"):
+            example = (
+                ", ".join(
+                    map(str, ["{:.2f}".format(float(1 / len(example_uids))) for _ in example_uids])
+                )
+                + " ..."
+            )
+            cli.config.weights = Prompt.ask(f"Enter weights (e.g. {example})")
 
         # Parse from string
         uids = torch.tensor(
