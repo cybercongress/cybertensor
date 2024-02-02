@@ -1,50 +1,41 @@
-name: python api doc
+name: Python api documentation
 
-# build the documentation whenever there are new commits on main
 on:
   push:
     branches:
       - main
       - add_docs
-    # Alternative: only build for tags.
-    # tags:
-    #   - '*'
-
-# security: restrict permissions for CI jobs.
-permissions:
-  contents: read
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  # Build the documentation and upload the static HTML files as an artifact.
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # ADJUST THIS: install all dependencies (including pdoc)
-      - run: pip install -e .
-      - run: pip install pdoc==14.4.0
-      # ADJUST THIS: build your documentation into docs/.
-      # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: pdoc cybertensor -o=docs
-      - uses: actions/upload-pages-artifact@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          path: docs/
+          python-version: 3.11
 
-  # Deploy the artifact to GitHub pages.
-  # This is a separate job so that only actions/deploy-pages has the necessary permissions.
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -e .
+          pip install pdoc3==14.4.0
+
+      - name: Build documentation
+        run: |
+          source venv/bin/activate
+          pdoc --html --output-dir docs/ ../cybertensor
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/
