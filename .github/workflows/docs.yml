@@ -27,7 +27,7 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -e .
-          pip install pdoc3==14.4.0
+          pip install pdoc3
 
       - name: Build documentation
         run: |
