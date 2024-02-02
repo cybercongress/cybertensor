@@ -130,8 +130,6 @@ class InspectCommand:
     part of the cybertensor CLI and not as a standalone function within user code.
     &#34;&#34;&#34;
 
-    # TODO if wallet have saved addresses with different network prefixes, than run with flag --all command will fail
-
     @staticmethod
     def run(cli) -&gt; None:
         r&#34;&#34;&#34;Inspect a cold, hot pair.&#34;&#34;&#34;
@@ -194,10 +192,10 @@ class InspectCommand:
             cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)
             table.add_row(wallet.name, str(cold_balance), &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;)
             for dele, staked in delegates:
-                if dele.hotkey in registered_delegate_info:
-                    delegate_name = registered_delegate_info[dele.hotkey].name
+                if dele.hotkey_ss58 in registered_delegate_info:
+                    delegate_name = registered_delegate_info[dele.hotkey_ss58].name
                 else:
-                    delegate_name = dele.hotkey
+                    delegate_name = dele.hotkey_ss58
                 table.add_row(
                     &#34;&#34;,
                     &#34;&#34;,
@@ -356,8 +354,6 @@ part of the cybertensor CLI and not as a standalone function within user code.</
     part of the cybertensor CLI and not as a standalone function within user code.
     &#34;&#34;&#34;
 
-    # TODO if wallet have saved addresses with different network prefixes, than run with flag --all command will fail
-
     @staticmethod
     def run(cli) -&gt; None:
         r&#34;&#34;&#34;Inspect a cold, hot pair.&#34;&#34;&#34;
@@ -420,10 +416,10 @@ part of the cybertensor CLI and not as a standalone function within user code.</
             cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)
             table.add_row(wallet.name, str(cold_balance), &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;)
             for dele, staked in delegates:
-                if dele.hotkey in registered_delegate_info:
-                    delegate_name = registered_delegate_info[dele.hotkey].name
+                if dele.hotkey_ss58 in registered_delegate_info:
+                    delegate_name = registered_delegate_info[dele.hotkey_ss58].name
                 else:
-                    delegate_name = dele.hotkey
+                    delegate_name = dele.hotkey_ss58
                 table.add_row(
                     &#34;&#34;,
                     &#34;&#34;,
@@ -613,10 +609,10 @@ def run(cli) -&gt; None:
         cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)
         table.add_row(wallet.name, str(cold_balance), &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;)
         for dele, staked in delegates:
-            if dele.hotkey in registered_delegate_info:
-                delegate_name = registered_delegate_info[dele.hotkey].name
+            if dele.hotkey_ss58 in registered_delegate_info:
+                delegate_name = registered_delegate_info[dele.hotkey_ss58].name
             else:
-                delegate_name = dele.hotkey
+                delegate_name = dele.hotkey_ss58
             table.add_row(
                 &#34;&#34;,
                 &#34;&#34;,
