@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.utils.weight_utils API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.utils.weight_utils</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># The MIT License (MIT)
+# Copyright © 2021 Yuma Rao
+# Copyright © 2023 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+from typing import Tuple, List
+
+import torch
+
+import cybertensor
+
+U32_MAX = 4294967295
+U16_MAX = 65535
+
+
+def normalize_max_weight(
+    x: torch.FloatTensor, limit: float = 0.1
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Normalizes the tensor x so that sum(x) = 1 and the max value is not greater than the limit.
+    Args:
+        x (:obj:`torch.FloatTensor`):
+            Tensor to be max_value normalized.
+        limit: float:
+            Max value after normalization.
+    Returns:
+        y (:obj:`torch.FloatTensor`):
+            Normalized x tensor.
+    &#34;&#34;&#34;
+    epsilon = 1e-7  # For numerical stability after normalization
+
+    weights = x.clone()
+    values, _ = torch.sort(weights)
+
+    if x.sum() == 0 or len(x) * limit &lt;= 1:
+        return torch.ones_like(x) / x.size(0)
+    else:
+        estimation = values / values.sum()
+
+        if estimation.max() &lt;= limit:
+            return weights / weights.sum()
+
+        # Find the cumlative sum and sorted tensor
+        cumsum = torch.cumsum(estimation, 0)
+
+        # Determine the index of cutoff
+        estimation_sum = torch.tensor(
+            [(len(values) - i - 1) * estimation[i] for i in range(len(values))]
+        )
+        n_values = (estimation / (estimation_sum + cumsum + epsilon) &lt; limit).sum()
+
+        # Determine the cutoff based on the index
+        cutoff_scale = (limit * cumsum[n_values - 1] - epsilon) / (
+            1 - (limit * (len(estimation) - n_values))
+        )
+        cutoff = cutoff_scale * values.sum()
+
+        # Applying the cutoff
+        weights[weights &gt; cutoff] = cutoff
+
+        y = weights / weights.sum()
+
+        return y
+
+
+def convert_weight_uids_and_vals_to_tensor(
+    n: int, uids: List[int], weights: List[int]
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Converts weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`List[int],`):
+            Tensor of weights.
+    Returns:
+        row_weights ( torch.FloatTensor ):
+            Converted row weights.
+    &#34;&#34;&#34;
+    row_weights = torch.zeros([n], dtype=torch.float32)
+    for uid_j, wij in list(zip(uids, weights)):
+        row_weights[uid_j] = float(
+            wij
+        )  # assumes max-upscaled values (w_max = U16_MAX).
+    row_sum = row_weights.sum()
+    if row_sum &gt; 0:
+        row_weights /= row_sum  # normalize
+    return row_weights
+
+
+def convert_root_weight_uids_and_vals_to_tensor(
+    n: int, uids: List[int], weights: List[int], subnets: List[int]
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Converts root weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`List[int],`):
+            Tensor of weights.
+        subnets (:obj:`List[int],`):
+            list of subnets on the network
+    Returns:
+        row_weights ( torch.FloatTensor ):
+            Converted row weights.
+    &#34;&#34;&#34;
+
+    row_weights = torch.zeros([n], dtype=torch.float32)
+    for uid_j, wij in list(zip(uids, weights)):
+        if uid_j in subnets:
+            index_s = subnets.index(uid_j)
+        else:
+            raise Exception(&#34;Incorrect Subnet {uid_j} in {subnets}&#34;)
+        row_weights[index_s] = float(
+            wij
+        )  # assumes max-upscaled values (w_max = U16_MAX).
+    row_sum = row_weights.sum()
+    if row_sum &gt; 0:
+        row_weights /= row_sum  # normalize
+    return row_weights
+
+
+def convert_bond_uids_and_vals_to_tensor(
+    n: int, uids: List[int], bonds: List[int]
+) -&gt; &#34;torch.LongTensor&#34;:
+    r&#34;&#34;&#34;Converts bond and uids from chain representation into a torch tensor.
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed bonds.
+        bonds (:obj:`List[int],`):
+            Tensor of bonds.
+    Returns:
+        row_bonds ( torch.FloatTensor ):
+            Converted row bonds.
+    &#34;&#34;&#34;
+    row_bonds = torch.zeros([n], dtype=torch.int64)
+    for uid_j, bij in list(zip(uids, bonds)):
+        row_bonds[uid_j] = int(bij)
+    return row_bonds
+
+
+def convert_weights_and_uids_for_emit(
+    uids: torch.LongTensor, weights: torch.FloatTensor
+) -&gt; Tuple[List[int], List[int]]:
+    r&#34;&#34;&#34;Converts weights into integer u32 representation that sum to MAX_INT_WEIGHT.
+    Args:
+        uids (:obj:`torch.LongTensor,`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`torch.FloatTensor,`):
+            Tensor of weights.
+    Returns:
+        weight_uids (List[int]):
+            Uids as a list.
+        weight_vals (List[int]):
+            Weights as a list.
+    &#34;&#34;&#34;
+    # Checks.
+    weights = weights.tolist()
+    uids = uids.tolist()
+    if min(weights) &lt; 0:
+        raise ValueError(
+            &#34;Passed weight is negative cannot exist on chain {}&#34;.format(weights)
+        )
+    if min(uids) &lt; 0:
+        raise ValueError(&#34;Passed uid is negative cannot exist on chain {}&#34;.format(uids))
+    if len(uids) != len(weights):
+        raise ValueError(
+            &#34;Passed weights and uids must have the same length, got {} and {}&#34;.format(
+                len(uids), len(weights)
+            )
+        )
+    if sum(weights) == 0:
+        return [], []  # Nothing to set on chain.
+    else:
+        max_weight = float(max(weights))
+        weights = [
+            float(value) / max_weight for value in weights
+        ]  # max-upscale values (max_weight = 1).
+
+    weight_vals = []
+    weight_uids = []
+    for i, (weight_i, uid_i) in enumerate(list(zip(weights, uids))):
+        uint16_val = round(
+            float(weight_i) * int(U16_MAX)
+        )  # convert to int representation.
+
+        # Filter zeros
+        if uint16_val != 0:  # Filter zeros
+            weight_vals.append(uint16_val)
+            weight_uids.append(uid_i)
+
+    return weight_uids, weight_vals
+
+
+def process_weights_for_netuid(
+    uids,
+    weights: torch.Tensor,
+    netuid: int,
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    metagraph: &#34;cybertensor.metagraph&#34; = None,
+    exclude_quantile: int = 0,
+) -&gt; torch.FloatTensor:
+    cybertensor.logging.debug(&#34;process_weights_for_netuid()&#34;)
+    cybertensor.logging.debug(&#34;weights&#34;, weights)
+    cybertensor.logging.debug(&#34;netuid&#34;, netuid)
+    cybertensor.logging.debug(&#34;cwtensor&#34;, cwtensor)
+    cybertensor.logging.debug(&#34;metagraph&#34;, metagraph)
+
+    # Get latest metagraph from chain if metagraph is None.
+    if metagraph is None:
+        metagraph = cwtensor.metagraph(netuid)
+
+    # Cast weights to floats.
+    if not isinstance(weights, torch.FloatTensor):
+        weights = weights.type(torch.float32)
+
+    # Network configuration parameters from an cwtensor.
+    # These parameters determine the range of acceptable weights for each neuron.
+    quantile = exclude_quantile / U16_MAX
+    min_allowed_weights = cwtensor.min_allowed_weights(netuid=netuid)
+    max_weight_limit = cwtensor.max_weight_limit(netuid=netuid)
+    cybertensor.logging.debug(&#34;quantile&#34;, quantile)
+    cybertensor.logging.debug(&#34;min_allowed_weights&#34;, min_allowed_weights)
+    cybertensor.logging.debug(&#34;max_weight_limit&#34;, max_weight_limit)
+
+    # Find all non zero weights.
+    non_zero_weight_idx = torch.argwhere(weights &gt; 0).squeeze(dim=1)
+    non_zero_weight_uids = uids[non_zero_weight_idx]
+    non_zero_weights = weights[non_zero_weight_idx]
+    if non_zero_weights.numel() == 0 or metagraph.n &lt; min_allowed_weights:
+        cybertensor.logging.warning(&#34;No non-zero weights returning all ones.&#34;)
+        final_weights = torch.ones((metagraph.n)).to(metagraph.n) / metagraph.n
+        cybertensor.logging.debug(&#34;final_weights&#34;, final_weights)
+        return torch.tensor(list(range(len(final_weights)))), final_weights
+
+    elif non_zero_weights.numel() &lt; min_allowed_weights:
+        cybertensor.logging.warning(
+            &#34;No non-zero weights less then min allowed weight, returning all ones.&#34;
+        )
+        # ( const ): Should this be torch.zeros( ( metagraph.n ) ) to reset everyone to build up weight?
+        weights = (
+            torch.ones((metagraph.n)).to(metagraph.n) * 1e-5
+        )  # creating minimum even non-zero weights
+        weights[non_zero_weight_idx] += non_zero_weights
+        cybertensor.logging.debug(&#34;final_weights&#34;, weights)
+        normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+            x=weights, limit=max_weight_limit
+        )
+        return torch.tensor(list(range(len(normalized_weights)))), normalized_weights
+
+    cybertensor.logging.debug(&#34;non_zero_weights&#34;, non_zero_weights)
+
+    # Compute the exclude quantile and find the weights in the lowest quantile
+    max_exclude = max(0, len(non_zero_weights) - min_allowed_weights) / len(
+        non_zero_weights
+    )
+    exclude_quantile = min([quantile, max_exclude])
+    lowest_quantile = non_zero_weights.quantile(exclude_quantile)
+    cybertensor.logging.debug(&#34;max_exclude&#34;, max_exclude)
+    cybertensor.logging.debug(&#34;exclude_quantile&#34;, exclude_quantile)
+    cybertensor.logging.debug(&#34;lowest_quantile&#34;, lowest_quantile)
+
+    # Exclude all weights below the allowed quantile.
+    non_zero_weight_uids = non_zero_weight_uids[lowest_quantile &lt;= non_zero_weights]
+    non_zero_weights = non_zero_weights[lowest_quantile &lt;= non_zero_weights]
+    cybertensor.logging.debug(&#34;non_zero_weight_uids&#34;, non_zero_weight_uids)
+    cybertensor.logging.debug(&#34;non_zero_weights&#34;, non_zero_weights)
+
+    # Normalize weights and return.
+    normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+        x=non_zero_weights, limit=max_weight_limit
+    )
+    cybertensor.logging.debug(&#34;final_weights&#34;, normalized_weights)
+
+    return non_zero_weight_uids, normalized_weights</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.utils.weight_utils.convert_bond_uids_and_vals_to_tensor"><code class="name flex">
+<span>def <span class="ident">convert_bond_uids_and_vals_to_tensor</span></span>(<span>n: int, uids: List[int], bonds: List[int]) ‑> torch.LongTensor</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts bond and uids from chain representation into a torch tensor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>n</code></strong></dt>
+<dd>int:
+number of neurons on network.</dd>
+</dl>
+<p>uids (:obj:<code>List[int],</code>):
+Tensor of uids as destinations for passed bonds.
+bonds (:obj:<code>List[int],</code>):
+Tensor of bonds.</p>
+<h2 id="returns">Returns</h2>
+<p>row_bonds ( torch.FloatTensor ):
+Converted row bonds.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_bond_uids_and_vals_to_tensor(
+    n: int, uids: List[int], bonds: List[int]
+) -&gt; &#34;torch.LongTensor&#34;:
+    r&#34;&#34;&#34;Converts bond and uids from chain representation into a torch tensor.
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed bonds.
+        bonds (:obj:`List[int],`):
+            Tensor of bonds.
+    Returns:
+        row_bonds ( torch.FloatTensor ):
+            Converted row bonds.
+    &#34;&#34;&#34;
+    row_bonds = torch.zeros([n], dtype=torch.int64)
+    for uid_j, bij in list(zip(uids, bonds)):
+        row_bonds[uid_j] = int(bij)
+    return row_bonds</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.weight_utils.convert_root_weight_uids_and_vals_to_tensor"><code class="name flex">
+<span>def <span class="ident">convert_root_weight_uids_and_vals_to_tensor</span></span>(<span>n: int, uids: List[int], weights: List[int], subnets: List[int]) ‑> torch.FloatTensor</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts root weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>n</code></strong></dt>
+<dd>int:
+number of neurons on network.</dd>
+</dl>
+<p>uids (:obj:<code>List[int],</code>):
+Tensor of uids as destinations for passed weights.
+weights (:obj:<code>List[int],</code>):
+Tensor of weights.
+subnets (:obj:<code>List[int],</code>):
+list of subnets on the network</p>
+<h2 id="returns">Returns</h2>
+<p>row_weights ( torch.FloatTensor ):
+Converted row weights.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_root_weight_uids_and_vals_to_tensor(
+    n: int, uids: List[int], weights: List[int], subnets: List[int]
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Converts root weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`List[int],`):
+            Tensor of weights.
+        subnets (:obj:`List[int],`):
+            list of subnets on the network
+    Returns:
+        row_weights ( torch.FloatTensor ):
+            Converted row weights.
+    &#34;&#34;&#34;
+
+    row_weights = torch.zeros([n], dtype=torch.float32)
+    for uid_j, wij in list(zip(uids, weights)):
+        if uid_j in subnets:
+            index_s = subnets.index(uid_j)
+        else:
+            raise Exception(&#34;Incorrect Subnet {uid_j} in {subnets}&#34;)
+        row_weights[index_s] = float(
+            wij
+        )  # assumes max-upscaled values (w_max = U16_MAX).
+    row_sum = row_weights.sum()
+    if row_sum &gt; 0:
+        row_weights /= row_sum  # normalize
+    return row_weights</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.weight_utils.convert_weight_uids_and_vals_to_tensor"><code class="name flex">
+<span>def <span class="ident">convert_weight_uids_and_vals_to_tensor</span></span>(<span>n: int, uids: List[int], weights: List[int]) ‑> torch.FloatTensor</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>n</code></strong></dt>
+<dd>int:
+number of neurons on network.</dd>
+</dl>
+<p>uids (:obj:<code>List[int],</code>):
+Tensor of uids as destinations for passed weights.
+weights (:obj:<code>List[int],</code>):
+Tensor of weights.</p>
+<h2 id="returns">Returns</h2>
+<p>row_weights ( torch.FloatTensor ):
+Converted row weights.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_weight_uids_and_vals_to_tensor(
+    n: int, uids: List[int], weights: List[int]
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Converts weights and uids from chain representation into a torch tensor (inverse operation from convert_weights_and_uids_for_emit)
+    Args:
+        n: int:
+            number of neurons on network.
+        uids (:obj:`List[int],`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`List[int],`):
+            Tensor of weights.
+    Returns:
+        row_weights ( torch.FloatTensor ):
+            Converted row weights.
+    &#34;&#34;&#34;
+    row_weights = torch.zeros([n], dtype=torch.float32)
+    for uid_j, wij in list(zip(uids, weights)):
+        row_weights[uid_j] = float(
+            wij
+        )  # assumes max-upscaled values (w_max = U16_MAX).
+    row_sum = row_weights.sum()
+    if row_sum &gt; 0:
+        row_weights /= row_sum  # normalize
+    return row_weights</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.weight_utils.convert_weights_and_uids_for_emit"><code class="name flex">
+<span>def <span class="ident">convert_weights_and_uids_for_emit</span></span>(<span>uids: torch.LongTensor, weights: torch.FloatTensor) ‑> Tuple[List[int], List[int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts weights into integer u32 representation that sum to MAX_INT_WEIGHT.</p>
+<h2 id="args">Args</h2>
+<p>uids (:obj:<code>torch.LongTensor,</code>):
+Tensor of uids as destinations for passed weights.
+weights (:obj:<code>torch.FloatTensor,</code>):
+Tensor of weights.</p>
+<h2 id="returns">Returns</h2>
+<p>weight_uids (List[int]):
+Uids as a list.
+weight_vals (List[int]):
+Weights as a list.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_weights_and_uids_for_emit(
+    uids: torch.LongTensor, weights: torch.FloatTensor
+) -&gt; Tuple[List[int], List[int]]:
+    r&#34;&#34;&#34;Converts weights into integer u32 representation that sum to MAX_INT_WEIGHT.
+    Args:
+        uids (:obj:`torch.LongTensor,`):
+            Tensor of uids as destinations for passed weights.
+        weights (:obj:`torch.FloatTensor,`):
+            Tensor of weights.
+    Returns:
+        weight_uids (List[int]):
+            Uids as a list.
+        weight_vals (List[int]):
+            Weights as a list.
+    &#34;&#34;&#34;
+    # Checks.
+    weights = weights.tolist()
+    uids = uids.tolist()
+    if min(weights) &lt; 0:
+        raise ValueError(
+            &#34;Passed weight is negative cannot exist on chain {}&#34;.format(weights)
+        )
+    if min(uids) &lt; 0:
+        raise ValueError(&#34;Passed uid is negative cannot exist on chain {}&#34;.format(uids))
+    if len(uids) != len(weights):
+        raise ValueError(
+            &#34;Passed weights and uids must have the same length, got {} and {}&#34;.format(
+                len(uids), len(weights)
+            )
+        )
+    if sum(weights) == 0:
+        return [], []  # Nothing to set on chain.
+    else:
+        max_weight = float(max(weights))
+        weights = [
+            float(value) / max_weight for value in weights
+        ]  # max-upscale values (max_weight = 1).
+
+    weight_vals = []
+    weight_uids = []
+    for i, (weight_i, uid_i) in enumerate(list(zip(weights, uids))):
+        uint16_val = round(
+            float(weight_i) * int(U16_MAX)
+        )  # convert to int representation.
+
+        # Filter zeros
+        if uint16_val != 0:  # Filter zeros
+            weight_vals.append(uint16_val)
+            weight_uids.append(uid_i)
+
+    return weight_uids, weight_vals</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.weight_utils.normalize_max_weight"><code class="name flex">
+<span>def <span class="ident">normalize_max_weight</span></span>(<span>x: torch.FloatTensor, limit: float = 0.1) ‑> torch.FloatTensor</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Normalizes the tensor x so that sum(x) = 1 and the max value is not greater than the limit.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>x (:obj:<code>torch.FloatTensor</code>):</dt>
+<dt>Tensor to be max_value normalized.</dt>
+<dt><strong><code>limit</code></strong></dt>
+<dd>float:
+Max value after normalization.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>y (:obj:<code>torch.FloatTensor</code>):
+Normalized x tensor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def normalize_max_weight(
+    x: torch.FloatTensor, limit: float = 0.1
+) -&gt; &#34;torch.FloatTensor&#34;:
+    r&#34;&#34;&#34;Normalizes the tensor x so that sum(x) = 1 and the max value is not greater than the limit.
+    Args:
+        x (:obj:`torch.FloatTensor`):
+            Tensor to be max_value normalized.
+        limit: float:
+            Max value after normalization.
+    Returns:
+        y (:obj:`torch.FloatTensor`):
+            Normalized x tensor.
+    &#34;&#34;&#34;
+    epsilon = 1e-7  # For numerical stability after normalization
+
+    weights = x.clone()
+    values, _ = torch.sort(weights)
+
+    if x.sum() == 0 or len(x) * limit &lt;= 1:
+        return torch.ones_like(x) / x.size(0)
+    else:
+        estimation = values / values.sum()
+
+        if estimation.max() &lt;= limit:
+            return weights / weights.sum()
+
+        # Find the cumlative sum and sorted tensor
+        cumsum = torch.cumsum(estimation, 0)
+
+        # Determine the index of cutoff
+        estimation_sum = torch.tensor(
+            [(len(values) - i - 1) * estimation[i] for i in range(len(values))]
+        )
+        n_values = (estimation / (estimation_sum + cumsum + epsilon) &lt; limit).sum()
+
+        # Determine the cutoff based on the index
+        cutoff_scale = (limit * cumsum[n_values - 1] - epsilon) / (
+            1 - (limit * (len(estimation) - n_values))
+        )
+        cutoff = cutoff_scale * values.sum()
+
+        # Applying the cutoff
+        weights[weights &gt; cutoff] = cutoff
+
+        y = weights / weights.sum()
+
+        return y</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.weight_utils.process_weights_for_netuid"><code class="name flex">
+<span>def <span class="ident">process_weights_for_netuid</span></span>(<span>uids, weights: torch.Tensor, netuid: int, cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, metagraph: <a title="cybertensor.metagraph" href="../metagraph.html">cybertensor.metagraph</a> = None, exclude_quantile: int = 0) ‑> torch.FloatTensor</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_weights_for_netuid(
+    uids,
+    weights: torch.Tensor,
+    netuid: int,
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    metagraph: &#34;cybertensor.metagraph&#34; = None,
+    exclude_quantile: int = 0,
+) -&gt; torch.FloatTensor:
+    cybertensor.logging.debug(&#34;process_weights_for_netuid()&#34;)
+    cybertensor.logging.debug(&#34;weights&#34;, weights)
+    cybertensor.logging.debug(&#34;netuid&#34;, netuid)
+    cybertensor.logging.debug(&#34;cwtensor&#34;, cwtensor)
+    cybertensor.logging.debug(&#34;metagraph&#34;, metagraph)
+
+    # Get latest metagraph from chain if metagraph is None.
+    if metagraph is None:
+        metagraph = cwtensor.metagraph(netuid)
+
+    # Cast weights to floats.
+    if not isinstance(weights, torch.FloatTensor):
+        weights = weights.type(torch.float32)
+
+    # Network configuration parameters from an cwtensor.
+    # These parameters determine the range of acceptable weights for each neuron.
+    quantile = exclude_quantile / U16_MAX
+    min_allowed_weights = cwtensor.min_allowed_weights(netuid=netuid)
+    max_weight_limit = cwtensor.max_weight_limit(netuid=netuid)
+    cybertensor.logging.debug(&#34;quantile&#34;, quantile)
+    cybertensor.logging.debug(&#34;min_allowed_weights&#34;, min_allowed_weights)
+    cybertensor.logging.debug(&#34;max_weight_limit&#34;, max_weight_limit)
+
+    # Find all non zero weights.
+    non_zero_weight_idx = torch.argwhere(weights &gt; 0).squeeze(dim=1)
+    non_zero_weight_uids = uids[non_zero_weight_idx]
+    non_zero_weights = weights[non_zero_weight_idx]
+    if non_zero_weights.numel() == 0 or metagraph.n &lt; min_allowed_weights:
+        cybertensor.logging.warning(&#34;No non-zero weights returning all ones.&#34;)
+        final_weights = torch.ones((metagraph.n)).to(metagraph.n) / metagraph.n
+        cybertensor.logging.debug(&#34;final_weights&#34;, final_weights)
+        return torch.tensor(list(range(len(final_weights)))), final_weights
+
+    elif non_zero_weights.numel() &lt; min_allowed_weights:
+        cybertensor.logging.warning(
+            &#34;No non-zero weights less then min allowed weight, returning all ones.&#34;
+        )
+        # ( const ): Should this be torch.zeros( ( metagraph.n ) ) to reset everyone to build up weight?
+        weights = (
+            torch.ones((metagraph.n)).to(metagraph.n) * 1e-5
+        )  # creating minimum even non-zero weights
+        weights[non_zero_weight_idx] += non_zero_weights
+        cybertensor.logging.debug(&#34;final_weights&#34;, weights)
+        normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+            x=weights, limit=max_weight_limit
+        )
+        return torch.tensor(list(range(len(normalized_weights)))), normalized_weights
+
+    cybertensor.logging.debug(&#34;non_zero_weights&#34;, non_zero_weights)
+
+    # Compute the exclude quantile and find the weights in the lowest quantile
+    max_exclude = max(0, len(non_zero_weights) - min_allowed_weights) / len(
+        non_zero_weights
+    )
+    exclude_quantile = min([quantile, max_exclude])
+    lowest_quantile = non_zero_weights.quantile(exclude_quantile)
+    cybertensor.logging.debug(&#34;max_exclude&#34;, max_exclude)
+    cybertensor.logging.debug(&#34;exclude_quantile&#34;, exclude_quantile)
+    cybertensor.logging.debug(&#34;lowest_quantile&#34;, lowest_quantile)
+
+    # Exclude all weights below the allowed quantile.
+    non_zero_weight_uids = non_zero_weight_uids[lowest_quantile &lt;= non_zero_weights]
+    non_zero_weights = non_zero_weights[lowest_quantile &lt;= non_zero_weights]
+    cybertensor.logging.debug(&#34;non_zero_weight_uids&#34;, non_zero_weight_uids)
+    cybertensor.logging.debug(&#34;non_zero_weights&#34;, non_zero_weights)
+
+    # Normalize weights and return.
+    normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+        x=non_zero_weights, limit=max_weight_limit
+    )
+    cybertensor.logging.debug(&#34;final_weights&#34;, normalized_weights)
+
+    return non_zero_weight_uids, normalized_weights</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.utils" href="index.html">cybertensor.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.utils.weight_utils.convert_bond_uids_and_vals_to_tensor" href="#cybertensor.utils.weight_utils.convert_bond_uids_and_vals_to_tensor">convert_bond_uids_and_vals_to_tensor</a></code></li>
+<li><code><a title="cybertensor.utils.weight_utils.convert_root_weight_uids_and_vals_to_tensor" href="#cybertensor.utils.weight_utils.convert_root_weight_uids_and_vals_to_tensor">convert_root_weight_uids_and_vals_to_tensor</a></code></li>
+<li><code><a title="cybertensor.utils.weight_utils.convert_weight_uids_and_vals_to_tensor" href="#cybertensor.utils.weight_utils.convert_weight_uids_and_vals_to_tensor">convert_weight_uids_and_vals_to_tensor</a></code></li>
+<li><code><a title="cybertensor.utils.weight_utils.convert_weights_and_uids_for_emit" href="#cybertensor.utils.weight_utils.convert_weights_and_uids_for_emit">convert_weights_and_uids_for_emit</a></code></li>
+<li><code><a title="cybertensor.utils.weight_utils.normalize_max_weight" href="#cybertensor.utils.weight_utils.normalize_max_weight">normalize_max_weight</a></code></li>
+<li><code><a title="cybertensor.utils.weight_utils.process_weights_for_netuid" href="#cybertensor.utils.weight_utils.process_weights_for_netuid">process_weights_for_netuid</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.messages.staking API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.messages.staking</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># The MIT License (MIT)
+# Copyright © 2021 Yuma Rao
+# Copyright © 2023 Opentensor Foundation
+# Copyright © 2023 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+from time import sleep
+from typing import List, Union, Optional
+
+from rich.prompt import Confirm
+
+import cybertensor
+from cybertensor.utils.balance import Balance
+
+
+def add_stake_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    hotkey: Optional[str] = None,
+    amount: Union[Balance, float] = None,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Adds the specified amount of stake to passed hotkey uid.
+    Args:
+        wallet (cybertensor.wallet):
+            cybertensor wallet object.
+        hotkey (Optional[str]):
+            address of the hotkey account to stake to
+            defaults to the wallet&#39;s hotkey.
+        amount (Union[Balance, float]):
+            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is true.
+
+    Raises:
+        cybertensor.errors.NotRegisteredError:
+            If the wallet is not registered on the chain.
+        cybertensor.errors.NotDelegateError:
+            If the hotkey is not a delegate on the chain.
+    &#34;&#34;&#34;
+    # Decrypt keys,
+    wallet.coldkey
+
+    # Default to wallet&#39;s own hotkey if the value is not passed.
+    if hotkey is None:
+        hotkey = wallet.hotkey.address
+
+    # Flag to indicate if we are using the wallet&#39;s own hotkey.
+    own_hotkey: bool
+
+    with cybertensor.__console__.status(
+        f&#34;:satellite: Syncing with chain: [white]{cwtensor.network}[/white] ...&#34;
+    ):
+        old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+        # Get hotkey owner
+        hotkey_owner = cwtensor.get_hotkey_owner(hotkey)
+        own_hotkey = wallet.coldkeypub.address == hotkey_owner
+        if not own_hotkey:
+            # This is not the wallet&#39;s own hotkey, so we are delegating.
+            if not cwtensor.is_hotkey_delegate(hotkey):
+                raise cybertensor.errors.NotDelegateError(
+                    f&#34;Hotkey: {hotkey} is not a delegate.&#34;
+                )
+
+            # Get hotkey take
+            hotkey_take = cwtensor.get_delegate_take(hotkey)
+
+        # Get current stake
+        old_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+            coldkey=wallet.coldkeypub.address, hotkey=hotkey
+        )
+
+    # Convert to cybertensor.Balance
+    if amount is None:
+        # Stake it all.
+        staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
+    elif not isinstance(amount, cybertensor.Balance):
+        staking_balance = cybertensor.Balance.from_gboot(amount)
+    else:
+        staking_balance = amount
+
+    # Remove existential balance to keep key alive.
+    if staking_balance &gt; cybertensor.Balance.from_boot(1000000):
+        staking_balance = staking_balance - cybertensor.Balance.from_boot(1000000)
+    else:
+        staking_balance = staking_balance
+
+    # Check enough to stake.
+    if staking_balance &gt; old_balance:
+        cybertensor.__console__.print(
+            f&#34;:cross_mark: [red]Not enough stake[/red]:[bold white]\n&#34;
+            f&#34;  balance:{old_balance}\n&#34;
+            f&#34;  amount: {staking_balance}\n&#34;
+            f&#34;  coldkey: {wallet.name}[/bold white]&#34;
+        )
+        return False
+
+    # Ask before moving on.
+    if prompt:
+        if not own_hotkey:
+            # We are delegating.
+            if not Confirm.ask(
+                f&#34;Do you want to delegate:[bold white]\n&#34;
+                f&#34;  amount: {staking_balance}\n&#34;
+                f&#34;  to: {wallet.hotkey_str}\n&#34;
+                f&#34;  take: {hotkey_take}\n&#34;
+                f&#34;  owner: {hotkey_owner}[/bold white]&#34;
+            ):
+                return False
+        else:
+            if not Confirm.ask(
+                f&#34;Do you want to stake:[bold white]\n&#34;
+                f&#34;  amount: {staking_balance}\n&#34;
+                f&#34;  to: {wallet.hotkey_str}[/bold white]&#34;
+            ):
+                return False
+
+    try:
+        with cybertensor.__console__.status(
+            f&#34;:satellite: Staking to: [bold white]{cwtensor.network}[/bold white] ...&#34;
+        ):
+            staking_response: bool = __do_add_stake_single(
+                cwtensor=cwtensor,
+                wallet=wallet,
+                hotkey=hotkey,
+                amount=staking_balance,
+                wait_for_finalization=wait_for_finalization,
+            )
+
+        if staking_response is True:  # If we successfully staked.
+            # We only wait here if we expect finalization.
+            if not wait_for_finalization:
+                return True
+
+            cybertensor.__console__.print(
+                &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
+            )
+            with cybertensor.__console__.status(
+                f&#34;:satellite: Checking Balance on: [white]{cwtensor.network}[/white] ...&#34;
+            ):
+                new_balance = cwtensor.get_balance(address=wallet.coldkeypub.address)
+                block = cwtensor.get_current_block()
+                new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address,
+                    hotkey=wallet.hotkey.address,
+                    block=block,
+                )  # Get current stake
+
+                cybertensor.__console__.print(
+                    f&#34;Balance:\n&#34;
+                    f&#34;  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
+                )
+                cybertensor.__console__.print(
+                    f&#34;Stake:\n&#34;
+                    f&#34;  [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]&#34;
+                )
+                return True
+        else:
+            cybertensor.__console__.print(
+                &#34;:cross_mark: [red]Failed[/red]: Error unknown.&#34;
+            )
+            return False
+
+    except cybertensor.errors.NotRegisteredError as e:
+        cybertensor.__console__.print(
+            f&#34;:cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]&#34;
+        )
+        return False
+    except cybertensor.errors.StakeError as e:
+        cybertensor.__console__.print(f&#34;:cross_mark: [red]Stake Error: {e}[/red]&#34;)
+        return False
+
+
+def add_stake_multiple_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    hotkeys: List[str],
+    amounts: List[Union[Balance, float]] = None,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Adds stake to each hotkey in the list, using each amount, from a common coldkey.
+    Args:
+        wallet (cybertensor.wallet):
+            cybertensor wallet object for the coldkey.
+        hotkeys (List[str]):
+            List of hotkeys to stake to.
+        amounts (List[Union[Balance, float]]):
+            List of amounts to stake. If None, stake all to the first hotkey.
+        wait_for_finalization (bool):
+            if set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or included in the block.
+            flag is true if any wallet was staked.
+            If we did not wait for finalization / inclusion, the response is true.
+    &#34;&#34;&#34;
+    if not isinstance(hotkeys, list) or not all(
+        isinstance(hotkey, str) for hotkey in hotkeys
+    ):
+        raise TypeError(&#34;hotkeys must be a list of str&#34;)
+
+    if len(hotkeys) == 0:
+        return True
+
+    if amounts is not None and len(amounts) != len(hotkeys):
+        raise ValueError(&#34;amounts must be a list of the same length as hotkeys&#34;)
+
+    if amounts is not None and not all(
+        isinstance(amount, (Balance, float)) for amount in amounts
+    ):
+        raise TypeError(
+            &#34;amounts must be a [list of cybertensor.Balance or float] or None&#34;
+        )
+
+    if amounts is None:
+        amounts = [None] * len(hotkeys)
+    else:
+        # Convert to Balance
+        amounts = [
+            cybertensor.Balance.from_gboot(amount)
+            if isinstance(amount, float)
+            else amount
+            for amount in amounts
+        ]
+
+        if sum(amount.gboot for amount in amounts) == 0:
+            # Staking 0.gboot
+            return True
+
+    # Decrypt coldkey.
+    wallet.coldkey
+
+    old_stakes = []
+    with cybertensor.__console__.status(
+        f&#34;:satellite: Syncing with chain: [white]{cwtensor.network}[/white] ...&#34;
+    ):
+        old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+
+        # Get the old stakes.
+        for hotkey in hotkeys:
+            old_stakes.append(
+                cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address, hotkey=hotkey
+                )
+            )
+
+    # Remove existential balance to keep key alive.
+    ## Keys must maintain a balance of at least 1000 boot to stay alive.
+    total_staking_boot = sum(
+        [amount.boot if amount is not None else 0 for amount in amounts]
+    )
+    if total_staking_boot == 0:
+        # Staking all to the first wallet.
+        if old_balance.boot &gt; 1000000:
+            old_balance -= cybertensor.Balance.from_boot(1000000)
+
+    elif total_staking_boot &lt; 1000000:
+        # Staking less than 1000 boot to the wallets.
+        pass
+    else:
+        # Staking more than 1000 boot to the wallets.
+        ## Reduce the amount to stake to each wallet to keep the balance above 1000000 boot.
+        percent_reduction = 1 - (1000000 / total_staking_boot)
+        amounts = [
+            Balance.from_gboot(amount.gboot * percent_reduction) for amount in amounts
+        ]
+
+    successful_stakes = 0
+    for idx, (hotkey, amount, old_stake) in enumerate(
+        zip(hotkeys, amounts, old_stakes)
+    ):
+        staking_all = False
+        # Convert to cybertensor.Balance
+        if amount is None:
+            # Stake it all.
+            staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
+            staking_all = True
+        else:
+            # Amounts are cast to balance earlier in the function
+            assert isinstance(amount, cybertensor.Balance)
+            staking_balance = amount
+
+        # Check enough to stake
+        if staking_balance &gt; old_balance:
+            cybertensor.__console__.print(
+                f&#34;:cross_mark: [red]Not enough balance[/red]: [green]{old_balance}[/green] &#34;
+                f&#34;to stake: [blue]{staking_balance}[/blue] from coldkey: [white]{wallet.name}[/white]&#34;
+            )
+            continue
+
+        # Ask before moving on.
+        if prompt:
+            if not Confirm.ask(
+                f&#34;Do you want to stake:\n&#34;
+                f&#34;[bold white]  amount: {staking_balance}\n&#34;
+                f&#34;  hotkey: {wallet.hotkey_str}[/bold white ]?&#34;
+            ):
+                continue
+
+        try:
+            staking_response: bool = __do_add_stake_single(
+                cwtensor=cwtensor,
+                wallet=wallet,
+                hotkey=hotkey,
+                amount=staking_balance,
+                wait_for_finalization=wait_for_finalization,
+            )
+
+            if staking_response is True:  # If we successfully staked.
+                # We only wait here if we expect finalization.
+
+                if idx &lt; len(hotkeys) - 1:
+                    # Wait for tx rate limit.
+                    tx_rate_limit_blocks = cwtensor.tx_rate_limit()
+                    if tx_rate_limit_blocks &gt; 0:
+                        cybertensor.__console__.print(
+                            f&#34;:hourglass: [yellow]Waiting for tx rate limit: [white]{tx_rate_limit_blocks}[/white] &#34;
+                            f&#34;blocks[/yellow]&#34;
+                        )
+                        sleep(tx_rate_limit_blocks * 12)  # 12 seconds per block
+
+                if not wait_for_finalization:
+                    old_balance -= staking_balance
+                    successful_stakes += 1
+                    if staking_all:
+                        # If staked all, no need to continue
+                        break
+
+                    continue
+
+                cybertensor.__console__.print(
+                    &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
+                )
+
+                block = cwtensor.get_current_block()
+                new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address,
+                    hotkey=hotkey,
+                    block=block,
+                )
+                new_balance = cwtensor.get_balance(
+                    wallet.coldkeypub.address, block=block
+                )
+                cybertensor.__console__.print(
+                    f&#34;Stake ({hotkey}): [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]&#34;
+                )
+                old_balance = new_balance
+                successful_stakes += 1
+                if staking_all:
+                    # If staked all, no need to continue
+                    break
+
+            else:
+                cybertensor.__console__.print(
+                    &#34;:cross_mark: [red]Failed[/red]: Error unknown.&#34;
+                )
+                continue
+
+        except cybertensor.errors.NotRegisteredError as e:
+            cybertensor.__console__.print(
+                f&#34;:cross_mark: [red]Hotkey: {hotkey} is not registered.[/red]&#34;
+            )
+            continue
+        except cybertensor.errors.StakeError as e:
+            cybertensor.__console__.print(f&#34;:cross_mark: [red]Stake Error: {e}[/red]&#34;)
+            continue
+
+    if successful_stakes != 0:
+        with cybertensor.__console__.status(
+            f&#34;:satellite: Checking Balance on: ([white]{cwtensor.network}[/white] ...&#34;
+        ):
+            new_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+        cybertensor.__console__.print(
+            f&#34;Balance: [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
+        )
+        return True
+
+    return False
+
+
+def __do_add_stake_single(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    hotkey: str,
+    amount: &#34;cybertensor.Balance&#34;,
+    wait_for_finalization: bool = True,
+) -&gt; bool:
+    r&#34;&#34;&#34;
+    Executes a stake call to the chain using the wallet and amount specified.
+    Args:
+        wallet (cybertensor.wallet):
+            cybertensor wallet object.
+        hotkey (str):
+            Hotkey to stake to.
+        amount (cybertensor.Balance):
+            Amount to stake as cybertensor balance object.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is true.
+    Raises:
+        cybertensor.errors.StakeError:
+            If the extrinsic fails to be finalized or included in the block.
+        cybertensor.errors.NotDelegateError:
+            If the hotkey is not a delegate.
+        cybertensor.errors.NotRegisteredError:
+            If the hotkey is not registered in any subnets.
+
+    &#34;&#34;&#34;
+    # Decrypt keys,
+    wallet.coldkey
+
+    hotkey_owner = cwtensor.get_hotkey_owner(hotkey)
+    own_hotkey = wallet.coldkeypub.address == hotkey_owner
+    if not own_hotkey:
+        # We are delegating.
+        # Verify that the hotkey is a delegate.
+        if not cwtensor.is_hotkey_delegate(hotkey=hotkey):
+            raise cybertensor.errors.NotDelegateError(
+                f&#34;Hotkey: {hotkey} is not a delegate.&#34;
+            )
+
+    success = cwtensor._do_stake(
+        wallet=wallet,
+        hotkey=hotkey,
+        amount=amount,
+        wait_for_finalization=wait_for_finalization,
+    )
+
+    return success</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.messages.staking.add_stake_message"><code class="name flex">
+<span>def <span class="ident">add_stake_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, hotkey: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds the specified amount of stake to passed hotkey uid.</p>
+<h2 id="args">Args</h2>
+<p>wallet (cybertensor.wallet):
+cybertensor wallet object.
+hotkey (Optional[str]):
+address of the hotkey account to stake to
+defaults to the wallet's hotkey.
+amount (Union[Balance, float]):
+Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+wait_for_finalization (bool):
+If set, waits for the extrinsic to be finalized on the chain before returning true,
+or returns false if the extrinsic fails to be finalized within the timeout.
+prompt (bool):
+If true, the call waits for confirmation from the user before proceeding.</p>
+<h2 id="returns">Returns</h2>
+<p>success (bool):
+flag is true if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is true.</p>
+<h2 id="raises">Raises</h2>
+<p>cybertensor.errors.NotRegisteredError:
+If the wallet is not registered on the chain.
+cybertensor.errors.NotDelegateError:
+If the hotkey is not a delegate on the chain.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_stake_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    hotkey: Optional[str] = None,
+    amount: Union[Balance, float] = None,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Adds the specified amount of stake to passed hotkey uid.
+    Args:
+        wallet (cybertensor.wallet):
+            cybertensor wallet object.
+        hotkey (Optional[str]):
+            address of the hotkey account to stake to
+            defaults to the wallet&#39;s hotkey.
+        amount (Union[Balance, float]):
+            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is true.
+
+    Raises:
+        cybertensor.errors.NotRegisteredError:
+            If the wallet is not registered on the chain.
+        cybertensor.errors.NotDelegateError:
+            If the hotkey is not a delegate on the chain.
+    &#34;&#34;&#34;
+    # Decrypt keys,
+    wallet.coldkey
+
+    # Default to wallet&#39;s own hotkey if the value is not passed.
+    if hotkey is None:
+        hotkey = wallet.hotkey.address
+
+    # Flag to indicate if we are using the wallet&#39;s own hotkey.
+    own_hotkey: bool
+
+    with cybertensor.__console__.status(
+        f&#34;:satellite: Syncing with chain: [white]{cwtensor.network}[/white] ...&#34;
+    ):
+        old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+        # Get hotkey owner
+        hotkey_owner = cwtensor.get_hotkey_owner(hotkey)
+        own_hotkey = wallet.coldkeypub.address == hotkey_owner
+        if not own_hotkey:
+            # This is not the wallet&#39;s own hotkey, so we are delegating.
+            if not cwtensor.is_hotkey_delegate(hotkey):
+                raise cybertensor.errors.NotDelegateError(
+                    f&#34;Hotkey: {hotkey} is not a delegate.&#34;
+                )
+
+            # Get hotkey take
+            hotkey_take = cwtensor.get_delegate_take(hotkey)
+
+        # Get current stake
+        old_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+            coldkey=wallet.coldkeypub.address, hotkey=hotkey
+        )
+
+    # Convert to cybertensor.Balance
+    if amount is None:
+        # Stake it all.
+        staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
+    elif not isinstance(amount, cybertensor.Balance):
+        staking_balance = cybertensor.Balance.from_gboot(amount)
+    else:
+        staking_balance = amount
+
+    # Remove existential balance to keep key alive.
+    if staking_balance &gt; cybertensor.Balance.from_boot(1000000):
+        staking_balance = staking_balance - cybertensor.Balance.from_boot(1000000)
+    else:
+        staking_balance = staking_balance
+
+    # Check enough to stake.
+    if staking_balance &gt; old_balance:
+        cybertensor.__console__.print(
+            f&#34;:cross_mark: [red]Not enough stake[/red]:[bold white]\n&#34;
+            f&#34;  balance:{old_balance}\n&#34;
+            f&#34;  amount: {staking_balance}\n&#34;
+            f&#34;  coldkey: {wallet.name}[/bold white]&#34;
+        )
+        return False
+
+    # Ask before moving on.
+    if prompt:
+        if not own_hotkey:
+            # We are delegating.
+            if not Confirm.ask(
+                f&#34;Do you want to delegate:[bold white]\n&#34;
+                f&#34;  amount: {staking_balance}\n&#34;
+                f&#34;  to: {wallet.hotkey_str}\n&#34;
+                f&#34;  take: {hotkey_take}\n&#34;
+                f&#34;  owner: {hotkey_owner}[/bold white]&#34;
+            ):
+                return False
+        else:
+            if not Confirm.ask(
+                f&#34;Do you want to stake:[bold white]\n&#34;
+                f&#34;  amount: {staking_balance}\n&#34;
+                f&#34;  to: {wallet.hotkey_str}[/bold white]&#34;
+            ):
+                return False
+
+    try:
+        with cybertensor.__console__.status(
+            f&#34;:satellite: Staking to: [bold white]{cwtensor.network}[/bold white] ...&#34;
+        ):
+            staking_response: bool = __do_add_stake_single(
+                cwtensor=cwtensor,
+                wallet=wallet,
+                hotkey=hotkey,
+                amount=staking_balance,
+                wait_for_finalization=wait_for_finalization,
+            )
+
+        if staking_response is True:  # If we successfully staked.
+            # We only wait here if we expect finalization.
+            if not wait_for_finalization:
+                return True
+
+            cybertensor.__console__.print(
+                &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
+            )
+            with cybertensor.__console__.status(
+                f&#34;:satellite: Checking Balance on: [white]{cwtensor.network}[/white] ...&#34;
+            ):
+                new_balance = cwtensor.get_balance(address=wallet.coldkeypub.address)
+                block = cwtensor.get_current_block()
+                new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address,
+                    hotkey=wallet.hotkey.address,
+                    block=block,
+                )  # Get current stake
+
+                cybertensor.__console__.print(
+                    f&#34;Balance:\n&#34;
+                    f&#34;  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
+                )
+                cybertensor.__console__.print(
+                    f&#34;Stake:\n&#34;
+                    f&#34;  [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]&#34;
+                )
+                return True
+        else:
+            cybertensor.__console__.print(
+                &#34;:cross_mark: [red]Failed[/red]: Error unknown.&#34;
+            )
+            return False
+
+    except cybertensor.errors.NotRegisteredError as e:
+        cybertensor.__console__.print(
+            f&#34;:cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]&#34;
+        )
+        return False
+    except cybertensor.errors.StakeError as e:
+        cybertensor.__console__.print(f&#34;:cross_mark: [red]Stake Error: {e}[/red]&#34;)
+        return False</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.messages.staking.add_stake_multiple_message"><code class="name flex">
+<span>def <span class="ident">add_stake_multiple_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, hotkeys: List[str], amounts: List[Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float]] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds stake to each hotkey in the list, using each amount, from a common coldkey.</p>
+<h2 id="args">Args</h2>
+<p>wallet (cybertensor.wallet):
+cybertensor wallet object for the coldkey.
+hotkeys (List[str]):
+List of hotkeys to stake to.
+amounts (List[Union[Balance, float]]):
+List of amounts to stake. If None, stake all to the first hotkey.
+wait_for_finalization (bool):
+if set, waits for the extrinsic to be finalized on the chain before returning true,
+or returns false if the extrinsic fails to be finalized within the timeout.
+prompt (bool):
+If true, the call waits for confirmation from the user before proceeding.</p>
+<h2 id="returns">Returns</h2>
+<p>success (bool):
+flag is true if extrinsic was finalized or included in the block.
+flag is true if any wallet was staked.
+If we did not wait for finalization / inclusion, the response is true.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_stake_multiple_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    hotkeys: List[str],
+    amounts: List[Union[Balance, float]] = None,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Adds stake to each hotkey in the list, using each amount, from a common coldkey.
+    Args:
+        wallet (cybertensor.wallet):
+            cybertensor wallet object for the coldkey.
+        hotkeys (List[str]):
+            List of hotkeys to stake to.
+        amounts (List[Union[Balance, float]]):
+            List of amounts to stake. If None, stake all to the first hotkey.
+        wait_for_finalization (bool):
+            if set, waits for the extrinsic to be finalized on the chain before returning true,
+            or returns false if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If true, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            flag is true if extrinsic was finalized or included in the block.
+            flag is true if any wallet was staked.
+            If we did not wait for finalization / inclusion, the response is true.
+    &#34;&#34;&#34;
+    if not isinstance(hotkeys, list) or not all(
+        isinstance(hotkey, str) for hotkey in hotkeys
+    ):
+        raise TypeError(&#34;hotkeys must be a list of str&#34;)
+
+    if len(hotkeys) == 0:
+        return True
+
+    if amounts is not None and len(amounts) != len(hotkeys):
+        raise ValueError(&#34;amounts must be a list of the same length as hotkeys&#34;)
+
+    if amounts is not None and not all(
+        isinstance(amount, (Balance, float)) for amount in amounts
+    ):
+        raise TypeError(
+            &#34;amounts must be a [list of cybertensor.Balance or float] or None&#34;
+        )
+
+    if amounts is None:
+        amounts = [None] * len(hotkeys)
+    else:
+        # Convert to Balance
+        amounts = [
+            cybertensor.Balance.from_gboot(amount)
+            if isinstance(amount, float)
+            else amount
+            for amount in amounts
+        ]
+
+        if sum(amount.gboot for amount in amounts) == 0:
+            # Staking 0.gboot
+            return True
+
+    # Decrypt coldkey.
+    wallet.coldkey
+
+    old_stakes = []
+    with cybertensor.__console__.status(
+        f&#34;:satellite: Syncing with chain: [white]{cwtensor.network}[/white] ...&#34;
+    ):
+        old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+
+        # Get the old stakes.
+        for hotkey in hotkeys:
+            old_stakes.append(
+                cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address, hotkey=hotkey
+                )
+            )
+
+    # Remove existential balance to keep key alive.
+    ## Keys must maintain a balance of at least 1000 boot to stay alive.
+    total_staking_boot = sum(
+        [amount.boot if amount is not None else 0 for amount in amounts]
+    )
+    if total_staking_boot == 0:
+        # Staking all to the first wallet.
+        if old_balance.boot &gt; 1000000:
+            old_balance -= cybertensor.Balance.from_boot(1000000)
+
+    elif total_staking_boot &lt; 1000000:
+        # Staking less than 1000 boot to the wallets.
+        pass
+    else:
+        # Staking more than 1000 boot to the wallets.
+        ## Reduce the amount to stake to each wallet to keep the balance above 1000000 boot.
+        percent_reduction = 1 - (1000000 / total_staking_boot)
+        amounts = [
+            Balance.from_gboot(amount.gboot * percent_reduction) for amount in amounts
+        ]
+
+    successful_stakes = 0
+    for idx, (hotkey, amount, old_stake) in enumerate(
+        zip(hotkeys, amounts, old_stakes)
+    ):
+        staking_all = False
+        # Convert to cybertensor.Balance
+        if amount is None:
+            # Stake it all.
+            staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
+            staking_all = True
+        else:
+            # Amounts are cast to balance earlier in the function
+            assert isinstance(amount, cybertensor.Balance)
+            staking_balance = amount
+
+        # Check enough to stake
+        if staking_balance &gt; old_balance:
+            cybertensor.__console__.print(
+                f&#34;:cross_mark: [red]Not enough balance[/red]: [green]{old_balance}[/green] &#34;
+                f&#34;to stake: [blue]{staking_balance}[/blue] from coldkey: [white]{wallet.name}[/white]&#34;
+            )
+            continue
+
+        # Ask before moving on.
+        if prompt:
+            if not Confirm.ask(
+                f&#34;Do you want to stake:\n&#34;
+                f&#34;[bold white]  amount: {staking_balance}\n&#34;
+                f&#34;  hotkey: {wallet.hotkey_str}[/bold white ]?&#34;
+            ):
+                continue
+
+        try:
+            staking_response: bool = __do_add_stake_single(
+                cwtensor=cwtensor,
+                wallet=wallet,
+                hotkey=hotkey,
+                amount=staking_balance,
+                wait_for_finalization=wait_for_finalization,
+            )
+
+            if staking_response is True:  # If we successfully staked.
+                # We only wait here if we expect finalization.
+
+                if idx &lt; len(hotkeys) - 1:
+                    # Wait for tx rate limit.
+                    tx_rate_limit_blocks = cwtensor.tx_rate_limit()
+                    if tx_rate_limit_blocks &gt; 0:
+                        cybertensor.__console__.print(
+                            f&#34;:hourglass: [yellow]Waiting for tx rate limit: [white]{tx_rate_limit_blocks}[/white] &#34;
+                            f&#34;blocks[/yellow]&#34;
+                        )
+                        sleep(tx_rate_limit_blocks * 12)  # 12 seconds per block
+
+                if not wait_for_finalization:
+                    old_balance -= staking_balance
+                    successful_stakes += 1
+                    if staking_all:
+                        # If staked all, no need to continue
+                        break
+
+                    continue
+
+                cybertensor.__console__.print(
+                    &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
+                )
+
+                block = cwtensor.get_current_block()
+                new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
+                    coldkey=wallet.coldkeypub.address,
+                    hotkey=hotkey,
+                    block=block,
+                )
+                new_balance = cwtensor.get_balance(
+                    wallet.coldkeypub.address, block=block
+                )
+                cybertensor.__console__.print(
+                    f&#34;Stake ({hotkey}): [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]&#34;
+                )
+                old_balance = new_balance
+                successful_stakes += 1
+                if staking_all:
+                    # If staked all, no need to continue
+                    break
+
+            else:
+                cybertensor.__console__.print(
+                    &#34;:cross_mark: [red]Failed[/red]: Error unknown.&#34;
+                )
+                continue
+
+        except cybertensor.errors.NotRegisteredError as e:
+            cybertensor.__console__.print(
+                f&#34;:cross_mark: [red]Hotkey: {hotkey} is not registered.[/red]&#34;
+            )
+            continue
+        except cybertensor.errors.StakeError as e:
+            cybertensor.__console__.print(f&#34;:cross_mark: [red]Stake Error: {e}[/red]&#34;)
+            continue
+
+    if successful_stakes != 0:
+        with cybertensor.__console__.status(
+            f&#34;:satellite: Checking Balance on: ([white]{cwtensor.network}[/white] ...&#34;
+        ):
+            new_balance = cwtensor.get_balance(wallet.coldkeypub.address)
+        cybertensor.__console__.print(
+            f&#34;Balance: [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
+        )
+        return True
+
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.messages" href="index.html">cybertensor.messages</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.messages.staking.add_stake_message" href="#cybertensor.messages.staking.add_stake_message">add_stake_message</a></code></li>
+<li><code><a title="cybertensor.messages.staking.add_stake_multiple_message" href="#cybertensor.messages.staking.add_stake_multiple_message">add_stake_multiple_message</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

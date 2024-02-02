@@ -1,0 +1,1642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.utils.registration API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.utils.registration</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import binascii
+import hashlib
+import math
+import multiprocessing
+import os
+import random
+import time
+from dataclasses import dataclass
+from datetime import timedelta
+from queue import Empty, Full
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+import backoff
+import torch
+from Crypto.Hash import keccak
+from rich import console as rich_console
+from rich import status as rich_status
+
+import cybertensor
+from ._register_cuda import solve_cuda
+from .formatting import get_human_readable, millify
+
+
+class CUDAException(Exception):
+    &#34;&#34;&#34;An exception raised when an error occurs in the CUDA environment.&#34;&#34;&#34;
+
+    pass
+
+
+def _hex_bytes_to_u8_list(hex_bytes: bytes):
+    hex_chunks = [int(hex_bytes[i : i + 2], 16) for i in range(0, len(hex_bytes), 2)]
+    return hex_chunks
+
+
+def _create_seal_hash(block_and_hotkey_hash_bytes: bytes, nonce: int) -&gt; bytes:
+    nonce_bytes = binascii.hexlify(nonce.to_bytes(8, &#34;little&#34;))
+    pre_seal = nonce_bytes + binascii.hexlify(block_and_hotkey_hash_bytes)[:64]
+    seal_sh256 = hashlib.sha256(bytearray(_hex_bytes_to_u8_list(pre_seal))).digest()
+    kec = keccak.new(digest_bits=256)
+    seal = kec.update(seal_sh256).digest()
+    return seal
+
+
+def _seal_meets_difficulty(seal: bytes, difficulty: int, limit: int):
+    seal_number = int.from_bytes(seal, &#34;big&#34;)
+    product = seal_number * difficulty
+    return product &lt; limit
+
+
+@dataclass
+class POWSolution:
+    &#34;&#34;&#34;A solution to the registration PoW problem.&#34;&#34;&#34;
+
+    nonce: int
+    block_number: int
+    difficulty: int
+    seal: bytes
+
+    def is_stale(self, cwtensor: &#34;cybertensor.cwtensor&#34;) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the POW is stale.
+        This means the block the POW is solved for is within 3 blocks of the current block.
+        &#34;&#34;&#34;
+        return self.block_number &lt; cwtensor.get_current_block() - 3
+
+
+class _SolverBase(multiprocessing.Process):
+    &#34;&#34;&#34;
+    A process that solves the registration PoW problem.
+
+    Args:
+        proc_num: int
+            The number of the process being created.
+        num_proc: int
+            The total number of processes running.
+        update_interval: int
+            The number of nonces to try to solve before checking for a new block.
+        finished_queue: multiprocessing.Queue
+            The queue to put the process number when a process finishes each update_interval.
+            Used for calculating the average time per update_interval across all processes.
+        solution_queue: multiprocessing.Queue
+            The queue to put the solution the process has found during the pow solve.
+        newBlockEvent: multiprocessing.Event
+            The event to set by the main process when a new block is finalized in the network.
+            The solver process will check for the event after each update_interval.
+            The solver process will get the new block hash and difficulty and start solving for a new nonce.
+        stopEvent: multiprocessing.Event
+            The event to set by the main process when all the solver processes should stop.
+            The solver process will check for the event after each update_interval.
+            The solver process will stop when the event is set.
+            Used to stop the solver processes when a solution is found.
+        curr_block: multiprocessing.Array
+            The array containing this process&#39;s current block hash.
+            The main process will set the array to the new block hash when a new block is finalized in the network.
+            The solver process will get the new block hash from this array when newBlockEvent is set.
+        curr_block_num: multiprocessing.Value
+            The value containing this process&#39;s current block number.
+            The main process will set the value to the new block number when a new block is finalized in the network.
+            The solver process will get the new block number from this value when newBlockEvent is set.
+        curr_diff: multiprocessing.Array
+            The array containing this process&#39;s current difficulty.
+            The main process will set the array to the new difficulty when a new block is finalized in the network.
+            The solver process will get the new difficulty from this array when newBlockEvent is set.
+        check_block: multiprocessing.Lock
+            The lock to prevent this process from getting the new block data while the main process is updating the data.
+        limit: int
+            The limit of the pow solve for a valid solution.
+    &#34;&#34;&#34;
+
+    proc_num: int
+    num_proc: int
+    update_interval: int
+    finished_queue: multiprocessing.Queue
+    solution_queue: multiprocessing.Queue
+    newBlockEvent: multiprocessing.Event
+    stopEvent: multiprocessing.Event
+    hotkey_bytes: bytes
+    curr_block: multiprocessing.Array
+    curr_block_num: multiprocessing.Value
+    curr_diff: multiprocessing.Array
+    check_block: multiprocessing.Lock
+    limit: int
+
+    def __init__(
+        self,
+        proc_num,
+        num_proc,
+        update_interval,
+        finished_queue,
+        solution_queue,
+        stopEvent,
+        curr_block,
+        curr_block_num,
+        curr_diff,
+        check_block,
+        limit,
+    ):
+        multiprocessing.Process.__init__(self, daemon=True)
+        self.proc_num = proc_num
+        self.num_proc = num_proc
+        self.update_interval = update_interval
+        self.finished_queue = finished_queue
+        self.solution_queue = solution_queue
+        self.newBlockEvent = multiprocessing.Event()
+        self.newBlockEvent.clear()
+        self.curr_block = curr_block
+        self.curr_block_num = curr_block_num
+        self.curr_diff = curr_diff
+        self.check_block = check_block
+        self.stopEvent = stopEvent
+        self.limit = limit
+
+    def run(self):
+        raise NotImplementedError(&#34;_SolverBase is an abstract class&#34;)
+
+    @staticmethod
+    def create_shared_memory() -&gt; (
+        Tuple[multiprocessing.Array, multiprocessing.Value, multiprocessing.Array]
+    ):
+        &#34;&#34;&#34;Creates shared memory for the solver processes to use.&#34;&#34;&#34;
+        curr_block = multiprocessing.Array(&#34;h&#34;, 32, lock=True)  # byte array
+        curr_block_num = multiprocessing.Value(&#34;i&#34;, 0, lock=True)  # int
+        curr_diff = multiprocessing.Array(&#34;Q&#34;, [0, 0], lock=True)  # [high, low]
+
+        return curr_block, curr_block_num, curr_diff
+
+
+class _Solver(_SolverBase):
+    def run(self):
+        block_number: int
+        block_and_hotkey_hash_bytes: bytes
+        block_difficulty: int
+        nonce_limit = int(math.pow(2, 64)) - 1
+
+        # Start at random nonce
+        nonce_start = random.randint(0, nonce_limit)
+        nonce_end = nonce_start + self.update_interval
+        while not self.stopEvent.is_set():
+            if self.newBlockEvent.is_set():
+                with self.check_block:
+                    block_number = self.curr_block_num.value
+                    block_and_hotkey_hash_bytes = bytes(self.curr_block)
+                    block_difficulty = _registration_diff_unpack(self.curr_diff)
+
+                self.newBlockEvent.clear()
+
+            # Do a block of nonces
+            solution = _solve_for_nonce_block(
+                nonce_start,
+                nonce_end,
+                block_and_hotkey_hash_bytes,
+                block_difficulty,
+                self.limit,
+                block_number,
+            )
+            if solution is not None:
+                self.solution_queue.put(solution)
+
+            try:
+                # Send time
+                self.finished_queue.put_nowait(self.proc_num)
+            except Full:
+                pass
+
+            nonce_start = random.randint(0, nonce_limit)
+            nonce_start = nonce_start % nonce_limit
+            nonce_end = nonce_start + self.update_interval
+
+
+class _CUDASolver(_SolverBase):
+    dev_id: int
+    TPB: int
+
+    def __init__(
+        self,
+        proc_num,
+        num_proc,
+        update_interval,
+        finished_queue,
+        solution_queue,
+        stopEvent,
+        curr_block,
+        curr_block_num,
+        curr_diff,
+        check_block,
+        limit,
+        dev_id: int,
+        TPB: int,
+    ):
+        super().__init__(
+            proc_num,
+            num_proc,
+            update_interval,
+            finished_queue,
+            solution_queue,
+            stopEvent,
+            curr_block,
+            curr_block_num,
+            curr_diff,
+            check_block,
+            limit,
+        )
+        self.dev_id = dev_id
+        self.TPB = TPB
+
+    def run(self):
+        block_number: int = 0  # dummy value
+        block_and_hotkey_hash_bytes: bytes = b&#34;0&#34; * 32  # dummy value
+        block_difficulty: int = int(math.pow(2, 64)) - 1  # dummy value
+        nonce_limit = int(math.pow(2, 64)) - 1  # U64MAX
+
+        # Start at random nonce
+        nonce_start = random.randint(0, nonce_limit)
+        while not self.stopEvent.is_set():
+            if self.newBlockEvent.is_set():
+                with self.check_block:
+                    block_number = self.curr_block_num.value
+                    block_and_hotkey_hash_bytes = bytes(self.curr_block)
+                    block_difficulty = _registration_diff_unpack(self.curr_diff)
+
+                self.newBlockEvent.clear()
+
+            # Do a block of nonces
+            solution = _solve_for_nonce_block_cuda(
+                nonce_start,
+                self.update_interval,
+                block_and_hotkey_hash_bytes,
+                block_difficulty,
+                self.limit,
+                block_number,
+                self.dev_id,
+                self.TPB,
+            )
+            if solution is not None:
+                self.solution_queue.put(solution)
+
+            try:
+                # Signal that a nonce_block was finished using queue
+                # send our proc_num
+                self.finished_queue.put(self.proc_num)
+            except Full:
+                pass
+
+            # increase nonce by number of nonces processed
+            nonce_start += self.update_interval * self.TPB
+            nonce_start = nonce_start % nonce_limit
+
+
+def _solve_for_nonce_block_cuda(
+    nonce_start: int,
+    update_interval: int,
+    block_and_hotkey_hash_bytes: bytes,
+    difficulty: int,
+    limit: int,
+    block_number: int,
+    dev_id: int,
+    TPB: int,
+) -&gt; Optional[POWSolution]:
+    &#34;&#34;&#34;Tries to solve the POW on a CUDA device for a block of nonces (nonce_start, nonce_start + update_interval * TPB&#34;&#34;&#34;
+    solution, seal = solve_cuda(
+        nonce_start,
+        update_interval,
+        TPB,
+        block_and_hotkey_hash_bytes,
+        difficulty,
+        limit,
+        dev_id,
+    )
+
+    if solution != -1:
+        # Check if solution is valid (i.e. not -1)
+        return POWSolution(solution, block_number, difficulty, seal)
+
+    return None
+
+
+def _solve_for_nonce_block(
+    nonce_start: int,
+    nonce_end: int,
+    block_and_hotkey_hash_bytes: bytes,
+    difficulty: int,
+    limit: int,
+    block_number: int,
+) -&gt; Optional[POWSolution]:
+    &#34;&#34;&#34;Tries to solve the POW for a block of nonces (nonce_start, nonce_end)&#34;&#34;&#34;
+    for nonce in range(nonce_start, nonce_end):
+        # Create seal.
+        seal = _create_seal_hash(block_and_hotkey_hash_bytes, nonce)
+
+        # Check if seal meets difficulty
+        if _seal_meets_difficulty(seal, difficulty, limit):
+            # Found a solution, save it.
+            return POWSolution(nonce, block_number, difficulty, seal)
+
+    return None
+
+
+def _registration_diff_unpack(packed_diff: multiprocessing.Array) -&gt; int:
+    &#34;&#34;&#34;Unpacks the packed two 32-bit integers into one 64-bit integer. Little endian.&#34;&#34;&#34;
+    return int(packed_diff[0] &lt;&lt; 32 | packed_diff[1])
+
+
+def _registration_diff_pack(diff: int, packed_diff: multiprocessing.Array):
+    &#34;&#34;&#34;Packs the difficulty into two 32-bit integers. Little endian.&#34;&#34;&#34;
+    packed_diff[0] = diff &gt;&gt; 32
+    packed_diff[1] = diff &amp; 0xFFFFFFFF  # low 32 bits
+
+
+def _hash_block_with_hotkey(block_bytes: bytes, hotkey_bytes: bytes) -&gt; bytes:
+    &#34;&#34;&#34;Hashes the block with the hotkey using Keccak-256 to get 32 bytes&#34;&#34;&#34;
+    # Added hashing of hotkey_bytes (as address)
+    kec1 = keccak.new(digest_bits=256)
+    kec1 = kec1.update(bytearray(hotkey_bytes))
+    hotkey_hash_bytes = kec1.digest()
+
+    kec2 = keccak.new(digest_bits=256)
+    kec2 = kec2.update(bytearray(block_bytes + hotkey_hash_bytes))
+    block_and_hotkey_hash_bytes = kec2.digest()
+    return block_and_hotkey_hash_bytes
+
+
+def _update_curr_block(
+    curr_diff: multiprocessing.Array,
+    curr_block: multiprocessing.Array,
+    curr_block_num: multiprocessing.Value,
+    block_number: int,
+    block_bytes: bytes,
+    diff: int,
+    hotkey_bytes: bytes,
+    lock: multiprocessing.Lock,
+):
+    with lock:
+        curr_block_num.value = block_number
+        # Hash the block with the hotkey
+        block_and_hotkey_hash_bytes = _hash_block_with_hotkey(block_bytes, hotkey_bytes)
+        for i in range(32):
+            curr_block[i] = block_and_hotkey_hash_bytes[i]
+        _registration_diff_pack(diff, curr_diff)
+
+
+def get_cpu_count() -&gt; int:
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        # OSX does not have sched_getaffinity
+        return os.cpu_count()
+
+
+@dataclass
+class RegistrationStatistics:
+    &#34;&#34;&#34;Statistics for a registration.&#34;&#34;&#34;
+
+    time_spent_total: float
+    rounds_total: int
+    time_average: float
+    time_spent: float
+    hash_rate_perpetual: float
+    hash_rate: float
+    difficulty: int
+    block_number: int
+    block_hash: bytes
+
+
+class RegistrationStatisticsLogger:
+    &#34;&#34;&#34;Logs statistics for a registration.&#34;&#34;&#34;
+
+    console: rich_console.Console
+    status: Optional[rich_status.Status]
+
+    def __init__(
+        self, console: rich_console.Console, output_in_place: bool = True
+    ) -&gt; None:
+        self.console = console
+
+        if output_in_place:
+            self.status = self.console.status(&#34;Solving&#34;)
+        else:
+            self.status = None
+
+    def start(self) -&gt; None:
+        if self.status is not None:
+            self.status.start()
+
+    def stop(self) -&gt; None:
+        if self.status is not None:
+            self.status.stop()
+
+    def get_status_message(
+        cls, stats: RegistrationStatistics, verbose: bool = False
+    ) -&gt; str:
+        message = (
+            &#34;Solving\n&#34;
+            + f&#34;Time Spent (total): [bold white]{timedelta(seconds=stats.time_spent_total)}[/bold white]\n&#34;
+            + (
+                f&#34;Time Spent This Round: {timedelta(seconds=stats.time_spent)}\n&#34;
+                + f&#34;Time Spent Average: {timedelta(seconds=stats.time_average)}\n&#34;
+                if verbose
+                else &#34;&#34;
+            )
+            + f&#34;Registration Difficulty: [bold white]{millify(stats.difficulty)}[/bold white]\n&#34;
+            + f&#34;Iters (Inst/Perp): [bold white]{get_human_readable(stats.hash_rate, &#39;H&#39;)}/s / &#34;
+            + f&#34;{get_human_readable(stats.hash_rate_perpetual, &#39;H&#39;)}/s[/bold white]\n&#34;
+            + f&#34;Block Number: [bold white]{stats.block_number}[/bold white]\n&#34;
+            + f&#34;Block Hash: [bold white]{stats.block_hash.encode(&#39;utf-8&#39;)}[/bold white]\n&#34;
+        )
+        return message
+
+    def update(self, stats: RegistrationStatistics, verbose: bool = False) -&gt; None:
+        if self.status is not None:
+            self.status.update(self.get_status_message(stats, verbose=verbose))
+        else:
+            self.console.log(self.get_status_message(stats, verbose=verbose))
+
+
+def _solve_for_difficulty_fast(
+    cwtensor,
+    wallet: &#34;cybertensor.wallet&#34;,
+    netuid: int,
+    output_in_place: bool = True,
+    num_processes: Optional[int] = None,
+    update_interval: Optional[int] = None,
+    n_samples: int = 10,
+    alpha_: float = 0.80,
+    log_verbose: bool = False,
+) -&gt; Optional[POWSolution]:
+    &#34;&#34;&#34;
+    Solves the POW for registration using multiprocessing.
+    Args:
+        cwtensor
+            cwtensor to connect to for block information and to submit.
+        wallet:
+            wallet to use for registration.
+        netuid: int
+            The netuid of the subnet to register to.
+        output_in_place: bool
+            If true, prints the status in place. Otherwise, prints the status on a new line.
+        num_processes: int
+            Number of processes to use.
+        update_interval: int
+            Number of nonces to solve before updating block information.
+        n_samples: int
+            The number of samples of the hash_rate to keep for the EWMA
+        alpha_: float
+            The alpha for the EWMA for the hash_rate calculation
+        log_verbose: bool
+            If true, prints more verbose logging of the registration metrics.
+    Note: The hash rate is calculated as an exponentially weighted moving average in order to make the measure more robust.
+    Note:
+    - We can also modify the update interval to do smaller blocks of work,
+        while still updating the block information after a different number of nonces,
+        to increase the transparency of the process while still keeping the speed.
+    &#34;&#34;&#34;
+    if num_processes is None:
+        # get the number of allowed processes for this process
+        num_processes = min(1, get_cpu_count())
+
+    if update_interval is None:
+        update_interval = 50_000
+
+    limit = int(math.pow(2, 256)) - 1
+
+    curr_block, curr_block_num, curr_diff = _Solver.create_shared_memory()
+
+    # Establish communication queues
+    ## See the _Solver class for more information on the queues.
+    stopEvent = multiprocessing.Event()
+    stopEvent.clear()
+
+    solution_queue = multiprocessing.Queue()
+    finished_queues = [multiprocessing.Queue() for _ in range(num_processes)]
+    check_block = multiprocessing.Lock()
+
+    # hotkey_bytes = (
+    #     wallet.coldkeypub.public_key.encode() if netuid == -1 else wallet.hotkey.public_key.encode()
+    # )
+    hotkey_bytes = (
+        wallet.coldkeypub.address.encode()
+        if netuid == -1
+        else wallet.hotkey.address.encode()
+    )
+    # Start consumers
+    solvers = [
+        _Solver(
+            i,
+            num_processes,
+            update_interval,
+            finished_queues[i],
+            solution_queue,
+            stopEvent,
+            curr_block,
+            curr_block_num,
+            curr_diff,
+            check_block,
+            limit,
+        )
+        for i in range(num_processes)
+    ]
+
+    # Get first block
+    block_number, difficulty, block_hash = _get_block_with_retry(
+        cwtensor=cwtensor, netuid=netuid
+    )
+
+    block_bytes = bytes.fromhex(block_hash[2:])
+    old_block_number = block_number
+    # Set to current block
+    _update_curr_block(
+        curr_diff,
+        curr_block,
+        curr_block_num,
+        block_number,
+        block_bytes,
+        difficulty,
+        hotkey_bytes,
+        check_block,
+    )
+
+    # Set new block events for each solver to start at the initial block
+    for worker in solvers:
+        worker.newBlockEvent.set()
+
+    for worker in solvers:
+        worker.start()  # start the solver processes
+
+    start_time = time.time()  # time that the registration started
+    time_last = start_time  # time that the last work blocks completed
+
+    curr_stats = RegistrationStatistics(
+        time_spent_total=0.0,
+        time_average=0.0,
+        rounds_total=0,
+        time_spent=0.0,
+        hash_rate_perpetual=0.0,
+        hash_rate=0.0,
+        difficulty=difficulty,
+        block_number=block_number,
+        block_hash=block_hash,
+    )
+
+    start_time_perpetual = time.time()
+
+    console = cybertensor.__console__
+    logger = RegistrationStatisticsLogger(console, output_in_place)
+    logger.start()
+
+    solution = None
+
+    hash_rates = [0] * n_samples  # The last n true hash_rates
+    weights = [alpha_**i for i in range(n_samples)]  # weights decay by alpha
+
+    while netuid == -1 or not cwtensor.is_hotkey_registered(
+        netuid=netuid, hotkey=wallet.hotkey.address
+    ):
+        # Wait until a solver finds a solution
+        try:
+            solution = solution_queue.get(block=True, timeout=0.25)
+            if solution is not None:
+                break
+        except Empty:
+            # No solution found, try again
+            pass
+
+        # check for new block
+        old_block_number = _check_for_newest_block_and_update(
+            cwtensor=cwtensor,
+            netuid=netuid,
+            hotkey_bytes=hotkey_bytes,
+            old_block_number=old_block_number,
+            curr_diff=curr_diff,
+            curr_block=curr_block,
+            curr_block_num=curr_block_num,
+            curr_stats=curr_stats,
+            update_curr_block=_update_curr_block,
+            check_block=check_block,
+            solvers=solvers,
+        )
+
+        num_time = 0
+        for finished_queue in finished_queues:
+            try:
+                proc_num = finished_queue.get(timeout=0.1)
+                num_time += 1
+
+            except Empty:
+                continue
+
+        time_now = time.time()  # get current time
+        time_since_last = time_now - time_last  # get time since last work block(s)
+        if num_time &gt; 0 and time_since_last &gt; 0.0:
+            # create EWMA of the hash_rate to make measure more robust
+
+            hash_rate_ = (num_time * update_interval) / time_since_last
+            hash_rates.append(hash_rate_)
+            hash_rates.pop(0)  # remove the 0th data point
+            curr_stats.hash_rate = sum(
+                [hash_rates[i] * weights[i] for i in range(n_samples)]
+            ) / (sum(weights))
+
+            # update time last to now
+            time_last = time_now
+
+            curr_stats.time_average = (
+                curr_stats.time_average * curr_stats.rounds_total
+                + curr_stats.time_spent
+            ) / (curr_stats.rounds_total + num_time)
+            curr_stats.rounds_total += num_time
+
+        # Update stats
+        curr_stats.time_spent = time_since_last
+        new_time_spent_total = time_now - start_time_perpetual
+        curr_stats.hash_rate_perpetual = (
+            curr_stats.rounds_total * update_interval
+        ) / new_time_spent_total
+        curr_stats.time_spent_total = new_time_spent_total
+
+        # Update the logger
+        logger.update(curr_stats, verbose=log_verbose)
+
+    # exited while, solution contains the nonce or wallet is registered
+    stopEvent.set()  # stop all other processes
+    logger.stop()
+
+    # terminate and wait for all solvers to exit
+    _terminate_workers_and_wait_for_exit(solvers)
+
+    return solution
+
+
+@backoff.on_exception(backoff.constant, Exception, interval=1, max_tries=3)
+def _get_block_with_retry(
+    cwtensor: &#34;cybertensor.cwtensor&#34;, netuid: int
+) -&gt; Tuple[int, int, bytes]:
+    &#34;&#34;&#34;
+    Gets the current block number, difficulty, and block hash from the substrate node.
+
+    Args:
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
+            The cwtensor object to use to get the block number, difficulty, and block hash.
+
+        netuid (:obj:`int`, `required`):
+            The netuid of the network to get the block number, difficulty, and block hash from.
+
+    Returns:
+        block_number (:obj:`int`):
+            The current block number.
+
+        difficulty (:obj:`int`):
+            The current difficulty of the subnet.
+
+        block_hash (:obj:`bytes`):
+            The current block hash.
+
+    Raises:
+        Exception: If the block hash is None.
+        ValueError: If the difficulty is None.
+    &#34;&#34;&#34;
+    block_number = cwtensor.get_current_block()
+    difficulty = 1_000_000 if netuid == -1 else cwtensor.difficulty(netuid=netuid)
+    block_hash = cwtensor.get_block_hash(block_number)
+    if block_hash is None:
+        raise Exception(
+            &#34;Network error. Could not connect to substrate to get block hash&#34;
+        )
+    if difficulty is None:
+        raise ValueError(&#34;Chain error. Difficulty is None&#34;)
+    return block_number, difficulty, block_hash
+
+
+class _UsingSpawnStartMethod:
+    def __init__(self, force: bool = False):
+        self._old_start_method = None
+        self._force = force
+
+    def __enter__(self):
+        self._old_start_method = multiprocessing.get_start_method(allow_none=True)
+        if self._old_start_method is None:
+            self._old_start_method = &#34;spawn&#34;  # default to spawn
+
+        multiprocessing.set_start_method(&#34;spawn&#34;, force=self._force)
+
+    def __exit__(self, *args):
+        # restore the old start method
+        multiprocessing.set_start_method(self._old_start_method, force=True)
+
+
+def _check_for_newest_block_and_update(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    netuid: int,
+    old_block_number: int,
+    hotkey_bytes: bytes,
+    curr_diff: multiprocessing.Array,
+    curr_block: multiprocessing.Array,
+    curr_block_num: multiprocessing.Value,
+    update_curr_block: Callable,
+    check_block: &#34;multiprocessing.Lock&#34;,
+    solvers: List[_Solver],
+    curr_stats: RegistrationStatistics,
+) -&gt; int:
+    &#34;&#34;&#34;
+    Checks for a new block and updates the current block information if a new block is found.
+
+    Args:
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
+            The cwtensor object to use for getting the current block.
+        netuid (:obj:`int`, `required`):
+            The netuid to use for retrieving the difficulty.
+        old_block_number (:obj:`int`, `required`):
+            The old block number to check against.
+        hotkey_bytes (:obj:`bytes`, `required`):
+            The bytes of the hotkey&#39;s pubkey.
+        curr_diff (:obj:`multiprocessing.Array`, `required`):
+            The current difficulty as a multiprocessing array.
+        curr_block (:obj:`multiprocessing.Array`, `required`):
+            Where the current block is stored as a multiprocessing array.
+        curr_block_num (:obj:`multiprocessing.Value`, `required`):
+            Where the current block number is stored as a multiprocessing value.
+        update_curr_block (:obj:`Callable`, `required`):
+            A function that updates the current block.
+        check_block (:obj:`multiprocessing.Lock`, `required`):
+            A mp lock that is used to check for a new block.
+        solvers (:obj:`List[_Solver]`, `required`):
+            A list of solvers to update the current block for.
+        curr_stats (:obj:`RegistrationStatistics`, `required`):
+            The current registration statistics to update.
+
+    Returns:
+        (int) The current block number.
+    &#34;&#34;&#34;
+    block_number = cwtensor.get_current_block()
+    if block_number != old_block_number:
+        old_block_number = block_number
+        # update block information
+        block_number, difficulty, block_hash = _get_block_with_retry(
+            cwtensor=cwtensor, netuid=netuid
+        )
+        block_bytes = bytes.fromhex(block_hash[2:])
+
+        update_curr_block(
+            curr_diff,
+            curr_block,
+            curr_block_num,
+            block_number,
+            block_bytes,
+            difficulty,
+            hotkey_bytes,
+            check_block,
+        )
+        # Set new block events for each solver
+
+        for worker in solvers:
+            worker.newBlockEvent.set()
+
+        # update stats
+        curr_stats.block_number = block_number
+        curr_stats.block_hash = block_hash
+        curr_stats.difficulty = difficulty
+
+    return old_block_number
+
+
+def _solve_for_difficulty_fast_cuda(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
+    netuid: int,
+    output_in_place: bool = True,
+    update_interval: int = 50_000,
+    TPB: int = 512,
+    dev_id: Union[List[int], int] = 0,
+    n_samples: int = 10,
+    alpha_: float = 0.80,
+    log_verbose: bool = False,
+) -&gt; Optional[POWSolution]:
+    &#34;&#34;&#34;
+    Solves the registration fast using CUDA
+    Args:
+        cwtensor: cybertensor.cwtensor
+            The cwtensor node to grab blocks
+        wallet: cybertensor.wallet
+            The wallet to register
+        netuid: int
+            The netuid of the subnet to register to.
+        output_in_place: bool
+            If true, prints the output in place, otherwise prints to new lines
+        update_interval: int
+            The number of nonces to try before checking for more blocks
+        TPB: int
+            The number of threads per block. CUDA param that should match the GPU capability
+        dev_id: Union[List[int], int]
+            The CUDA device IDs to execute the registration on, either a single device or a list of devices
+        n_samples: int
+            The number of samples of the hash_rate to keep for the EWMA
+        alpha_: float
+            The alpha for the EWMA for the hash_rate calculation
+        log_verbose: bool
+            If true, prints more verbose logging of the registration metrics.
+    Note: The hash rate is calculated as an exponentially weighted moving average in order to make the measure more robust.
+    &#34;&#34;&#34;
+    if isinstance(dev_id, int):
+        dev_id = [dev_id]
+    elif dev_id is None:
+        dev_id = [0]
+
+    if update_interval is None:
+        update_interval = 50_000
+
+    if not torch.cuda.is_available():
+        raise Exception(&#34;CUDA not available&#34;)
+
+    limit = int(math.pow(2, 256)) - 1
+
+    # Set mp start to use spawn so CUDA doesn&#39;t complain
+    with _UsingSpawnStartMethod(force=True):
+        curr_block, curr_block_num, curr_diff = _CUDASolver.create_shared_memory()
+
+        ## Create a worker per CUDA device
+        num_processes = len(dev_id)
+
+        # Establish communication queues
+        stopEvent = multiprocessing.Event()
+        stopEvent.clear()
+        solution_queue = multiprocessing.Queue()
+        finished_queues = [multiprocessing.Queue() for _ in range(num_processes)]
+        check_block = multiprocessing.Lock()
+
+        hotkey_bytes = wallet.hotkey.public_key
+        # Start workers
+        solvers = [
+            _CUDASolver(
+                i,
+                num_processes,
+                update_interval,
+                finished_queues[i],
+                solution_queue,
+                stopEvent,
+                curr_block,
+                curr_block_num,
+                curr_diff,
+                check_block,
+                limit,
+                dev_id[i],
+                TPB,
+            )
+            for i in range(num_processes)
+        ]
+
+        # Get first block
+        block_number, difficulty, block_hash = _get_block_with_retry(
+            cwtensor=cwtensor, netuid=netuid
+        )
+
+        block_bytes = bytes.fromhex(block_hash[2:])
+        old_block_number = block_number
+
+        # Set to current block
+        _update_curr_block(
+            curr_diff,
+            curr_block,
+            curr_block_num,
+            block_number,
+            block_bytes,
+            difficulty,
+            hotkey_bytes,
+            check_block,
+        )
+
+        # Set new block events for each solver to start at the initial block
+        for worker in solvers:
+            worker.newBlockEvent.set()
+
+        for worker in solvers:
+            worker.start()  # start the solver processes
+
+        start_time = time.time()  # time that the registration started
+        time_last = start_time  # time that the last work blocks completed
+
+        curr_stats = RegistrationStatistics(
+            time_spent_total=0.0,
+            time_average=0.0,
+            rounds_total=0,
+            time_spent=0.0,
+            hash_rate_perpetual=0.0,
+            hash_rate=0.0,  # EWMA hash_rate (H/s)
+            difficulty=difficulty,
+            block_number=block_number,
+            block_hash=block_hash,
+        )
+
+        start_time_perpetual = time.time()
+
+        console = cybertensor.__console__
+        logger = RegistrationStatisticsLogger(console, output_in_place)
+        logger.start()
+
+        hash_rates = [0] * n_samples  # The last n true hash_rates
+        weights = [alpha_**i for i in range(n_samples)]  # weights decay by alpha
+
+        solution = None
+        while netuid == -1 or not cwtensor.is_hotkey_registered(
+            netuid=netuid, hotkey=wallet.hotkey.address
+        ):
+            # Wait until a solver finds a solution
+            try:
+                solution = solution_queue.get(block=True, timeout=0.15)
+                if solution is not None:
+                    break
+            except Empty:
+                # No solution found, try again
+                pass
+
+            # check for new block
+            old_block_number = _check_for_newest_block_and_update(
+                cwtensor=cwtensor,
+                netuid=netuid,
+                hotkey_bytes=hotkey_bytes,
+                curr_diff=curr_diff,
+                curr_block=curr_block,
+                curr_block_num=curr_block_num,
+                old_block_number=old_block_number,
+                curr_stats=curr_stats,
+                update_curr_block=_update_curr_block,
+                check_block=check_block,
+                solvers=solvers,
+            )
+
+            num_time = 0
+            # Get times for each solver
+            for finished_queue in finished_queues:
+                try:
+                    proc_num = finished_queue.get(timeout=0.1)
+                    num_time += 1
+
+                except Empty:
+                    continue
+
+            time_now = time.time()  # get current time
+            time_since_last = time_now - time_last  # get time since last work block(s)
+            if num_time &gt; 0 and time_since_last &gt; 0.0:
+                # create EWMA of the hash_rate to make measure more robust
+
+                hash_rate_ = (num_time * TPB * update_interval) / time_since_last
+                hash_rates.append(hash_rate_)
+                hash_rates.pop(0)  # remove the 0th data point
+                curr_stats.hash_rate = sum(
+                    [hash_rates[i] * weights[i] for i in range(n_samples)]
+                ) / (sum(weights))
+
+                # update time last to now
+                time_last = time_now
+
+                curr_stats.time_average = (
+                    curr_stats.time_average * curr_stats.rounds_total
+                    + curr_stats.time_spent
+                ) / (curr_stats.rounds_total + num_time)
+                curr_stats.rounds_total += num_time
+
+            # Update stats
+            curr_stats.time_spent = time_since_last
+            new_time_spent_total = time_now - start_time_perpetual
+            curr_stats.hash_rate_perpetual = (
+                curr_stats.rounds_total * (TPB * update_interval)
+            ) / new_time_spent_total
+            curr_stats.time_spent_total = new_time_spent_total
+
+            # Update the logger
+            logger.update(curr_stats, verbose=log_verbose)
+
+        # exited while, found_solution contains the nonce or wallet is registered
+
+        stopEvent.set()  # stop all other processes
+        logger.stop()
+
+        # terminate and wait for all solvers to exit
+        _terminate_workers_and_wait_for_exit(solvers)
+
+        return solution
+
+
+def _terminate_workers_and_wait_for_exit(
+    workers: List[multiprocessing.Process],
+) -&gt; None:
+    for worker in workers:
+        worker.terminate()
+        worker.join()
+
+
+def create_pow(
+    cwtensor,
+    wallet,
+    netuid: int,
+    output_in_place: bool = True,
+    cuda: bool = False,
+    dev_id: Union[List[int], int] = 0,
+    tpb: int = 256,
+    num_processes: int = None,
+    update_interval: int = None,
+    log_verbose: bool = False,
+) -&gt; Optional[Dict[str, Any]]:
+    &#34;&#34;&#34;
+    Creates a proof of work for the given cwtensor and wallet.
+    Args:
+        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+            The cwtensor to create a proof of work for.
+        wallet (:obj:`cybertensor.wallet.wallet`, `required`):
+            The wallet to create a proof of work for.
+        netuid (:obj:`int`, `required`):
+            The netuid for the subnet to create a proof of work for.
+        output_in_place (:obj:`bool`, `optional`, defaults to :obj:`True`):
+            If true, prints the progress of the proof of work to the console
+                in-place. Meaning the progress is printed on the same lines.
+        cuda (:obj:`bool`, `optional`, defaults to :obj:`False`):
+            If true, uses CUDA to solve the proof of work.
+        dev_id (:obj:`Union[List[int], int]`, `optional`, defaults to :obj:`0`):
+            The CUDA device id(s) to use. If cuda is true and dev_id is a list,
+                then multiple CUDA devices will be used to solve the proof of work.
+        tpb (:obj:`int`, `optional`, defaults to :obj:`256`):
+            The number of threads per block to use when solving the proof of work.
+            Should be a multiple of 32.
+        num_processes (:obj:`int`, `optional`, defaults to :obj:`None`):
+            The number of processes to use when solving the proof of work.
+            If None, then the number of processes is equal to the number of
+                CPU cores.
+        update_interval (:obj:`int`, `optional`, defaults to :obj:`None`):
+            The number of nonces to run before checking for a new block.
+        log_verbose (:obj:`bool`, `optional`, defaults to :obj:`False`):
+            If true, prints the progress of the proof of work more verbosely.
+    Returns:
+        :obj:`Optional[Dict[str, Any]]`: The proof of work solution or None if
+            the wallet is already registered or there is a different error.
+
+    Raises:
+        :obj:`ValueError`: If the subnet does not exist.
+    &#34;&#34;&#34;
+    if netuid != -1:
+        if not cwtensor.subnet_exists(netuid=netuid):
+            raise ValueError(f&#34;Subnet {netuid} does not exist&#34;)
+
+    if cuda:
+        solution: Optional[POWSolution] = _solve_for_difficulty_fast_cuda(
+            cwtensor,
+            wallet,
+            netuid=netuid,
+            output_in_place=output_in_place,
+            dev_id=dev_id,
+            TPB=tpb,
+            update_interval=update_interval,
+            log_verbose=log_verbose,
+        )
+    else:
+        solution: Optional[POWSolution] = _solve_for_difficulty_fast(
+            cwtensor,
+            wallet,
+            netuid=netuid,
+            output_in_place=output_in_place,
+            num_processes=num_processes,
+            update_interval=update_interval,
+            log_verbose=log_verbose,
+        )
+
+    return solution</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.utils.registration.create_pow"><code class="name flex">
+<span>def <span class="ident">create_pow</span></span>(<span>cwtensor, wallet, netuid: int, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, tpb: int = 256, num_processes: int = None, update_interval: int = None, log_verbose: bool = False) ‑> Optional[Dict[str, Any]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a proof of work for the given cwtensor and wallet.</p>
+<h2 id="args">Args</h2>
+<p>cwtensor (:obj:<code><a title="cybertensor.cwtensor.cwtensor" href="../cwtensor.html#cybertensor.cwtensor.cwtensor">cwtensor</a></code>, <code>required</code>):
+The cwtensor to create a proof of work for.
+wallet (:obj:<code><a title="cybertensor.wallet.wallet" href="../wallet.html#cybertensor.wallet.wallet">wallet</a></code>, <code>required</code>):
+The wallet to create a proof of work for.
+netuid (:obj:<code>int</code>, <code>required</code>):
+The netuid for the subnet to create a proof of work for.
+output_in_place (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>True</code>):
+If true, prints the progress of the proof of work to the console
+in-place. Meaning the progress is printed on the same lines.
+cuda (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>False</code>):
+If true, uses CUDA to solve the proof of work.
+dev_id (:obj:<code>Union[List[int], int]</code>, <code>optional</code>, defaults to :obj:<code>0</code>):
+The CUDA device id(s) to use. If cuda is true and dev_id is a list,
+then multiple CUDA devices will be used to solve the proof of work.
+tpb (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>256</code>):
+The number of threads per block to use when solving the proof of work.
+Should be a multiple of 32.
+num_processes (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>None</code>):
+The number of processes to use when solving the proof of work.
+If None, then the number of processes is equal to the number of
+CPU cores.
+update_interval (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>None</code>):
+The number of nonces to run before checking for a new block.
+log_verbose (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>False</code>):
+If true, prints the progress of the proof of work more verbosely.</p>
+<h2 id="returns">Returns</h2>
+<p>:obj:<code>Optional[Dict[str, Any]]</code>: The proof of work solution or None if
+the wallet is already registered or there is a different error.</p>
+<h2 id="raises">Raises</h2>
+<p>:obj:<code>ValueError</code>: If the subnet does not exist.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_pow(
+    cwtensor,
+    wallet,
+    netuid: int,
+    output_in_place: bool = True,
+    cuda: bool = False,
+    dev_id: Union[List[int], int] = 0,
+    tpb: int = 256,
+    num_processes: int = None,
+    update_interval: int = None,
+    log_verbose: bool = False,
+) -&gt; Optional[Dict[str, Any]]:
+    &#34;&#34;&#34;
+    Creates a proof of work for the given cwtensor and wallet.
+    Args:
+        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+            The cwtensor to create a proof of work for.
+        wallet (:obj:`cybertensor.wallet.wallet`, `required`):
+            The wallet to create a proof of work for.
+        netuid (:obj:`int`, `required`):
+            The netuid for the subnet to create a proof of work for.
+        output_in_place (:obj:`bool`, `optional`, defaults to :obj:`True`):
+            If true, prints the progress of the proof of work to the console
+                in-place. Meaning the progress is printed on the same lines.
+        cuda (:obj:`bool`, `optional`, defaults to :obj:`False`):
+            If true, uses CUDA to solve the proof of work.
+        dev_id (:obj:`Union[List[int], int]`, `optional`, defaults to :obj:`0`):
+            The CUDA device id(s) to use. If cuda is true and dev_id is a list,
+                then multiple CUDA devices will be used to solve the proof of work.
+        tpb (:obj:`int`, `optional`, defaults to :obj:`256`):
+            The number of threads per block to use when solving the proof of work.
+            Should be a multiple of 32.
+        num_processes (:obj:`int`, `optional`, defaults to :obj:`None`):
+            The number of processes to use when solving the proof of work.
+            If None, then the number of processes is equal to the number of
+                CPU cores.
+        update_interval (:obj:`int`, `optional`, defaults to :obj:`None`):
+            The number of nonces to run before checking for a new block.
+        log_verbose (:obj:`bool`, `optional`, defaults to :obj:`False`):
+            If true, prints the progress of the proof of work more verbosely.
+    Returns:
+        :obj:`Optional[Dict[str, Any]]`: The proof of work solution or None if
+            the wallet is already registered or there is a different error.
+
+    Raises:
+        :obj:`ValueError`: If the subnet does not exist.
+    &#34;&#34;&#34;
+    if netuid != -1:
+        if not cwtensor.subnet_exists(netuid=netuid):
+            raise ValueError(f&#34;Subnet {netuid} does not exist&#34;)
+
+    if cuda:
+        solution: Optional[POWSolution] = _solve_for_difficulty_fast_cuda(
+            cwtensor,
+            wallet,
+            netuid=netuid,
+            output_in_place=output_in_place,
+            dev_id=dev_id,
+            TPB=tpb,
+            update_interval=update_interval,
+            log_verbose=log_verbose,
+        )
+    else:
+        solution: Optional[POWSolution] = _solve_for_difficulty_fast(
+            cwtensor,
+            wallet,
+            netuid=netuid,
+            output_in_place=output_in_place,
+            num_processes=num_processes,
+            update_interval=update_interval,
+            log_verbose=log_verbose,
+        )
+
+    return solution</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.registration.get_cpu_count"><code class="name flex">
+<span>def <span class="ident">get_cpu_count</span></span>(<span>) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cpu_count() -&gt; int:
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        # OSX does not have sched_getaffinity
+        return os.cpu_count()</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.utils.registration.CUDAException"><code class="flex name class">
+<span>class <span class="ident">CUDAException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An exception raised when an error occurs in the CUDA environment.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CUDAException(Exception):
+    &#34;&#34;&#34;An exception raised when an error occurs in the CUDA environment.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution"><code class="flex name class">
+<span>class <span class="ident">POWSolution</span></span>
+<span>(</span><span>nonce: int, block_number: int, difficulty: int, seal: bytes)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A solution to the registration PoW problem.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class POWSolution:
+    &#34;&#34;&#34;A solution to the registration PoW problem.&#34;&#34;&#34;
+
+    nonce: int
+    block_number: int
+    difficulty: int
+    seal: bytes
+
+    def is_stale(self, cwtensor: &#34;cybertensor.cwtensor&#34;) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the POW is stale.
+        This means the block the POW is solved for is within 3 blocks of the current block.
+        &#34;&#34;&#34;
+        return self.block_number &lt; cwtensor.get_current_block() - 3</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.POWSolution.block_number"><code class="name">var <span class="ident">block_number</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.difficulty"><code class="name">var <span class="ident">difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.nonce"><code class="name">var <span class="ident">nonce</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.seal"><code class="name">var <span class="ident">seal</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.utils.registration.POWSolution.is_stale"><code class="name flex">
+<span>def <span class="ident">is_stale</span></span>(<span>self, cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the POW is stale.
+This means the block the POW is solved for is within 3 blocks of the current block.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_stale(self, cwtensor: &#34;cybertensor.cwtensor&#34;) -&gt; bool:
+    &#34;&#34;&#34;Returns True if the POW is stale.
+    This means the block the POW is solved for is within 3 blocks of the current block.
+    &#34;&#34;&#34;
+    return self.block_number &lt; cwtensor.get_current_block() - 3</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics"><code class="flex name class">
+<span>class <span class="ident">RegistrationStatistics</span></span>
+<span>(</span><span>time_spent_total: float, rounds_total: int, time_average: float, time_spent: float, hash_rate_perpetual: float, hash_rate: float, difficulty: int, block_number: int, block_hash: bytes)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Statistics for a registration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class RegistrationStatistics:
+    &#34;&#34;&#34;Statistics for a registration.&#34;&#34;&#34;
+
+    time_spent_total: float
+    rounds_total: int
+    time_average: float
+    time_spent: float
+    hash_rate_perpetual: float
+    hash_rate: float
+    difficulty: int
+    block_number: int
+    block_hash: bytes</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.block_hash"><code class="name">var <span class="ident">block_hash</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.block_number"><code class="name">var <span class="ident">block_number</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.difficulty"><code class="name">var <span class="ident">difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.hash_rate"><code class="name">var <span class="ident">hash_rate</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual"><code class="name">var <span class="ident">hash_rate_perpetual</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.rounds_total"><code class="name">var <span class="ident">rounds_total</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_average"><code class="name">var <span class="ident">time_average</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_spent"><code class="name">var <span class="ident">time_spent</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_spent_total"><code class="name">var <span class="ident">time_spent_total</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger"><code class="flex name class">
+<span>class <span class="ident">RegistrationStatisticsLogger</span></span>
+<span>(</span><span>console: rich.console.Console, output_in_place: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Logs statistics for a registration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegistrationStatisticsLogger:
+    &#34;&#34;&#34;Logs statistics for a registration.&#34;&#34;&#34;
+
+    console: rich_console.Console
+    status: Optional[rich_status.Status]
+
+    def __init__(
+        self, console: rich_console.Console, output_in_place: bool = True
+    ) -&gt; None:
+        self.console = console
+
+        if output_in_place:
+            self.status = self.console.status(&#34;Solving&#34;)
+        else:
+            self.status = None
+
+    def start(self) -&gt; None:
+        if self.status is not None:
+            self.status.start()
+
+    def stop(self) -&gt; None:
+        if self.status is not None:
+            self.status.stop()
+
+    def get_status_message(
+        cls, stats: RegistrationStatistics, verbose: bool = False
+    ) -&gt; str:
+        message = (
+            &#34;Solving\n&#34;
+            + f&#34;Time Spent (total): [bold white]{timedelta(seconds=stats.time_spent_total)}[/bold white]\n&#34;
+            + (
+                f&#34;Time Spent This Round: {timedelta(seconds=stats.time_spent)}\n&#34;
+                + f&#34;Time Spent Average: {timedelta(seconds=stats.time_average)}\n&#34;
+                if verbose
+                else &#34;&#34;
+            )
+            + f&#34;Registration Difficulty: [bold white]{millify(stats.difficulty)}[/bold white]\n&#34;
+            + f&#34;Iters (Inst/Perp): [bold white]{get_human_readable(stats.hash_rate, &#39;H&#39;)}/s / &#34;
+            + f&#34;{get_human_readable(stats.hash_rate_perpetual, &#39;H&#39;)}/s[/bold white]\n&#34;
+            + f&#34;Block Number: [bold white]{stats.block_number}[/bold white]\n&#34;
+            + f&#34;Block Hash: [bold white]{stats.block_hash.encode(&#39;utf-8&#39;)}[/bold white]\n&#34;
+        )
+        return message
+
+    def update(self, stats: RegistrationStatistics, verbose: bool = False) -&gt; None:
+        if self.status is not None:
+            self.status.update(self.get_status_message(stats, verbose=verbose))
+        else:
+            self.console.log(self.get_status_message(stats, verbose=verbose))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.console"><code class="name">var <span class="ident">console</span> : rich.console.Console</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.status"><code class="name">var <span class="ident">status</span> : Optional[rich.status.Status]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message"><code class="name flex">
+<span>def <span class="ident">get_status_message</span></span>(<span>cls, stats: <a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a>, verbose: bool = False) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_status_message(
+    cls, stats: RegistrationStatistics, verbose: bool = False
+) -&gt; str:
+    message = (
+        &#34;Solving\n&#34;
+        + f&#34;Time Spent (total): [bold white]{timedelta(seconds=stats.time_spent_total)}[/bold white]\n&#34;
+        + (
+            f&#34;Time Spent This Round: {timedelta(seconds=stats.time_spent)}\n&#34;
+            + f&#34;Time Spent Average: {timedelta(seconds=stats.time_average)}\n&#34;
+            if verbose
+            else &#34;&#34;
+        )
+        + f&#34;Registration Difficulty: [bold white]{millify(stats.difficulty)}[/bold white]\n&#34;
+        + f&#34;Iters (Inst/Perp): [bold white]{get_human_readable(stats.hash_rate, &#39;H&#39;)}/s / &#34;
+        + f&#34;{get_human_readable(stats.hash_rate_perpetual, &#39;H&#39;)}/s[/bold white]\n&#34;
+        + f&#34;Block Number: [bold white]{stats.block_number}[/bold white]\n&#34;
+        + f&#34;Block Hash: [bold white]{stats.block_hash.encode(&#39;utf-8&#39;)}[/bold white]\n&#34;
+    )
+    return message</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.start"><code class="name flex">
+<span>def <span class="ident">start</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start(self) -&gt; None:
+    if self.status is not None:
+        self.status.start()</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.stop"><code class="name flex">
+<span>def <span class="ident">stop</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop(self) -&gt; None:
+    if self.status is not None:
+        self.status.stop()</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, stats: <a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a>, verbose: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, stats: RegistrationStatistics, verbose: bool = False) -&gt; None:
+    if self.status is not None:
+        self.status.update(self.get_status_message(stats, verbose=verbose))
+    else:
+        self.console.log(self.get_status_message(stats, verbose=verbose))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.utils" href="index.html">cybertensor.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.utils.registration.create_pow" href="#cybertensor.utils.registration.create_pow">create_pow</a></code></li>
+<li><code><a title="cybertensor.utils.registration.get_cpu_count" href="#cybertensor.utils.registration.get_cpu_count">get_cpu_count</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.utils.registration.CUDAException" href="#cybertensor.utils.registration.CUDAException">CUDAException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.POWSolution" href="#cybertensor.utils.registration.POWSolution">POWSolution</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.utils.registration.POWSolution.block_number" href="#cybertensor.utils.registration.POWSolution.block_number">block_number</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.difficulty" href="#cybertensor.utils.registration.POWSolution.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.is_stale" href="#cybertensor.utils.registration.POWSolution.is_stale">is_stale</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.nonce" href="#cybertensor.utils.registration.POWSolution.nonce">nonce</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.seal" href="#cybertensor.utils.registration.POWSolution.seal">seal</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.block_hash" href="#cybertensor.utils.registration.RegistrationStatistics.block_hash">block_hash</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.block_number" href="#cybertensor.utils.registration.RegistrationStatistics.block_number">block_number</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.difficulty" href="#cybertensor.utils.registration.RegistrationStatistics.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.hash_rate" href="#cybertensor.utils.registration.RegistrationStatistics.hash_rate">hash_rate</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual" href="#cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual">hash_rate_perpetual</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.rounds_total" href="#cybertensor.utils.registration.RegistrationStatistics.rounds_total">rounds_total</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_average" href="#cybertensor.utils.registration.RegistrationStatistics.time_average">time_average</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_spent" href="#cybertensor.utils.registration.RegistrationStatistics.time_spent">time_spent</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_spent_total" href="#cybertensor.utils.registration.RegistrationStatistics.time_spent_total">time_spent_total</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger" href="#cybertensor.utils.registration.RegistrationStatisticsLogger">RegistrationStatisticsLogger</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.console" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.console">console</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message">get_status_message</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.start" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.start">start</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.status" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.status">status</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.stop" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.stop">stop</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.update" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.update">update</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

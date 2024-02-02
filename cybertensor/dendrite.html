@@ -1,0 +1,2221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.dendrite API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.dendrite</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># The MIT License (MIT)
+# Copyright © 2021 Yuma Rao
+# Copyright © 2022 Opentensor Foundation
+# Copyright © 2023 Opentensor Technologies Inc
+# Copyright © 2023 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+from __future__ import annotations
+
+import asyncio
+import time
+import uuid
+from typing import Optional, List, Union, AsyncGenerator, Any
+
+import aiohttp
+import torch
+from fastapi import Response
+
+import cybertensor
+
+
+class dendrite(torch.nn.Module):
+    &#34;&#34;&#34;
+    The Dendrite class, inheriting from PyTorch&#39;s Module class, represents the abstracted
+    implementation of a network client module. In the brain analogy, dendrites receive signals
+    from other neurons (in this case, network servers or axons), and the Dendrite class here is designed
+    to send requests to those endpoint to recieve inputs.
+
+    This class includes a wallet or keypair used for signing messages, and methods for making
+    HTTP requests to the network servers. It also provides functionalities such as logging
+    network requests and processing server responses.
+
+    Attributes:
+        keypair: The wallet or keypair used for signing messages.
+        external_ip (str): The external IP address of the local system.
+        synapse_history (list): A list of Synapse objects representing the historical responses.
+
+    Methods:
+        __str__(): Returns a string representation of the Dendrite object.
+        __repr__(): Returns a string representation of the Dendrite object, acting as a fallback
+                    for __str__().
+        query(self, *args, **kwargs) -&gt; Union[cybertensor.Synapse, List[cybertensor.Synapse]]:
+            Makes synchronous requests to one or multiple target Axons and returns responses.
+
+        forward(self, axons, synapse=cybertensor.Synapse(), timeout=12, deserialize=True, run_async=True, streaming=False) -&gt; cybertensor.Synapse:
+            Asynchronously sends requests to one or multiple Axons and collates their responses.
+
+        call(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; cybertensor.Synapse:
+            Asynchronously sends a request to a specified Axon and processes the response.
+
+        call_stream(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; AsyncGenerator[cybertensor.Synapse, None]:
+            Sends a request to a specified Axon and yields an AsyncGenerator that contains streaming
+            response chunks before finally yielding the filled Synapse as the final element.
+
+        preprocess_synapse_for_request(self, target_axon_info, synapse, timeout=12.0) -&gt; cybertensor.Synapse:
+            Preprocesses the synapse for making a request, including building headers and signing.
+
+        process_server_response(self, server_response, json_response, local_synapse):
+            Processes the server response, updates the local synapse state, and merges headers.
+
+        close_session(self):
+            Synchronously closes the internal aiohttp client session.
+
+        aclose_session(self):
+            Asynchronously closes the internal aiohttp client session.
+
+    NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.
+
+    Example with a context manager:
+        &gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
+        &gt;&gt;&gt;     print(d)
+        &gt;&gt;&gt;     d( &lt;axon&gt; ) # ping axon
+        &gt;&gt;&gt;     d( [&lt;axons&gt;] ) # ping multiple
+        &gt;&gt;&gt;     d( cybertensor.axon(), cybertensor.Synapse )
+
+    However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.
+
+    Example without a context manager:
+        &gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
+        &gt;&gt;&gt; print(d)
+        &gt;&gt;&gt; d( &lt;axon&gt; ) # ping axon
+        &gt;&gt;&gt; d( [&lt;axons&gt;] ) # ping multiple
+        &gt;&gt;&gt; d( cybertensor.axon(), cybertensor.Synapse )
+    &#34;&#34;&#34;
+
+    def __init__(
+        self, wallet: Optional[Union[cybertensor.wallet, cybertensor.keypair]] = None
+    ):
+        &#34;&#34;&#34;
+        Initializes the Dendrite object, setting up essential properties.
+
+        Args:
+            wallet (Optional[Union[&#39;cybertensor.wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
+                The user&#39;s wallet or keypair used for signing messages. Defaults to None,
+                in which case a new cybertensor.wallet().hotkey is generated and used.
+        &#34;&#34;&#34;
+        # Initialize the parent class
+        super(dendrite, self).__init__()
+
+        # Unique identifier for the instance
+        self.uuid = str(uuid.uuid1())
+
+        # Get the external IP
+        self.external_ip = cybertensor.utils.networking.get_external_ip()
+
+        # If a wallet or keypair is provided, use its hotkey. If not, generate a new one.
+        self.keypair = (
+            wallet.hotkey if isinstance(wallet, cybertensor.wallet) else wallet
+        ) or cybertensor.wallet().hotkey
+
+        self.synapse_history: list = []
+
+        self._session: aiohttp.ClientSession = None
+
+    @property
+    async def session(self) -&gt; aiohttp.ClientSession:
+        &#34;&#34;&#34;
+        Asynchronous property that provides access to the internal aiohttp client session.
+
+        If the session is not already initialized, this property will instantiate a new
+        aiohttp.ClientSession and return it.
+
+        Returns:
+            aiohttp.ClientSession: The aiohttp client session instance.
+        &#34;&#34;&#34;
+        if self._session is None:
+            self._session = aiohttp.ClientSession()
+        return self._session
+
+    def close_session(self):
+        &#34;&#34;&#34;
+        Closes the internal aiohttp client session in a synchronous manner.
+
+        This method ensures that the resources tied with the aiohttp client session are released.
+        It should be called when the session is no longer needed, typically during the cleanup phase.
+
+        Usage:
+            dendrite_instance.close_session()
+        &#34;&#34;&#34;
+        if self._session:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self._session.close())
+            self._session = None
+
+    async def aclose_session(self):
+        &#34;&#34;&#34;
+        Asynchronously closes the internal aiohttp client session.
+
+        Similar to the synchronous `close_session` method but designed to be used within
+        asynchronous contexts. This method ensures that all related resources are released.
+
+        Usage:
+            await dendrite_instance.aclose_session()
+        &#34;&#34;&#34;
+        if self._session:
+            await self._session.close()
+            self._session = None
+
+    def _get_endpoint_url(self, target_axon, request_name):
+        endpoint = (
+            f&#34;0.0.0.0:{str(target_axon.port)}&#34;
+            if target_axon.ip == str(self.external_ip)
+            else f&#34;{target_axon.ip}:{str(target_axon.port)}&#34;
+        )
+        return f&#34;http://{endpoint}/{request_name}&#34;
+
+    def _handle_request_errors(self, synapse, request_name, exception):
+        if isinstance(exception, aiohttp.ClientConnectorError):
+            synapse.dendrite.status_code = &#34;503&#34;
+            synapse.dendrite.status_message = f&#34;Service at {synapse.axon.ip}:{str(synapse.axon.port)}/{request_name} unavailable.&#34;
+        elif isinstance(exception, asyncio.TimeoutError):
+            synapse.dendrite.status_code = &#34;408&#34;
+            synapse.dendrite.status_message = (
+                f&#34;Timedout after {synapse.timeout} seconds.&#34;
+            )
+        else:
+            synapse.dendrite.status_code = &#34;422&#34;
+            synapse.dendrite.status_message = (
+                f&#34;Failed to parse response object with error: {str(exception)}&#34;
+            )
+
+    def _log_outgoing_request(self, synapse):
+        cybertensor.logging.debug(
+            f&#34;dendrite | --&gt; | {synapse.get_total_size()} B | {synapse.name} | {synapse.axon.hotkey} | {synapse.axon.ip}:{str(synapse.axon.port)} | 0 | Success&#34;
+        )
+
+    def _log_incoming_response(self, synapse):
+        cybertensor.logging.debug(
+            f&#34;dendrite | &lt;-- | {synapse.get_total_size()} B | {synapse.name} | {synapse.axon.hotkey} | {synapse.axon.ip}:{str(synapse.axon.port)} | {synapse.dendrite.status_code} | {synapse.dendrite.status_message}&#34;
+        )
+
+    def query(
+        self, *args, **kwargs
+    ) -&gt; Union[
+        cybertensor.Synapse,
+        List[cybertensor.Synapse],
+        cybertensor.StreamingSynapse,
+        List[cybertensor.StreamingSynapse],
+    ]:
+        &#34;&#34;&#34;
+        Makes a synchronous request to multiple target Axons and returns the server responses.
+
+        Cleanup is automatically handled and sessions are closed upon completed requests.
+
+        Args:
+            axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+                The list of target Axon information.
+            synapse (cybertensor.Synapse, optional): The Synapse object. Defaults to cybertensor.Synapse().
+            timeout (float, optional): The request timeout duration in seconds.
+                Defaults to 12.0 seconds.
+        Returns:
+            Union[cybertensor.Synapse, List[cybertensor.Synapse]]: If a single target axon is provided,
+                returns the response from that axon. If multiple target axons are provided,
+                returns a list of responses from all target axons.
+        &#34;&#34;&#34;
+        result = None
+        try:
+            loop = asyncio.get_event_loop()
+            result = loop.run_until_complete(self.forward(*args, **kwargs))
+        except:
+            new_loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(new_loop)
+            result = loop.run_until_complete(self.forward(*args, **kwargs))
+            new_loop.close()
+        finally:
+            self.close_session()
+            return result
+
+    async def forward(
+        self,
+        axons: Union[
+            List[Union[cybertensor.AxonInfo, cybertensor.axon]],
+            Union[cybertensor.AxonInfo, cybertensor.axon],
+        ],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12,
+        deserialize: bool = True,
+        run_async: bool = True,
+        streaming: bool = False,
+    ) -&gt; List[
+        Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]
+    ]:
+        &#34;&#34;&#34;
+        Asynchronously sends requests to one or multiple Axons and collates their responses.
+
+        This function acts as a bridge for sending multiple requests concurrently or sequentially
+        based on the provided parameters. It checks the type of the target Axons, preprocesses
+        the requests, and then sends them off. After getting the responses, it processes and
+        collates them into a unified format.
+
+        When querying an Axon that sends back data in chunks using the Dendrite, this function
+        returns an AsyncGenerator that yields each chunk as it is received. The generator can be
+        iterated over to process each chunk individually.
+
+        For example:
+            &gt;&gt;&gt; ...
+            &gt;&gt;&gt; dendrte = cybertensor.dendrite(wallet = wallet)
+            &gt;&gt;&gt; async for chunk in dendrite.forward(axons, synapse, timeout, deserialize, run_async, streaming):
+            &gt;&gt;&gt;     # Process each chunk here
+            &gt;&gt;&gt;     print(chunk)
+
+        Args:
+            axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+                The target Axons to send requests to. Can be a single Axon or a list of Axons.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response from an Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+            run_async (bool, optional): If True, sends requests concurrently. Otherwise, sends requests sequentially. Defaults to True.
+            streaming (bool, optional): Indicates if the response is expected to be in streaming format. Defaults to False.
+
+        Returns:
+            Union[AsyncGenerator, cybertensor.Synapse, List[cybertensor.Synapse]]: If a single Axon is targeted, returns its response.
+            If multiple Axons are targeted, returns a list of their responses.
+        &#34;&#34;&#34;
+        is_list = True
+        # If a single axon is provided, wrap it in a list for uniform processing
+        if not isinstance(axons, list):
+            is_list = False
+            axons = [axons]
+
+        # Check if synapse is an instance of the StreamingSynapse class or if streaming flag is set.
+        is_streaming_subclass = issubclass(
+            synapse.__class__, cybertensor.StreamingSynapse
+        )
+        if streaming != is_streaming_subclass:
+            cybertensor.logging.warning(
+                f&#34;Argument streaming is {streaming} while issubclass(synapse, StreamingSynapse) is {synapse.__class__.__name__}. This may cause unexpected behavior.&#34;
+            )
+        streaming = is_streaming_subclass or streaming
+
+        async def query_all_axons(
+            is_stream: bool,
+        ) -&gt; Union[
+            AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+        ]:
+            &#34;&#34;&#34;
+            Handles requests for all axons, either in streaming or non-streaming mode.
+
+            Args:
+                is_stream: If True, handles the axons in streaming mode.
+
+            Returns:
+                List of Synapse objects with responses.
+            &#34;&#34;&#34;
+
+            async def single_axon_response(
+                target_axon,
+            ) -&gt; Union[
+                AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+            ]:
+                &#34;&#34;&#34;
+                Retrieve response for a single axon, either in streaming or non-streaming mode.
+
+                Args:
+                    target_axon: The target axon to send request to.
+
+                Returns:
+                    A Synapse object with the response.
+                &#34;&#34;&#34;
+                if is_stream:
+                    # If in streaming mode, return the async_generator
+                    return self.call_stream(
+                        target_axon=target_axon,
+                        synapse=synapse.copy(),
+                        timeout=timeout,
+                        deserialize=deserialize,
+                    )
+                else:
+                    # If not in streaming mode, simply call the axon and get the response.
+                    return await self.call(
+                        target_axon=target_axon,
+                        synapse=synapse.copy(),
+                        timeout=timeout,
+                        deserialize=deserialize,
+                    )
+
+            # If run_async flag is False, get responses one by one.
+            if not run_async:
+                return [
+                    await single_axon_response(target_axon) for target_axon in axons
+                ]
+            # If run_async flag is True, get responses concurrently using asyncio.gather().
+            return await asyncio.gather(
+                *(single_axon_response(target_axon) for target_axon in axons)
+            )
+
+        # Get responses for all axons.
+        responses = await query_all_axons(streaming)
+        # Return the single response if only one axon was targeted, else return all responses
+        if len(responses) == 1 and not is_list:
+            return responses[0]
+        else:
+            return responses
+
+    async def call(
+        self,
+        target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12.0,
+        deserialize: bool = True,
+    ) -&gt; cybertensor.Synapse:
+        &#34;&#34;&#34;
+        Asynchronously sends a request to a specified Axon and processes the response.
+
+        This function establishes a connection with a specified Axon, sends the encapsulated
+        data through the Synapse object, waits for a response, processes it, and then
+        returns the updated Synapse object.
+
+        Args:
+            target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response from the Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+
+        Returns:
+            cybertensor.Synapse: The Synapse object, updated with the response data from the Axon.
+        &#34;&#34;&#34;
+
+        # Record start time
+        start_time = time.time()
+        target_axon = (
+            target_axon.info()
+            if isinstance(target_axon, cybertensor.axon)
+            else target_axon
+        )
+
+        # Build request endpoint from the synapse class
+        request_name = synapse.__class__.__name__
+        url = self._get_endpoint_url(target_axon, request_name=request_name)
+
+        # Preprocess synapse for making a request
+        synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+        try:
+            # Log outgoing request
+            self._log_outgoing_request(synapse)
+
+            # Make the HTTP POST request
+            async with (await self.session).post(
+                url,
+                headers=synapse.to_headers(),
+                json=synapse.dict(),
+                timeout=timeout,
+            ) as response:
+                # Extract the JSON response from the server
+                json_response = await response.json()
+                # Process the server response and fill synapse
+                self.process_server_response(response, json_response, synapse)
+
+            # Set process time and log the response
+            synapse.dendrite.process_time = str(time.time() - start_time)
+
+        except Exception as e:
+            self._handle_request_errors(synapse, request_name, e)
+
+        finally:
+            self._log_incoming_response(synapse)
+
+            # Log synapse event history
+            self.synapse_history.append(
+                cybertensor.Synapse.from_headers(synapse.to_headers())
+            )
+
+            # Return the updated synapse object after deserializing if requested
+            if deserialize:
+                return synapse.deserialize()
+            else:
+                return synapse
+
+    async def call_stream(
+        self,
+        target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12.0,
+        deserialize: bool = True,
+    ) -&gt; AsyncGenerator[Any]:
+        &#34;&#34;&#34;
+        Sends a request to a specified Axon and yields streaming responses.
+
+        Similar to `call`, but designed for scenarios where the Axon sends back data in
+        multiple chunks or streams. The function yields each chunk as it is received. This is
+        useful for processing large responses piece by piece without waiting for the entire
+        data to be transmitted.
+
+        Args:
+            target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response (or a chunk of the response) from the Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if each received chunk should be deserialized. Defaults to True.
+
+        Yields:
+            object: Each yielded object contains a chunk of the arbitrary response data from the Axon.
+            cybertensor.Synapse: After the AsyncGenerator has been exhausted, yields the final filled Synapse.
+        &#34;&#34;&#34;
+
+        # Record start time
+        start_time = time.time()
+        target_axon = (
+            target_axon.info()
+            if isinstance(target_axon, cybertensor.axon)
+            else target_axon
+        )
+
+        # Build request endpoint from the synapse class
+        request_name = synapse.__class__.__name__
+        endpoint = (
+            f&#34;0.0.0.0:{str(target_axon.port)}&#34;
+            if target_axon.ip == str(self.external_ip)
+            else f&#34;{target_axon.ip}:{str(target_axon.port)}&#34;
+        )
+        url = f&#34;http://{endpoint}/{request_name}&#34;
+
+        # Preprocess synapse for making a request
+        synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+        try:
+            # Log outgoing request
+            self._log_outgoing_request(synapse)
+
+            # Make the HTTP POST request
+            async with (await self.session).post(
+                url,
+                headers=synapse.to_headers(),
+                json=synapse.dict(),
+                timeout=timeout,
+            ) as response:
+                # Use synapse subclass&#39; process_streaming_response method to yield the response chunks
+                async for chunk in synapse.process_streaming_response(response):
+                    yield chunk  # Yield each chunk as it&#39;s processed
+                json_response = synapse.extract_response_json(response)
+
+                # Process the server response
+                self.process_server_response(response, json_response, synapse)
+
+            # Set process time and log the response
+            synapse.dendrite.process_time = str(time.time() - start_time)
+
+        except Exception as e:
+            self._handle_request_errors(synapse, request_name, e)
+
+        finally:
+            self._log_incoming_response(synapse)
+
+            # Log synapse event history
+            self.synapse_history.append(
+                cybertensor.Synapse.from_headers(synapse.to_headers())
+            )
+
+            # Return the updated synapse object after deserializing if requested
+            if deserialize:
+                yield synapse.deserialize()
+            else:
+                yield synapse
+
+    def preprocess_synapse_for_request(
+        self,
+        target_axon_info: cybertensor.AxonInfo,
+        synapse: cybertensor.Synapse,
+        timeout: float = 12.0,
+    ) -&gt; cybertensor.Synapse:
+        &#34;&#34;&#34;
+        Preprocesses the synapse for making a request. This includes building
+        headers for Dendrite and Axon and signing the request.
+
+        Args:
+            target_axon_info (cybertensor.AxonInfo): The target axon information.
+            synapse (cybertensor.Synapse): The synapse object to be preprocessed.
+            timeout (float, optional): The request timeout duration in seconds.
+                Defaults to 12.0 seconds.
+
+        Returns:
+            cybertensor.Synapse: The preprocessed synapse.
+        &#34;&#34;&#34;
+        # Set the timeout for the synapse
+        synapse.timeout = str(timeout)
+
+        # Build the Dendrite headers using the local system&#39;s details
+        synapse.dendrite = cybertensor.TerminalInfo(
+            **{
+                &#34;ip&#34;: str(self.external_ip),
+                &#34;version&#34;: str(cybertensor.__version_as_int__),
+                &#34;nonce&#34;: f&#34;{time.monotonic_ns()}&#34;,
+                &#34;uuid&#34;: str(self.uuid),
+                &#34;hotkey&#34;: str(self.keypair.address),
+            }
+        )
+
+        # Build the Axon headers using the target axon&#39;s details
+        synapse.axon = cybertensor.TerminalInfo(
+            **{
+                &#34;ip&#34;: str(target_axon_info.ip),
+                &#34;port&#34;: str(target_axon_info.port),
+                &#34;hotkey&#34;: str(target_axon_info.hotkey),
+            }
+        )
+
+        # Sign the request using the dendrite, axon info, and the synapse body hash
+        message = f&#34;{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{synapse.axon.hotkey}.{synapse.dendrite.uuid}.{synapse.body_hash}&#34;
+        synapse.dendrite.signature = f&#34;0x{self.keypair.sign(message).hex()}&#34;
+
+        return synapse
+
+    def process_server_response(
+        self,
+        server_response: Response,
+        json_response: dict,
+        local_synapse: cybertensor.Synapse,
+    ):
+        &#34;&#34;&#34;
+        Processes the server response, updates the local synapse state with the
+        server&#39;s state and merges headers set by the server.
+
+        Args:
+            server_response (object): The aiohttp response object from the server.
+            json_response (dict): The parsed JSON response from the server.
+            local_synapse (cybertensor.Synapse): The local synapse object to be updated.
+
+        Raises:
+            None, but errors in attribute setting are silently ignored.
+        &#34;&#34;&#34;
+        # Check if the server responded with a successful status code
+        if server_response.status == 200:
+            # If the response is successful, overwrite local synapse state with
+            # server&#39;s state only if the protocol allows mutation. To prevent overwrites,
+            # the protocol must set allow_mutation = False
+            server_synapse = local_synapse.__class__(**json_response)
+            for key in local_synapse.dict().keys():
+                try:
+                    # Set the attribute in the local synapse from the corresponding
+                    # attribute in the server synapse
+                    setattr(local_synapse, key, getattr(server_synapse, key))
+                except:
+                    # Ignore errors during attribute setting
+                    pass
+
+        # Extract server headers and overwrite None values in local synapse headers
+        server_headers = cybertensor.Synapse.from_headers(server_response.headers)
+
+        # Merge dendrite headers
+        local_synapse.dendrite.__dict__.update(
+            {
+                **local_synapse.dendrite.dict(exclude_none=True),
+                **server_headers.dendrite.dict(exclude_none=True),
+            }
+        )
+
+        # Merge axon headers
+        local_synapse.axon.__dict__.update(
+            {
+                **local_synapse.axon.dict(exclude_none=True),
+                **server_headers.axon.dict(exclude_none=True),
+            }
+        )
+
+        # Update the status code and status message of the dendrite to match the axon
+        local_synapse.dendrite.status_code = local_synapse.axon.status_code
+        local_synapse.dendrite.status_message = local_synapse.axon.status_message
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns a string representation of the Dendrite object.
+
+        Returns:
+            str: The string representation of the Dendrite object in the format &#34;dendrite(&lt;user_wallet_address&gt;)&#34;.
+        &#34;&#34;&#34;
+        return &#34;dendrite({})&#34;.format(self.keypair.address)
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns a string representation of the Dendrite object, acting as a fallback for __str__().
+
+        Returns:
+            str: The string representation of the Dendrite object in the format &#34;dendrite(&lt;user_wallet_address&gt;)&#34;.
+        &#34;&#34;&#34;
+        return self.__str__()
+
+    async def __aenter__(self):
+        &#34;&#34;&#34;
+        Asynchronous context manager entry method.
+
+        Enables the use of the `async with` statement with the Dendrite instance. When entering the context,
+        the current instance of the class is returned, making it accessible within the asynchronous context.
+
+        Returns:
+            Dendrite: The current instance of the Dendrite class.
+
+        Usage:
+            async with Dendrite() as dendrite:
+                await dendrite.some_async_method()
+        &#34;&#34;&#34;
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        &#34;&#34;&#34;
+        Asynchronous context manager exit method.
+
+        Ensures proper cleanup when exiting the `async with` context. This method will close the aiohttp client session
+        asynchronously, releasing any tied resources.
+
+        Args:
+            exc_type (Type[BaseException], optional): The type of exception that was raised.
+            exc_value (BaseException, optional): The instance of exception that was raised.
+            traceback (TracebackType, optional): A traceback object encapsulating the call stack at the point
+                                                where the exception was raised.
+
+        Usage:
+            async with Dendrite() as dendrite:
+                await dendrite.some_async_method()
+        &#34;&#34;&#34;
+        await self.aclose_session()
+
+    def __del__(self):
+        &#34;&#34;&#34;
+        Dendrite destructor.
+
+        This method is invoked when the Dendrite instance is about to be destroyed. The destructor ensures that the
+        aiohttp client session is closed before the instance is fully destroyed, releasing any remaining resources.
+
+        Note: Relying on the destructor for cleanup can be unpredictable. It&#39;s recommended to explicitly close sessions
+        using the provided methods or the `async with` context manager.
+
+        Usage:
+            dendrite = Dendrite()
+            # ... some operations ...
+            del dendrite  # This will implicitly invoke the __del__ method.
+        &#34;&#34;&#34;
+        asyncio.run(self.aclose_session())</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.dendrite.dendrite"><code class="flex name class">
+<span>class <span class="ident">dendrite</span></span>
+<span>(</span><span>wallet: Optional[Union[<a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, <a title="cybertensor.keypair" href="keypair.html">cybertensor.keypair</a>]] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Dendrite class, inheriting from PyTorch's Module class, represents the abstracted
+implementation of a network client module. In the brain analogy, dendrites receive signals
+from other neurons (in this case, network servers or axons), and the Dendrite class here is designed
+to send requests to those endpoint to recieve inputs.</p>
+<p>This class includes a wallet or keypair used for signing messages, and methods for making
+HTTP requests to the network servers. It also provides functionalities such as logging
+network requests and processing server responses.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>keypair</code></strong></dt>
+<dd>The wallet or keypair used for signing messages.</dd>
+<dt><strong><code>external_ip</code></strong> :&ensp;<code>str</code></dt>
+<dd>The external IP address of the local system.</dd>
+<dt><strong><code>synapse_history</code></strong> :&ensp;<code>list</code></dt>
+<dd>A list of Synapse objects representing the historical responses.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p><strong>str</strong>(): Returns a string representation of the Dendrite object.
+<strong>repr</strong>(): Returns a string representation of the Dendrite object, acting as a fallback
+for <strong>str</strong>().
+query(self, <em>args, </em>*kwargs) -&gt; Union[cybertensor.Synapse, List[cybertensor.Synapse]]:
+Makes synchronous requests to one or multiple target Axons and returns responses.</p>
+<p>forward(self, axons, synapse=cybertensor.Synapse(), timeout=12, deserialize=True, run_async=True, streaming=False) -&gt; cybertensor.Synapse:
+Asynchronously sends requests to one or multiple Axons and collates their responses.</p>
+<p>call(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; cybertensor.Synapse:
+Asynchronously sends a request to a specified Axon and processes the response.</p>
+<p>call_stream(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; AsyncGenerator[cybertensor.Synapse, None]:
+Sends a request to a specified Axon and yields an AsyncGenerator that contains streaming
+response chunks before finally yielding the filled Synapse as the final element.</p>
+<p>preprocess_synapse_for_request(self, target_axon_info, synapse, timeout=12.0) -&gt; cybertensor.Synapse:
+Preprocesses the synapse for making a request, including building headers and signing.</p>
+<p>process_server_response(self, server_response, json_response, local_synapse):
+Processes the server response, updates the local synapse state, and merges headers.</p>
+<p>close_session(self):
+Synchronously closes the internal aiohttp client session.</p>
+<p>aclose_session(self):
+Asynchronously closes the internal aiohttp client session.</p>
+<p>NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.</p>
+<p>Example with a context manager:
+&gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
+&gt;&gt;&gt;
+print(d)
+&gt;&gt;&gt;
+d( <axon> ) # ping axon
+&gt;&gt;&gt;
+d( [<axons>] ) # ping multiple
+&gt;&gt;&gt;
+d( cybertensor.axon(), cybertensor.Synapse )</p>
+<p>However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.</p>
+<p>Example without a context manager:
+&gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
+&gt;&gt;&gt; print(d)
+&gt;&gt;&gt; d( <axon> ) # ping axon
+&gt;&gt;&gt; d( [<axons>] ) # ping multiple
+&gt;&gt;&gt; d( cybertensor.axon(), cybertensor.Synapse )</p>
+<p>Initializes the Dendrite object, setting up essential properties.</p>
+<h2 id="args">Args</h2>
+<p>wallet (Optional[Union['cybertensor.wallet', 'cybertensor.keypair']], optional):
+The user's wallet or keypair used for signing messages. Defaults to None,
+in which case a new cybertensor.wallet().hotkey is generated and used.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class dendrite(torch.nn.Module):
+    &#34;&#34;&#34;
+    The Dendrite class, inheriting from PyTorch&#39;s Module class, represents the abstracted
+    implementation of a network client module. In the brain analogy, dendrites receive signals
+    from other neurons (in this case, network servers or axons), and the Dendrite class here is designed
+    to send requests to those endpoint to recieve inputs.
+
+    This class includes a wallet or keypair used for signing messages, and methods for making
+    HTTP requests to the network servers. It also provides functionalities such as logging
+    network requests and processing server responses.
+
+    Attributes:
+        keypair: The wallet or keypair used for signing messages.
+        external_ip (str): The external IP address of the local system.
+        synapse_history (list): A list of Synapse objects representing the historical responses.
+
+    Methods:
+        __str__(): Returns a string representation of the Dendrite object.
+        __repr__(): Returns a string representation of the Dendrite object, acting as a fallback
+                    for __str__().
+        query(self, *args, **kwargs) -&gt; Union[cybertensor.Synapse, List[cybertensor.Synapse]]:
+            Makes synchronous requests to one or multiple target Axons and returns responses.
+
+        forward(self, axons, synapse=cybertensor.Synapse(), timeout=12, deserialize=True, run_async=True, streaming=False) -&gt; cybertensor.Synapse:
+            Asynchronously sends requests to one or multiple Axons and collates their responses.
+
+        call(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; cybertensor.Synapse:
+            Asynchronously sends a request to a specified Axon and processes the response.
+
+        call_stream(self, target_axon, synapse=cybertensor.Synapse(), timeout=12.0, deserialize=True) -&gt; AsyncGenerator[cybertensor.Synapse, None]:
+            Sends a request to a specified Axon and yields an AsyncGenerator that contains streaming
+            response chunks before finally yielding the filled Synapse as the final element.
+
+        preprocess_synapse_for_request(self, target_axon_info, synapse, timeout=12.0) -&gt; cybertensor.Synapse:
+            Preprocesses the synapse for making a request, including building headers and signing.
+
+        process_server_response(self, server_response, json_response, local_synapse):
+            Processes the server response, updates the local synapse state, and merges headers.
+
+        close_session(self):
+            Synchronously closes the internal aiohttp client session.
+
+        aclose_session(self):
+            Asynchronously closes the internal aiohttp client session.
+
+    NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.
+
+    Example with a context manager:
+        &gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
+        &gt;&gt;&gt;     print(d)
+        &gt;&gt;&gt;     d( &lt;axon&gt; ) # ping axon
+        &gt;&gt;&gt;     d( [&lt;axons&gt;] ) # ping multiple
+        &gt;&gt;&gt;     d( cybertensor.axon(), cybertensor.Synapse )
+
+    However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.
+
+    Example without a context manager:
+        &gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
+        &gt;&gt;&gt; print(d)
+        &gt;&gt;&gt; d( &lt;axon&gt; ) # ping axon
+        &gt;&gt;&gt; d( [&lt;axons&gt;] ) # ping multiple
+        &gt;&gt;&gt; d( cybertensor.axon(), cybertensor.Synapse )
+    &#34;&#34;&#34;
+
+    def __init__(
+        self, wallet: Optional[Union[cybertensor.wallet, cybertensor.keypair]] = None
+    ):
+        &#34;&#34;&#34;
+        Initializes the Dendrite object, setting up essential properties.
+
+        Args:
+            wallet (Optional[Union[&#39;cybertensor.wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
+                The user&#39;s wallet or keypair used for signing messages. Defaults to None,
+                in which case a new cybertensor.wallet().hotkey is generated and used.
+        &#34;&#34;&#34;
+        # Initialize the parent class
+        super(dendrite, self).__init__()
+
+        # Unique identifier for the instance
+        self.uuid = str(uuid.uuid1())
+
+        # Get the external IP
+        self.external_ip = cybertensor.utils.networking.get_external_ip()
+
+        # If a wallet or keypair is provided, use its hotkey. If not, generate a new one.
+        self.keypair = (
+            wallet.hotkey if isinstance(wallet, cybertensor.wallet) else wallet
+        ) or cybertensor.wallet().hotkey
+
+        self.synapse_history: list = []
+
+        self._session: aiohttp.ClientSession = None
+
+    @property
+    async def session(self) -&gt; aiohttp.ClientSession:
+        &#34;&#34;&#34;
+        Asynchronous property that provides access to the internal aiohttp client session.
+
+        If the session is not already initialized, this property will instantiate a new
+        aiohttp.ClientSession and return it.
+
+        Returns:
+            aiohttp.ClientSession: The aiohttp client session instance.
+        &#34;&#34;&#34;
+        if self._session is None:
+            self._session = aiohttp.ClientSession()
+        return self._session
+
+    def close_session(self):
+        &#34;&#34;&#34;
+        Closes the internal aiohttp client session in a synchronous manner.
+
+        This method ensures that the resources tied with the aiohttp client session are released.
+        It should be called when the session is no longer needed, typically during the cleanup phase.
+
+        Usage:
+            dendrite_instance.close_session()
+        &#34;&#34;&#34;
+        if self._session:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self._session.close())
+            self._session = None
+
+    async def aclose_session(self):
+        &#34;&#34;&#34;
+        Asynchronously closes the internal aiohttp client session.
+
+        Similar to the synchronous `close_session` method but designed to be used within
+        asynchronous contexts. This method ensures that all related resources are released.
+
+        Usage:
+            await dendrite_instance.aclose_session()
+        &#34;&#34;&#34;
+        if self._session:
+            await self._session.close()
+            self._session = None
+
+    def _get_endpoint_url(self, target_axon, request_name):
+        endpoint = (
+            f&#34;0.0.0.0:{str(target_axon.port)}&#34;
+            if target_axon.ip == str(self.external_ip)
+            else f&#34;{target_axon.ip}:{str(target_axon.port)}&#34;
+        )
+        return f&#34;http://{endpoint}/{request_name}&#34;
+
+    def _handle_request_errors(self, synapse, request_name, exception):
+        if isinstance(exception, aiohttp.ClientConnectorError):
+            synapse.dendrite.status_code = &#34;503&#34;
+            synapse.dendrite.status_message = f&#34;Service at {synapse.axon.ip}:{str(synapse.axon.port)}/{request_name} unavailable.&#34;
+        elif isinstance(exception, asyncio.TimeoutError):
+            synapse.dendrite.status_code = &#34;408&#34;
+            synapse.dendrite.status_message = (
+                f&#34;Timedout after {synapse.timeout} seconds.&#34;
+            )
+        else:
+            synapse.dendrite.status_code = &#34;422&#34;
+            synapse.dendrite.status_message = (
+                f&#34;Failed to parse response object with error: {str(exception)}&#34;
+            )
+
+    def _log_outgoing_request(self, synapse):
+        cybertensor.logging.debug(
+            f&#34;dendrite | --&gt; | {synapse.get_total_size()} B | {synapse.name} | {synapse.axon.hotkey} | {synapse.axon.ip}:{str(synapse.axon.port)} | 0 | Success&#34;
+        )
+
+    def _log_incoming_response(self, synapse):
+        cybertensor.logging.debug(
+            f&#34;dendrite | &lt;-- | {synapse.get_total_size()} B | {synapse.name} | {synapse.axon.hotkey} | {synapse.axon.ip}:{str(synapse.axon.port)} | {synapse.dendrite.status_code} | {synapse.dendrite.status_message}&#34;
+        )
+
+    def query(
+        self, *args, **kwargs
+    ) -&gt; Union[
+        cybertensor.Synapse,
+        List[cybertensor.Synapse],
+        cybertensor.StreamingSynapse,
+        List[cybertensor.StreamingSynapse],
+    ]:
+        &#34;&#34;&#34;
+        Makes a synchronous request to multiple target Axons and returns the server responses.
+
+        Cleanup is automatically handled and sessions are closed upon completed requests.
+
+        Args:
+            axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+                The list of target Axon information.
+            synapse (cybertensor.Synapse, optional): The Synapse object. Defaults to cybertensor.Synapse().
+            timeout (float, optional): The request timeout duration in seconds.
+                Defaults to 12.0 seconds.
+        Returns:
+            Union[cybertensor.Synapse, List[cybertensor.Synapse]]: If a single target axon is provided,
+                returns the response from that axon. If multiple target axons are provided,
+                returns a list of responses from all target axons.
+        &#34;&#34;&#34;
+        result = None
+        try:
+            loop = asyncio.get_event_loop()
+            result = loop.run_until_complete(self.forward(*args, **kwargs))
+        except:
+            new_loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(new_loop)
+            result = loop.run_until_complete(self.forward(*args, **kwargs))
+            new_loop.close()
+        finally:
+            self.close_session()
+            return result
+
+    async def forward(
+        self,
+        axons: Union[
+            List[Union[cybertensor.AxonInfo, cybertensor.axon]],
+            Union[cybertensor.AxonInfo, cybertensor.axon],
+        ],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12,
+        deserialize: bool = True,
+        run_async: bool = True,
+        streaming: bool = False,
+    ) -&gt; List[
+        Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]
+    ]:
+        &#34;&#34;&#34;
+        Asynchronously sends requests to one or multiple Axons and collates their responses.
+
+        This function acts as a bridge for sending multiple requests concurrently or sequentially
+        based on the provided parameters. It checks the type of the target Axons, preprocesses
+        the requests, and then sends them off. After getting the responses, it processes and
+        collates them into a unified format.
+
+        When querying an Axon that sends back data in chunks using the Dendrite, this function
+        returns an AsyncGenerator that yields each chunk as it is received. The generator can be
+        iterated over to process each chunk individually.
+
+        For example:
+            &gt;&gt;&gt; ...
+            &gt;&gt;&gt; dendrte = cybertensor.dendrite(wallet = wallet)
+            &gt;&gt;&gt; async for chunk in dendrite.forward(axons, synapse, timeout, deserialize, run_async, streaming):
+            &gt;&gt;&gt;     # Process each chunk here
+            &gt;&gt;&gt;     print(chunk)
+
+        Args:
+            axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+                The target Axons to send requests to. Can be a single Axon or a list of Axons.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response from an Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+            run_async (bool, optional): If True, sends requests concurrently. Otherwise, sends requests sequentially. Defaults to True.
+            streaming (bool, optional): Indicates if the response is expected to be in streaming format. Defaults to False.
+
+        Returns:
+            Union[AsyncGenerator, cybertensor.Synapse, List[cybertensor.Synapse]]: If a single Axon is targeted, returns its response.
+            If multiple Axons are targeted, returns a list of their responses.
+        &#34;&#34;&#34;
+        is_list = True
+        # If a single axon is provided, wrap it in a list for uniform processing
+        if not isinstance(axons, list):
+            is_list = False
+            axons = [axons]
+
+        # Check if synapse is an instance of the StreamingSynapse class or if streaming flag is set.
+        is_streaming_subclass = issubclass(
+            synapse.__class__, cybertensor.StreamingSynapse
+        )
+        if streaming != is_streaming_subclass:
+            cybertensor.logging.warning(
+                f&#34;Argument streaming is {streaming} while issubclass(synapse, StreamingSynapse) is {synapse.__class__.__name__}. This may cause unexpected behavior.&#34;
+            )
+        streaming = is_streaming_subclass or streaming
+
+        async def query_all_axons(
+            is_stream: bool,
+        ) -&gt; Union[
+            AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+        ]:
+            &#34;&#34;&#34;
+            Handles requests for all axons, either in streaming or non-streaming mode.
+
+            Args:
+                is_stream: If True, handles the axons in streaming mode.
+
+            Returns:
+                List of Synapse objects with responses.
+            &#34;&#34;&#34;
+
+            async def single_axon_response(
+                target_axon,
+            ) -&gt; Union[
+                AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+            ]:
+                &#34;&#34;&#34;
+                Retrieve response for a single axon, either in streaming or non-streaming mode.
+
+                Args:
+                    target_axon: The target axon to send request to.
+
+                Returns:
+                    A Synapse object with the response.
+                &#34;&#34;&#34;
+                if is_stream:
+                    # If in streaming mode, return the async_generator
+                    return self.call_stream(
+                        target_axon=target_axon,
+                        synapse=synapse.copy(),
+                        timeout=timeout,
+                        deserialize=deserialize,
+                    )
+                else:
+                    # If not in streaming mode, simply call the axon and get the response.
+                    return await self.call(
+                        target_axon=target_axon,
+                        synapse=synapse.copy(),
+                        timeout=timeout,
+                        deserialize=deserialize,
+                    )
+
+            # If run_async flag is False, get responses one by one.
+            if not run_async:
+                return [
+                    await single_axon_response(target_axon) for target_axon in axons
+                ]
+            # If run_async flag is True, get responses concurrently using asyncio.gather().
+            return await asyncio.gather(
+                *(single_axon_response(target_axon) for target_axon in axons)
+            )
+
+        # Get responses for all axons.
+        responses = await query_all_axons(streaming)
+        # Return the single response if only one axon was targeted, else return all responses
+        if len(responses) == 1 and not is_list:
+            return responses[0]
+        else:
+            return responses
+
+    async def call(
+        self,
+        target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12.0,
+        deserialize: bool = True,
+    ) -&gt; cybertensor.Synapse:
+        &#34;&#34;&#34;
+        Asynchronously sends a request to a specified Axon and processes the response.
+
+        This function establishes a connection with a specified Axon, sends the encapsulated
+        data through the Synapse object, waits for a response, processes it, and then
+        returns the updated Synapse object.
+
+        Args:
+            target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response from the Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+
+        Returns:
+            cybertensor.Synapse: The Synapse object, updated with the response data from the Axon.
+        &#34;&#34;&#34;
+
+        # Record start time
+        start_time = time.time()
+        target_axon = (
+            target_axon.info()
+            if isinstance(target_axon, cybertensor.axon)
+            else target_axon
+        )
+
+        # Build request endpoint from the synapse class
+        request_name = synapse.__class__.__name__
+        url = self._get_endpoint_url(target_axon, request_name=request_name)
+
+        # Preprocess synapse for making a request
+        synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+        try:
+            # Log outgoing request
+            self._log_outgoing_request(synapse)
+
+            # Make the HTTP POST request
+            async with (await self.session).post(
+                url,
+                headers=synapse.to_headers(),
+                json=synapse.dict(),
+                timeout=timeout,
+            ) as response:
+                # Extract the JSON response from the server
+                json_response = await response.json()
+                # Process the server response and fill synapse
+                self.process_server_response(response, json_response, synapse)
+
+            # Set process time and log the response
+            synapse.dendrite.process_time = str(time.time() - start_time)
+
+        except Exception as e:
+            self._handle_request_errors(synapse, request_name, e)
+
+        finally:
+            self._log_incoming_response(synapse)
+
+            # Log synapse event history
+            self.synapse_history.append(
+                cybertensor.Synapse.from_headers(synapse.to_headers())
+            )
+
+            # Return the updated synapse object after deserializing if requested
+            if deserialize:
+                return synapse.deserialize()
+            else:
+                return synapse
+
+    async def call_stream(
+        self,
+        target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+        synapse: cybertensor.Synapse = cybertensor.Synapse(),
+        timeout: float = 12.0,
+        deserialize: bool = True,
+    ) -&gt; AsyncGenerator[Any]:
+        &#34;&#34;&#34;
+        Sends a request to a specified Axon and yields streaming responses.
+
+        Similar to `call`, but designed for scenarios where the Axon sends back data in
+        multiple chunks or streams. The function yields each chunk as it is received. This is
+        useful for processing large responses piece by piece without waiting for the entire
+        data to be transmitted.
+
+        Args:
+            target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+            synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+            timeout (float, optional): Maximum duration to wait for a response (or a chunk of the response) from the Axon in seconds. Defaults to 12.0.
+            deserialize (bool, optional): Determines if each received chunk should be deserialized. Defaults to True.
+
+        Yields:
+            object: Each yielded object contains a chunk of the arbitrary response data from the Axon.
+            cybertensor.Synapse: After the AsyncGenerator has been exhausted, yields the final filled Synapse.
+        &#34;&#34;&#34;
+
+        # Record start time
+        start_time = time.time()
+        target_axon = (
+            target_axon.info()
+            if isinstance(target_axon, cybertensor.axon)
+            else target_axon
+        )
+
+        # Build request endpoint from the synapse class
+        request_name = synapse.__class__.__name__
+        endpoint = (
+            f&#34;0.0.0.0:{str(target_axon.port)}&#34;
+            if target_axon.ip == str(self.external_ip)
+            else f&#34;{target_axon.ip}:{str(target_axon.port)}&#34;
+        )
+        url = f&#34;http://{endpoint}/{request_name}&#34;
+
+        # Preprocess synapse for making a request
+        synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+        try:
+            # Log outgoing request
+            self._log_outgoing_request(synapse)
+
+            # Make the HTTP POST request
+            async with (await self.session).post(
+                url,
+                headers=synapse.to_headers(),
+                json=synapse.dict(),
+                timeout=timeout,
+            ) as response:
+                # Use synapse subclass&#39; process_streaming_response method to yield the response chunks
+                async for chunk in synapse.process_streaming_response(response):
+                    yield chunk  # Yield each chunk as it&#39;s processed
+                json_response = synapse.extract_response_json(response)
+
+                # Process the server response
+                self.process_server_response(response, json_response, synapse)
+
+            # Set process time and log the response
+            synapse.dendrite.process_time = str(time.time() - start_time)
+
+        except Exception as e:
+            self._handle_request_errors(synapse, request_name, e)
+
+        finally:
+            self._log_incoming_response(synapse)
+
+            # Log synapse event history
+            self.synapse_history.append(
+                cybertensor.Synapse.from_headers(synapse.to_headers())
+            )
+
+            # Return the updated synapse object after deserializing if requested
+            if deserialize:
+                yield synapse.deserialize()
+            else:
+                yield synapse
+
+    def preprocess_synapse_for_request(
+        self,
+        target_axon_info: cybertensor.AxonInfo,
+        synapse: cybertensor.Synapse,
+        timeout: float = 12.0,
+    ) -&gt; cybertensor.Synapse:
+        &#34;&#34;&#34;
+        Preprocesses the synapse for making a request. This includes building
+        headers for Dendrite and Axon and signing the request.
+
+        Args:
+            target_axon_info (cybertensor.AxonInfo): The target axon information.
+            synapse (cybertensor.Synapse): The synapse object to be preprocessed.
+            timeout (float, optional): The request timeout duration in seconds.
+                Defaults to 12.0 seconds.
+
+        Returns:
+            cybertensor.Synapse: The preprocessed synapse.
+        &#34;&#34;&#34;
+        # Set the timeout for the synapse
+        synapse.timeout = str(timeout)
+
+        # Build the Dendrite headers using the local system&#39;s details
+        synapse.dendrite = cybertensor.TerminalInfo(
+            **{
+                &#34;ip&#34;: str(self.external_ip),
+                &#34;version&#34;: str(cybertensor.__version_as_int__),
+                &#34;nonce&#34;: f&#34;{time.monotonic_ns()}&#34;,
+                &#34;uuid&#34;: str(self.uuid),
+                &#34;hotkey&#34;: str(self.keypair.address),
+            }
+        )
+
+        # Build the Axon headers using the target axon&#39;s details
+        synapse.axon = cybertensor.TerminalInfo(
+            **{
+                &#34;ip&#34;: str(target_axon_info.ip),
+                &#34;port&#34;: str(target_axon_info.port),
+                &#34;hotkey&#34;: str(target_axon_info.hotkey),
+            }
+        )
+
+        # Sign the request using the dendrite, axon info, and the synapse body hash
+        message = f&#34;{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{synapse.axon.hotkey}.{synapse.dendrite.uuid}.{synapse.body_hash}&#34;
+        synapse.dendrite.signature = f&#34;0x{self.keypair.sign(message).hex()}&#34;
+
+        return synapse
+
+    def process_server_response(
+        self,
+        server_response: Response,
+        json_response: dict,
+        local_synapse: cybertensor.Synapse,
+    ):
+        &#34;&#34;&#34;
+        Processes the server response, updates the local synapse state with the
+        server&#39;s state and merges headers set by the server.
+
+        Args:
+            server_response (object): The aiohttp response object from the server.
+            json_response (dict): The parsed JSON response from the server.
+            local_synapse (cybertensor.Synapse): The local synapse object to be updated.
+
+        Raises:
+            None, but errors in attribute setting are silently ignored.
+        &#34;&#34;&#34;
+        # Check if the server responded with a successful status code
+        if server_response.status == 200:
+            # If the response is successful, overwrite local synapse state with
+            # server&#39;s state only if the protocol allows mutation. To prevent overwrites,
+            # the protocol must set allow_mutation = False
+            server_synapse = local_synapse.__class__(**json_response)
+            for key in local_synapse.dict().keys():
+                try:
+                    # Set the attribute in the local synapse from the corresponding
+                    # attribute in the server synapse
+                    setattr(local_synapse, key, getattr(server_synapse, key))
+                except:
+                    # Ignore errors during attribute setting
+                    pass
+
+        # Extract server headers and overwrite None values in local synapse headers
+        server_headers = cybertensor.Synapse.from_headers(server_response.headers)
+
+        # Merge dendrite headers
+        local_synapse.dendrite.__dict__.update(
+            {
+                **local_synapse.dendrite.dict(exclude_none=True),
+                **server_headers.dendrite.dict(exclude_none=True),
+            }
+        )
+
+        # Merge axon headers
+        local_synapse.axon.__dict__.update(
+            {
+                **local_synapse.axon.dict(exclude_none=True),
+                **server_headers.axon.dict(exclude_none=True),
+            }
+        )
+
+        # Update the status code and status message of the dendrite to match the axon
+        local_synapse.dendrite.status_code = local_synapse.axon.status_code
+        local_synapse.dendrite.status_message = local_synapse.axon.status_message
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns a string representation of the Dendrite object.
+
+        Returns:
+            str: The string representation of the Dendrite object in the format &#34;dendrite(&lt;user_wallet_address&gt;)&#34;.
+        &#34;&#34;&#34;
+        return &#34;dendrite({})&#34;.format(self.keypair.address)
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns a string representation of the Dendrite object, acting as a fallback for __str__().
+
+        Returns:
+            str: The string representation of the Dendrite object in the format &#34;dendrite(&lt;user_wallet_address&gt;)&#34;.
+        &#34;&#34;&#34;
+        return self.__str__()
+
+    async def __aenter__(self):
+        &#34;&#34;&#34;
+        Asynchronous context manager entry method.
+
+        Enables the use of the `async with` statement with the Dendrite instance. When entering the context,
+        the current instance of the class is returned, making it accessible within the asynchronous context.
+
+        Returns:
+            Dendrite: The current instance of the Dendrite class.
+
+        Usage:
+            async with Dendrite() as dendrite:
+                await dendrite.some_async_method()
+        &#34;&#34;&#34;
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        &#34;&#34;&#34;
+        Asynchronous context manager exit method.
+
+        Ensures proper cleanup when exiting the `async with` context. This method will close the aiohttp client session
+        asynchronously, releasing any tied resources.
+
+        Args:
+            exc_type (Type[BaseException], optional): The type of exception that was raised.
+            exc_value (BaseException, optional): The instance of exception that was raised.
+            traceback (TracebackType, optional): A traceback object encapsulating the call stack at the point
+                                                where the exception was raised.
+
+        Usage:
+            async with Dendrite() as dendrite:
+                await dendrite.some_async_method()
+        &#34;&#34;&#34;
+        await self.aclose_session()
+
+    def __del__(self):
+        &#34;&#34;&#34;
+        Dendrite destructor.
+
+        This method is invoked when the Dendrite instance is about to be destroyed. The destructor ensures that the
+        aiohttp client session is closed before the instance is fully destroyed, releasing any remaining resources.
+
+        Note: Relying on the destructor for cleanup can be unpredictable. It&#39;s recommended to explicitly close sessions
+        using the provided methods or the `async with` context manager.
+
+        Usage:
+            dendrite = Dendrite()
+            # ... some operations ...
+            del dendrite  # This will implicitly invoke the __del__ method.
+        &#34;&#34;&#34;
+        asyncio.run(self.aclose_session())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.nn.modules.module.Module</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.dendrite.dendrite.session"><code class="name">var <span class="ident">session</span> : aiohttp.client.ClientSession</code></dt>
+<dd>
+<div class="desc"><p>Asynchronous property that provides access to the internal aiohttp client session.</p>
+<p>If the session is not already initialized, this property will instantiate a new
+aiohttp.ClientSession and return it.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>aiohttp.ClientSession</code></dt>
+<dd>The aiohttp client session instance.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+async def session(self) -&gt; aiohttp.ClientSession:
+    &#34;&#34;&#34;
+    Asynchronous property that provides access to the internal aiohttp client session.
+
+    If the session is not already initialized, this property will instantiate a new
+    aiohttp.ClientSession and return it.
+
+    Returns:
+        aiohttp.ClientSession: The aiohttp client session instance.
+    &#34;&#34;&#34;
+    if self._session is None:
+        self._session = aiohttp.ClientSession()
+    return self._session</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.dendrite.dendrite.aclose_session"><code class="name flex">
+<span>async def <span class="ident">aclose_session</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Asynchronously closes the internal aiohttp client session.</p>
+<p>Similar to the synchronous <code>close_session</code> method but designed to be used within
+asynchronous contexts. This method ensures that all related resources are released.</p>
+<h2 id="usage">Usage</h2>
+<p>await dendrite_instance.aclose_session()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def aclose_session(self):
+    &#34;&#34;&#34;
+    Asynchronously closes the internal aiohttp client session.
+
+    Similar to the synchronous `close_session` method but designed to be used within
+    asynchronous contexts. This method ensures that all related resources are released.
+
+    Usage:
+        await dendrite_instance.aclose_session()
+    &#34;&#34;&#34;
+    if self._session:
+        await self._session.close()
+        self._session = None</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.call"><code class="name flex">
+<span>async def <span class="ident">call</span></span>(<span>self, target_axon: Union[cybertensor.AxonInfo, <a title="cybertensor.axon" href="axon.html">cybertensor.axon</a>], synapse: cybertensor.Synapse = Synapse(), timeout: float = 12.0, deserialize: bool = True) ‑> <a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Asynchronously sends a request to a specified Axon and processes the response.</p>
+<p>This function establishes a connection with a specified Axon, sends the encapsulated
+data through the Synapse object, waits for a response, processes it, and then
+returns the updated Synapse object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>target_axon (Union['cybertensor.AxonInfo', 'cybertensor.axon']): The target Axon to send the request to.</dt>
+<dt><strong><code>synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code>, optional</dt>
+<dd>The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Maximum duration to wait for a response from the Axon in seconds. Defaults to 12.0.</dd>
+<dt><strong><code>deserialize</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Determines if the received response should be deserialized. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>cybertensor.Synapse</code></dt>
+<dd>The Synapse object, updated with the response data from the Axon.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def call(
+    self,
+    target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+    synapse: cybertensor.Synapse = cybertensor.Synapse(),
+    timeout: float = 12.0,
+    deserialize: bool = True,
+) -&gt; cybertensor.Synapse:
+    &#34;&#34;&#34;
+    Asynchronously sends a request to a specified Axon and processes the response.
+
+    This function establishes a connection with a specified Axon, sends the encapsulated
+    data through the Synapse object, waits for a response, processes it, and then
+    returns the updated Synapse object.
+
+    Args:
+        target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+        synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+        timeout (float, optional): Maximum duration to wait for a response from the Axon in seconds. Defaults to 12.0.
+        deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+
+    Returns:
+        cybertensor.Synapse: The Synapse object, updated with the response data from the Axon.
+    &#34;&#34;&#34;
+
+    # Record start time
+    start_time = time.time()
+    target_axon = (
+        target_axon.info()
+        if isinstance(target_axon, cybertensor.axon)
+        else target_axon
+    )
+
+    # Build request endpoint from the synapse class
+    request_name = synapse.__class__.__name__
+    url = self._get_endpoint_url(target_axon, request_name=request_name)
+
+    # Preprocess synapse for making a request
+    synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+    try:
+        # Log outgoing request
+        self._log_outgoing_request(synapse)
+
+        # Make the HTTP POST request
+        async with (await self.session).post(
+            url,
+            headers=synapse.to_headers(),
+            json=synapse.dict(),
+            timeout=timeout,
+        ) as response:
+            # Extract the JSON response from the server
+            json_response = await response.json()
+            # Process the server response and fill synapse
+            self.process_server_response(response, json_response, synapse)
+
+        # Set process time and log the response
+        synapse.dendrite.process_time = str(time.time() - start_time)
+
+    except Exception as e:
+        self._handle_request_errors(synapse, request_name, e)
+
+    finally:
+        self._log_incoming_response(synapse)
+
+        # Log synapse event history
+        self.synapse_history.append(
+            cybertensor.Synapse.from_headers(synapse.to_headers())
+        )
+
+        # Return the updated synapse object after deserializing if requested
+        if deserialize:
+            return synapse.deserialize()
+        else:
+            return synapse</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.call_stream"><code class="name flex">
+<span>async def <span class="ident">call_stream</span></span>(<span>self, target_axon: Union[cybertensor.AxonInfo, <a title="cybertensor.axon" href="axon.html">cybertensor.axon</a>], synapse: cybertensor.Synapse = Synapse(), timeout: float = 12.0, deserialize: bool = True) ‑> AsyncGenerator[Any]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sends a request to a specified Axon and yields streaming responses.</p>
+<p>Similar to <code>call</code>, but designed for scenarios where the Axon sends back data in
+multiple chunks or streams. The function yields each chunk as it is received. This is
+useful for processing large responses piece by piece without waiting for the entire
+data to be transmitted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>target_axon (Union['cybertensor.AxonInfo', 'cybertensor.axon']): The target Axon to send the request to.</dt>
+<dt><strong><code>synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code>, optional</dt>
+<dd>The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Maximum duration to wait for a response (or a chunk of the response) from the Axon in seconds. Defaults to 12.0.</dd>
+<dt><strong><code>deserialize</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Determines if each received chunk should be deserialized. Defaults to True.</dd>
+</dl>
+<h2 id="yields">Yields</h2>
+<dl>
+<dt><code>object</code></dt>
+<dd>Each yielded object contains a chunk of the arbitrary response data from the Axon.</dd>
+<dt><code>cybertensor.Synapse</code></dt>
+<dd>After the AsyncGenerator has been exhausted, yields the final filled Synapse.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def call_stream(
+    self,
+    target_axon: Union[cybertensor.AxonInfo, cybertensor.axon],
+    synapse: cybertensor.Synapse = cybertensor.Synapse(),
+    timeout: float = 12.0,
+    deserialize: bool = True,
+) -&gt; AsyncGenerator[Any]:
+    &#34;&#34;&#34;
+    Sends a request to a specified Axon and yields streaming responses.
+
+    Similar to `call`, but designed for scenarios where the Axon sends back data in
+    multiple chunks or streams. The function yields each chunk as it is received. This is
+    useful for processing large responses piece by piece without waiting for the entire
+    data to be transmitted.
+
+    Args:
+        target_axon (Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]): The target Axon to send the request to.
+        synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+        timeout (float, optional): Maximum duration to wait for a response (or a chunk of the response) from the Axon in seconds. Defaults to 12.0.
+        deserialize (bool, optional): Determines if each received chunk should be deserialized. Defaults to True.
+
+    Yields:
+        object: Each yielded object contains a chunk of the arbitrary response data from the Axon.
+        cybertensor.Synapse: After the AsyncGenerator has been exhausted, yields the final filled Synapse.
+    &#34;&#34;&#34;
+
+    # Record start time
+    start_time = time.time()
+    target_axon = (
+        target_axon.info()
+        if isinstance(target_axon, cybertensor.axon)
+        else target_axon
+    )
+
+    # Build request endpoint from the synapse class
+    request_name = synapse.__class__.__name__
+    endpoint = (
+        f&#34;0.0.0.0:{str(target_axon.port)}&#34;
+        if target_axon.ip == str(self.external_ip)
+        else f&#34;{target_axon.ip}:{str(target_axon.port)}&#34;
+    )
+    url = f&#34;http://{endpoint}/{request_name}&#34;
+
+    # Preprocess synapse for making a request
+    synapse = self.preprocess_synapse_for_request(target_axon, synapse, timeout)
+
+    try:
+        # Log outgoing request
+        self._log_outgoing_request(synapse)
+
+        # Make the HTTP POST request
+        async with (await self.session).post(
+            url,
+            headers=synapse.to_headers(),
+            json=synapse.dict(),
+            timeout=timeout,
+        ) as response:
+            # Use synapse subclass&#39; process_streaming_response method to yield the response chunks
+            async for chunk in synapse.process_streaming_response(response):
+                yield chunk  # Yield each chunk as it&#39;s processed
+            json_response = synapse.extract_response_json(response)
+
+            # Process the server response
+            self.process_server_response(response, json_response, synapse)
+
+        # Set process time and log the response
+        synapse.dendrite.process_time = str(time.time() - start_time)
+
+    except Exception as e:
+        self._handle_request_errors(synapse, request_name, e)
+
+    finally:
+        self._log_incoming_response(synapse)
+
+        # Log synapse event history
+        self.synapse_history.append(
+            cybertensor.Synapse.from_headers(synapse.to_headers())
+        )
+
+        # Return the updated synapse object after deserializing if requested
+        if deserialize:
+            yield synapse.deserialize()
+        else:
+            yield synapse</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.close_session"><code class="name flex">
+<span>def <span class="ident">close_session</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Closes the internal aiohttp client session in a synchronous manner.</p>
+<p>This method ensures that the resources tied with the aiohttp client session are released.
+It should be called when the session is no longer needed, typically during the cleanup phase.</p>
+<h2 id="usage">Usage</h2>
+<p>dendrite_instance.close_session()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def close_session(self):
+    &#34;&#34;&#34;
+    Closes the internal aiohttp client session in a synchronous manner.
+
+    This method ensures that the resources tied with the aiohttp client session are released.
+    It should be called when the session is no longer needed, typically during the cleanup phase.
+
+    Usage:
+        dendrite_instance.close_session()
+    &#34;&#34;&#34;
+    if self._session:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self._session.close())
+        self._session = None</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.forward"><code class="name flex">
+<span>async def <span class="ident">forward</span></span>(<span>self, axons: Union[List[Union[cybertensor.AxonInfo, <a title="cybertensor.axon" href="axon.html">cybertensor.axon</a>]], Union[cybertensor.AxonInfo, <a title="cybertensor.axon" href="axon.html">cybertensor.axon</a>]], synapse: cybertensor.Synapse = Synapse(), timeout: float = 12, deserialize: bool = True, run_async: bool = True, streaming: bool = False) ‑> Callable[..., Any]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Asynchronously sends requests to one or multiple Axons and collates their responses.</p>
+<p>This function acts as a bridge for sending multiple requests concurrently or sequentially
+based on the provided parameters. It checks the type of the target Axons, preprocesses
+the requests, and then sends them off. After getting the responses, it processes and
+collates them into a unified format.</p>
+<p>When querying an Axon that sends back data in chunks using the Dendrite, this function
+returns an AsyncGenerator that yields each chunk as it is received. The generator can be
+iterated over to process each chunk individually.</p>
+<p>For example:
+&gt;&gt;&gt; &hellip;
+&gt;&gt;&gt; dendrte = cybertensor.dendrite(wallet = wallet)
+&gt;&gt;&gt; async for chunk in dendrite.forward(axons, synapse, timeout, deserialize, run_async, streaming):
+&gt;&gt;&gt;
+# Process each chunk here
+&gt;&gt;&gt;
+print(chunk)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>axons (Union[List[Union['cybertensor.AxonInfo', 'cybertensor.axon']], Union['cybertensor.AxonInfo', 'cybertensor.axon']]):</dt>
+<dt>The target Axons to send requests to. Can be a single Axon or a list of Axons.</dt>
+<dt><strong><code>synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code>, optional</dt>
+<dd>The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Maximum duration to wait for a response from an Axon in seconds. Defaults to 12.0.</dd>
+<dt><strong><code>deserialize</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Determines if the received response should be deserialized. Defaults to True.</dd>
+<dt><strong><code>run_async</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, sends requests concurrently. Otherwise, sends requests sequentially. Defaults to True.</dd>
+<dt><strong><code>streaming</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Indicates if the response is expected to be in streaming format. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Union[AsyncGenerator, cybertensor.Synapse, List[cybertensor.Synapse]]</code></dt>
+<dd>If a single Axon is targeted, returns its response.</dd>
+</dl>
+<p>If multiple Axons are targeted, returns a list of their responses.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def forward(
+    self,
+    axons: Union[
+        List[Union[cybertensor.AxonInfo, cybertensor.axon]],
+        Union[cybertensor.AxonInfo, cybertensor.axon],
+    ],
+    synapse: cybertensor.Synapse = cybertensor.Synapse(),
+    timeout: float = 12,
+    deserialize: bool = True,
+    run_async: bool = True,
+    streaming: bool = False,
+) -&gt; List[
+    Union[AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse]
+]:
+    &#34;&#34;&#34;
+    Asynchronously sends requests to one or multiple Axons and collates their responses.
+
+    This function acts as a bridge for sending multiple requests concurrently or sequentially
+    based on the provided parameters. It checks the type of the target Axons, preprocesses
+    the requests, and then sends them off. After getting the responses, it processes and
+    collates them into a unified format.
+
+    When querying an Axon that sends back data in chunks using the Dendrite, this function
+    returns an AsyncGenerator that yields each chunk as it is received. The generator can be
+    iterated over to process each chunk individually.
+
+    For example:
+        &gt;&gt;&gt; ...
+        &gt;&gt;&gt; dendrte = cybertensor.dendrite(wallet = wallet)
+        &gt;&gt;&gt; async for chunk in dendrite.forward(axons, synapse, timeout, deserialize, run_async, streaming):
+        &gt;&gt;&gt;     # Process each chunk here
+        &gt;&gt;&gt;     print(chunk)
+
+    Args:
+        axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+            The target Axons to send requests to. Can be a single Axon or a list of Axons.
+        synapse (cybertensor.Synapse, optional): The Synapse object encapsulating the data. Defaults to a new cybertensor.Synapse instance.
+        timeout (float, optional): Maximum duration to wait for a response from an Axon in seconds. Defaults to 12.0.
+        deserialize (bool, optional): Determines if the received response should be deserialized. Defaults to True.
+        run_async (bool, optional): If True, sends requests concurrently. Otherwise, sends requests sequentially. Defaults to True.
+        streaming (bool, optional): Indicates if the response is expected to be in streaming format. Defaults to False.
+
+    Returns:
+        Union[AsyncGenerator, cybertensor.Synapse, List[cybertensor.Synapse]]: If a single Axon is targeted, returns its response.
+        If multiple Axons are targeted, returns a list of their responses.
+    &#34;&#34;&#34;
+    is_list = True
+    # If a single axon is provided, wrap it in a list for uniform processing
+    if not isinstance(axons, list):
+        is_list = False
+        axons = [axons]
+
+    # Check if synapse is an instance of the StreamingSynapse class or if streaming flag is set.
+    is_streaming_subclass = issubclass(
+        synapse.__class__, cybertensor.StreamingSynapse
+    )
+    if streaming != is_streaming_subclass:
+        cybertensor.logging.warning(
+            f&#34;Argument streaming is {streaming} while issubclass(synapse, StreamingSynapse) is {synapse.__class__.__name__}. This may cause unexpected behavior.&#34;
+        )
+    streaming = is_streaming_subclass or streaming
+
+    async def query_all_axons(
+        is_stream: bool,
+    ) -&gt; Union[
+        AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+    ]:
+        &#34;&#34;&#34;
+        Handles requests for all axons, either in streaming or non-streaming mode.
+
+        Args:
+            is_stream: If True, handles the axons in streaming mode.
+
+        Returns:
+            List of Synapse objects with responses.
+        &#34;&#34;&#34;
+
+        async def single_axon_response(
+            target_axon,
+        ) -&gt; Union[
+            AsyncGenerator[Any], cybertensor.Synapse, cybertensor.StreamingSynapse
+        ]:
+            &#34;&#34;&#34;
+            Retrieve response for a single axon, either in streaming or non-streaming mode.
+
+            Args:
+                target_axon: The target axon to send request to.
+
+            Returns:
+                A Synapse object with the response.
+            &#34;&#34;&#34;
+            if is_stream:
+                # If in streaming mode, return the async_generator
+                return self.call_stream(
+                    target_axon=target_axon,
+                    synapse=synapse.copy(),
+                    timeout=timeout,
+                    deserialize=deserialize,
+                )
+            else:
+                # If not in streaming mode, simply call the axon and get the response.
+                return await self.call(
+                    target_axon=target_axon,
+                    synapse=synapse.copy(),
+                    timeout=timeout,
+                    deserialize=deserialize,
+                )
+
+        # If run_async flag is False, get responses one by one.
+        if not run_async:
+            return [
+                await single_axon_response(target_axon) for target_axon in axons
+            ]
+        # If run_async flag is True, get responses concurrently using asyncio.gather().
+        return await asyncio.gather(
+            *(single_axon_response(target_axon) for target_axon in axons)
+        )
+
+    # Get responses for all axons.
+    responses = await query_all_axons(streaming)
+    # Return the single response if only one axon was targeted, else return all responses
+    if len(responses) == 1 and not is_list:
+        return responses[0]
+    else:
+        return responses</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.preprocess_synapse_for_request"><code class="name flex">
+<span>def <span class="ident">preprocess_synapse_for_request</span></span>(<span>self, target_axon_info: cybertensor.AxonInfo, synapse: cybertensor.Synapse, timeout: float = 12.0) ‑> <a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Preprocesses the synapse for making a request. This includes building
+headers for Dendrite and Axon and signing the request.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>target_axon_info</code></strong> :&ensp;<code>cybertensor.AxonInfo</code></dt>
+<dd>The target axon information.</dd>
+<dt><strong><code>synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code></dt>
+<dd>The synapse object to be preprocessed.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>The request timeout duration in seconds.
+Defaults to 12.0 seconds.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>cybertensor.Synapse</code></dt>
+<dd>The preprocessed synapse.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def preprocess_synapse_for_request(
+    self,
+    target_axon_info: cybertensor.AxonInfo,
+    synapse: cybertensor.Synapse,
+    timeout: float = 12.0,
+) -&gt; cybertensor.Synapse:
+    &#34;&#34;&#34;
+    Preprocesses the synapse for making a request. This includes building
+    headers for Dendrite and Axon and signing the request.
+
+    Args:
+        target_axon_info (cybertensor.AxonInfo): The target axon information.
+        synapse (cybertensor.Synapse): The synapse object to be preprocessed.
+        timeout (float, optional): The request timeout duration in seconds.
+            Defaults to 12.0 seconds.
+
+    Returns:
+        cybertensor.Synapse: The preprocessed synapse.
+    &#34;&#34;&#34;
+    # Set the timeout for the synapse
+    synapse.timeout = str(timeout)
+
+    # Build the Dendrite headers using the local system&#39;s details
+    synapse.dendrite = cybertensor.TerminalInfo(
+        **{
+            &#34;ip&#34;: str(self.external_ip),
+            &#34;version&#34;: str(cybertensor.__version_as_int__),
+            &#34;nonce&#34;: f&#34;{time.monotonic_ns()}&#34;,
+            &#34;uuid&#34;: str(self.uuid),
+            &#34;hotkey&#34;: str(self.keypair.address),
+        }
+    )
+
+    # Build the Axon headers using the target axon&#39;s details
+    synapse.axon = cybertensor.TerminalInfo(
+        **{
+            &#34;ip&#34;: str(target_axon_info.ip),
+            &#34;port&#34;: str(target_axon_info.port),
+            &#34;hotkey&#34;: str(target_axon_info.hotkey),
+        }
+    )
+
+    # Sign the request using the dendrite, axon info, and the synapse body hash
+    message = f&#34;{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{synapse.axon.hotkey}.{synapse.dendrite.uuid}.{synapse.body_hash}&#34;
+    synapse.dendrite.signature = f&#34;0x{self.keypair.sign(message).hex()}&#34;
+
+    return synapse</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.process_server_response"><code class="name flex">
+<span>def <span class="ident">process_server_response</span></span>(<span>self, server_response: Response, json_response: dict, local_synapse: cybertensor.Synapse)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Processes the server response, updates the local synapse state with the
+server's state and merges headers set by the server.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>server_response</code></strong> :&ensp;<code>object</code></dt>
+<dd>The aiohttp response object from the server.</dd>
+<dt><strong><code>json_response</code></strong> :&ensp;<code>dict</code></dt>
+<dd>The parsed JSON response from the server.</dd>
+<dt><strong><code>local_synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code></dt>
+<dd>The local synapse object to be updated.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>None, but errors in attribute setting are silently ignored.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_server_response(
+    self,
+    server_response: Response,
+    json_response: dict,
+    local_synapse: cybertensor.Synapse,
+):
+    &#34;&#34;&#34;
+    Processes the server response, updates the local synapse state with the
+    server&#39;s state and merges headers set by the server.
+
+    Args:
+        server_response (object): The aiohttp response object from the server.
+        json_response (dict): The parsed JSON response from the server.
+        local_synapse (cybertensor.Synapse): The local synapse object to be updated.
+
+    Raises:
+        None, but errors in attribute setting are silently ignored.
+    &#34;&#34;&#34;
+    # Check if the server responded with a successful status code
+    if server_response.status == 200:
+        # If the response is successful, overwrite local synapse state with
+        # server&#39;s state only if the protocol allows mutation. To prevent overwrites,
+        # the protocol must set allow_mutation = False
+        server_synapse = local_synapse.__class__(**json_response)
+        for key in local_synapse.dict().keys():
+            try:
+                # Set the attribute in the local synapse from the corresponding
+                # attribute in the server synapse
+                setattr(local_synapse, key, getattr(server_synapse, key))
+            except:
+                # Ignore errors during attribute setting
+                pass
+
+    # Extract server headers and overwrite None values in local synapse headers
+    server_headers = cybertensor.Synapse.from_headers(server_response.headers)
+
+    # Merge dendrite headers
+    local_synapse.dendrite.__dict__.update(
+        {
+            **local_synapse.dendrite.dict(exclude_none=True),
+            **server_headers.dendrite.dict(exclude_none=True),
+        }
+    )
+
+    # Merge axon headers
+    local_synapse.axon.__dict__.update(
+        {
+            **local_synapse.axon.dict(exclude_none=True),
+            **server_headers.axon.dict(exclude_none=True),
+        }
+    )
+
+    # Update the status code and status message of the dendrite to match the axon
+    local_synapse.dendrite.status_code = local_synapse.axon.status_code
+    local_synapse.dendrite.status_message = local_synapse.axon.status_message</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.dendrite.dendrite.query"><code class="name flex">
+<span>def <span class="ident">query</span></span>(<span>self, *args, **kwargs) ‑> Union[<a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a>, List[<a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a>], <a title="cybertensor.stream.StreamingSynapse" href="stream.html#cybertensor.stream.StreamingSynapse">StreamingSynapse</a>, List[<a title="cybertensor.stream.StreamingSynapse" href="stream.html#cybertensor.stream.StreamingSynapse">StreamingSynapse</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Makes a synchronous request to multiple target Axons and returns the server responses.</p>
+<p>Cleanup is automatically handled and sessions are closed upon completed requests.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>axons (Union[List[Union['cybertensor.AxonInfo', 'cybertensor.axon']], Union['cybertensor.AxonInfo', 'cybertensor.axon']]):</dt>
+<dt>The list of target Axon information.</dt>
+<dt><strong><code>synapse</code></strong> :&ensp;<code>cybertensor.Synapse</code>, optional</dt>
+<dd>The Synapse object. Defaults to cybertensor.Synapse().</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>The request timeout duration in seconds.
+Defaults to 12.0 seconds.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Union[cybertensor.Synapse, List[cybertensor.Synapse]]</code></dt>
+<dd>If a single target axon is provided,
+returns the response from that axon. If multiple target axons are provided,
+returns a list of responses from all target axons.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query(
+    self, *args, **kwargs
+) -&gt; Union[
+    cybertensor.Synapse,
+    List[cybertensor.Synapse],
+    cybertensor.StreamingSynapse,
+    List[cybertensor.StreamingSynapse],
+]:
+    &#34;&#34;&#34;
+    Makes a synchronous request to multiple target Axons and returns the server responses.
+
+    Cleanup is automatically handled and sessions are closed upon completed requests.
+
+    Args:
+        axons (Union[List[Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]], Union[&#39;cybertensor.AxonInfo&#39;, &#39;cybertensor.axon&#39;]]):
+            The list of target Axon information.
+        synapse (cybertensor.Synapse, optional): The Synapse object. Defaults to cybertensor.Synapse().
+        timeout (float, optional): The request timeout duration in seconds.
+            Defaults to 12.0 seconds.
+    Returns:
+        Union[cybertensor.Synapse, List[cybertensor.Synapse]]: If a single target axon is provided,
+            returns the response from that axon. If multiple target axons are provided,
+            returns a list of responses from all target axons.
+    &#34;&#34;&#34;
+    result = None
+    try:
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(self.forward(*args, **kwargs))
+    except:
+        new_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(new_loop)
+        result = loop.run_until_complete(self.forward(*args, **kwargs))
+        new_loop.close()
+    finally:
+        self.close_session()
+        return result</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.dendrite.dendrite" href="#cybertensor.dendrite.dendrite">dendrite</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.dendrite.dendrite.aclose_session" href="#cybertensor.dendrite.dendrite.aclose_session">aclose_session</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.call" href="#cybertensor.dendrite.dendrite.call">call</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.call_stream" href="#cybertensor.dendrite.dendrite.call_stream">call_stream</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.close_session" href="#cybertensor.dendrite.dendrite.close_session">close_session</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.forward" href="#cybertensor.dendrite.dendrite.forward">forward</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.preprocess_synapse_for_request" href="#cybertensor.dendrite.dendrite.preprocess_synapse_for_request">preprocess_synapse_for_request</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.process_server_response" href="#cybertensor.dendrite.dendrite.process_server_response">process_server_response</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.query" href="#cybertensor.dendrite.dendrite.query">query</a></code></li>
+<li><code><a title="cybertensor.dendrite.dendrite.session" href="#cybertensor.dendrite.dendrite.session">session</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
