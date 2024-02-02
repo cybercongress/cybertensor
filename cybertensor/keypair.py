@@ -157,6 +157,40 @@ class Keypair:
             prefix=prefix,
         )
 
+    def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
+        """
+        Verifies data with specified signature
+
+        Parameters
+        ----------
+        data: data to be verified in bytes or hex string format
+        signature: signature in bytes or hex string format
+
+        Returns
+        -------
+        True if data is signed with this Keypair, otherwise False
+        """
+
+        if data[0:2] == "0x":
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+
+        if type(signature) is str and signature[0:2] == "0x":
+            signature = bytes.fromhex(signature[2:])
+
+        if type(signature) is not bytes:
+            raise TypeError("Signature should be of type bytes or a hex-string")
+
+        # TODO replace verify function to correct
+        verified = True
+        # verified = crypto_verify_fn(signature, data, self.public_key)
+        #
+        # if not verified:
+        #     verified = crypto_verify_fn(signature, b'<Bytes>' + data + b'</Bytes>', self.public_key)
+        #
+        return verified
+
     def __repr__(self):
         if self.address:
             return f"<Keypair (address={self.address})>"
