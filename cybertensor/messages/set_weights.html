@@ -52,14 +52,15 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from ..utils import weight_utils
+from .. import __console__ as console
 
 logger = logger.opt(colors=True)
 
 
 def set_weights_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuid: int,
     uids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
@@ -69,7 +70,7 @@ def set_weights_message(
 ) -&gt; bool:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             netuid of the subnet to set weights for.
@@ -109,7 +110,7 @@ def set_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
         try:
@@ -126,7 +127,7 @@ def set_weights_message(
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
                 )
                 cybertensor.logging.success(
@@ -135,7 +136,7 @@ def set_weights_message(
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;,
                 )
                 cybertensor.logging.warning(
@@ -146,7 +147,7 @@ def set_weights_message(
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;)
+            console.print(f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;)
             cybertensor.logging.warning(
                 prefix=&#34;Set weights&#34;, sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{e}&#34;
             )
@@ -161,12 +162,12 @@ def set_weights_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.set_weights.set_weights_message"><code class="name flex">
-<span>def <span class="ident">set_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, netuid: int, uids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, netuid: int, uids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets the given weights and values on chain for wallet hotkey account.</p>
 <h2 id="args">Args</h2>
-<p>wallet (cybertensor.wallet):
+<p>wallet (Wallet):
 cybertensor wallet object.
 netuid (int):
 netuid of the subnet to set weights for.
@@ -191,7 +192,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def set_weights_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuid: int,
     uids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
@@ -201,7 +202,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 ) -&gt; bool:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             netuid of the subnet to set weights for.
@@ -241,7 +242,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
         try:
@@ -258,7 +259,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
                 )
                 cybertensor.logging.success(
@@ -267,7 +268,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;,
                 )
                 cybertensor.logging.warning(
@@ -278,7 +279,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;)
+            console.print(f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;)
             cybertensor.logging.warning(
                 prefix=&#34;Set weights&#34;, sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{e}&#34;
             )

@@ -51,8 +51,7 @@ from rich import print
 from rich.tree import Tree
 
 import cybertensor
-
-console = cybertensor.__console__
+from ..wallet import Wallet
 
 
 class ListCommand:
@@ -92,7 +91,7 @@ class ListCommand:
 
         root = Tree(&#34;Wallets&#34;)
         for w_name in wallets:
-            wallet_for_name = cybertensor.wallet(path=cli.config.wallet.path, name=w_name)
+            wallet_for_name = Wallet(path=cli.config.wallet.path, name=w_name)
             try:
                 if (
                     wallet_for_name.coldkeypub_file.exists_on_device()
@@ -112,7 +111,7 @@ class ListCommand:
                 hotkeys = next(os.walk(os.path.expanduser(hotkeys_path)))
                 if len(hotkeys) &gt; 1:
                     for h_name in hotkeys[2]:
-                        hotkey_for_name = cybertensor.wallet(
+                        hotkey_for_name = Wallet(
                             path=cli.config.wallet.path, name=w_name, hotkey=h_name
                         )
                         try:
@@ -136,13 +135,13 @@ class ListCommand:
         print(root)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         pass
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         list_parser = parser.add_parser(&#34;list&#34;, help=&#34;&#34;&#34;List wallets&#34;&#34;&#34;)
-        cybertensor.wallet.add_args(list_parser)
+        Wallet.add_args(list_parser)
         cybertensor.cwtensor.add_args(list_parser)</code></pre>
 </details>
 </section>
@@ -218,7 +217,7 @@ intended for use within the Cybertensor CLI to provide a quick overview of the u
 
         root = Tree(&#34;Wallets&#34;)
         for w_name in wallets:
-            wallet_for_name = cybertensor.wallet(path=cli.config.wallet.path, name=w_name)
+            wallet_for_name = Wallet(path=cli.config.wallet.path, name=w_name)
             try:
                 if (
                     wallet_for_name.coldkeypub_file.exists_on_device()
@@ -238,7 +237,7 @@ intended for use within the Cybertensor CLI to provide a quick overview of the u
                 hotkeys = next(os.walk(os.path.expanduser(hotkeys_path)))
                 if len(hotkeys) &gt; 1:
                     for h_name in hotkeys[2]:
-                        hotkey_for_name = cybertensor.wallet(
+                        hotkey_for_name = Wallet(
                             path=cli.config.wallet.path, name=w_name, hotkey=h_name
                         )
                         try:
@@ -262,13 +261,13 @@ intended for use within the Cybertensor CLI to provide a quick overview of the u
         print(root)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         pass
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         list_parser = parser.add_parser(&#34;list&#34;, help=&#34;&#34;&#34;List wallets&#34;&#34;&#34;)
-        cybertensor.wallet.add_args(list_parser)
+        Wallet.add_args(list_parser)
         cybertensor.cwtensor.add_args(list_parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -285,12 +284,12 @@ intended for use within the Cybertensor CLI to provide a quick overview of the u
 <pre><code class="python">@staticmethod
 def add_args(parser: argparse.ArgumentParser):
     list_parser = parser.add_parser(&#34;list&#34;, help=&#34;&#34;&#34;List wallets&#34;&#34;&#34;)
-    cybertensor.wallet.add_args(list_parser)
+    Wallet.add_args(list_parser)
     cybertensor.cwtensor.add_args(list_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.list.ListCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -299,7 +298,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     pass</code></pre>
 </details>
 </dd>
@@ -323,7 +322,7 @@ def run(cli):
 
     root = Tree(&#34;Wallets&#34;)
     for w_name in wallets:
-        wallet_for_name = cybertensor.wallet(path=cli.config.wallet.path, name=w_name)
+        wallet_for_name = Wallet(path=cli.config.wallet.path, name=w_name)
         try:
             if (
                 wallet_for_name.coldkeypub_file.exists_on_device()
@@ -343,7 +342,7 @@ def run(cli):
             hotkeys = next(os.walk(os.path.expanduser(hotkeys_path)))
             if len(hotkeys) &gt; 1:
                 for h_name in hotkeys[2]:
-                    hotkey_for_name = cybertensor.wallet(
+                    hotkey_for_name = Wallet(
                         path=cli.config.wallet.path, name=w_name, hotkey=h_name
                     )
                     try:

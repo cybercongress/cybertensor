@@ -52,8 +52,8 @@ from rich.prompt import Prompt
 
 import cybertensor
 from . import defaults
-
-console = cybertensor.__console__
+from ..wallet import Wallet
+from .. import __console__ as console
 
 
 class TransferCommand:
@@ -84,7 +84,7 @@ class TransferCommand:
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Transfer token of amount to destination.&#34;&#34;&#34;
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
         cwtensor.transfer(
             wallet=wallet,
@@ -95,7 +95,7 @@ class TransferCommand:
         )
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -110,11 +110,11 @@ class TransferCommand:
 
         # Get current balance and print to user.
         if not config.no_prompt:
-            wallet = cybertensor.wallet(config=config)
+            wallet = Wallet(config=config)
             cwtensor = cybertensor.cwtensor(config=config)
-            with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+            with console.status(&#34;:satellite: Checking Balance...&#34;):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-                cybertensor.__console__.print(
+                console.print(
                     &#34;Balance: [green]{}[/green]&#34;.format(account_balance)
                 )
 
@@ -127,12 +127,12 @@ class TransferCommand:
                     if config.amount &lt;= 0:
                         raise ValueError(&#34;Zero or negative amount&#34;)
                 except ValueError:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
                     )
                     sys.exit()
             else:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
                         None
                     )
@@ -149,7 +149,7 @@ class TransferCommand:
             &#34;--amount&#34;, dest=&#34;amount&#34;, type=float, required=False
         )
 
-        cybertensor.wallet.add_args(transfer_parser)
+        Wallet.add_args(transfer_parser)
         cybertensor.cwtensor.add_args(transfer_parser)</code></pre>
 </details>
 </section>
@@ -215,7 +215,7 @@ the destination address and amount before confirming the transaction to avoid er
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Transfer token of amount to destination.&#34;&#34;&#34;
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
         cwtensor.transfer(
             wallet=wallet,
@@ -226,7 +226,7 @@ the destination address and amount before confirming the transaction to avoid er
         )
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -241,11 +241,11 @@ the destination address and amount before confirming the transaction to avoid er
 
         # Get current balance and print to user.
         if not config.no_prompt:
-            wallet = cybertensor.wallet(config=config)
+            wallet = Wallet(config=config)
             cwtensor = cybertensor.cwtensor(config=config)
-            with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+            with console.status(&#34;:satellite: Checking Balance...&#34;):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-                cybertensor.__console__.print(
+                console.print(
                     &#34;Balance: [green]{}[/green]&#34;.format(account_balance)
                 )
 
@@ -258,12 +258,12 @@ the destination address and amount before confirming the transaction to avoid er
                     if config.amount &lt;= 0:
                         raise ValueError(&#34;Zero or negative amount&#34;)
                 except ValueError:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
                     )
                     sys.exit()
             else:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
                         None
                     )
@@ -280,7 +280,7 @@ the destination address and amount before confirming the transaction to avoid er
             &#34;--amount&#34;, dest=&#34;amount&#34;, type=float, required=False
         )
 
-        cybertensor.wallet.add_args(transfer_parser)
+        Wallet.add_args(transfer_parser)
         cybertensor.cwtensor.add_args(transfer_parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -304,12 +304,12 @@ def add_args(parser: argparse.ArgumentParser):
         &#34;--amount&#34;, dest=&#34;amount&#34;, type=float, required=False
     )
 
-    cybertensor.wallet.add_args(transfer_parser)
+    Wallet.add_args(transfer_parser)
     cybertensor.cwtensor.add_args(transfer_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.transfer.TransferCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -318,7 +318,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)
@@ -333,11 +333,11 @@ def check_config(config: &#34;cybertensor.config&#34;):
 
     # Get current balance and print to user.
     if not config.no_prompt:
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor = cybertensor.cwtensor(config=config)
-        with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+        with console.status(&#34;:satellite: Checking Balance...&#34;):
             account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-            cybertensor.__console__.print(
+            console.print(
                 &#34;Balance: [green]{}[/green]&#34;.format(account_balance)
             )
 
@@ -350,12 +350,12 @@ def check_config(config: &#34;cybertensor.config&#34;):
                 if config.amount &lt;= 0:
                     raise ValueError(&#34;Zero or negative amount&#34;)
             except ValueError:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
                 )
                 sys.exit()
         else:
-            cybertensor.__console__.print(
+            console.print(
                 &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
                     None
                 )
@@ -375,7 +375,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 <pre><code class="python">@staticmethod
 def run(cli):
     r&#34;&#34;&#34;Transfer token of amount to destination.&#34;&#34;&#34;
-    wallet = cybertensor.wallet(config=cli.config)
+    wallet = Wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=cli.config)
     cwtensor.transfer(
         wallet=wallet,

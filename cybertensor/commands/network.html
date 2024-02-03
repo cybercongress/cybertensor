@@ -55,9 +55,9 @@ from rich.table import Table
 
 import cybertensor
 from . import defaults
+from ..wallet import Wallet
 from .utils import DelegatesDetails, check_netuid_set
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class RegisterSubnetworkCommand:
@@ -98,7 +98,7 @@ class RegisterSubnetworkCommand:
     def run(cli):
         r&#34;&#34;&#34;Register a subnetwork&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
         # Call register command.
         cwtensor.register_subnetwork(
@@ -107,7 +107,7 @@ class RegisterSubnetworkCommand:
         )
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -119,7 +119,7 @@ class RegisterSubnetworkCommand:
             help=&#34;&#34;&#34;Create a new cybertensor subnetwork on this chain.&#34;&#34;&#34;,
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
 class SubnetLockCostCommand:
@@ -155,17 +155,17 @@ class SubnetLockCostCommand:
         config = cli.config.copy()
         cwtensor = cybertensor.cwtensor(config=config)
         try:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]&#34;
             )
         except Exception as e:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Subnet lock cost: [red]Failed to get subnet lock cost[/red]&#34;
                 f&#34;Error: {e}&#34;
             )
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         pass
 
     @classmethod
@@ -272,10 +272,10 @@ class SubnetListCommand:
         table.add_column(&#34;[overline white]SUDO&#34;, style=&#34;white&#34;)
         for row in rows:
             table.add_row(*row)
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         pass
 
     @staticmethod
@@ -322,7 +322,7 @@ class SubnetSudoCommand:
     def run(cli):
         r&#34;&#34;&#34;Set subnet hyperparameters.&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
         print(&#34;\n&#34;)
         SubnetHyperparamsCommand.run(cli)
@@ -342,7 +342,7 @@ class SubnetSudoCommand:
         )
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -359,7 +359,7 @@ class SubnetSudoCommand:
         parser.add_argument(&#34;--param&#34;, dest=&#34;param&#34;, type=str, required=False)
         parser.add_argument(&#34;--value&#34;, dest=&#34;value&#34;, type=str, required=False)
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
 
@@ -427,10 +427,10 @@ class SubnetHyperparamsCommand:
         for param in subnet.__dict__:
             table.add_row(&#34;  &#34; + param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))
 
@@ -508,10 +508,10 @@ class SubnetGetHyperparamsCommand:
         for param in subnet.__dict__:
             table.add_row(param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))
 
@@ -538,7 +538,7 @@ class SubnetSetWeightsCommand:
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Set weights for subnetwork.&#34;&#34;&#34;
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get values if not set.
@@ -585,11 +585,11 @@ class SubnetSetWeightsCommand:
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -700,7 +700,7 @@ class SubnetGetWeightsCommand:
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -711,11 +711,11 @@ class SubnetGetWeightsCommand:
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
 </details>
@@ -801,7 +801,7 @@ ecosystem.</p></div>
     def run(cli):
         r&#34;&#34;&#34;Register a subnetwork&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
         # Call register command.
         cwtensor.register_subnetwork(
@@ -810,7 +810,7 @@ ecosystem.</p></div>
         )
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -822,7 +822,7 @@ ecosystem.</p></div>
             help=&#34;&#34;&#34;Create a new cybertensor subnetwork on this chain.&#34;&#34;&#34;,
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -843,12 +843,12 @@ def add_args(cls, parser: argparse.ArgumentParser):
         help=&#34;&#34;&#34;Create a new cybertensor subnetwork on this chain.&#34;&#34;&#34;,
     )
 
-    cybertensor.wallet.add_args(parser)
+    Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.network.RegisterSubnetworkCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -857,7 +857,7 @@ def add_args(cls, parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;cybertensor.config&#34;):
+def check_config(cls, config: &#34;Config&#34;):
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)</code></pre>
@@ -876,7 +876,7 @@ def check_config(cls, config: &#34;cybertensor.config&#34;):
 def run(cli):
     r&#34;&#34;&#34;Register a subnetwork&#34;&#34;&#34;
     config = cli.config.copy()
-    wallet = cybertensor.wallet(config=cli.config)
+    wallet = Wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=config)
     # Call register command.
     cwtensor.register_subnetwork(
@@ -1009,10 +1009,10 @@ designed for informational purposes and does not alter any network settings or c
         for param in subnet.__dict__:
             table.add_row(param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))
 
@@ -1045,7 +1045,7 @@ def add_args(parser: argparse.ArgumentParser):
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetGetHyperparamsCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1054,7 +1054,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
         check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
 </details>
@@ -1092,7 +1092,7 @@ def run(cli):
     for param in subnet.__dict__:
         table.add_row(param, str(subnet.__dict__[param]))
 
-    cybertensor.__console__.print(table)</code></pre>
+    console.print(table)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1351,7 +1351,7 @@ It offers transparency into how network rewards and responsibilities are allocat
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -1362,11 +1362,11 @@ It offers transparency into how network rewards and responsibilities are allocat
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
 </details>
@@ -1390,12 +1390,12 @@ def add_args(parser: argparse.ArgumentParser):
         &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
     )
 
-    cybertensor.wallet.add_args(parser)
+    Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetGetWeightsCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1404,7 +1404,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
         check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
 </details>
@@ -1483,7 +1483,7 @@ def run(cli):
     table.box = None
     table.pad_edge = False
     table.width = None
-    cybertensor.__console__.print(table)</code></pre>
+    console.print(table)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1612,10 +1612,10 @@ This command is read-only and does not modify the network state or configuration
         for param in subnet.__dict__:
             table.add_row(&#34;  &#34; + param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
             check_netuid_set(config, cybertensor.cwtensor(config=config))
 
@@ -1652,7 +1652,7 @@ def add_args(parser: argparse.ArgumentParser):
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetHyperparamsCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1661,7 +1661,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
         check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
 </details>
@@ -1699,7 +1699,7 @@ def run(cli):
     for param in subnet.__dict__:
         table.add_row(&#34;  &#34; + param, str(subnet.__dict__[param]))
 
-    cybertensor.__console__.print(table)</code></pre>
+    console.print(table)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1836,10 +1836,10 @@ and the distribution of its resources and ownership information for each subnet.
         table.add_column(&#34;[overline white]SUDO&#34;, style=&#34;white&#34;)
         for row in rows:
             table.add_row(*row)
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         pass
 
     @staticmethod
@@ -1869,7 +1869,7 @@ def add_args(parser: argparse.ArgumentParser):
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetListCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1878,7 +1878,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     pass</code></pre>
 </details>
 </dd>
@@ -1952,7 +1952,7 @@ def run(cli):
     table.add_column(&#34;[overline white]SUDO&#34;, style=&#34;white&#34;)
     for row in rows:
         table.add_row(*row)
-    cybertensor.__console__.print(table)</code></pre>
+    console.print(table)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2016,17 +2016,17 @@ This command is particularly useful for users who are planning to contribute to 
         config = cli.config.copy()
         cwtensor = cybertensor.cwtensor(config=config)
         try:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]&#34;
             )
         except Exception as e:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Subnet lock cost: [red]Failed to get subnet lock cost[/red]&#34;
                 f&#34;Error: {e}&#34;
             )
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         pass
 
     @classmethod
@@ -2060,7 +2060,7 @@ def add_args(cls, parser: argparse.ArgumentParser):
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetLockCostCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2069,7 +2069,7 @@ def add_args(cls, parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;cybertensor.config&#34;):
+def check_config(cls, config: &#34;Config&#34;):
     pass</code></pre>
 </details>
 </dd>
@@ -2088,11 +2088,11 @@ def run(cli):
     config = cli.config.copy()
     cwtensor = cybertensor.cwtensor(config=config)
     try:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]&#34;
         )
     except Exception as e:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;Subnet lock cost: [red]Failed to get subnet lock cost[/red]&#34;
             f&#34;Error: {e}&#34;
         )</code></pre>
@@ -2129,7 +2129,7 @@ def run(cli):
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Set weights for subnetwork.&#34;&#34;&#34;
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get values if not set.
@@ -2176,11 +2176,11 @@ def run(cli):
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -2212,12 +2212,12 @@ def add_args(parser: argparse.ArgumentParser):
         &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
     )
 
-    cybertensor.wallet.add_args(parser)
+    Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetSetWeightsCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2226,7 +2226,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)
@@ -2251,7 +2251,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 <pre><code class="python">@staticmethod
 def run(cli):
     r&#34;&#34;&#34;Set weights for subnetwork.&#34;&#34;&#34;
-    wallet = cybertensor.wallet(config=cli.config)
+    wallet = Wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=cli.config)
 
     # Get values if not set.
@@ -2338,7 +2338,7 @@ and the impact of changing these parameters.</p></div>
     def run(cli):
         r&#34;&#34;&#34;Set subnet hyperparameters.&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
         print(&#34;\n&#34;)
         SubnetHyperparamsCommand.run(cli)
@@ -2358,7 +2358,7 @@ and the impact of changing these parameters.</p></div>
         )
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -2375,7 +2375,7 @@ and the impact of changing these parameters.</p></div>
         parser.add_argument(&#34;--param&#34;, dest=&#34;param&#34;, type=str, required=False)
         parser.add_argument(&#34;--value&#34;, dest=&#34;value&#34;, type=str, required=False)
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -2398,12 +2398,12 @@ def add_args(parser: argparse.ArgumentParser):
     parser.add_argument(&#34;--param&#34;, dest=&#34;param&#34;, type=str, required=False)
     parser.add_argument(&#34;--value&#34;, dest=&#34;value&#34;, type=str, required=False)
 
-    cybertensor.wallet.add_args(parser)
+    Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.network.SubnetSudoCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2412,7 +2412,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)
@@ -2434,7 +2434,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 def run(cli):
     r&#34;&#34;&#34;Set subnet hyperparameters.&#34;&#34;&#34;
     config = cli.config.copy()
-    wallet = cybertensor.wallet(config=cli.config)
+    wallet = Wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=config)
     print(&#34;\n&#34;)
     SubnetHyperparamsCommand.run(cli)

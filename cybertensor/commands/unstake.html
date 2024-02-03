@@ -51,11 +51,11 @@ from rich.prompt import Confirm, Prompt
 from tqdm import tqdm
 
 import cybertensor
-from cybertensor.utils.balance import Balance
+from ..utils.balance import Balance
 from . import defaults
 from .utils import get_hotkey_wallets_for_wallet
-
-console = cybertensor.__console__
+from ..wallet import Wallet
+from .. import __console__ as console
 
 
 class UnStakeCommand:
@@ -86,7 +86,7 @@ class UnStakeCommand:
     &#34;&#34;&#34;
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -176,14 +176,14 @@ class UnStakeCommand:
             default=False,
             help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
         )
-        cybertensor.wallet.add_args(unstake_parser)
+        Wallet.add_args(unstake_parser)
         cybertensor.cwtensor.add_args(unstake_parser)
 
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get the hotkey_names (if any) and the hotkeys.
@@ -193,7 +193,7 @@ class UnStakeCommand:
             hotkeys_to_unstake_from = [(None, cli.config.get(&#34;hotkey_address&#34;))]
         elif cli.config.get(&#34;all_hotkeys&#34;):
             # Stake to all hotkeys.
-            all_hotkeys: List[cybertensor.wallet] = get_hotkey_wallets_for_wallet(
+            all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
                 wallet=wallet
             )
             # Get the hotkeys to exclude. (d)efault to no exclusions.
@@ -214,7 +214,7 @@ class UnStakeCommand:
                 else:
                     # If the hotkey is not a valid address, we assume it is a hotkey name.
                     #  We then get the hotkey from the wallet and add it to the list.
-                    wallet_ = cybertensor.wallet(
+                    wallet_ = Wallet(
                         config=cli.config, hotkey=hotkey_or_hotkey_name
                     )
                     hotkeys_to_unstake_from.append(
@@ -228,7 +228,7 @@ class UnStakeCommand:
                 hotkeys_to_unstake_from = [(None, hotkey_or_name)]
             else:
                 # Hotkey is not a valid address, so we assume it is a hotkey name.
-                wallet_ = cybertensor.wallet(
+                wallet_ = Wallet(
                     config=cli.config, hotkey=hotkey_or_name
                 )
                 hotkeys_to_unstake_from = [
@@ -239,7 +239,7 @@ class UnStakeCommand:
             #  so we stake to that single hotkey.
             assert cli.config.wallet.hotkey is not None
             hotkeys_to_unstake_from = [
-                (None, cybertensor.wallet(config=cli.config).hotkey.address)
+                (None, Wallet(config=cli.config).hotkey.address)
             ]
 
         final_hotkeys: List[Tuple[str, str]] = []
@@ -275,7 +275,7 @@ class UnStakeCommand:
 
         if len(final_hotkeys) == 0:
             # No hotkeys to unstake from.
-            cybertensor.__console__.print(
+            console.print(
                 &#34;Not enough stake to unstake from any hotkeys or max_stake is more than current stake.&#34;
             )
             return None
@@ -377,7 +377,7 @@ It allows for flexible management of token stakes across different neurons (hotk
     &#34;&#34;&#34;
 
     @classmethod
-    def check_config(cls, config: &#34;cybertensor.config&#34;):
+    def check_config(cls, config: &#34;Config&#34;):
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -467,14 +467,14 @@ It allows for flexible management of token stakes across different neurons (hotk
             default=False,
             help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
         )
-        cybertensor.wallet.add_args(unstake_parser)
+        Wallet.add_args(unstake_parser)
         cybertensor.cwtensor.add_args(unstake_parser)
 
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get the hotkey_names (if any) and the hotkeys.
@@ -484,7 +484,7 @@ It allows for flexible management of token stakes across different neurons (hotk
             hotkeys_to_unstake_from = [(None, cli.config.get(&#34;hotkey_address&#34;))]
         elif cli.config.get(&#34;all_hotkeys&#34;):
             # Stake to all hotkeys.
-            all_hotkeys: List[cybertensor.wallet] = get_hotkey_wallets_for_wallet(
+            all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
                 wallet=wallet
             )
             # Get the hotkeys to exclude. (d)efault to no exclusions.
@@ -505,7 +505,7 @@ It allows for flexible management of token stakes across different neurons (hotk
                 else:
                     # If the hotkey is not a valid address, we assume it is a hotkey name.
                     #  We then get the hotkey from the wallet and add it to the list.
-                    wallet_ = cybertensor.wallet(
+                    wallet_ = Wallet(
                         config=cli.config, hotkey=hotkey_or_hotkey_name
                     )
                     hotkeys_to_unstake_from.append(
@@ -519,7 +519,7 @@ It allows for flexible management of token stakes across different neurons (hotk
                 hotkeys_to_unstake_from = [(None, hotkey_or_name)]
             else:
                 # Hotkey is not a valid address, so we assume it is a hotkey name.
-                wallet_ = cybertensor.wallet(
+                wallet_ = Wallet(
                     config=cli.config, hotkey=hotkey_or_name
                 )
                 hotkeys_to_unstake_from = [
@@ -530,7 +530,7 @@ It allows for flexible management of token stakes across different neurons (hotk
             #  so we stake to that single hotkey.
             assert cli.config.wallet.hotkey is not None
             hotkeys_to_unstake_from = [
-                (None, cybertensor.wallet(config=cli.config).hotkey.address)
+                (None, Wallet(config=cli.config).hotkey.address)
             ]
 
         final_hotkeys: List[Tuple[str, str]] = []
@@ -566,7 +566,7 @@ It allows for flexible management of token stakes across different neurons (hotk
 
         if len(final_hotkeys) == 0:
             # No hotkeys to unstake from.
-            cybertensor.__console__.print(
+            console.print(
                 &#34;Not enough stake to unstake from any hotkeys or max_stake is more than current stake.&#34;
             )
             return None
@@ -658,12 +658,12 @@ def add_args(command_parser):
         default=False,
         help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
     )
-    cybertensor.wallet.add_args(unstake_parser)
+    Wallet.add_args(unstake_parser)
     cybertensor.cwtensor.add_args(unstake_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.unstake.UnStakeCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -672,7 +672,7 @@ def add_args(command_parser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;cybertensor.config&#34;):
+def check_config(cls, config: &#34;Config&#34;):
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)
@@ -732,7 +732,7 @@ def check_config(cls, config: &#34;cybertensor.config&#34;):
 def run(cli):
     r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
     config = cli.config.copy()
-    wallet = cybertensor.wallet(config=config)
+    wallet = Wallet(config=config)
     cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
     # Get the hotkey_names (if any) and the hotkeys.
@@ -742,7 +742,7 @@ def run(cli):
         hotkeys_to_unstake_from = [(None, cli.config.get(&#34;hotkey_address&#34;))]
     elif cli.config.get(&#34;all_hotkeys&#34;):
         # Stake to all hotkeys.
-        all_hotkeys: List[cybertensor.wallet] = get_hotkey_wallets_for_wallet(
+        all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
             wallet=wallet
         )
         # Get the hotkeys to exclude. (d)efault to no exclusions.
@@ -763,7 +763,7 @@ def run(cli):
             else:
                 # If the hotkey is not a valid address, we assume it is a hotkey name.
                 #  We then get the hotkey from the wallet and add it to the list.
-                wallet_ = cybertensor.wallet(
+                wallet_ = Wallet(
                     config=cli.config, hotkey=hotkey_or_hotkey_name
                 )
                 hotkeys_to_unstake_from.append(
@@ -777,7 +777,7 @@ def run(cli):
             hotkeys_to_unstake_from = [(None, hotkey_or_name)]
         else:
             # Hotkey is not a valid address, so we assume it is a hotkey name.
-            wallet_ = cybertensor.wallet(
+            wallet_ = Wallet(
                 config=cli.config, hotkey=hotkey_or_name
             )
             hotkeys_to_unstake_from = [
@@ -788,7 +788,7 @@ def run(cli):
         #  so we stake to that single hotkey.
         assert cli.config.wallet.hotkey is not None
         hotkeys_to_unstake_from = [
-            (None, cybertensor.wallet(config=cli.config).hotkey.address)
+            (None, Wallet(config=cli.config).hotkey.address)
         ]
 
     final_hotkeys: List[Tuple[str, str]] = []
@@ -824,7 +824,7 @@ def run(cli):
 
     if len(final_hotkeys) == 0:
         # No hotkeys to unstake from.
-        cybertensor.__console__.print(
+        console.print(
             &#34;Not enough stake to unstake from any hotkeys or max_stake is more than current stake.&#34;
         )
         return None

@@ -50,12 +50,14 @@ from cosmpy.crypto.keypairs import PrivateKey
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor import Balance
+from ..utils.balance import Balance
+from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def register_subnetwork_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -63,7 +65,7 @@ def register_subnetwork_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the transaction to be finalized on the chain before returning true,
@@ -78,14 +80,14 @@ def register_subnetwork_message(
     your_balance = cwtensor.get_balance(wallet.coldkeypub.address)
     burn_cost = Balance(cwtensor.get_subnet_burn_cost())
     if burn_cost &gt; your_balance:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;Your balance of: [green]{your_balance}[/green] is not enough to pay the subnet lock cost of: &#34;
             f&#34;[green]{burn_cost}[/green]&#34;
         )
         return False
 
     if prompt:
-        cybertensor.__console__.print(f&#34;Your balance is: [green]{your_balance}[/green]&#34;)
+        console.print(f&#34;Your balance is: [green]{your_balance}[/green]&#34;)
         if not Confirm.ask(
             f&#34;Do you want to register a subnet for [green]{burn_cost}[/green]?&#34;
         ):
@@ -93,7 +95,7 @@ def register_subnetwork_message(
 
     wallet.coldkey  # unlock coldkey
 
-    with cybertensor.__console__.status(&#34;:satellite: Registering subnet...&#34;):
+    with console.status(&#34;:satellite: Registering subnet...&#34;):
         create_register_network_msg = {&#34;register_network&#34;: {}}
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
@@ -105,7 +107,7 @@ def register_subnetwork_message(
             tx = cwtensor.contract.execute(
                 create_register_network_msg, signer_wallet, gas, funds
             )
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without finalization &#34;
                 f&#34;confirmation...&#34;
             )
@@ -113,25 +115,25 @@ def register_subnetwork_message(
             tx = cwtensor.contract.execute(
                 create_register_network_msg, signer_wallet, gas, funds
             )
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete...&#34;
             )
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:white_heavy_check_mark: [green]Registered subnetwork with netuid: &#34;
                         f&#34;{tx.response.events.get(&#39;wasm&#39;).get(&#39;netuid_to_register&#39;)}[/green]&#34;
                     )
                     return True
                 else:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}&#34;
                     )
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
                 )
                 return False
@@ -142,7 +144,7 @@ from ..commands.network import HYPERPARAMS
 
 def set_hyperparameter_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuid: int,
     parameter: str,
     value,
@@ -153,7 +155,7 @@ def set_hyperparameter_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             Subnetwork uid.
@@ -173,7 +175,7 @@ def set_hyperparameter_message(
     &#34;&#34;&#34;
 
     if cwtensor.get_subnet_owner(netuid) != wallet.coldkeypub.address:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:cross_mark: [red]This wallet doesn&#39;t own the specified subnet.[/red]&#34;
         )
         return False
@@ -182,12 +184,12 @@ def set_hyperparameter_message(
 
     message = HYPERPARAMS.get(parameter)
     if message is None:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:cross_mark: [red]Invalid hyperparameter specified.[/red]&#34;
         )
         return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ...&#34;
     ):
         sudo_msg = {
@@ -200,29 +202,29 @@ def set_hyperparameter_message(
 
         if not wait_for_finalization:
             tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation...&#34;
             )
         else:
             tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete...&#34;
             )
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:white_heavy_check_mark: [green]Hyper parameter {parameter} changed to {value}[/green]&#34;
                     )
                     return True
                 else:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}&#34;
                     )
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
                 )
                 return False</code></pre>
@@ -236,14 +238,14 @@ def set_hyperparameter_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.network.register_subnetwork_message"><code class="name flex">
-<span>def <span class="ident">register_subnetwork_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">register_subnetwork_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers a new subnetwork</p>
 <h2 id="args">Args</h2>
 <p>cwtensor (cybertensor.cwtensor):
 the CWTensor
-wallet (cybertensor.wallet):
+wallet (Wallet):
 cybertensor wallet object.
 wait_for_finalization (bool):
 If set, waits for the transaction to be finalized on the chain before returning true,
@@ -260,7 +262,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def register_subnetwork_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -268,7 +270,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the transaction to be finalized on the chain before returning true,
@@ -283,14 +285,14 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     your_balance = cwtensor.get_balance(wallet.coldkeypub.address)
     burn_cost = Balance(cwtensor.get_subnet_burn_cost())
     if burn_cost &gt; your_balance:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;Your balance of: [green]{your_balance}[/green] is not enough to pay the subnet lock cost of: &#34;
             f&#34;[green]{burn_cost}[/green]&#34;
         )
         return False
 
     if prompt:
-        cybertensor.__console__.print(f&#34;Your balance is: [green]{your_balance}[/green]&#34;)
+        console.print(f&#34;Your balance is: [green]{your_balance}[/green]&#34;)
         if not Confirm.ask(
             f&#34;Do you want to register a subnet for [green]{burn_cost}[/green]?&#34;
         ):
@@ -298,7 +300,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
     wallet.coldkey  # unlock coldkey
 
-    with cybertensor.__console__.status(&#34;:satellite: Registering subnet...&#34;):
+    with console.status(&#34;:satellite: Registering subnet...&#34;):
         create_register_network_msg = {&#34;register_network&#34;: {}}
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
@@ -310,7 +312,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
             tx = cwtensor.contract.execute(
                 create_register_network_msg, signer_wallet, gas, funds
             )
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without finalization &#34;
                 f&#34;confirmation...&#34;
             )
@@ -318,39 +320,39 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
             tx = cwtensor.contract.execute(
                 create_register_network_msg, signer_wallet, gas, funds
             )
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete...&#34;
             )
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:white_heavy_check_mark: [green]Registered subnetwork with netuid: &#34;
                         f&#34;{tx.response.events.get(&#39;wasm&#39;).get(&#39;netuid_to_register&#39;)}[/green]&#34;
                     )
                     return True
                 else:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}&#34;
                     )
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
                 )
                 return False</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.messages.network.set_hyperparameter_message"><code class="name flex">
-<span>def <span class="ident">set_hyperparameter_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, netuid: int, parameter: str, value, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_hyperparameter_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, netuid: int, parameter: str, value, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets a hyperparameter for a specific subnetwork.</p>
 <h2 id="args">Args</h2>
 <p>cwtensor (cybertensor.cwtensor):
 the CWTensor
-wallet (cybertensor.wallet):
+wallet (Wallet):
 cybertensor wallet object.
 netuid (int):
 Subnetwork uid.
@@ -373,7 +375,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def set_hyperparameter_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuid: int,
     parameter: str,
     value,
@@ -384,7 +386,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             Subnetwork uid.
@@ -404,7 +406,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     &#34;&#34;&#34;
 
     if cwtensor.get_subnet_owner(netuid) != wallet.coldkeypub.address:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:cross_mark: [red]This wallet doesn&#39;t own the specified subnet.[/red]&#34;
         )
         return False
@@ -413,12 +415,12 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
     message = HYPERPARAMS.get(parameter)
     if message is None:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:cross_mark: [red]Invalid hyperparameter specified.[/red]&#34;
         )
         return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ...&#34;
     ):
         sudo_msg = {
@@ -431,29 +433,29 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
         if not wait_for_finalization:
             tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation...&#34;
             )
         else:
             tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete...&#34;
             )
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:white_heavy_check_mark: [green]Hyper parameter {parameter} changed to {value}[/green]&#34;
                     )
                     return True
                 else:
-                    cybertensor.__console__.print(
+                    console.print(
                         f&#34;:cross_mark: [red]Failed[/red]: error:{tx.response.raw_log}&#34;
                     )
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
                 )
                 return False</code></pre>

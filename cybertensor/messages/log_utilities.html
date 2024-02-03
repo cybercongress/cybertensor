@@ -47,7 +47,7 @@ class ValidatorLogger:
     Including console log styling, console table print and prometheus.
 
     Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
@@ -604,7 +604,7 @@ class ValidatorLogger:
         )
 
     def print_console_validator_identifier(
-        self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
+        self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
     ):
         r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -698,7 +698,7 @@ class ValidatorPrometheus:
     r&#34;&#34;&#34;
     Prometheis logging object for validator.
         Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
@@ -726,7 +726,7 @@ class ValidatorPrometheus:
         parameters: torch.nn.parameter.Parameter,
         uid: int,
         network: str,
-        wallet: &#34;cybertensor.wallet&#34;,
+        wallet: &#34;Wallet&#34;,
     ):
         r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 
@@ -812,7 +812,7 @@ class ValidatorPrometheus:
 <div class="desc"><p>Logger object for handling all logging function specific to validator.
 Including console log styling, console table print and prometheus.</p>
 <h2 id="args">Args</h2>
-<p>config (:obj:<code>cybertensor.Config</code>, <code>optional</code>):
+<p>config (:obj:<code>Config</code>, <code>optional</code>):
 cybertensor.server.config()</p></div>
 <details class="source">
 <summary>
@@ -824,7 +824,7 @@ cybertensor.server.config()</p></div>
     Including console log styling, console table print and prometheus.
 
     Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
@@ -1381,7 +1381,7 @@ cybertensor.server.config()</p></div>
         )
 
     def print_console_validator_identifier(
-        self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
+        self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
     ):
         r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -1575,7 +1575,7 @@ cybertensor.server.config()</p></div>
 </details>
 </dd>
 <dt id="cybertensor.messages.log_utilities.ValidatorLogger.print_console_validator_identifier"><code class="name flex">
-<span>def <span class="ident">print_console_validator_identifier</span></span>(<span>self, uid: int, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, external_ip: str)</span>
+<span>def <span class="ident">print_console_validator_identifier</span></span>(<span>self, uid: int, wallet: Wallet, external_ip: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Console print for validator identifier.</p></div>
@@ -1584,7 +1584,7 @@ cybertensor.server.config()</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def print_console_validator_identifier(
-    self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
+    self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
 ):
     r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -2075,7 +2075,7 @@ cybertensor.server.config()</p></div>
 <dd>
 <div class="desc"><p>Prometheis logging object for validator.
 Args:
-config (:obj:<code>cybertensor.Config</code>, <code>optional</code>):
+config (:obj:<code>Config</code>, <code>optional</code>):
 cybertensor.server.config()</p></div>
 <details class="source">
 <summary>
@@ -2085,7 +2085,7 @@ cybertensor.server.config()</p></div>
     r&#34;&#34;&#34;
     Prometheis logging object for validator.
         Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
@@ -2113,7 +2113,7 @@ cybertensor.server.config()</p></div>
         parameters: torch.nn.parameter.Parameter,
         uid: int,
         network: str,
-        wallet: &#34;cybertensor.wallet&#34;,
+        wallet: &#34;Wallet&#34;,
     ):
         r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 
@@ -2244,7 +2244,7 @@ cybertensor.server.config()</p></div>
 </details>
 </dd>
 <dt id="cybertensor.messages.log_utilities.ValidatorPrometheus.log_run_info"><code class="name flex">
-<span>def <span class="ident">log_run_info</span></span>(<span>self, parameters: torch.nn.parameter.Parameter, uid: int, network: str, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>)</span>
+<span>def <span class="ident">log_run_info</span></span>(<span>self, parameters: torch.nn.parameter.Parameter, uid: int, network: str, wallet: Wallet)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set up prometheus running info.</p></div>
@@ -2257,7 +2257,7 @@ cybertensor.server.config()</p></div>
     parameters: torch.nn.parameter.Parameter,
     uid: int,
     network: str,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
 ):
     r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 
