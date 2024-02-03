@@ -18,7 +18,6 @@
 
 import argparse
 from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor
 from typing import List, Optional, Dict, Tuple
 
 from fuzzywuzzy import fuzz
@@ -77,7 +76,7 @@ class OverviewCommand:
     """
 
     @staticmethod
-    def run(cli: "cybertensor.cli"):
+    def run(cli: "cybertensor.cli", max_len_netuids: int = 5, max_len_keys: int = 5):
         r"""Prints an overview for the wallet's colkey."""
         wallet = Wallet(config=cli.config)
         cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(config=cli.config)
@@ -167,33 +166,22 @@ class OverviewCommand:
                 )
             )
         ):
-            # Create a copy of the config without the parser and formatter_class.
-            ## This is needed to pass to the ProcessPoolExecutor, which cannot pickle the parser.
-            copy_config = cli.config.copy()
-            copy_config["__parser"] = None
-            copy_config["formatter_class"] = None
 
             # Pull neuron info for all keys.
             ## Max len(netuids) or 5 threads.
-            with ProcessPoolExecutor(max_workers=max(len(netuids), 5)) as executor:
-                results = executor.map(
-                    OverviewCommand._get_neurons_for_netuid,
-                    [(copy_config, netuid, all_hotkey_addresses) for netuid in netuids],
-                )
-                executor.shutdown(wait=True)  # wait for all complete
 
-                for result in results:
-                    netuid, neurons_result, err_msg = result
-                    if err_msg is not None:
-                        console.print(err_msg)
-
-                    if len(neurons_result) == 0:
-                        # Remove netuid from overview if no neurons are found.
-                        netuids.remove(netuid)
-                        del neurons[str(netuid)]
-                    else:
-                        # Add neurons to overview.
-                        neurons[str(netuid)] = neurons_result
+            for netuid in netuids[:max_len_netuids]:
+                netuid, neurons_result, err_msg = \
+                    OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
+                if err_msg is not None:
+                    console.print(err_msg)
+                if len(neurons_result) == 0:
+                    # Remove netuid from overview if no neurons are found.
+                    netuids.remove(netuid)
+                    del neurons[str(netuid)]
+                else:
+                    # Add neurons to overview.
+                    neurons[str(netuid)] = neurons_result
 
             total_coldkey_stake_from_metagraph = defaultdict(
                 lambda: cybertensor.Balance(0.0)
@@ -238,21 +226,11 @@ class OverviewCommand:
                 if "-1" not in neurons:
                     neurons["-1"] = []
 
-            # Use process pool to check each coldkey wallet for de-registered stake.
-            with ProcessPoolExecutor(
-                max_workers=max(len(coldkeys_to_check), 5)
-            ) as executor:
-                results = executor.map(
-                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet,
-                    [
-                        (cli.config, all_hotkey_addresses, coldkey_wallet)
-                        for coldkey_wallet in coldkeys_to_check
-                    ],
-                )
-                executor.shutdown(wait=True)  # wait for all complete
+            for coldkey_wallet in coldkeys_to_check:
+                coldkey_wallet, de_registered_stake, err_msg = \
+                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
+                        (cli.config, all_hotkey_addresses, coldkey_wallet))
 
-            for result in results:
-                coldkey_wallet, de_registered_stake, err_msg = result
                 if err_msg is not None:
                     console.print(err_msg)
 
@@ -276,7 +254,7 @@ class OverviewCommand:
                         name=wallet,
                     )
                     wallet_.hotkey = hotkey_addr
-                    wallet.hotkey_str = hotkey_addr[:5]  # Max length of 5 characters
+                    wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
