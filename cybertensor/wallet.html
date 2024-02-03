@@ -209,7 +209,7 @@ class Wallet:
 
     def create_if_non_existent(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -224,7 +224,7 @@ class Wallet:
 
     def create(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -247,7 +247,7 @@ class Wallet:
 
     def recreate(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -449,7 +449,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -470,7 +470,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -497,7 +497,7 @@ class Wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -518,7 +518,7 @@ class Wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -544,7 +544,7 @@ class Wallet:
         public_key: Optional[Union[str, bytes]] = None,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
            Requires either address or public_key to be passed.
         Args:
@@ -598,7 +598,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -608,7 +608,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -618,7 +618,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     def regenerate_coldkey(
@@ -627,7 +627,7 @@ class Wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user&#39;s password and saves the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -689,7 +689,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -699,7 +699,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -709,7 +709,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     def regenerate_hotkey(
@@ -718,7 +718,7 @@ class Wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the hotkey from passed mnemonic, encrypts it with the user&#39;s password and save the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -977,7 +977,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
     def create_if_non_existent(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -992,7 +992,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
     def create(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -1015,7 +1015,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
     def recreate(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -1217,7 +1217,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -1238,7 +1238,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -1265,7 +1265,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -1286,7 +1286,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -1312,7 +1312,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         public_key: Optional[Union[str, bytes]] = None,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
            Requires either address or public_key to be passed.
         Args:
@@ -1366,7 +1366,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -1376,7 +1376,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -1386,7 +1386,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     def regenerate_coldkey(
@@ -1395,7 +1395,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user&#39;s password and saves the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -1457,7 +1457,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -1467,7 +1467,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     @overload
@@ -1477,7 +1477,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         ...
 
     def regenerate_hotkey(
@@ -1486,7 +1486,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -&gt; &#34;wallet&#34;:
+    ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;Regenerates the hotkey from passed mnemonic, encrypts it with the user&#39;s password and save the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -1818,7 +1818,7 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 <h3>Methods</h3>
 <dl>
 <dt id="cybertensor.wallet.Wallet.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> wallet</span>
+<span>def <span class="ident">create</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks for existing coldkeypub and hotkeys and creates them if non-existent.</p>
@@ -1840,7 +1840,7 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 </summary>
 <pre><code class="python">def create(
     self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;
     Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -1863,7 +1863,7 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.create_if_non_existent"><code class="name flex">
-<span>def <span class="ident">create_if_non_existent</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> wallet</span>
+<span>def <span class="ident">create_if_non_existent</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks for existing coldkeypub and hotkeys and creates them if non-existent.</p>
@@ -1885,7 +1885,7 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 </summary>
 <pre><code class="python">def create_if_non_existent(
     self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;
     Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -1900,7 +1900,7 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.create_new_coldkey"><code class="name flex">
-<span>def <span class="ident">create_new_coldkey</span></span>(<span>self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">create_new_coldkey</span></span>(<span>self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.</p>
@@ -1927,7 +1927,7 @@ this object with newly created coldkey.</p></div>
     use_password: bool = True,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
     Args:
         n_words: (int, optional):
@@ -1950,7 +1950,7 @@ this object with newly created coldkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.create_new_hotkey"><code class="name flex">
-<span>def <span class="ident">create_new_hotkey</span></span>(<span>self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">create_new_hotkey</span></span>(<span>self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.</p>
@@ -1977,7 +1977,7 @@ this object with newly created hotkey.</p></div>
     use_password: bool = False,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
     Args:
         n_words: (int, optional):
@@ -2095,7 +2095,7 @@ this object with newly created hotkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.new_coldkey"><code class="name flex">
-<span>def <span class="ident">new_coldkey</span></span>(<span>self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">new_coldkey</span></span>(<span>self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.</p>
@@ -2122,7 +2122,7 @@ this object with newly created coldkey.</p></div>
     use_password: bool = True,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Creates a new coldkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
     Args:
         n_words: (int, optional):
@@ -2139,7 +2139,7 @@ this object with newly created coldkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.new_hotkey"><code class="name flex">
-<span>def <span class="ident">new_hotkey</span></span>(<span>self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">new_hotkey</span></span>(<span>self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.</p>
@@ -2166,7 +2166,7 @@ this object with newly created hotkey.</p></div>
     use_password: bool = False,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Creates a new hotkey, optionally encrypts it with the user&#39;s inputed password and saves to disk.
     Args:
         n_words: (int, optional):
@@ -2183,7 +2183,7 @@ this object with newly created hotkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.recreate"><code class="name flex">
-<span>def <span class="ident">recreate</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> wallet</span>
+<span>def <span class="ident">recreate</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks for existing coldkeypub and hotkeys and creates them if non-existent.</p>
@@ -2205,7 +2205,7 @@ this object with newly created hotkey.</p></div>
 </summary>
 <pre><code class="python">def recreate(
     self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;
     Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -2223,7 +2223,7 @@ this object with newly created hotkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regen_coldkey"><code class="name flex">
-<span>def <span class="ident">regen_coldkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> wallet</span>
+<span>def <span class="ident">regen_coldkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user's password and saves the file</p>
@@ -2257,7 +2257,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
     overwrite: bool = False,
     suppress: bool = False,
     **kwargs,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user&#39;s password and saves the file
     Args:
         mnemonic: (Union[list, str], optional):
@@ -2311,7 +2311,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regen_coldkeypub"><code class="name flex">
-<span>def <span class="ident">regen_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">regen_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file
@@ -2340,7 +2340,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
     public_key: Optional[Union[str, bytes]] = None,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
        Requires either address or public_key to be passed.
     Args:
@@ -2386,7 +2386,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regen_hotkey"><code class="name flex">
-<span>def <span class="ident">regen_hotkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> wallet</span>
+<span>def <span class="ident">regen_hotkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the hotkey from passed mnemonic, encrypts it with the user's password and save the file</p>
@@ -2419,7 +2419,7 @@ this object with newly created hotkey.</p></div>
     overwrite: bool = False,
     suppress: bool = False,
     **kwargs,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the hotkey from passed mnemonic, encrypts it with the user&#39;s password and save the file
     Args:
         mnemonic: (Union[list, str], optional):
@@ -2470,7 +2470,7 @@ this object with newly created hotkey.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regenerate_coldkey"><code class="name flex">
-<span>def <span class="ident">regenerate_coldkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> wallet</span>
+<span>def <span class="ident">regenerate_coldkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user's password and saves the file</p>
@@ -2504,7 +2504,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
     overwrite: bool = False,
     suppress: bool = False,
     **kwargs,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user&#39;s password and saves the file
     Args:
         mnemonic: (Union[list, str], optional):
@@ -2558,7 +2558,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regenerate_coldkeypub"><code class="name flex">
-<span>def <span class="ident">regenerate_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> wallet</span>
+<span>def <span class="ident">regenerate_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file
@@ -2587,7 +2587,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
     public_key: Optional[Union[str, bytes]] = None,
     overwrite: bool = False,
     suppress: bool = False,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
        Requires either address or public_key to be passed.
     Args:
@@ -2633,7 +2633,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.wallet.Wallet.regenerate_hotkey"><code class="name flex">
-<span>def <span class="ident">regenerate_hotkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> wallet</span>
+<span>def <span class="ident">regenerate_hotkey</span></span>(<span>self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the hotkey from passed mnemonic, encrypts it with the user's password and save the file</p>
@@ -2666,7 +2666,7 @@ this object with newly created hotkey.</p></div>
     overwrite: bool = False,
     suppress: bool = False,
     **kwargs,
-) -&gt; &#34;wallet&#34;:
+) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;Regenerates the hotkey from passed mnemonic, encrypts it with the user&#39;s password and save the file
     Args:
         mnemonic: (Union[list, str], optional):

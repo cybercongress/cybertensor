@@ -248,8 +248,8 @@ class Config(DefaultMunch):
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: &#34;config&#34;):
-        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: &#34;Config&#34;):
+        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(&#34;.&#34;)
             head = _config
@@ -296,7 +296,7 @@ class Config(DefaultMunch):
 
         return params
 
-    def __deepcopy__(self, memo) -&gt; &#34;config&#34;:
+    def __deepcopy__(self, memo) -&gt; &#34;Config&#34;:
         _default = self.__default__
 
         config_state = self.__getstate__()
@@ -332,7 +332,7 @@ class Config(DefaultMunch):
         cleaned = Config._remove_private_keys(visible)
         return &#34;\n&#34; + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -&gt; &#34;config&#34;:
+    def copy(self) -&gt; &#34;Config&#34;:
         return copy.deepcopy(self)
 
     def to_string(self, items) -&gt; str:
@@ -369,7 +369,7 @@ class Config(DefaultMunch):
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
+    def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -622,8 +622,8 @@ same as those for dict.</p></div>
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: &#34;config&#34;):
-        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: &#34;Config&#34;):
+        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(&#34;.&#34;)
             head = _config
@@ -670,7 +670,7 @@ same as those for dict.</p></div>
 
         return params
 
-    def __deepcopy__(self, memo) -&gt; &#34;config&#34;:
+    def __deepcopy__(self, memo) -&gt; &#34;Config&#34;:
         _default = self.__default__
 
         config_state = self.__getstate__()
@@ -706,7 +706,7 @@ same as those for dict.</p></div>
         cleaned = Config._remove_private_keys(visible)
         return &#34;\n&#34; + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -&gt; &#34;config&#34;:
+    def copy(self) -&gt; &#34;Config&#34;:
         return copy.deepcopy(self)
 
     def to_string(self, items) -&gt; str:
@@ -743,7 +743,7 @@ same as those for dict.</p></div>
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
+    def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -783,7 +783,7 @@ same as those for dict.</p></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="cybertensor.config.Config.merge_all"><code class="name flex">
-<span>def <span class="ident">merge_all</span></span>(<span>configs: List[ForwardRef('config')]) ‑> config</span>
+<span>def <span class="ident">merge_all</span></span>(<span>configs: List[ForwardRef('<a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a>')]) ‑> <a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Merge all configs in the list into one config.
@@ -799,7 +799,7 @@ Merged config object.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
+def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
     &#34;&#34;&#34;
     Merge all configs in the list into one config.
     If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -822,7 +822,7 @@ def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
 <h3>Methods</h3>
 <dl>
 <dt id="cybertensor.config.Config.copy"><code class="name flex">
-<span>def <span class="ident">copy</span></span>(<span>self) ‑> config</span>
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>D.copy() -&gt; a shallow copy of D</p></div>
@@ -830,7 +830,7 @@ def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def copy(self) -&gt; &#34;config&#34;:
+<pre><code class="python">def copy(self) -&gt; &#34;Config&#34;:
     return copy.deepcopy(self)</code></pre>
 </details>
 </dd>

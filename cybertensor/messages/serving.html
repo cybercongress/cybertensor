@@ -49,9 +49,10 @@ import json
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils import networking as net
-from ..types import AxonServeCallParams
 from .. import __console__ as console
+from ..types import AxonServeCallParams
+from ..utils import networking as net
+from ..wallet import Wallet
 
 
 def serve_message(
@@ -66,7 +67,7 @@ def serve_message(
     wait_for_finalization=True,
     prompt: bool = False,
 ) -&gt; bool:
-    r&#34;&#34;&#34;Subscribes an cybertensor endpoint to the substensor chain.
+    r&#34;&#34;&#34;Subscribes a cybertensor endpoint to the substensor chain.
     Args:
         wallet (Wallet):
             cybertensor wallet object.
@@ -313,7 +314,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 <span>def <span class="ident">serve_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, ip: str, port: int, protocol: int, netuid: int, placeholder1: int = 0, placeholder2: int = 0, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Subscribes an cybertensor endpoint to the substensor chain.</p>
+<div class="desc"><p>Subscribes a cybertensor endpoint to the substensor chain.</p>
 <h2 id="args">Args</h2>
 <p>wallet (Wallet):
 cybertensor wallet object.
@@ -354,7 +355,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     wait_for_finalization=True,
     prompt: bool = False,
 ) -&gt; bool:
-    r&#34;&#34;&#34;Subscribes an cybertensor endpoint to the substensor chain.
+    r&#34;&#34;&#34;Subscribes a cybertensor endpoint to the substensor chain.
     Args:
         wallet (Wallet):
             cybertensor wallet object.

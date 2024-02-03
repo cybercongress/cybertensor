@@ -55,6 +55,7 @@ from tqdm import tqdm
 import cybertensor
 from . import defaults
 from .utils import get_delegates_details, DelegatesDetails
+from ..config import Config
 from ..wallet import Wallet
 from .. import __console__ as console
 
@@ -523,7 +524,7 @@ def add_args(parser: argparse.ArgumentParser) -&gt; None:
 </details>
 </dd>
 <dt id="cybertensor.commands.inspect.InspectCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

@@ -45,10 +45,10 @@ from rich import console as rich_console
 from rich import status as rich_status
 
 import cybertensor
-from ..wallet import Wallet
 from ._register_cuda import solve_cuda
 from .formatting import get_human_readable, millify
 from .. import __console__ as console
+from ..wallet import Wallet
 
 
 class CUDAException(Exception):
@@ -58,7 +58,7 @@ class CUDAException(Exception):
 
 
 def _hex_bytes_to_u8_list(hex_bytes: bytes):
-    hex_chunks = [int(hex_bytes[i : i + 2], 16) for i in range(0, len(hex_bytes), 2)]
+    hex_chunks = [int(hex_bytes[i: i + 2], 16) for i in range(0, len(hex_bytes), 2)]
     return hex_chunks
 
 
@@ -482,7 +482,7 @@ class RegistrationStatisticsLogger:
 
 
 def _solve_for_difficulty_fast(
-    cwtensor,
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
     wallet: &#34;Wallet&#34;,
     netuid: int,
     output_in_place: bool = True,
@@ -495,9 +495,9 @@ def _solve_for_difficulty_fast(
     &#34;&#34;&#34;
     Solves the POW for registration using multiprocessing.
     Args:
-        cwtensor
+        cwtensor: cybertensor.cwtensor
             cwtensor to connect to for block information and to submit.
-        wallet:
+        wallet: Wallet
             wallet to use for registration.
         netuid: int
             The netuid of the subnet to register to.
@@ -1051,8 +1051,8 @@ def _terminate_workers_and_wait_for_exit(
 
 
 def create_pow(
-    cwtensor,
-    wallet,
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: Wallet,
     netuid: int,
     output_in_place: bool = True,
     cuda: bool = False,
@@ -1065,7 +1065,7 @@ def create_pow(
     &#34;&#34;&#34;
     Creates a proof of work for the given cwtensor and wallet.
     Args:
-        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
             The cwtensor to create a proof of work for.
         wallet (:obj:`Wallet.wallet`, `required`):
             The wallet to create a proof of work for.
@@ -1134,12 +1134,12 @@ def create_pow(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.utils.registration.create_pow"><code class="name flex">
-<span>def <span class="ident">create_pow</span></span>(<span>cwtensor, wallet, netuid: int, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, tpb: int = 256, num_processes: int = None, update_interval: int = None, log_verbose: bool = False) ‑> Optional[Dict[str, Any]]</span>
+<span>def <span class="ident">create_pow</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet.Wallet" href="../wallet.html#cybertensor.wallet.Wallet">Wallet</a>, netuid: int, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, tpb: int = 256, num_processes: int = None, update_interval: int = None, log_verbose: bool = False) ‑> Optional[Dict[str, Any]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a proof of work for the given cwtensor and wallet.</p>
 <h2 id="args">Args</h2>
-<p>cwtensor (:obj:<code><a title="cybertensor.cwtensor.cwtensor" href="../cwtensor.html#cybertensor.cwtensor.cwtensor">cwtensor</a></code>, <code>required</code>):
+<p>cwtensor (:obj:<code><a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a></code>, <code>required</code>):
 The cwtensor to create a proof of work for.
 wallet (:obj:<code>Wallet.wallet</code>, <code>required</code>):
 The wallet to create a proof of work for.
@@ -1174,8 +1174,8 @@ the wallet is already registered or there is a different error.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def create_pow(
-    cwtensor,
-    wallet,
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: Wallet,
     netuid: int,
     output_in_place: bool = True,
     cuda: bool = False,
@@ -1188,7 +1188,7 @@ the wallet is already registered or there is a different error.</p>
     &#34;&#34;&#34;
     Creates a proof of work for the given cwtensor and wallet.
     Args:
-        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
             The cwtensor to create a proof of work for.
         wallet (:obj:`Wallet.wallet`, `required`):
             The wallet to create a proof of work for.
