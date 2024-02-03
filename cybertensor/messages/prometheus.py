@@ -20,13 +20,15 @@
 import json
 
 import cybertensor
-import cybertensor.utils.networking as net
-from cybertensor.types import PrometheusServeCallParams
+
+from ..wallet import Wallet
+from ..utils import networking as net
+from ..types import PrometheusServeCallParams
 
 
 def prometheus_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     port: int,
     netuid: int,
     ip: int = None,
@@ -36,7 +38,7 @@ def prometheus_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             cybertensor cwtensor object.
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4

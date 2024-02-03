@@ -23,12 +23,13 @@ from typing import List, Union, Optional
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor.utils.balance import Balance
+from ..utils.balance import Balance
+from ..wallet import Wallet
 
 
 def __do_remove_stake_single(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkey: str,
     amount: "cybertensor.Balance",
     wait_for_finalization: bool = True,
@@ -36,7 +37,7 @@ def __do_remove_stake_single(
     r"""
     Executes an unstake call to the chain using the wallet and amount specified.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             Cybertensor wallet object.
         hotkey (str):
             Hotkey address to unstake from.
@@ -73,7 +74,7 @@ def __do_remove_stake_single(
 
 def unstake_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkey: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -81,7 +82,7 @@ def unstake_message(
 ) -> bool:
     r"""Removes stake into the wallet coldkey from the specified hotkey uid.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         hotkey (Optional[str]):
             address of the hotkey to unstake from.
@@ -193,7 +194,7 @@ def unstake_message(
 
 def unstake_multiple_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkey: List[str],
     amounts: List[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
@@ -201,7 +202,7 @@ def unstake_multiple_message(
 ) -> bool:
     r"""Removes stake from each hotkey in the list, using each amount, to a common coldkey.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             The wallet with the coldkey to unstake to.
         hotkey (List[str]):
             List of hotkeys to unstake from.

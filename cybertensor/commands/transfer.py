@@ -24,6 +24,7 @@ from rich.prompt import Prompt
 
 import cybertensor
 from . import defaults
+from ..wallet import Wallet
 
 console = cybertensor.__console__
 
@@ -56,7 +57,7 @@ class TransferCommand:
     @staticmethod
     def run(cli):
         r"""Transfer token of amount to destination."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
         cwtensor.transfer(
             wallet=wallet,
@@ -67,7 +68,7 @@ class TransferCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -82,7 +83,7 @@ class TransferCommand:
 
         # Get current balance and print to user.
         if not config.no_prompt:
-            wallet = cybertensor.wallet(config=config)
+            wallet = Wallet(config=config)
             cwtensor = cybertensor.cwtensor(config=config)
             with cybertensor.__console__.status(":satellite: Checking Balance..."):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
@@ -121,5 +122,5 @@ class TransferCommand:
             "--amount", dest="amount", type=float, required=False
         )
 
-        cybertensor.wallet.add_args(transfer_parser)
+        Wallet.add_args(transfer_parser)
         cybertensor.cwtensor.add_args(transfer_parser)

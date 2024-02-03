@@ -31,7 +31,7 @@ logger = logger.opt(colors=True)
 
 def set_weights_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     uids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
@@ -41,7 +41,7 @@ def set_weights_message(
 ) -> bool:
     r"""Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             netuid of the subnet to set weights for.

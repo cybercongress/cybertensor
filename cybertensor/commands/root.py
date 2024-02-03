@@ -29,6 +29,7 @@ from rich.table import Table
 import cybertensor
 from . import defaults
 from .utils import DelegatesDetails
+from ..wallet import Wallet
 
 console = cybertensor.__console__
 
@@ -55,7 +56,7 @@ class RootRegisterCommand:
     @staticmethod
     def run(cli):
         r"""Register to root network."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         cwtensor.root_register(wallet=wallet, prompt=not cli.config.no_prompt)
@@ -66,11 +67,11 @@ class RootRegisterCommand:
             "register", help="""Register a wallet to the root network."""
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -197,7 +198,7 @@ class RootList:
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         pass
 
 
@@ -225,7 +226,7 @@ class RootSetWeightsCommand:
     @staticmethod
     def run(cli):
         r"""Set weights for root network."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
         subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
 
@@ -276,11 +277,11 @@ class RootSetWeightsCommand:
         parser.add_argument("--netuids", dest="netuids", type=str, required=False)
         parser.add_argument("--weights", dest="weights", type=str, required=False)
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -395,9 +396,9 @@ class RootGetWeightsCommand:
             "get_weights", help="""Get weights for root network."""
         )
 
-        cybertensor.wallet.add_args(parser)
+        Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         pass

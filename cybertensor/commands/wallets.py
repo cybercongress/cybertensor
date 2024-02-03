@@ -26,6 +26,7 @@ from rich.table import Table
 
 import cybertensor
 from . import defaults
+from ..wallet import Wallet
 
 
 # TODO rewrite to use raw pubkey against hex or rewrite keypair/keyfile to use hex
@@ -57,7 +58,7 @@ class RegenColdkeyCommand:
 
     def run(cli):
         r"""Creates a new coldkey under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
 
         json_str: Optional[str] = None
         json_password: Optional[str] = None
@@ -80,7 +81,7 @@ class RegenColdkeyCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -150,7 +151,7 @@ class RegenColdkeyCommand:
             action="store_false",
             help="""Overwrite the old coldkey with the newly generated coldkey""",
         )
-        cybertensor.wallet.add_args(regen_coldkey_parser)
+        Wallet.add_args(regen_coldkey_parser)
         cybertensor.cwtensor.add_args(regen_coldkey_parser)
 
 
@@ -178,7 +179,7 @@ class RegenColdkeypubCommand:
 
     def run(cli):
         r"""Creates a new coldkeypub under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         wallet.regenerate_coldkeypub(
             address=cli.config.get("address"),
             public_key=cli.config.get("public_key_hex"),
@@ -186,7 +187,7 @@ class RegenColdkeypubCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -235,7 +236,7 @@ class RegenColdkeypubCommand:
             action="store_true",
             help="""Overwrite the old coldkeypub file with the newly generated coldkeypub""",
         )
-        cybertensor.wallet.add_args(regen_coldkeypub_parser)
+        Wallet.add_args(regen_coldkeypub_parser)
         cybertensor.cwtensor.add_args(regen_coldkeypub_parser)
 
 
@@ -267,7 +268,7 @@ class RegenHotkeyCommand:
 
     def run(cli):
         r"""Creates a new coldkey under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
 
         json_str: Optional[str] = None
         json_password: Optional[str] = None
@@ -290,7 +291,7 @@ class RegenHotkeyCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -365,7 +366,7 @@ class RegenHotkeyCommand:
             default=False,
             help="""Overwrite the old hotkey with the newly generated hotkey""",
         )
-        cybertensor.wallet.add_args(regen_hotkey_parser)
+        Wallet.add_args(regen_hotkey_parser)
         cybertensor.cwtensor.add_args(regen_hotkey_parser)
 
 
@@ -393,7 +394,7 @@ class NewHotkeyCommand:
 
     def run(cli):
         """Creates a new hotke under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         wallet.create_new_hotkey(
             n_words=cli.config.n_words,
             use_password=cli.config.use_password,
@@ -401,7 +402,7 @@ class NewHotkeyCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -442,7 +443,7 @@ class NewHotkeyCommand:
             default=False,
             help="""Overwrite the old hotkey with the newly generated hotkey""",
         )
-        cybertensor.wallet.add_args(new_hotkey_parser)
+        Wallet.add_args(new_hotkey_parser)
         cybertensor.cwtensor.add_args(new_hotkey_parser)
 
 
@@ -470,7 +471,7 @@ class NewColdkeyCommand:
 
     def run(cli):
         r"""Creates a new coldkey under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         wallet.create_new_coldkey(
             n_words=cli.config.n_words,
             use_password=cli.config.use_password,
@@ -478,7 +479,7 @@ class NewColdkeyCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -515,7 +516,7 @@ class NewColdkeyCommand:
             default=False,
             help="""Overwrite the old coldkey with the newly generated coldkey""",
         )
-        cybertensor.wallet.add_args(new_coldkey_parser)
+        Wallet.add_args(new_coldkey_parser)
         cybertensor.cwtensor.add_args(new_coldkey_parser)
 
 
@@ -544,7 +545,7 @@ class WalletCreateCommand:
 
     def run(cli):
         r"""Creates a new coldkey and hotkey under this wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         wallet.create_new_coldkey(
             n_words=cli.config.n_words,
             use_password=cli.config.use_password,
@@ -557,7 +558,7 @@ class WalletCreateCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -603,15 +604,15 @@ class WalletCreateCommand:
             default=False,
             help="""Overwrite the old hotkey with the newly generated hotkey""",
         )
-        cybertensor.wallet.add_args(new_coldkey_parser)
+        Wallet.add_args(new_coldkey_parser)
         cybertensor.cwtensor.add_args(new_coldkey_parser)
 
 
-def _get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     """Get all coldkey wallet names from path."""
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
@@ -646,7 +647,7 @@ class UpdateWalletCommand:
         if config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=config)]
+            wallets = [Wallet(config=config)]
 
         for wallet in wallets:
             print("\n===== ", wallet, " =====")
@@ -666,11 +667,11 @@ class UpdateWalletCommand:
             help="""Set true to avoid prompting the user.""",
             default=False,
         )
-        cybertensor.wallet.add_args(update_wallet_parser)
+        Wallet.add_args(update_wallet_parser)
         cybertensor.cwtensor.add_args(update_wallet_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.Config"):
+    def check_config(config: "Config"):
         if config.get("all", d=False) is False:
             if not config.no_prompt:
                 if Confirm.ask("Do you want to update all legacy wallets?"):
@@ -811,11 +812,11 @@ class WalletBalanceCommand:
         balance_parser = parser.add_parser(
             "balance", help="""Checks the balance of the wallet."""
         )
-        cybertensor.wallet.add_args(balance_parser)
+        Wallet.add_args(balance_parser)
         cybertensor.cwtensor.add_args(balance_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.path") and not config.no_prompt:
             path = Prompt.ask("Enter wallets path", default=defaults.wallet.path)
             config.wallet.path = str(path)

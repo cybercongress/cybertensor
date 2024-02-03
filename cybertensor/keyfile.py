@@ -37,8 +37,8 @@ from rich.prompt import Confirm
 from termcolor import colored
 
 import cybertensor
-from cybertensor import __chain_address_prefix__
-from cybertensor.errors import KeyFileError
+from . import __chain_address_prefix__
+from .errors import KeyFileError
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
 

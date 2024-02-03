@@ -233,7 +233,7 @@ class MetagraphCommand:
         console.print(table)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
     @staticmethod

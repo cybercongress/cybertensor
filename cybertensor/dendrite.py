@@ -30,6 +30,7 @@ import torch
 from fastapi import Response
 
 import cybertensor
+from .wallet import Wallet
 
 
 class dendrite(torch.nn.Module):
@@ -80,7 +81,7 @@ class dendrite(torch.nn.Module):
     NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.
 
     Example with a context manager:
-        >>> aysnc with dendrite(wallet = cybertensor.wallet()) as d:
+        >>> aysnc with dendrite(wallet = Wallet()) as d:
         >>>     print(d)
         >>>     d( <axon> ) # ping axon
         >>>     d( [<axons>] ) # ping multiple
@@ -89,7 +90,7 @@ class dendrite(torch.nn.Module):
     However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.
 
     Example without a context manager:
-        >>> d = dendrite(wallet = cybertensor.wallet() )
+        >>> d = dendrite(wallet = Wallet() )
         >>> print(d)
         >>> d( <axon> ) # ping axon
         >>> d( [<axons>] ) # ping multiple
@@ -97,15 +98,15 @@ class dendrite(torch.nn.Module):
     """
 
     def __init__(
-        self, wallet: Optional[Union[cybertensor.wallet, cybertensor.keypair]] = None
+        self, wallet: Optional[Union[Wallet, cybertensor.keypair]] = None
     ):
         """
         Initializes the Dendrite object, setting up essential properties.
 
         Args:
-            wallet (Optional[Union['cybertensor.wallet', 'cybertensor.keypair']], optional):
+            wallet (Optional[Union['Wallet', 'cybertensor.keypair']], optional):
                 The user's wallet or keypair used for signing messages. Defaults to None,
-                in which case a new cybertensor.wallet().hotkey is generated and used.
+                in which case a new Wallet().hotkey is generated and used.
         """
         # Initialize the parent class
         super(dendrite, self).__init__()
@@ -118,8 +119,8 @@ class dendrite(torch.nn.Module):
 
         # If a wallet or keypair is provided, use its hotkey. If not, generate a new one.
         self.keypair = (
-            wallet.hotkey if isinstance(wallet, cybertensor.wallet) else wallet
-        ) or cybertensor.wallet().hotkey
+            wallet.hotkey if isinstance(wallet, Wallet) else wallet
+        ) or Wallet().hotkey
 
         self.synapse_history: list = []
 

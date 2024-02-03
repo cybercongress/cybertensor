@@ -23,12 +23,13 @@ from typing import List, Union, Optional
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor.utils.balance import Balance
+from ..utils.balance import Balance
+from ..wallet import Wallet
 
 
 def add_stake_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkey: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -36,7 +37,7 @@ def add_stake_message(
 ) -> bool:
     r"""Adds the specified amount of stake to passed hotkey uid.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         hotkey (Optional[str]):
             address of the hotkey account to stake to
@@ -194,7 +195,7 @@ def add_stake_message(
 
 def add_stake_multiple_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkeys: List[str],
     amounts: List[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
@@ -202,7 +203,7 @@ def add_stake_multiple_message(
 ) -> bool:
     r"""Adds stake to each hotkey in the list, using each amount, from a common coldkey.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object for the coldkey.
         hotkeys (List[str]):
             List of hotkeys to stake to.
@@ -405,7 +406,7 @@ def add_stake_multiple_message(
 
 def __do_add_stake_single(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     hotkey: str,
     amount: "cybertensor.Balance",
     wait_for_finalization: bool = True,
@@ -413,7 +414,7 @@ def __do_add_stake_single(
     r"""
     Executes a stake call to the chain using the wallet and amount specified.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         hotkey (str):
             Hotkey to stake to.

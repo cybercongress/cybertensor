@@ -26,11 +26,12 @@ from rich.prompt import Confirm
 import cybertensor
 from ..utils import is_valid_address
 from ..utils.balance import Balance
+from ..wallet import Wallet
 
 
 def transfer_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     dest: Union[Address, str],
     amount: Union[Balance, float],
     wait_for_inclusion: bool = True,
@@ -40,7 +41,7 @@ def transfer_message(
 ) -> bool:
     r"""Transfers funds from this wallet to the destination public key address
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object to make transfer from.
         dest (Union[cosmpy.crypto.address.Address, str]):
             Destination public key address of a receiver.

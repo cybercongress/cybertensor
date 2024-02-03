@@ -21,13 +21,13 @@ import json
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.networking as net
-from cybertensor.types import AxonServeCallParams
+from ..utils import networking as net
+from ..types import AxonServeCallParams
 
 
 def serve_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     ip: str,
     port: int,
     protocol: int,
@@ -39,7 +39,7 @@ def serve_message(
 ) -> bool:
     r"""Subscribes an cybertensor endpoint to the substensor chain.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4

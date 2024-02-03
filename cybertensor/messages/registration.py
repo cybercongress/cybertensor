@@ -24,13 +24,14 @@ import torch
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor import Balance
-from cybertensor.utils.registration import POWSolution, create_pow
+from ..utils.balance import Balance
+from ..utils.registration import POWSolution, create_pow
+from ..wallet import Wallet
 
 
 def register_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     wait_for_finalization: bool = True,
     prompt: bool = False,
@@ -45,7 +46,7 @@ def register_message(
 ) -> bool:
     r"""Registers the wallet to chain.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.
@@ -211,14 +212,14 @@ def register_message(
 
 def burned_register_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
     r"""Registers the wallet to chain by recycling GBOOT.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             The netuid of the subnet to register on.

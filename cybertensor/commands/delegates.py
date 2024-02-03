@@ -29,13 +29,14 @@ from tqdm import tqdm
 
 import cybertensor
 from . import defaults
+from ..wallet import Wallet
 from .utils import DelegatesDetails
 
 
-def _get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
@@ -48,7 +49,7 @@ console = cybertensor.__console__
 # Uses rich console to pretty print a table of delegates.
 def show_delegates(
     # TODO revisit
-    config: "cybertensor.config",
+    config: "Config",
     delegates: List["cybertensor.DelegateInfo"],
     prev_delegates: Optional[List["cybertensor.DelegateInfo"]],
     width: Optional[int] = None,
@@ -257,7 +258,7 @@ class DelegateStakeCommand:
     def run(cli):
         """Delegates stake to a chain delegate."""
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor = cybertensor.cwtensor(config=config)
         cwtensor.delegate(
             wallet=wallet,
@@ -286,11 +287,11 @@ class DelegateStakeCommand:
         delegate_stake_parser.add_argument(
             "--amount", dest="amount", type=float, required=False
         )
-        cybertensor.wallet.add_args(delegate_stake_parser)
+        Wallet.add_args(delegate_stake_parser)
         cybertensor.cwtensor.add_args(delegate_stake_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.get("delegatekey"):
             # Check for delegates.
             with cybertensor.__console__.status(":satellite: Loading delegates..."):
@@ -381,7 +382,7 @@ class DelegateUnstakeCommand:
     def run(cli):
         """Undelegates stake from a chain delegate."""
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor = cybertensor.cwtensor(config=config)
         cwtensor.undelegate(
             wallet=wallet,
@@ -410,11 +411,11 @@ class DelegateUnstakeCommand:
         undelegate_stake_parser.add_argument(
             "--amount", dest="amount", type=float, required=False
         )
-        cybertensor.wallet.add_args(undelegate_stake_parser)
+        Wallet.add_args(undelegate_stake_parser)
         cybertensor.cwtensor.add_args(undelegate_stake_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -542,7 +543,7 @@ class ListDelegatesCommand:
         cybertensor.cwtensor.add_args(list_delegates_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         pass
 
 
@@ -580,7 +581,7 @@ class NominateCommand:
     @staticmethod
     def run(cli):
         r"""Nominate wallet."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Unlock the wallet.
@@ -624,11 +625,11 @@ class NominateCommand:
         nominate_parser = parser.add_parser(
             "nominate", help="""Become a delegate on the network"""
         )
-        cybertensor.wallet.add_args(nominate_parser)
+        Wallet.add_args(nominate_parser)
         cybertensor.cwtensor.add_args(nominate_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -687,7 +688,7 @@ class MyDelegatesCommand:
         if config.get("all", d=None) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=config)]
+            wallets = [Wallet(config=config)]
         cwtensor = cybertensor.cwtensor(config=config)
 
         table = Table(show_footer=True, pad_edge=False, box=None, expand=True)
@@ -829,11 +830,11 @@ class MyDelegatesCommand:
             help="""Check all coldkey wallets.""",
             default=False,
         )
-        cybertensor.wallet.add_args(delegate_stake_parser)
+        Wallet.add_args(delegate_stake_parser)
         cybertensor.cwtensor.add_args(delegate_stake_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if (
             not config.get("all", d=None)
             and not config.is_set("wallet.name")

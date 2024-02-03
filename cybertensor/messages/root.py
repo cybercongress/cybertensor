@@ -32,13 +32,13 @@ logger = logger.opt(colors=True)
 
 def root_register_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
     r"""Registers the wallet to root network.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -98,7 +98,7 @@ def root_register_message(
 
 def set_root_weights_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
     version_key: int = 0,
@@ -107,7 +107,7 @@ def set_root_weights_message(
 ) -> bool:
     r"""Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuids (List[int]):
             netuid of the subnet to set weights for.

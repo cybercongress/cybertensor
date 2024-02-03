@@ -40,7 +40,9 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 import cybertensor
-from cybertensor.keypair import Keypair
+from .keypair import Keypair
+from .wallet import Wallet
+from .config import Config
 
 """ Create and init Axon, which services Forward and Backward requests from other neurons.
 """
@@ -167,8 +169,8 @@ class axon:
 
     def __init__(
         self,
-        wallet: "cybertensor.wallet" = None,
-        config: Optional["cybertensor.config"] = None,
+        wallet: "Wallet" = None,
+        config: Optional["Config"] = None,
         port: Optional[int] = None,
         ip: Optional[str] = None,
         external_ip: Optional[str] = None,
@@ -177,9 +179,9 @@ class axon:
     ) -> "cybertensor.axon":
         r"""Creates a new cybertensor.Axon object from passed arguments.
         Args:
-            config (:obj:`Optional[cybertensor.config]`, `optional`):
+            config (:obj:`Optional[Config]`, `optional`):
                 cybertensor.axon.config()
-            wallet (:obj:`Optional[cybertensor.wallet]`, `optional`):
+            wallet (:obj:`Optional[Wallet]`, `optional`):
                 cybertensor wallet with hotkey and coldkeypub.
             port (:type:`Optional[int]`, `optional`):
                 Binding port.
@@ -213,7 +215,7 @@ class axon:
         self.config = config
 
         # Get wallet or use default.
-        self.wallet = wallet or cybertensor.wallet()
+        self.wallet = wallet or Wallet()
 
         # Build axon objects.
         self.uuid = str(uuid.uuid1())
@@ -409,16 +411,16 @@ class axon:
         return self
 
     @classmethod
-    def config(cls) -> "cybertensor.config":
+    def config(cls) -> "Config":
         """
         Parses command-line arguments to form a cybertensor configuration object.
 
         Returns:
-            cybertensor.config: Configuration object with settings from command-line arguments.
+            Config: Configuration object with settings from command-line arguments.
         """
         parser = argparse.ArgumentParser()
         axon.add_args(parser)  # Add specific axon-related arguments
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -543,12 +545,12 @@ class axon:
         return body_dict
 
     @classmethod
-    def check_config(cls, config: "cybertensor.config"):
+    def check_config(cls, config: "Config"):
         """
         This method checks the configuration for the axon's port and wallet.
 
         Args:
-            config (cybertensor.config): The config object holding axon settings.
+            config (Config): The config object holding axon settings.
 
         Raises:
             AssertionError: If the axon or external ports are not in range [1024, 65535]

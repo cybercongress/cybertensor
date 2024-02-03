@@ -26,6 +26,7 @@ import torch
 from rich.prompt import Confirm, PromptBase
 
 import cybertensor
+from .wallets import Wallet
 from . import defaults
 
 console = cybertensor.__console__
@@ -47,7 +48,7 @@ class IntListPrompt(PromptBase):
 
 
 def check_netuid_set(
-    config: "cybertensor.config",
+    config: "Config",
     cwtensor: "cybertensor.cwtensor",
     allow_none: bool = False,
 ):
@@ -78,7 +79,7 @@ def check_netuid_set(
             raise ValueError('netuid must be an integer or "None" (if applicable)')
 
 
-def check_for_cuda_reg_config(config: "cybertensor.config") -> None:
+def check_for_cuda_reg_config(config: "Config") -> None:
     """Checks, when CUDA is available, if the user would like to register with their CUDA device."""
     if torch.cuda.is_available():
         if not config.no_prompt:
@@ -131,7 +132,7 @@ def check_for_cuda_reg_config(config: "cybertensor.config") -> None:
                 config.pow_register.cuda.use_cuda = defaults.pow_register.cuda.use_cuda
 
 
-def get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
+def get_hotkey_wallets_for_wallet(wallet) -> List["Wallet"]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + "/" + wallet.name + "/hotkeys"
     try:
@@ -140,7 +141,7 @@ def get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = cybertensor.wallet(
+            hotkey_for_name = Wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (
@@ -153,17 +154,17 @@ def get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
     return hotkey_wallets
 
 
-def get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
     return wallets
 
 
-def get_all_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def get_all_wallets_for_path(path: str) -> List["Wallet"]:
     all_wallets = []
     cold_wallets = get_coldkey_wallets_for_path(path)
     for cold_wallet in cold_wallets:

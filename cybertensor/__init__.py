@@ -195,12 +195,13 @@ from .stream import *
 from .tensor import *
 from .axon import axon as axon
 from .dendrite import dendrite as dendrite
+from .config import Config
 
 configs = [
     axon.config(),
-    cybertensor.config(),
+    Config(),
     PriorityThreadPoolExecutor.config(),
-    wallet.config(),
+    Wallet.config(),
     logging.config(),
 ]
-defaults = config.merge_all(configs)
+defaults = Config.merge_all(configs)

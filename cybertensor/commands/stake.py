@@ -22,8 +22,9 @@ import sys
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor.utils.balance import Balance
+from ..utils.balance import Balance
 from .utils import get_hotkey_wallets_for_wallet
+from ..wallet import Wallet
 
 console = cybertensor.__console__
 
@@ -60,14 +61,14 @@ class StakeCommand:
     def run(cli):
         r"""Stake token of amount to hotkey(s)."""
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor = cybertensor.cwtensor(config=config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_stake_to: List[Tuple[Optional[str], str]] = []
         if config.get("all_hotkeys"):
             # Stake to all hotkeys.
-            all_hotkeys: List[cybertensor.wallet] = get_hotkey_wallets_for_wallet(
+            all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
                 wallet=wallet
             )
             # Get the hotkeys to exclude. (d)efault to no exclusions.
@@ -88,7 +89,7 @@ class StakeCommand:
                 else:
                     # If the hotkey is not a valid address, we assume it is a hotkey name.
                     #  We then get the hotkey from the wallet and add it to the list.
-                    wallet_ = cybertensor.wallet(
+                    wallet_ = Wallet(
                         config=config, hotkey=hotkey_or_hotkey_name
                     )
                     hotkeys_to_stake_to.append(
@@ -102,7 +103,7 @@ class StakeCommand:
                 hotkeys_to_stake_to = [(None, hotkey_or_name)]
             else:
                 # Hotkey is not a valid address, so we assume it is a hotkey name.
-                wallet_ = cybertensor.wallet(config=config, hotkey=hotkey_or_name)
+                wallet_ = Wallet(config=config, hotkey=hotkey_or_name)
                 hotkeys_to_stake_to = [
                     (wallet_.hotkey_str, wallet_.hotkey.address)
                 ]
@@ -111,7 +112,7 @@ class StakeCommand:
             #  so we stake to that single hotkey.
             assert config.wallet.hotkey is not None
             hotkeys_to_stake_to = [
-                (None, cybertensor.wallet(config=config).hotkey.address)
+                (None, Wallet(config=config).hotkey.address)
             ]
 
         # Get coldkey balance
@@ -199,7 +200,7 @@ class StakeCommand:
         )
 
     @classmethod
-    def check_config(cls, config: "cybertensor.config"):
+    def check_config(cls, config: "Config"):
 
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
@@ -273,7 +274,7 @@ class StakeCommand:
             default=False,
             help="""To specify all hotkeys. Specifying hotkeys will exclude them from this all.""",
         )
-        cybertensor.wallet.add_args(stake_parser)
+        Wallet.add_args(stake_parser)
         cybertensor.cwtensor.add_args(stake_parser)
 
 
@@ -294,17 +295,17 @@ import os
 from typing import List, Tuple, Optional, Dict
 
 
-def _get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
     return wallets
 
 
-def _get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
+def _get_hotkey_wallets_for_wallet(wallet) -> List["Wallet"]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + "/" + wallet.name + "/hotkeys"
     try:
@@ -313,7 +314,7 @@ def _get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = cybertensor.wallet(
+            hotkey_for_name = Wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (
@@ -359,7 +360,7 @@ class StakeShow:
         if cli.config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=cli.config)]
+            wallets = [Wallet(config=cli.config)]
 
         # TODO revisit
         # registered_delegate_info: Optional[
@@ -530,7 +531,7 @@ class StakeShow:
         cybertensor.__console__.print(table)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if (
             not config.get("all", d=None)
             and not config.is_set("wallet.name")
@@ -551,5 +552,5 @@ class StakeShow:
             default=False,
         )
 
-        cybertensor.wallet.add_args(list_parser)
+        Wallet.add_args(list_parser)
         cybertensor.cwtensor.add_args(list_parser)

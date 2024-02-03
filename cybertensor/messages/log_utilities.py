@@ -19,7 +19,7 @@ class ValidatorLogger:
     Including console log styling, console table print and prometheus.
 
     Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     """
 
@@ -576,7 +576,7 @@ class ValidatorLogger:
         )
 
     def print_console_validator_identifier(
-        self, uid: int, wallet: "cybertensor.wallet", external_ip: str
+        self, uid: int, wallet: "Wallet", external_ip: str
     ):
         r"""Console print for validator identifier."""
 
@@ -670,7 +670,7 @@ class ValidatorPrometheus:
     r"""
     Prometheis logging object for validator.
         Args:
-            config (:obj:`cybertensor.Config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.server.config()
     """
 
@@ -698,7 +698,7 @@ class ValidatorPrometheus:
         parameters: torch.nn.parameter.Parameter,
         uid: int,
         network: str,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
     ):
         r"""Set up prometheus running info."""
 

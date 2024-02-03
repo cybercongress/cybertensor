@@ -20,6 +20,7 @@ from typing import Callable
 from loguru import logger
 
 import cybertensor
+from .config import Config
 
 # Workers are created as daemon threads. This is done to allow the interpreter
 # to exit when there are still idle threads in a ThreadPoolExecutor's thread
@@ -193,13 +194,13 @@ class PriorityThreadPoolExecutor(_base.Executor):
             pass
 
     @classmethod
-    def config(cls) -> "cybertensor.config":
+    def config(cls) -> "Config":
         """Get config from the argument parser
-        Return: cybertensor.config object
+        Return: Config object
         """
         parser = argparse.ArgumentParser()
         PriorityThreadPoolExecutor.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @property
     def is_empty(self):

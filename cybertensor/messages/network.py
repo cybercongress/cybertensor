@@ -22,12 +22,13 @@ from cosmpy.crypto.keypairs import PrivateKey
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor import Balance
+from ..utils.balance import Balance
+from ..wallet import Wallet
 
 
 def register_subnetwork_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
@@ -35,7 +36,7 @@ def register_subnetwork_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the transaction to be finalized on the chain before returning true,
@@ -114,7 +115,7 @@ from ..commands.network import HYPERPARAMS
 
 def set_hyperparameter_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     parameter: str,
     value,
@@ -125,7 +126,7 @@ def set_hyperparameter_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             Subnetwork uid.

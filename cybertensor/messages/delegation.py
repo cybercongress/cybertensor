@@ -24,7 +24,7 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-from cybertensor.utils.balance import Balance
+from ..utils.balance import Balance
 from ..errors import *
 
 logger = logger.opt(colors=True)
@@ -32,12 +32,12 @@ logger = logger.opt(colors=True)
 
 def nominate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     wait_for_finalization: bool = True,
 ) -> bool:
     r"""Becomes a delegate for the hotkey.
     Args:
-        wallet ( cybertensor.wallet ):
+        wallet ( Wallet ):
             The wallet to become a delegate for.
     Returns:
         success (bool):
@@ -95,7 +95,7 @@ def nominate_message(
 
 def delegate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = False,
@@ -103,7 +103,7 @@ def delegate_message(
 ) -> bool:
     r"""Delegates the specified amount of stake to the passed delegate.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
@@ -229,7 +229,7 @@ def delegate_message(
 
 def undelegate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -237,7 +237,7 @@ def undelegate_message(
 ) -> bool:
     r"""Un-delegates stake from the passed delegate.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
