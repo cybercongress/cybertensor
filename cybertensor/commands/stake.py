@@ -21,11 +21,9 @@ import sys
 
 from rich.prompt import Confirm
 
-import cybertensor
-from ..utils.balance import Balance
 from .utils import get_hotkey_wallets_for_wallet
-from ..wallet import Wallet
-from .. import __console__ as console
+from ..config import Config
+from ..utils.balance import Balance
 
 
 class StakeCommand:
@@ -278,6 +276,8 @@ class StakeCommand:
 
 
 ### Stake list.
+import os
+from typing import List, Tuple, Optional, Dict
 import argparse
 import cybertensor
 from tqdm import tqdm
@@ -285,12 +285,11 @@ from rich.table import Table
 from rich.prompt import Prompt
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
+
 from .utils import DelegatesDetails
 from . import defaults
+from ..wallet import Wallet
 from .. import __console__ as console
-
-import os
-from typing import List, Tuple, Optional, Dict
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:

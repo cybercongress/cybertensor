@@ -220,8 +220,8 @@ class Config(DefaultMunch):
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: "config"):
-        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: "Config"):
+        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(".")
             head = _config
@@ -268,7 +268,7 @@ class Config(DefaultMunch):
 
         return params
 
-    def __deepcopy__(self, memo) -> "config":
+    def __deepcopy__(self, memo) -> "Config":
         _default = self.__default__
 
         config_state = self.__getstate__()
@@ -304,7 +304,7 @@ class Config(DefaultMunch):
         cleaned = Config._remove_private_keys(visible)
         return "\n" + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -> "config":
+    def copy(self) -> "Config":
         return copy.deepcopy(self)
 
     def to_string(self, items) -> str:
@@ -341,7 +341,7 @@ class Config(DefaultMunch):
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List["config"]) -> "config":
+    def merge_all(cls, configs: List["Config"]) -> "Config":
         """
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.

@@ -181,7 +181,7 @@ class Wallet:
 
     def create_if_non_existent(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -196,7 +196,7 @@ class Wallet:
 
     def create(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -219,7 +219,7 @@ class Wallet:
 
     def recreate(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -421,7 +421,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -442,7 +442,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -469,7 +469,7 @@ class Wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -490,7 +490,7 @@ class Wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -516,7 +516,7 @@ class Wallet:
         public_key: Optional[Union[str, bytes]] = None,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the coldkeypub from passed address or public_key and saves the file
            Requires either address or public_key to be passed.
         Args:
@@ -570,7 +570,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -580,7 +580,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -590,7 +590,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     def regenerate_coldkey(
@@ -599,7 +599,7 @@ class Wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user's password and saves the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -661,7 +661,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -671,7 +671,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -681,7 +681,7 @@ class Wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     def regenerate_hotkey(
@@ -690,7 +690,7 @@ class Wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the hotkey from passed mnemonic, encrypts it with the user's password and save the file
         Args:
             mnemonic: (Union[list, str], optional):

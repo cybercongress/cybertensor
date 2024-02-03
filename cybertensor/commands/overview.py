@@ -33,6 +33,7 @@ from .utils import (
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
 )
+from ..config import Config
 from ..wallet import Wallet
 from .. import __console__ as console
 

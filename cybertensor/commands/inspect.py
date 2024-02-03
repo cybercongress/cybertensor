@@ -27,6 +27,7 @@ from tqdm import tqdm
 import cybertensor
 from . import defaults
 from .utils import get_delegates_details, DelegatesDetails
+from ..config import Config
 from ..wallet import Wallet
 from .. import __console__ as console
 

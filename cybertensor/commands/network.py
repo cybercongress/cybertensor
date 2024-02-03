@@ -27,9 +27,10 @@ from rich.table import Table
 
 import cybertensor
 from . import defaults
-from ..wallet import Wallet
 from .utils import DelegatesDetails, check_netuid_set
 from .. import __console__ as console
+from ..config import Config
+from ..wallet import Wallet
 
 
 class RegisterSubnetworkCommand:

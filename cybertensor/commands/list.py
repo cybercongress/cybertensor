@@ -24,6 +24,7 @@ from rich.tree import Tree
 
 import cybertensor
 from ..wallet import Wallet
+from ..config import Config
 
 
 class ListCommand:

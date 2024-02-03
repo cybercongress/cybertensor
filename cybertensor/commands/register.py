@@ -22,12 +22,12 @@ import sys
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
-from ..utils.balance import Balance
 from . import defaults
-from ..config import Config
 from .utils import check_netuid_set, check_for_cuda_reg_config
-from ..wallet import Wallet
 from .. import __console__ as console
+from ..config import Config
+from ..utils.balance import Balance
+from ..wallet import Wallet
 
 
 class RegisterCommand:

@@ -27,6 +27,7 @@ from rich.table import Table
 import cybertensor
 from . import defaults
 from ..wallet import Wallet
+from ..config import Config
 from .. import __console__ as console
 
 

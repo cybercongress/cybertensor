@@ -29,9 +29,10 @@ from tqdm import tqdm
 
 import cybertensor
 from . import defaults
-from ..wallet import Wallet
 from .utils import DelegatesDetails
 from .. import __console__ as console
+from ..config import Config
+from ..wallet import Wallet
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:

@@ -21,9 +21,10 @@ import json
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils import networking as net
-from ..types import AxonServeCallParams
 from .. import __console__ as console
+from ..types import AxonServeCallParams
+from ..utils import networking as net
+from ..wallet import Wallet
 
 
 def serve_message(
@@ -38,7 +39,7 @@ def serve_message(
     wait_for_finalization=True,
     prompt: bool = False,
 ) -> bool:
-    r"""Subscribes an cybertensor endpoint to the substensor chain.
+    r"""Subscribes a cybertensor endpoint to the substensor chain.
     Args:
         wallet (Wallet):
             cybertensor wallet object.

@@ -24,8 +24,9 @@ from rich.prompt import Prompt
 
 import cybertensor
 from . import defaults
-from ..wallet import Wallet
 from .. import __console__ as console
+from ..config import Config
+from ..wallet import Wallet
 
 
 class TransferCommand:

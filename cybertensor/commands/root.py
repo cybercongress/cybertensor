@@ -29,8 +29,9 @@ from rich.table import Table
 import cybertensor
 from . import defaults
 from .utils import DelegatesDetails
-from ..wallet import Wallet
 from .. import __console__ as console
+from ..config import Config
+from ..wallet import Wallet
 
 
 class RootRegisterCommand:

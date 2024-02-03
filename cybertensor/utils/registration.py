@@ -17,10 +17,10 @@ from rich import console as rich_console
 from rich import status as rich_status
 
 import cybertensor
-from ..wallet import Wallet
 from ._register_cuda import solve_cuda
 from .formatting import get_human_readable, millify
 from .. import __console__ as console
+from ..wallet import Wallet
 
 
 class CUDAException(Exception):
@@ -30,7 +30,7 @@ class CUDAException(Exception):
 
 
 def _hex_bytes_to_u8_list(hex_bytes: bytes):
-    hex_chunks = [int(hex_bytes[i : i + 2], 16) for i in range(0, len(hex_bytes), 2)]
+    hex_chunks = [int(hex_bytes[i: i + 2], 16) for i in range(0, len(hex_bytes), 2)]
     return hex_chunks
 
 
@@ -454,7 +454,7 @@ class RegistrationStatisticsLogger:
 
 
 def _solve_for_difficulty_fast(
-    cwtensor,
+    cwtensor: cybertensor.cwtensor,
     wallet: "Wallet",
     netuid: int,
     output_in_place: bool = True,
@@ -467,7 +467,7 @@ def _solve_for_difficulty_fast(
     """
     Solves the POW for registration using multiprocessing.
     Args:
-        cwtensor
+        cwtensor: cybertensor.cwtensor
             cwtensor to connect to for block information and to submit.
         wallet:
             wallet to use for registration.

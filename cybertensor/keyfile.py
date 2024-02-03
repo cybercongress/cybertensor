@@ -75,7 +75,7 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "Keypair":
         keyfile_dict = dict(json.loads(keyfile_data))
     except:
         string_value = str(keyfile_data)
-        raise cybertensor.KeyFileError(
+        raise KeyFileError(
             "Keypair could not be created from keyfile data: {}".format(string_value)
         )
 
@@ -91,7 +91,7 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "Keypair":
         )
 
     else:
-        raise cybertensor.KeyFileError(
+        raise KeyFileError(
             "Keypair could not be created from keyfile data: {}".format(keyfile_dict)
         )
 
@@ -288,7 +288,7 @@ def decrypt_keyfile_data(
                 try:
                     decrypted_keyfile_data = vault.load(keyfile_data)
                 except AnsibleVaultError:
-                    raise cybertensor.KeyFileError("Invalid password")
+                    raise KeyFileError("Invalid password")
             # Legacy decrypt.
             elif keyfile_data_is_encrypted_legacy(keyfile_data):
                 __SALT = (
@@ -306,12 +306,12 @@ def decrypt_keyfile_data(
                 decrypted_keyfile_data = cipher_suite.decrypt(keyfile_data)
             # Unknown.
             else:
-                raise cybertensor.KeyFileError(
+                raise KeyFileError(
                     "keyfile data: {} is corrupt".format(keyfile_data)
                 )
 
     except (InvalidSignature, InvalidKey, InvalidToken):
-        raise cybertensor.KeyFileError("Invalid password")
+        raise KeyFileError("Invalid password")
 
     if not isinstance(decrypted_keyfile_data, bytes):
         decrypted_keyfile_data = json.dumps(decrypted_keyfile_data).encode()
@@ -573,15 +573,15 @@ class keyfile:
             KeyFileError: Raised if the file does not exist, is not readable, or writable.
         """
         if not self.exists_on_device():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} does not exist".format(self.path)
             )
         if not self.is_readable():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} is not readable".format(self.path)
             )
         if not self.is_writable():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} is not writable".format(self.path)
             )
         keyfile_data = self._read_keyfile_data_from_file()
@@ -599,15 +599,15 @@ class keyfile:
             KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
         """
         if not self.exists_on_device():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} does not exist".format(self.path)
             )
         if not self.is_readable():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} is not readable".format(self.path)
             )
         if not self.is_writable():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} is not writable".format(self.path)
             )
         keyfile_data = self._read_keyfile_data_from_file()
@@ -627,11 +627,11 @@ class keyfile:
             KeyFileError: Raised if the file does not exist or is not readable.
         """
         if not self.exists_on_device():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} does not exist".format(self.path)
             )
         if not self.is_readable():
-            raise cybertensor.KeyFileError(
+            raise KeyFileError(
                 "Keyfile at: {} is not readable".format(self.path)
             )
         with open(self.path, "rb") as file:
@@ -649,7 +649,7 @@ class keyfile:
         # Check overwrite.
         if self.exists_on_device() and not overwrite:
             if not self._may_overwrite():
-                raise cybertensor.KeyFileError(
+                raise KeyFileError(
                     "Keyfile at: {} is not writable".format(self.path)
                 )
         with open(self.path, "wb") as keyfile:

@@ -1,7 +1,7 @@
 import datetime
 import math
 import time
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 from prometheus_client import Counter, Info, Histogram, Gauge
 
 import torch
@@ -11,6 +11,8 @@ from rich.style import Style
 from rich.table import Table
 
 import cybertensor
+from ..wallet import Wallet
+from ..config import Config
 
 
 class ValidatorLogger:
@@ -23,7 +25,7 @@ class ValidatorLogger:
                 cybertensor.server.config()
     """
 
-    def __init__(self, config=None):
+    def __init__(self, config: Optional[Config] = None):
         # Neuron stats recorded by validator neuron/nucleus
         #   [Column_name, key_name, format_string, rich_style]  # description
         self.config = config
@@ -674,7 +676,7 @@ class ValidatorPrometheus:
                 cybertensor.server.config()
     """
 
-    def __init__(self, config):
+    def __init__(self, config: Config):
         self.config = config
         self.info = Info("neuron_info", "Info summaries for the running server-miner.")
         self.gauges = Gauge(

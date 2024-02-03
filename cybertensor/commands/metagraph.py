@@ -23,6 +23,7 @@ from rich.table import Table
 import cybertensor
 from .utils import check_netuid_set
 from .. import __console__ as console
+from ..config import Config
 
 
 # TODO change tokens in table to boot and gigaboot
