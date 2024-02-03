@@ -35,8 +35,7 @@ from .utils import (
     get_all_wallets_for_path,
 )
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class OverviewCommand:
@@ -80,7 +79,6 @@ class OverviewCommand:
     @staticmethod
     def run(cli: "cybertensor.cli"):
         r"""Prints an overview for the wallet's colkey."""
-        console = cybertensor.__console__
         wallet = Wallet(config=cli.config)
         cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(config=cli.config)
 

@@ -20,6 +20,7 @@ import cybertensor
 from ..wallet import Wallet
 from ._register_cuda import solve_cuda
 from .formatting import get_human_readable, millify
+from .. import __console__ as console
 
 
 class CUDAException(Exception):
@@ -579,7 +580,6 @@ def _solve_for_difficulty_fast(
 
     start_time_perpetual = time.time()
 
-    console = cybertensor.__console__
     logger = RegistrationStatisticsLogger(console, output_in_place)
     logger.start()
 
@@ -927,7 +927,6 @@ def _solve_for_difficulty_fast_cuda(
 
         start_time_perpetual = time.time()
 
-        console = cybertensor.__console__
         logger = RegistrationStatisticsLogger(console, output_in_place)
         logger.start()
 

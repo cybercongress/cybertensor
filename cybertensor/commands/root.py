@@ -30,8 +30,7 @@ import cybertensor
 from . import defaults
 from .utils import DelegatesDetails
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class RootRegisterCommand:
@@ -190,7 +189,7 @@ class RootList:
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -388,7 +387,7 @@ class RootGetWeightsCommand:
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):

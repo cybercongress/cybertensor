@@ -27,6 +27,7 @@ from rich.table import Table
 import cybertensor
 from . import defaults
 from ..wallet import Wallet
+from .. import __console__ as console
 
 
 # TODO rewrite to use raw pubkey against hex or rewrite keypair/keyfile to use hex
@@ -805,7 +806,7 @@ class WalletBalanceCommand:
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):

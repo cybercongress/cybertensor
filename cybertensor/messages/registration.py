@@ -27,6 +27,7 @@ import cybertensor
 from ..utils.balance import Balance
 from ..utils.registration import POWSolution, create_pow
 from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def register_message(
@@ -75,12 +76,12 @@ def register_message(
             If we did not wait for finalization / inclusion, the response is true.
     """
     if not cwtensor.subnet_exists(netuid):
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{netuid}[/bold white] does not exist."
         )
         return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Checking Account on [bold]subnet:{netuid}[/bold]..."
     ):
         neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
@@ -104,14 +105,14 @@ def register_message(
     # Attempt rolling registration.
     attempts = 1
     while True:
-        cybertensor.__console__.print(
+        console.print(
             f":satellite: Registering...({attempts}/{max_allowed_attempts})"
         )
         # Solve latest POW.
         if cuda:
             if not torch.cuda.is_available():
                 if prompt:
-                    cybertensor.__console__.error("CUDA is not available.")
+                    console.error("CUDA is not available.")
                 return False
             pow_result: Optional[POWSolution] = create_pow(
                 cwtensor,
@@ -144,14 +145,14 @@ def register_message(
                 netuid=netuid, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
+                console.print(
                     f":white_heavy_check_mark: [green]Already registered on netuid:{netuid}[/green]"
                 )
                 return True
 
         # pow successful, proceed to submit pow to chain for registration
         else:
-            with cybertensor.__console__.status(":satellite: Submitting POW..."):
+            with console.status(":satellite: Submitting POW..."):
                 # check if pow result is still valid
                 while not pow_result.is_stale(cwtensor=cwtensor):
                     result: Tuple[bool, Optional[str]] = cwtensor._do_pow_register(
@@ -165,48 +166,48 @@ def register_message(
                     if success != True or success is False:
                         if "key is already registered" in err_msg:
                             # Error meant that the key is already registered.
-                            cybertensor.__console__.print(
+                            console.print(
                                 f":white_heavy_check_mark: [green]Already Registered on [bold]subnet:{netuid}[/bold][/green]"
                             )
                             return True
 
-                        cybertensor.__console__.print(
+                        console.print(
                             f":cross_mark: [red]Failed[/red]: error:{err_msg}"
                         )
                         time.sleep(0.5)
 
                     # Successful registration, final check for neuron and pubkey
                     else:
-                        cybertensor.__console__.print(":satellite: Checking Balance...")
+                        console.print(":satellite: Checking Balance...")
                         is_registered = cwtensor.is_hotkey_registered(
                             netuid=netuid, hotkey=wallet.hotkey.address
                         )
                         if is_registered:
-                            cybertensor.__console__.print(
+                            console.print(
                                 ":white_heavy_check_mark: [green]Registered[/green]"
                             )
                             return True
                         else:
                             # neuron not found, try again
-                            cybertensor.__console__.print(
+                            console.print(
                                 ":cross_mark: [red]Unknown error. Neuron not found.[/red]"
                             )
                             continue
                 else:
                     # Exited loop because pow is no longer valid.
-                    cybertensor.__console__.print("[red]POW is stale.[/red]")
+                    console.print("[red]POW is stale.[/red]")
                     # Try again.
                     continue
 
         if attempts < max_allowed_attempts:
             # Failed registration, retry pow
             attempts += 1
-            cybertensor.__console__.print(
+            console.print(
                 f":satellite: Failed registration, retrying pow ...({attempts}/{max_allowed_attempts})"
             )
         else:
             # Failed to register after max attempts.
-            cybertensor.__console__.print("[red]No more attempts.[/red]")
+            console.print("[red]No more attempts.[/red]")
             return False
 
 
@@ -234,13 +235,13 @@ def burned_register_message(
             If we did not wait for finalization / inclusion, the response is true.
     """
     if not cwtensor.subnet_exists(netuid):
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Failed[/red]: error: [bold white]subnet:{netuid}[/bold white] does not exist."
         )
         return False
 
     wallet.coldkey  # unlock coldkey
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Checking Account on [bold]subnet:{netuid}[/bold]..."
     ):
         neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
@@ -251,7 +252,7 @@ def burned_register_message(
 
         burn_amount = Balance(cwtensor.burn(netuid=netuid))
         if not neuron.is_null:
-            cybertensor.__console__.print(
+            console.print(
                 f":white_heavy_check_mark: [green]Already Registered[/green]:\n"
                 f"uid: [bold white]{neuron.uid}[/bold white]\n"
                 f"netuid: [bold white]{neuron.netuid}[/bold white]\n"
@@ -265,7 +266,7 @@ def burned_register_message(
         if not Confirm.ask(f"Recycle {burn_amount} to register on subnet:{netuid}?"):
             return False
 
-    with cybertensor.__console__.status(":satellite: Recycling BOOT for Registration..."):
+    with console.status(":satellite: Recycling BOOT for Registration..."):
         success, err_msg = cwtensor._do_burned_register(
             netuid=netuid,
             burn=burn_amount.__int__(),
@@ -274,19 +275,19 @@ def burned_register_message(
         )
 
         if success is not True:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
             time.sleep(0.5)
 
         # Successful registration, final check for neuron and pubkey
         else:
-            cybertensor.__console__.print(":satellite: Checking Balance...")
+            console.print(":satellite: Checking Balance...")
             new_balance = cwtensor.get_balance(
                 wallet.coldkeypub.address
             )
 
-            cybertensor.__console__.print(
+            console.print(
                 f"Balance:\n"
                 f"  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
             )
@@ -294,13 +295,13 @@ def burned_register_message(
                 netuid=netuid, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Registered[/green]"
                 )
                 return True
             else:
                 # neuron not found, try again
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark: [red]Unknown error. Neuron not found.[/red]"
                 )
 

@@ -25,7 +25,8 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from ..utils import weight_utils
+from .. import __console__ as console
 
 logger = logger.opt(colors=True)
 
@@ -57,7 +58,7 @@ def root_register_message(
         netuid=0, hotkey=wallet.hotkey.address
     )
     if is_registered:
-        cybertensor.__console__.print(
+        console.print(
             ":white_heavy_check_mark: [green]Already registered on root network.[/green]"
         )
         return True
@@ -67,14 +68,14 @@ def root_register_message(
         if not Confirm.ask("Register to root network?"):
             return False
 
-    with cybertensor.__console__.status(":satellite: Registering to root network..."):
+    with console.status(":satellite: Registering to root network..."):
         success, err_msg = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
 
         if success != True or success is False:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
             time.sleep(0.5)
@@ -85,13 +86,13 @@ def root_register_message(
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Registered[/green]"
                 )
                 return True
             else:
                 # neuron not found, try again
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark: [red]Unknown error. Neuron not found.[/red]"
                 )
 
@@ -149,7 +150,7 @@ def set_root_weights_message(
     formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
         x=weights, limit=max_weight_limit
     )
-    cybertensor.__console__.print(
+    console.print(
         f"\nNormalized weights: \n\t{weights} -> {formatted_weights}\n"
     )
 
@@ -162,7 +163,7 @@ def set_root_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Setting root weights on [white]{cwtensor.network}[/white] ..."
     ):
         try:
@@ -178,13 +179,13 @@ def set_root_weights_message(
                 wait_for_finalization=wait_for_finalization,
             )
 
-            cybertensor.__console__.print(success, error_message)
+            console.print(success, error_message)
 
             if not wait_for_finalization:
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
                 cybertensor.logging.success(
@@ -193,7 +194,7 @@ def set_root_weights_message(
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f":cross_mark: [red]Failed[/red]: error:{error_message}"
                 )
                 cybertensor.logging.warning(
@@ -204,7 +205,7 @@ def set_root_weights_message(
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{e}"
             )
             cybertensor.logging.warning(

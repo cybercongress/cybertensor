@@ -28,8 +28,7 @@ from rich.prompt import Confirm, PromptBase
 import cybertensor
 from .wallets import Wallet
 from . import defaults
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class IntListPrompt(PromptBase):

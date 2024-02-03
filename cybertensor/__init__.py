@@ -64,7 +64,7 @@ def turn_console_on():
     __console__ = Console()
 
 
-turn_console_off()
+turn_console_on()
 
 
 # Logging helpers.

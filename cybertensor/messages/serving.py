@@ -23,6 +23,7 @@ from rich.prompt import Confirm
 import cybertensor
 from ..utils import networking as net
 from ..types import AxonServeCallParams
+from .. import __console__ as console
 
 
 def serve_message(
@@ -167,7 +168,7 @@ def serve_axon_message(
     if axon.external_ip is None:
         try:
             external_ip = net.get_external_ip()
-            cybertensor.__console__.print(
+            console.print(
                 f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )
             cybertensor.logging.success(

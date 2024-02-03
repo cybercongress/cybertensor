@@ -25,8 +25,7 @@ from rich.prompt import Prompt
 import cybertensor
 from . import defaults
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class TransferCommand:
@@ -85,9 +84,9 @@ class TransferCommand:
         if not config.no_prompt:
             wallet = Wallet(config=config)
             cwtensor = cybertensor.cwtensor(config=config)
-            with cybertensor.__console__.status(":satellite: Checking Balance..."):
+            with console.status(":satellite: Checking Balance..."):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-                cybertensor.__console__.print(
+                console.print(
                     "Balance: [green]{}[/green]".format(account_balance)
                 )
 
@@ -100,12 +99,12 @@ class TransferCommand:
                     if config.amount <= 0:
                         raise ValueError("Zero or negative amount")
                 except ValueError:
-                    cybertensor.__console__.print(
+                    console.print(
                         f":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
                         None
                     )

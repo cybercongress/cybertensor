@@ -37,16 +37,18 @@ from rich.prompt import Confirm
 from termcolor import colored
 
 import cybertensor
+from .keypair import Keypair
+from . import __console__ as console
 from . import __chain_address_prefix__
 from .errors import KeyFileError
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
 
 
-def serialized_keypair_to_keyfile_data(keypair: "cybertensor.Keypair") -> bytes:
+def serialized_keypair_to_keyfile_data(keypair: "Keypair") -> bytes:
     """Serializes keypair object into keyfile data.
     Args:
-        keypair (cybertensor.Keypair): The keypair object to be serialized.
+        keypair (Keypair): The keypair object to be serialized.
     Returns:
         data (bytes): Serialized keypair data.
     """
@@ -59,12 +61,12 @@ def serialized_keypair_to_keyfile_data(keypair: "cybertensor.Keypair") -> bytes:
     return data
 
 
-def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "cybertensor.Keypair":
+def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "Keypair":
     """Deserializes Keypair object from passed keyfile data.
     Args:
         keyfile_data (bytes): The keyfile data as bytes to be loaded.
     Returns:
-        keypair (cybertensor.Keypair): The Keypair loaded from bytes.
+        keypair (Keypair): The Keypair loaded from bytes.
     Raises:
         KeyFileError: Raised if the passed bytes cannot construct a keypair object.
     """
@@ -78,13 +80,13 @@ def deserialize_keypair_from_keyfile_data(keyfile_data: bytes) -> "cybertensor.K
         )
 
     if "secretPhrase" in keyfile_dict and keyfile_dict["secretPhrase"] is not None:
-        return cybertensor.Keypair.create_from_mnemonic(
+        return Keypair.create_from_mnemonic(
             mnemonic=keyfile_dict["secretPhrase"],
             prefix=__chain_address_prefix__,
         )
 
     if "address" in keyfile_dict and keyfile_dict["address"] is not None:
-        return cybertensor.Keypair(
+        return Keypair(
             address=keyfile_dict["address"], public_key=keyfile_dict["publicKey"]
         )
 
@@ -198,7 +200,6 @@ def keyfile_data_encryption_method(keyfile_data: bytes) -> bool:
 
 def legacy_encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -> bytes:
     password = ask_password_to_encrypt() if password is None else password
-    console = cybertensor.__console__
     with console.status(
         ":exclamation_mark: Encrypting key with legacy encrpytion method..."
     ):
@@ -267,7 +268,6 @@ def decrypt_keyfile_data(
             if password is None
             else password
         )
-        console = cybertensor.__console__
         with console.status(":key: Decrypting key..."):
             # NaCl SecretBox decrypt.
             if keyfile_data_is_encrypted_nacl(keyfile_data):
@@ -340,10 +340,10 @@ class keyfile:
         return self.__str__()
 
     @property
-    def keypair(self) -> "cybertensor.Keypair":
+    def keypair(self) -> "Keypair":
         """Returns the keypair from path, decrypts data if the file is encrypted.
         Returns:
-            keypair (cybertensor.Keypair): The keypair stored under the path.
+            keypair (Keypair): The keypair stored under the path.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
         """
@@ -371,14 +371,14 @@ class keyfile:
 
     def set_keypair(
         self,
-        keypair: "cybertensor.Keypair",
+        keypair: "Keypair",
         encrypt: bool = True,
         overwrite: bool = False,
         password: str = None,
     ):
         """Writes the keypair to the file and optionally encrypts data.
         Args:
-            keypair (cybertensor.Keypair): The keypair to store under the path.
+            keypair (Keypair): The keypair to store under the path.
             encrypt (bool, optional): If True, encrypts the file under the path. Default is True.
             overwrite (bool, optional): If True, forces overwrite of the current file. Default is False.
             password (str, optional): The password used to encrypt the file. If None, asks for user input.
@@ -391,12 +391,12 @@ class keyfile:
             keyfile_data = cybertensor.encrypt_keyfile_data(keyfile_data, password)
         self._write_keyfile_data_to_file(keyfile_data, overwrite=overwrite)
 
-    def get_keypair(self, password: str = None) -> "cybertensor.Keypair":
+    def get_keypair(self, password: str = None) -> "Keypair":
         """Returns the keypair from the path, decrypts data if the file is encrypted.
         Args:
             password (str, optional): The password used to decrypt the file. If None, asks for user input.
         Returns:
-            keypair (cybertensor.Keypair): The keypair stored under the path.
+            keypair (Keypair): The keypair stored under the path.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
         """
@@ -481,15 +481,15 @@ class keyfile:
         """
         if not self.exists_on_device():
             if print_result:
-                cybertensor.__console__.print(f"Keyfile does not exist. {self.path}")
+                console.print(f"Keyfile does not exist. {self.path}")
             return False
         if not self.is_readable():
             if print_result:
-                cybertensor.__console__.print(f"Keyfile is not redable. {self.path}")
+                console.print(f"Keyfile is not redable. {self.path}")
             return False
         if not self.is_writable():
             if print_result:
-                cybertensor.__console__.print(f"Keyfile is not writable. {self.path}")
+                console.print(f"Keyfile is not writable. {self.path}")
             return False
 
         update_keyfile = False
@@ -501,14 +501,14 @@ class keyfile:
                 keyfile_data
             ) and not keyfile_data_is_encrypted_nacl(keyfile_data):
                 terminate = False
-                cybertensor.__console__.print(
+                console.print(
                     f"You may update the keyfile to improve the security for storing your keys.\nWhile the key and the password stays the same, it would require providing your password once.\n:key:{self}\n"
                 )
                 update_keyfile = Confirm.ask("Update keyfile?")
                 if update_keyfile:
                     stored_mnemonic = False
                     while not stored_mnemonic:
-                        cybertensor.__console__.print(
+                        console.print(
                             f"\nPlease make sure you have the mnemonic stored in case an error occurs during the transfer.",
                             style="white on red",
                         )
@@ -547,19 +547,19 @@ class keyfile:
             keyfile_data = self._read_keyfile_data_from_file()
             if not keyfile_data_is_encrypted(keyfile_data):
                 if print_result:
-                    cybertensor.__console__.print(
+                    console.print(
                         f"\nKeyfile is not encrypted. \n:key: {self}"
                     )
                 return False
             elif keyfile_data_is_encrypted_nacl(keyfile_data):
                 if print_result:
-                    cybertensor.__console__.print(
+                    console.print(
                         f"\n:white_heavy_check_mark: Keyfile is updated. \n:key: {self}"
                     )
                 return True
             else:
                 if print_result:
-                    cybertensor.__console__.print(
+                    console.print(
                         f'\n:cross_mark: Keyfile is outdated, please update with "ctcli wallet update" \n:key: {self}'
                     )
                 return False
@@ -701,7 +701,7 @@ class Mockkeyfile:
         Returns the mock keypair stored in the keyfile.
 
         Returns:
-            cybertensor.Keypair: The mock keypair.
+            Keypair: The mock keypair.
         """
         return self._mock_keypair
 
@@ -720,7 +720,7 @@ class Mockkeyfile:
         Sets the mock keypair in the keyfile. The `encrypt` and `overwrite` parameters are ignored.
 
         Args:
-            keypair (cybertensor.Keypair): The mock keypair to be set.
+            keypair (Keypair): The mock keypair to be set.
             encrypt (bool, optional): Ignored in this context. Defaults to True.
             overwrite (bool, optional): Ignored in this context. Defaults to False.
             password (str, optional): Ignored in this context. Defaults to None.
@@ -736,7 +736,7 @@ class Mockkeyfile:
             password (str, optional): Ignored in this context. Defaults to None.
 
         Returns:
-            cybertensor.Keypair: The mock keypair stored in the keyfile.
+            Keypair: The mock keypair stored in the keyfile.
         """
         return self._mock_keypair
 

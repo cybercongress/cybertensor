@@ -24,7 +24,8 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from ..utils import weight_utils
+from .. import __console__ as console
 
 logger = logger.opt(colors=True)
 
@@ -81,7 +82,7 @@ def set_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Setting weights on [white]{cwtensor.network}[/white] ..."
     ):
         try:
@@ -98,7 +99,7 @@ def set_weights_message(
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
                 cybertensor.logging.success(
@@ -107,7 +108,7 @@ def set_weights_message(
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f":cross_mark: [red]Failed[/red]: error:{error_message}",
                 )
                 cybertensor.logging.warning(
@@ -118,7 +119,7 @@ def set_weights_message(
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(f":cross_mark: [red]Failed[/red]: error:{e}")
+            console.print(f":cross_mark: [red]Failed[/red]: error:{e}")
             cybertensor.logging.warning(
                 prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
             )

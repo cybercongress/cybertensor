@@ -27,8 +27,7 @@ from . import defaults
 from ..config import Config
 from .utils import check_netuid_set, check_for_cuda_reg_config
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class RegisterCommand:
@@ -70,7 +69,7 @@ class RegisterCommand:
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Subnet {cli.config.netuid} does not exist[/red]"
             )
             sys.exit(1)
@@ -81,7 +80,7 @@ class RegisterCommand:
 
         # Check balance is sufficient
         if balance < current_recycle:
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]"
             )
             sys.exit(1)
@@ -172,7 +171,7 @@ class PowRegisterCommand:
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Subnet {cli.config.netuid} does not exist[/red]"
             )
             sys.exit(1)

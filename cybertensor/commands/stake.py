@@ -25,8 +25,7 @@ import cybertensor
 from ..utils.balance import Balance
 from .utils import get_hotkey_wallets_for_wallet
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class StakeCommand:
@@ -125,13 +124,13 @@ class StakeCommand:
                 # Hotkey is not registered.
                 if len(hotkeys_to_stake_to) == 1:
                     # Only one hotkey, error
-                    cybertensor.__console__.print(
+                    console.print(
                         f"[red]Hotkey [bold]{hotkey[1]}[/bold] is not registered. Aborting.[/red]"
                     )
                     return None
                 else:
                     # Otherwise, print warning and skip
-                    cybertensor.__console__.print(
+                    console.print(
                         f"[yellow]Hotkey [bold]{hotkey[1]}[/bold] is not registered. Skipping.[/yellow]"
                     )
                     continue
@@ -162,7 +161,7 @@ class StakeCommand:
 
         if len(final_hotkeys) == 0:
             # No hotkeys to stake to.
-            cybertensor.__console__.print(
+            console.print(
                 "Not enough balance to stake to any hotkeys or max_stake is less than current stake."
             )
             return None
@@ -288,8 +287,7 @@ from typing import Union
 from concurrent.futures import ThreadPoolExecutor
 from .utils import DelegatesDetails
 from . import defaults
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 import os
 from typing import List, Tuple, Optional, Dict
@@ -528,7 +526,7 @@ class StakeShow:
                 table.add_row(
                     "", "", value["name"], value["stake"], str(value["rate"]) + "/d"
                 )
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def check_config(config: "Config"):

@@ -25,8 +25,6 @@ from rich.tree import Tree
 import cybertensor
 from ..wallet import Wallet
 
-console = cybertensor.__console__
-
 
 class ListCommand:
     """

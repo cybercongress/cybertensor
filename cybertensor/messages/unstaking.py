@@ -25,6 +25,7 @@ from rich.prompt import Confirm
 import cybertensor
 from ..utils.balance import Balance
 from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def __do_remove_stake_single(
@@ -105,7 +106,7 @@ def unstake_message(
     if hotkey is None:
         hotkey = wallet.hotkey.address  # Default to wallet's own hotkey.
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
@@ -125,7 +126,7 @@ def unstake_message(
     # Check enough to unstake.
     stake_on_uid = old_stake
     if unstaking_balance > stake_on_uid:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Not enough stake[/red]: [green]{stake_on_uid}[/green] "
             f"to unstake: [blue]{unstaking_balance}[/blue] from hotkey: [white]{wallet.hotkey_str}[/white]"
         )
@@ -141,7 +142,7 @@ def unstake_message(
             return False
 
     try:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Unstaking from chain: [white]{cwtensor.network}[/white] ..."
         ):
             staking_response: bool = __do_remove_stake_single(
@@ -157,38 +158,38 @@ def unstake_message(
             if not wait_for_finalization:
                 return True
 
-            cybertensor.__console__.print(
+            console.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            with cybertensor.__console__.status(
+            with console.status(
                 f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
             ):
                 new_balance = cwtensor.get_balance(address=wallet.coldkeypub.address)
                 new_stake = cwtensor.get_stake_for_coldkey_and_hotkey(
                     coldkey=wallet.coldkeypub.address, hotkey=hotkey
                 )  # Get stake on hotkey.
-                cybertensor.__console__.print(
+                console.print(
                     f"Balance:\n"
                     f"  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
                 )
-                cybertensor.__console__.print(
+                console.print(
                     f"Stake:\n"
                     f"  [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]"
                 )
                 return True
         else:
-            cybertensor.__console__.print(
+            console.print(
                 ":cross_mark: [red]Failed[/red]: Error unknown."
             )
             return False
 
     except cybertensor.errors.NotRegisteredError as e:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]"
         )
         return False
     except cybertensor.errors.StakeError as e:
-        cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+        console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
         return False
 
 
@@ -256,7 +257,7 @@ def unstake_multiple_message(
     wallet.coldkey
 
     old_stakes = []
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
@@ -281,7 +282,7 @@ def unstake_multiple_message(
         # Check enough to unstake.
         stake_on_uid = old_stake
         if unstaking_balance > stake_on_uid:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Not enough stake[/red]: [green]{stake_on_uid}[/green] "
                 f"to unstake: [blue]{unstaking_balance}[/blue] from hotkey: [white]{wallet.hotkey_str}[/white]"
             )
@@ -297,7 +298,7 @@ def unstake_multiple_message(
                 continue
 
         try:
-            with cybertensor.__console__.status(
+            with console.status(
                 f":satellite: Unstaking from chain: [white]{cwtensor.network}[/white] ..."
             ):
                 staking_response: bool = __do_remove_stake_single(
@@ -315,7 +316,7 @@ def unstake_multiple_message(
                     # Wait for tx rate limit.
                     tx_rate_limit_blocks = cwtensor.tx_rate_limit()
                     if tx_rate_limit_blocks > 0:
-                        cybertensor.__console__.print(
+                        console.print(
                             f":hourglass: [yellow]Waiting for tx rate limit: "
                             f"[white]{tx_rate_limit_blocks}[/white] blocks[/yellow]"
                         )
@@ -325,10 +326,10 @@ def unstake_multiple_message(
                     successful_unstakes += 1
                     continue
 
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
-                with cybertensor.__console__.status(
+                with console.status(
                     f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
                 ):
                     block = cwtensor.get_current_block()
@@ -337,31 +338,31 @@ def unstake_multiple_message(
                         hotkey=hotkey,
                         block=block,
                     )
-                    cybertensor.__console__.print(
+                    console.print(
                         f"Stake ({hotkey}): [blue]{stake_on_uid}[/blue] :arrow_right: [green]{new_stake}[/green]"
                     )
                     successful_unstakes += 1
             else:
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark: [red]Failed[/red]: Error unknown."
                 )
                 continue
 
         except cybertensor.errors.NotRegisteredError as e:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]{hotkey} is not registered.[/red]"
             )
             continue
         except cybertensor.errors.StakeError as e:
-            cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+            console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
             continue
 
     if successful_unstakes != 0:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Checking Balance on: ([white]{cwtensor.network}[/white] ..."
         ):
             new_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-        cybertensor.__console__.print(
+        console.print(
             f"Balance: [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
         )
         return True

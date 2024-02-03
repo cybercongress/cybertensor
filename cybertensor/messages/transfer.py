@@ -27,6 +27,7 @@ import cybertensor
 from ..utils import is_valid_address
 from ..utils.balance import Balance
 from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def transfer_message(
@@ -64,7 +65,7 @@ def transfer_message(
     """
     # Validate destination address.
     if not is_valid_address(dest):
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Invalid destination address[/red]:[bold white]\n  {dest}[/bold white]"
         )
         return False
@@ -79,12 +80,12 @@ def transfer_message(
         transfer_balance = amount
 
     # Check balance.
-    with cybertensor.__console__.status(":satellite: Checking Balance..."):
+    with console.status(":satellite: Checking Balance..."):
         account_balance = cwtensor.get_balance(wallet.coldkey.address)
         # check existential deposit.
         existential_deposit = cwtensor.get_existential_deposit()
 
-    with cybertensor.__console__.status(":satellite: Transferring..."):
+    with console.status(":satellite: Transferring..."):
         fee = cwtensor.get_transfer_fee()
 
     if not keep_alive:
@@ -93,7 +94,7 @@ def transfer_message(
 
     # Check if we have enough balance.
     if account_balance < (transfer_balance + fee + existential_deposit):
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Not enough balance[/red]:[bold white]\n"
             f"  balance: {account_balance}\n"
             f"  amount: {transfer_balance}\n"
@@ -112,7 +113,7 @@ def transfer_message(
         ):
             return False
 
-    with cybertensor.__console__.status(":satellite: Transferring..."):
+    with console.status(":satellite: Transferring..."):
         success, tx_hash, err_msg = cwtensor._do_transfer(
             wallet,
             Address(dest),
@@ -122,27 +123,27 @@ def transfer_message(
         )
 
         if success:
-            cybertensor.__console__.print(
+            console.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            cybertensor.__console__.print(f"[green]Tx Hash: {tx_hash}[/green]")
+            console.print(f"[green]Tx Hash: {tx_hash}[/green]")
 
             explorer_url = cybertensor.utils.get_explorer_url_for_network(
                 cwtensor.network, tx_hash, cwtensor.network_explorer
             )
             if explorer_url is not None:
-                cybertensor.__console__.print(
+                console.print(
                     f"[green]Explorer Link: {explorer_url}[/green]"
                 )
         else:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{err_msg}"
             )
 
     if success:
-        with cybertensor.__console__.status(":satellite: Checking Balance..."):
+        with console.status(":satellite: Checking Balance..."):
             new_balance = cwtensor.get_balance(wallet.coldkey.address)
-            cybertensor.__console__.print(
+            console.print(
                 f"Balance:\n"
                 f"  [blue]{account_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
             )

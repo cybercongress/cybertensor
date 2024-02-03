@@ -27,8 +27,7 @@ from ..utils.balance import Balance
 from . import defaults
 from .utils import get_hotkey_wallets_for_wallet
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class UnStakeCommand:
@@ -248,7 +247,7 @@ class UnStakeCommand:
 
         if len(final_hotkeys) == 0:
             # No hotkeys to unstake from.
-            cybertensor.__console__.print(
+            console.print(
                 "Not enough stake to unstake from any hotkeys or max_stake is more than current stake."
             )
             return None

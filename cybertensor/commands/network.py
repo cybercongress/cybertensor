@@ -29,8 +29,7 @@ import cybertensor
 from . import defaults
 from ..wallet import Wallet
 from .utils import DelegatesDetails, check_netuid_set
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 class RegisterSubnetworkCommand:
@@ -128,11 +127,11 @@ class SubnetLockCostCommand:
         config = cli.config.copy()
         cwtensor = cybertensor.cwtensor(config=config)
         try:
-            cybertensor.__console__.print(
+            console.print(
                 f"Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]"
             )
         except Exception as e:
-            cybertensor.__console__.print(
+            console.print(
                 f"Subnet lock cost: [red]Failed to get subnet lock cost[/red]"
                 f"Error: {e}"
             )
@@ -245,7 +244,7 @@ class SubnetListCommand:
         table.add_column("[overline white]SUDO", style="white")
         for row in rows:
             table.add_row(*row)
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def check_config(config: "Config"):
@@ -400,7 +399,7 @@ class SubnetHyperparamsCommand:
         for param in subnet.__dict__:
             table.add_row("  " + param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def check_config(config: "Config"):
@@ -481,7 +480,7 @@ class SubnetGetHyperparamsCommand:
         for param in subnet.__dict__:
             table.add_row(param, str(subnet.__dict__[param]))
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def check_config(config: "Config"):
@@ -673,7 +672,7 @@ class SubnetGetWeightsCommand:
         table.box = None
         table.pad_edge = False
         table.width = None
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):

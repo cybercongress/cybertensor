@@ -25,6 +25,7 @@ from rich.prompt import Confirm
 import cybertensor
 from ..utils.balance import Balance
 from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def add_stake_message(
@@ -70,7 +71,7 @@ def add_stake_message(
     # Flag to indicate if we are using the wallet's own hotkey.
     own_hotkey: bool
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
@@ -109,7 +110,7 @@ def add_stake_message(
 
     # Check enough to stake.
     if staking_balance > old_balance:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Not enough stake[/red]:[bold white]\n"
             f"  balance:{old_balance}\n"
             f"  amount: {staking_balance}\n"
@@ -138,7 +139,7 @@ def add_stake_message(
                 return False
 
     try:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Staking to: [bold white]{cwtensor.network}[/bold white] ..."
         ):
             staking_response: bool = __do_add_stake_single(
@@ -154,10 +155,10 @@ def add_stake_message(
             if not wait_for_finalization:
                 return True
 
-            cybertensor.__console__.print(
+            console.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            with cybertensor.__console__.status(
+            with console.status(
                 f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
             ):
                 new_balance = cwtensor.get_balance(address=wallet.coldkeypub.address)
@@ -168,28 +169,28 @@ def add_stake_message(
                     block=block,
                 )  # Get current stake
 
-                cybertensor.__console__.print(
+                console.print(
                     f"Balance:\n"
                     f"  [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
                 )
-                cybertensor.__console__.print(
+                console.print(
                     f"Stake:\n"
                     f"  [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]"
                 )
                 return True
         else:
-            cybertensor.__console__.print(
+            console.print(
                 ":cross_mark: [red]Failed[/red]: Error unknown."
             )
             return False
 
     except cybertensor.errors.NotRegisteredError as e:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]"
         )
         return False
     except cybertensor.errors.StakeError as e:
-        cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+        console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
         return False
 
 
@@ -257,7 +258,7 @@ def add_stake_multiple_message(
     wallet.coldkey
 
     old_stakes = []
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Syncing with chain: [white]{cwtensor.network}[/white] ..."
     ):
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
@@ -308,7 +309,7 @@ def add_stake_multiple_message(
 
         # Check enough to stake
         if staking_balance > old_balance:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Not enough balance[/red]: [green]{old_balance}[/green] "
                 f"to stake: [blue]{staking_balance}[/blue] from coldkey: [white]{wallet.name}[/white]"
             )
@@ -339,7 +340,7 @@ def add_stake_multiple_message(
                     # Wait for tx rate limit.
                     tx_rate_limit_blocks = cwtensor.tx_rate_limit()
                     if tx_rate_limit_blocks > 0:
-                        cybertensor.__console__.print(
+                        console.print(
                             f":hourglass: [yellow]Waiting for tx rate limit: [white]{tx_rate_limit_blocks}[/white] "
                             f"blocks[/yellow]"
                         )
@@ -354,7 +355,7 @@ def add_stake_multiple_message(
 
                     continue
 
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
 
@@ -367,7 +368,7 @@ def add_stake_multiple_message(
                 new_balance = cwtensor.get_balance(
                     wallet.coldkeypub.address, block=block
                 )
-                cybertensor.__console__.print(
+                console.print(
                     f"Stake ({hotkey}): [blue]{old_stake}[/blue] :arrow_right: [green]{new_stake}[/green]"
                 )
                 old_balance = new_balance
@@ -377,26 +378,26 @@ def add_stake_multiple_message(
                     break
 
             else:
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark: [red]Failed[/red]: Error unknown."
                 )
                 continue
 
         except cybertensor.errors.NotRegisteredError as e:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Hotkey: {hotkey} is not registered.[/red]"
             )
             continue
         except cybertensor.errors.StakeError as e:
-            cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+            console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
             continue
 
     if successful_stakes != 0:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Checking Balance on: ([white]{cwtensor.network}[/white] ..."
         ):
             new_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-        cybertensor.__console__.print(
+        console.print(
             f"Balance: [blue]{old_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
         )
         return True

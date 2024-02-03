@@ -22,8 +22,8 @@ from rich.table import Table
 
 import cybertensor
 from .utils import check_netuid_set
+from .. import __console__ as console
 
-console = cybertensor.__console__
 
 # TODO change tokens in table to boot and gigaboot
 class MetagraphCommand:
@@ -74,7 +74,6 @@ class MetagraphCommand:
     @staticmethod
     def run(cli):
         r"""Prints an entire metagraph."""
-        console = cybertensor.__console__
         cwtensor = cybertensor.cwtensor(config=cli.config)
         console.print(
             ":satellite: Syncing with chain: [white]{}[/white] ...".format(

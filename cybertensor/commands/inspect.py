@@ -28,8 +28,7 @@ import cybertensor
 from . import defaults
 from .utils import get_delegates_details, DelegatesDetails
 from ..wallet import Wallet
-
-console = cybertensor.__console__
+from .. import __console__ as console
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
@@ -120,7 +119,7 @@ class InspectCommand:
             Dict[str, DelegatesDetails]
         ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
         if registered_delegate_info is None:
-            cybertensor.__console__.print(
+            console.print(
                 ":warning:[yellow]Could not get delegate info from chain.[/yellow]"
             )
             registered_delegate_info = {}
@@ -215,7 +214,7 @@ class InspectCommand:
                             str(cybertensor.Balance.from_boot(neuron.emission)),
                         )
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
     def check_config(config: "Config") -> None:
