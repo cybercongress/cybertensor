@@ -454,7 +454,7 @@ class RegistrationStatisticsLogger:
 
 
 def _solve_for_difficulty_fast(
-    cwtensor: cybertensor.cwtensor,
+    cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     netuid: int,
     output_in_place: bool = True,
@@ -469,7 +469,7 @@ def _solve_for_difficulty_fast(
     Args:
         cwtensor: cybertensor.cwtensor
             cwtensor to connect to for block information and to submit.
-        wallet:
+        wallet: Wallet
             wallet to use for registration.
         netuid: int
             The netuid of the subnet to register to.
@@ -1023,8 +1023,8 @@ def _terminate_workers_and_wait_for_exit(
 
 
 def create_pow(
-    cwtensor,
-    wallet,
+    cwtensor: "cybertensor.cwtensor",
+    wallet: Wallet,
     netuid: int,
     output_in_place: bool = True,
     cuda: bool = False,
@@ -1037,7 +1037,7 @@ def create_pow(
     """
     Creates a proof of work for the given cwtensor and wallet.
     Args:
-        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
             The cwtensor to create a proof of work for.
         wallet (:obj:`Wallet.wallet`, `required`):
             The wallet to create a proof of work for.
