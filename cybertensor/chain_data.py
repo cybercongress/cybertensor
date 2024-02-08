@@ -578,6 +578,7 @@ class SubnetInfo:
     emission_value: float
     burn: Balance
     owner: str
+    metadata: str
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> Optional["SubnetInfo"]:
@@ -613,6 +614,7 @@ class SubnetInfo:
             emission_value=decoded["emission_values"],
             burn=Balance.from_boot(decoded["burn"]),
             owner=decoded["owner"],
+            metadata=decoded["metadata"],
         )
 
     def to_parameter_dict(self) -> "torch.nn.ParameterDict":
