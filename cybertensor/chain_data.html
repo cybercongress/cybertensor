@@ -606,6 +606,7 @@ class SubnetInfo:
     emission_value: float
     burn: Balance
     owner: str
+    metadata: str
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetInfo&#34;]:
@@ -641,6 +642,7 @@ class SubnetInfo:
             emission_value=decoded[&#34;emission_values&#34;],
             burn=Balance.from_boot(decoded[&#34;burn&#34;]),
             owner=decoded[&#34;owner&#34;],
+            metadata=decoded[&#34;metadata&#34;],
         )
 
     def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
@@ -2689,7 +2691,7 @@ def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;SubnetHyperparam
 </dd>
 <dt id="cybertensor.chain_data.SubnetInfo"><code class="flex name class">
 <span>class <span class="ident">SubnetInfo</span></span>
-<span>(</span><span>netuid: int, rho: int, kappa: int, difficulty: int, immunity_period: int, max_allowed_validators: int, min_allowed_weights: int, max_weight_limit: float, subnetwork_n: int, max_n: int, blocks_since_epoch: int, tempo: int, modality: int, emission_value: float, burn: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, owner: str)</span>
+<span>(</span><span>netuid: int, rho: int, kappa: int, difficulty: int, immunity_period: int, max_allowed_validators: int, min_allowed_weights: int, max_weight_limit: float, subnetwork_n: int, max_n: int, blocks_since_epoch: int, tempo: int, modality: int, emission_value: float, burn: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, owner: str, metadata: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for subnet info.</p></div>
@@ -2718,6 +2720,7 @@ class SubnetInfo:
     emission_value: float
     burn: Balance
     owner: str
+    metadata: str
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetInfo&#34;]:
@@ -2753,6 +2756,7 @@ class SubnetInfo:
             emission_value=decoded[&#34;emission_values&#34;],
             burn=Balance.from_boot(decoded[&#34;burn&#34;]),
             owner=decoded[&#34;owner&#34;],
+            metadata=decoded[&#34;metadata&#34;],
         )
 
     def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
@@ -2801,6 +2805,10 @@ class SubnetInfo:
 <div class="desc"></div>
 </dd>
 <dt id="cybertensor.chain_data.SubnetInfo.max_weight_limit"><code class="name">var <span class="ident">max_weight_limit</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.metadata"><code class="name">var <span class="ident">metadata</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2864,6 +2872,7 @@ def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;SubnetInfo&#34;:
         emission_value=decoded[&#34;emission_values&#34;],
         burn=Balance.from_boot(decoded[&#34;burn&#34;]),
         owner=decoded[&#34;owner&#34;],
+        metadata=decoded[&#34;metadata&#34;],
     )</code></pre>
 </details>
 </dd>
@@ -3134,6 +3143,7 @@ def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;SubnetInfo&#34;]
 <li><code><a title="cybertensor.chain_data.SubnetInfo.max_allowed_validators" href="#cybertensor.chain_data.SubnetInfo.max_allowed_validators">max_allowed_validators</a></code></li>
 <li><code><a title="cybertensor.chain_data.SubnetInfo.max_n" href="#cybertensor.chain_data.SubnetInfo.max_n">max_n</a></code></li>
 <li><code><a title="cybertensor.chain_data.SubnetInfo.max_weight_limit" href="#cybertensor.chain_data.SubnetInfo.max_weight_limit">max_weight_limit</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.metadata" href="#cybertensor.chain_data.SubnetInfo.metadata">metadata</a></code></li>
 <li><code><a title="cybertensor.chain_data.SubnetInfo.min_allowed_weights" href="#cybertensor.chain_data.SubnetInfo.min_allowed_weights">min_allowed_weights</a></code></li>
 <li><code><a title="cybertensor.chain_data.SubnetInfo.modality" href="#cybertensor.chain_data.SubnetInfo.modality">modality</a></code></li>
 <li><code><a title="cybertensor.chain_data.SubnetInfo.netuid" href="#cybertensor.chain_data.SubnetInfo.netuid">netuid</a></code></li>

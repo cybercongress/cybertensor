@@ -46,6 +46,7 @@
 
 import argparse
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor
 from typing import List, Optional, Dict, Tuple
 
 from fuzzywuzzy import fuzz
@@ -61,9 +62,8 @@ from .utils import (
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
 )
-from ..config import Config
-from ..wallet import Wallet
-from .. import __console__ as console
+
+console = cybertensor.__console__
 
 
 class OverviewCommand:
@@ -105,9 +105,10 @@ class OverviewCommand:
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
+    def run(cli: &#34;cybertensor.cli&#34;):
         r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
-        wallet = Wallet(config=cli.config)
+        console = cybertensor.__console__
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
@@ -127,7 +128,7 @@ class OverviewCommand:
             all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
         else:
             # We are only printing keys for a single coldkey
-            coldkey_wallet = Wallet(config=cli.config)
+            coldkey_wallet = cybertensor.wallet(config=cli.config)
             if (
                 coldkey_wallet.coldkeypub_file.exists_on_device()
                 and not coldkey_wallet.coldkeypub_file.is_encrypted()
@@ -175,7 +176,7 @@ class OverviewCommand:
 
         all_wallet_names = set([wallet.name for wallet in all_hotkeys])
         all_coldkey_wallets = [
-            Wallet(name=wallet_name) for wallet_name in all_wallet_names
+            cybertensor.wallet(name=wallet_name) for wallet_name in all_wallet_names
         ]
 
         hotkey_coldkey_to_hotkey_wallet = {}
@@ -195,22 +196,33 @@ class OverviewCommand:
                 )
             )
         ):
+            # Create a copy of the config without the parser and formatter_class.
+            ## This is needed to pass to the ProcessPoolExecutor, which cannot pickle the parser.
+            copy_config = cli.config.copy()
+            copy_config[&#34;__parser&#34;] = None
+            copy_config[&#34;formatter_class&#34;] = None
 
             # Pull neuron info for all keys.
             ## Max len(netuids) or 5 threads.
+            with ProcessPoolExecutor(max_workers=max(len(netuids), 5)) as executor:
+                results = executor.map(
+                    OverviewCommand._get_neurons_for_netuid,
+                    [(copy_config, netuid, all_hotkey_addresses) for netuid in netuids],
+                )
+                executor.shutdown(wait=True)  # wait for all complete
 
-            for netuid in netuids[:max_len_netuids]:
-                netuid, neurons_result, err_msg = \
-                    OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
-                if err_msg is not None:
-                    console.print(err_msg)
-                if len(neurons_result) == 0:
-                    # Remove netuid from overview if no neurons are found.
-                    netuids.remove(netuid)
-                    del neurons[str(netuid)]
-                else:
-                    # Add neurons to overview.
-                    neurons[str(netuid)] = neurons_result
+                for result in results:
+                    netuid, neurons_result, err_msg = result
+                    if err_msg is not None:
+                        console.print(err_msg)
+
+                    if len(neurons_result) == 0:
+                        # Remove netuid from overview if no neurons are found.
+                        netuids.remove(netuid)
+                        del neurons[str(netuid)]
+                    else:
+                        # Add neurons to overview.
+                        neurons[str(netuid)] = neurons_result
 
             total_coldkey_stake_from_metagraph = defaultdict(
                 lambda: cybertensor.Balance(0.0)
@@ -255,11 +267,21 @@ class OverviewCommand:
                 if &#34;-1&#34; not in neurons:
                     neurons[&#34;-1&#34;] = []
 
-            for coldkey_wallet in coldkeys_to_check:
-                coldkey_wallet, de_registered_stake, err_msg = \
-                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
-                        (cli.config, all_hotkey_addresses, coldkey_wallet))
+            # Use process pool to check each coldkey wallet for de-registered stake.
+            with ProcessPoolExecutor(
+                max_workers=max(len(coldkeys_to_check), 5)
+            ) as executor:
+                results = executor.map(
+                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet,
+                    [
+                        (cli.config, all_hotkey_addresses, coldkey_wallet)
+                        for coldkey_wallet in coldkeys_to_check
+                    ],
+                )
+                executor.shutdown(wait=True)  # wait for all complete
 
+            for result in results:
+                coldkey_wallet, de_registered_stake, err_msg = result
                 if err_msg is not None:
                     console.print(err_msg)
 
@@ -279,11 +301,11 @@ class OverviewCommand:
                     de_registered_neurons.append(de_registered_neuron)
 
                     # Add this hotkey to the wallets dict
-                    wallet_ = Wallet(
+                    wallet_ = cybertensor.Wallet(
                         name=wallet,
                     )
                     wallet_.hotkey = hotkey_addr
-                    wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    wallet.hotkey_str = hotkey_addr[:5]  # Max length of 5 characters
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
@@ -558,7 +580,7 @@ class OverviewCommand:
 
     @staticmethod
     def _get_neurons_for_netuid(
-        args_tuple: Tuple[&#34;Config&#34;, int, List[str]]
+        args_tuple: Tuple[&#34;cybertensor.Config&#34;, int, List[str]]
     ) -&gt; Tuple[int, List[&#34;cybertensor.NeuronInfoLite&#34;], Optional[str]]:
         cwtensor_config, netuid, hot_wallets = args_tuple
 
@@ -586,7 +608,7 @@ class OverviewCommand:
     def _get_de_registered_stake_for_coldkey_wallet(
         args_tuple,
     ) -&gt; Tuple[
-        &#34;Wallet&#34;, List[Tuple[str, &#34;cybertensor.Balance&#34;]], Optional[str]
+        &#34;cybertensor.Wallet&#34;, List[Tuple[str, &#34;cybertensor.Balance&#34;]], Optional[str]
     ]:
         cwtensor_config, all_hotkey_addresses, coldkey_wallet = args_tuple
 
@@ -692,11 +714,11 @@ class OverviewCommand:
             help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
             default=[],
         )
-        Wallet.add_args(overview_parser)
+        cybertensor.wallet.add_args(overview_parser)
         cybertensor.cwtensor.add_args(overview_parser)
 
     @staticmethod
-    def check_config(config: &#34;Config&#34;):
+    def check_config(config: &#34;cybertensor.config&#34;):
         if (
             not config.is_set(&#34;wallet.name&#34;)
             and not config.no_prompt
@@ -800,9 +822,10 @@ and overall contribution to the cybertensor network.</p></div>
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
+    def run(cli: &#34;cybertensor.cli&#34;):
         r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
-        wallet = Wallet(config=cli.config)
+        console = cybertensor.__console__
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
@@ -822,7 +845,7 @@ and overall contribution to the cybertensor network.</p></div>
             all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
         else:
             # We are only printing keys for a single coldkey
-            coldkey_wallet = Wallet(config=cli.config)
+            coldkey_wallet = cybertensor.wallet(config=cli.config)
             if (
                 coldkey_wallet.coldkeypub_file.exists_on_device()
                 and not coldkey_wallet.coldkeypub_file.is_encrypted()
@@ -870,7 +893,7 @@ and overall contribution to the cybertensor network.</p></div>
 
         all_wallet_names = set([wallet.name for wallet in all_hotkeys])
         all_coldkey_wallets = [
-            Wallet(name=wallet_name) for wallet_name in all_wallet_names
+            cybertensor.wallet(name=wallet_name) for wallet_name in all_wallet_names
         ]
 
         hotkey_coldkey_to_hotkey_wallet = {}
@@ -890,22 +913,33 @@ and overall contribution to the cybertensor network.</p></div>
                 )
             )
         ):
+            # Create a copy of the config without the parser and formatter_class.
+            ## This is needed to pass to the ProcessPoolExecutor, which cannot pickle the parser.
+            copy_config = cli.config.copy()
+            copy_config[&#34;__parser&#34;] = None
+            copy_config[&#34;formatter_class&#34;] = None
 
             # Pull neuron info for all keys.
             ## Max len(netuids) or 5 threads.
+            with ProcessPoolExecutor(max_workers=max(len(netuids), 5)) as executor:
+                results = executor.map(
+                    OverviewCommand._get_neurons_for_netuid,
+                    [(copy_config, netuid, all_hotkey_addresses) for netuid in netuids],
+                )
+                executor.shutdown(wait=True)  # wait for all complete
 
-            for netuid in netuids[:max_len_netuids]:
-                netuid, neurons_result, err_msg = \
-                    OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
-                if err_msg is not None:
-                    console.print(err_msg)
-                if len(neurons_result) == 0:
-                    # Remove netuid from overview if no neurons are found.
-                    netuids.remove(netuid)
-                    del neurons[str(netuid)]
-                else:
-                    # Add neurons to overview.
-                    neurons[str(netuid)] = neurons_result
+                for result in results:
+                    netuid, neurons_result, err_msg = result
+                    if err_msg is not None:
+                        console.print(err_msg)
+
+                    if len(neurons_result) == 0:
+                        # Remove netuid from overview if no neurons are found.
+                        netuids.remove(netuid)
+                        del neurons[str(netuid)]
+                    else:
+                        # Add neurons to overview.
+                        neurons[str(netuid)] = neurons_result
 
             total_coldkey_stake_from_metagraph = defaultdict(
                 lambda: cybertensor.Balance(0.0)
@@ -950,11 +984,21 @@ and overall contribution to the cybertensor network.</p></div>
                 if &#34;-1&#34; not in neurons:
                     neurons[&#34;-1&#34;] = []
 
-            for coldkey_wallet in coldkeys_to_check:
-                coldkey_wallet, de_registered_stake, err_msg = \
-                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
-                        (cli.config, all_hotkey_addresses, coldkey_wallet))
+            # Use process pool to check each coldkey wallet for de-registered stake.
+            with ProcessPoolExecutor(
+                max_workers=max(len(coldkeys_to_check), 5)
+            ) as executor:
+                results = executor.map(
+                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet,
+                    [
+                        (cli.config, all_hotkey_addresses, coldkey_wallet)
+                        for coldkey_wallet in coldkeys_to_check
+                    ],
+                )
+                executor.shutdown(wait=True)  # wait for all complete
 
+            for result in results:
+                coldkey_wallet, de_registered_stake, err_msg = result
                 if err_msg is not None:
                     console.print(err_msg)
 
@@ -974,11 +1018,11 @@ and overall contribution to the cybertensor network.</p></div>
                     de_registered_neurons.append(de_registered_neuron)
 
                     # Add this hotkey to the wallets dict
-                    wallet_ = Wallet(
+                    wallet_ = cybertensor.Wallet(
                         name=wallet,
                     )
                     wallet_.hotkey = hotkey_addr
-                    wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    wallet.hotkey_str = hotkey_addr[:5]  # Max length of 5 characters
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
@@ -1253,7 +1297,7 @@ and overall contribution to the cybertensor network.</p></div>
 
     @staticmethod
     def _get_neurons_for_netuid(
-        args_tuple: Tuple[&#34;Config&#34;, int, List[str]]
+        args_tuple: Tuple[&#34;cybertensor.Config&#34;, int, List[str]]
     ) -&gt; Tuple[int, List[&#34;cybertensor.NeuronInfoLite&#34;], Optional[str]]:
         cwtensor_config, netuid, hot_wallets = args_tuple
 
@@ -1281,7 +1325,7 @@ and overall contribution to the cybertensor network.</p></div>
     def _get_de_registered_stake_for_coldkey_wallet(
         args_tuple,
     ) -&gt; Tuple[
-        &#34;Wallet&#34;, List[Tuple[str, &#34;cybertensor.Balance&#34;]], Optional[str]
+        &#34;cybertensor.Wallet&#34;, List[Tuple[str, &#34;cybertensor.Balance&#34;]], Optional[str]
     ]:
         cwtensor_config, all_hotkey_addresses, coldkey_wallet = args_tuple
 
@@ -1387,11 +1431,11 @@ and overall contribution to the cybertensor network.</p></div>
             help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
             default=[],
         )
-        Wallet.add_args(overview_parser)
+        cybertensor.wallet.add_args(overview_parser)
         cybertensor.cwtensor.add_args(overview_parser)
 
     @staticmethod
-    def check_config(config: &#34;Config&#34;):
+    def check_config(config: &#34;cybertensor.config&#34;):
         if (
             not config.is_set(&#34;wallet.name&#34;)
             and not config.no_prompt
@@ -1485,12 +1529,12 @@ def add_args(parser: argparse.ArgumentParser):
         help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
         default=[],
     )
-    Wallet.add_args(overview_parser)
+    cybertensor.wallet.add_args(overview_parser)
     cybertensor.cwtensor.add_args(overview_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.overview.OverviewCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1499,7 +1543,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;Config&#34;):
+def check_config(config: &#34;cybertensor.config&#34;):
     if (
         not config.is_set(&#34;wallet.name&#34;)
         and not config.no_prompt
@@ -1516,7 +1560,7 @@ def check_config(config: &#34;Config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.commands.overview.OverviewCommand.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>, max_len_netuids: int = 5, max_len_keys: int = 5)</span>
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Prints an overview for the wallet's colkey.</p></div>
@@ -1525,9 +1569,10 @@ def check_config(config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
+def run(cli: &#34;cybertensor.cli&#34;):
     r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
-    wallet = Wallet(config=cli.config)
+    console = cybertensor.__console__
+    wallet = cybertensor.wallet(config=cli.config)
     cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
 
     all_hotkeys = []
@@ -1547,7 +1592,7 @@ def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: 
         all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
     else:
         # We are only printing keys for a single coldkey
-        coldkey_wallet = Wallet(config=cli.config)
+        coldkey_wallet = cybertensor.wallet(config=cli.config)
         if (
             coldkey_wallet.coldkeypub_file.exists_on_device()
             and not coldkey_wallet.coldkeypub_file.is_encrypted()
@@ -1595,7 +1640,7 @@ def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: 
 
     all_wallet_names = set([wallet.name for wallet in all_hotkeys])
     all_coldkey_wallets = [
-        Wallet(name=wallet_name) for wallet_name in all_wallet_names
+        cybertensor.wallet(name=wallet_name) for wallet_name in all_wallet_names
     ]
 
     hotkey_coldkey_to_hotkey_wallet = {}
@@ -1615,22 +1660,33 @@ def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: 
             )
         )
     ):
+        # Create a copy of the config without the parser and formatter_class.
+        ## This is needed to pass to the ProcessPoolExecutor, which cannot pickle the parser.
+        copy_config = cli.config.copy()
+        copy_config[&#34;__parser&#34;] = None
+        copy_config[&#34;formatter_class&#34;] = None
 
         # Pull neuron info for all keys.
         ## Max len(netuids) or 5 threads.
+        with ProcessPoolExecutor(max_workers=max(len(netuids), 5)) as executor:
+            results = executor.map(
+                OverviewCommand._get_neurons_for_netuid,
+                [(copy_config, netuid, all_hotkey_addresses) for netuid in netuids],
+            )
+            executor.shutdown(wait=True)  # wait for all complete
 
-        for netuid in netuids[:max_len_netuids]:
-            netuid, neurons_result, err_msg = \
-                OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
-            if err_msg is not None:
-                console.print(err_msg)
-            if len(neurons_result) == 0:
-                # Remove netuid from overview if no neurons are found.
-                netuids.remove(netuid)
-                del neurons[str(netuid)]
-            else:
-                # Add neurons to overview.
-                neurons[str(netuid)] = neurons_result
+            for result in results:
+                netuid, neurons_result, err_msg = result
+                if err_msg is not None:
+                    console.print(err_msg)
+
+                if len(neurons_result) == 0:
+                    # Remove netuid from overview if no neurons are found.
+                    netuids.remove(netuid)
+                    del neurons[str(netuid)]
+                else:
+                    # Add neurons to overview.
+                    neurons[str(netuid)] = neurons_result
 
         total_coldkey_stake_from_metagraph = defaultdict(
             lambda: cybertensor.Balance(0.0)
@@ -1675,11 +1731,21 @@ def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: 
             if &#34;-1&#34; not in neurons:
                 neurons[&#34;-1&#34;] = []
 
-        for coldkey_wallet in coldkeys_to_check:
-            coldkey_wallet, de_registered_stake, err_msg = \
-                OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
-                    (cli.config, all_hotkey_addresses, coldkey_wallet))
+        # Use process pool to check each coldkey wallet for de-registered stake.
+        with ProcessPoolExecutor(
+            max_workers=max(len(coldkeys_to_check), 5)
+        ) as executor:
+            results = executor.map(
+                OverviewCommand._get_de_registered_stake_for_coldkey_wallet,
+                [
+                    (cli.config, all_hotkey_addresses, coldkey_wallet)
+                    for coldkey_wallet in coldkeys_to_check
+                ],
+            )
+            executor.shutdown(wait=True)  # wait for all complete
 
+        for result in results:
+            coldkey_wallet, de_registered_stake, err_msg = result
             if err_msg is not None:
                 console.print(err_msg)
 
@@ -1699,11 +1765,11 @@ def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: 
                 de_registered_neurons.append(de_registered_neuron)
 
                 # Add this hotkey to the wallets dict
-                wallet_ = Wallet(
+                wallet_ = cybertensor.Wallet(
                     name=wallet,
                 )
                 wallet_.hotkey = hotkey_addr
-                wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                wallet.hotkey_str = hotkey_addr[:5]  # Max length of 5 characters
                 hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                     coldkey_wallet.coldkeypub.address
                 ] = wallet_

@@ -92,7 +92,7 @@ def turn_console_on():
     __console__ = Console()
 
 
-turn_console_on()
+turn_console_off()
 
 
 # Logging helpers.
@@ -223,16 +223,15 @@ from .stream import *
 from .tensor import *
 from .axon import axon as axon
 from .dendrite import dendrite as dendrite
-from .config import Config
 
 configs = [
     axon.config(),
-    Config(),
+    cybertensor.config(),
     PriorityThreadPoolExecutor.config(),
-    Wallet.config(),
+    wallet.config(),
     logging.config(),
 ]
-defaults = Config.merge_all(configs)</code></pre>
+defaults = config.merge_all(configs)</code></pre>
 </details>
 </section>
 <section>

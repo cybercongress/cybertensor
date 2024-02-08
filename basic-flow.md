@@ -16,17 +16,20 @@ You can list all the local wallets stored directly with:
 ```bash
 ctcli wallet list
 ```
+You need to fund your wallet's addresses with tokens to perform operations on the network. Ask friends or team to send your some tokens. You can send tokens from your existing account to addresses of your wallets.
+You need to fund both of your addresses (hot and cold) of your wallet. Fund your hotkey with some small amount to pay for gas and fund your coldkey with the rest of the tokens to pay for gas and general network operations.
 
 Get a detailed report of your wallet pairs (coldkey, hotkey). This report includes balance and staking information for both the coldkey and hotkey associated with the wallet.
 ```bash
 ctcli wallet inspect
 ```
+
 ### Root network register
 Make registration to the root network. Validators on the root network cast weights to subnets, voting to tokens distribution across subnets in the network. Total consensus weighted distribution to subnets calculated based on validators' stake and their assigned weights to subnets. The network continuously distributes tokens to subnets and these tokens are distributed to subnets operators and validators. All operators and validators of root network and subnets should continuously cast weights. Both root network and subnets have operators and validators. Validators are given a subset of the operators of the root network and subnets with a top-k stake. Only weights of validators are used for consensus algorithm calculation. Join the root network to participate in token distribution across subnets.
 
 Register to the root network to participate in the distribution process of tokens across subnets:
 ```bash
-- ctcli root register
+ctcli root register
 ```
 
 ### Subnet network register
@@ -84,12 +87,12 @@ Let's set the weight on the subnet network. This weight represents your subjecti
 
 Get a list of operators and weights assigned to each operator within the root network to each other:
 ```bash
-ctcli subnet weights
+ctcli subnet get_weights
 ```
 
 Set weights to different operators within the subnet:
 ```bash
-- ctcli subnet weights --uids 0,1,2,3 --weights 0.25,0.25,0.25,0.25
+ctcli subnet weights --uids 0,1,2,3 --weights 0.25,0.25,0.25,0.25
 ```
 
 ### Delegate stake

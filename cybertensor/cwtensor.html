@@ -96,8 +96,6 @@ from .types import AxonServeCallParams, PrometheusServeCallParams
 from .utils import U16_NORMALIZED_FLOAT, coin_from_str
 from .utils.balance import Balance
 from .utils.registration import POWSolution
-from .wallet import Wallet
-from .config import Config
 
 logger = logger.opt(colors=True)
 
@@ -110,10 +108,10 @@ class cwtensor:
     &#34;&#34;&#34;
 
     @staticmethod
-    def config() -&gt; &#34;Config&#34;:
+    def config() -&gt; &#34;cybertensor.config&#34;:
         parser = argparse.ArgumentParser()
         cwtensor.add_args(parser)
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -189,7 +187,7 @@ class cwtensor:
             return &#34;unknown&#34;, {}
 
     @staticmethod
-    def setup_config(network: str, config: &#34;Config&#34;):
+    def setup_config(network: str, config: &#34;cybertensor.config&#34;):
         if network is not None:
             (
                 evaluated_network,
@@ -227,12 +225,12 @@ class cwtensor:
     def __init__(
         self,
         network: str = None,
-        config: &#34;Config&#34; = None,
+        config: &#34;cybertensor.config&#34; = None,
         _mock: bool = False,
     ) -&gt; None:
         r&#34;&#34;&#34;Initializes a cwtensor chain interface.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.config`, `optional`):
                 cybertensor.cwtensor.config()
             network (default=&#39;local or ws://127.0.0.1:9946&#39;, type=str)
                 The cwtensor network flag. The likely choices are:
@@ -285,7 +283,7 @@ class cwtensor:
     #####################
     def nominate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         &#34;&#34;&#34;Becomes a delegate for the hotkey.&#34;&#34;&#34;
@@ -297,7 +295,7 @@ class cwtensor:
 
     def _do_nominate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         nominate_msg = {&#34;become_delegate&#34;: {&#34;hotkey&#34;: wallet.hotkey.address}}
@@ -326,7 +324,7 @@ class cwtensor:
 
     def delegate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -344,7 +342,7 @@ class cwtensor:
 
     def _do_delegation(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: str,
         amount: &#34;Balance&#34;,
         wait_for_finalization: bool = True,
@@ -376,7 +374,7 @@ class cwtensor:
 
     def undelegate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -394,7 +392,7 @@ class cwtensor:
 
     def _do_undelegation(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: str,
         amount: &#34;Balance&#34;,
         wait_for_finalization: bool = True,
@@ -429,7 +427,7 @@ class cwtensor:
 
     def set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         uids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
@@ -450,7 +448,7 @@ class cwtensor:
 
     def _do_set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         uids: List[int],
         vals: List[int],
         netuid: int,
@@ -493,7 +491,7 @@ class cwtensor:
     ######################
     def register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -526,14 +524,14 @@ class cwtensor:
     def _do_pow_register(
         self,
         netuid: int,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         pow_result: POWSolution,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         &#34;&#34;&#34;Sends a (POW) register extrinsic to the chain.
         Args:
             netuid (int): the subnet to register on.
-            wallet (Wallet): the wallet to register.
+            wallet (cybertensor.wallet): the wallet to register.
             pow_result (POWSolution): the pow result to register.
             wait_for_finalization (bool): if true, waits for the extrinsic to be finalized.
         Returns:
@@ -577,7 +575,7 @@ class cwtensor:
 
     def burned_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -595,7 +593,7 @@ class cwtensor:
         self,
         netuid: int,
         burn: int,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         burned_register_msg = {
@@ -632,7 +630,7 @@ class cwtensor:
     ##################
     def transfer(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         dest: str,
         amount: Union[Balance, float],
         wait_for_inclusion: bool = True,
@@ -659,7 +657,7 @@ class cwtensor:
 
     def _do_transfer(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         dest: Address,
         transfer_balance: Balance,
         wait_for_inclusion: bool = True,
@@ -667,7 +665,7 @@ class cwtensor:
     ) -&gt; Tuple[bool, Optional[str], Optional[str]]:
         &#34;&#34;&#34;Sends a transfer extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             dest (:obj:`str`): Destination public key address.
             transfer_balance (:obj:`Balance`): Amount to transfer.
             wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.
@@ -710,7 +708,7 @@ class cwtensor:
     #################
     def register_subnetwork(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization=True,
         prompt: bool = False,
     ) -&gt; bool:
@@ -723,7 +721,7 @@ class cwtensor:
 
     def set_hyperparameter(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         parameter: str,
         value,
@@ -746,7 +744,7 @@ class cwtensor:
 
     def serve(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         ip: str,
         port: int,
         protocol: int,
@@ -779,7 +777,7 @@ class cwtensor:
 
     def _do_serve_axon(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         call_params: AxonServeCallParams,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
@@ -808,7 +806,7 @@ class cwtensor:
 
     def serve_prometheus(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         port: int,
         netuid: int,
         wait_for_finalization: bool = True,
@@ -823,14 +821,14 @@ class cwtensor:
 
     def _do_serve_prometheus(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         call_params: PrometheusServeCallParams,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         &#34;&#34;&#34;
         Sends a serve prometheus extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization.
         Returns:
@@ -866,7 +864,7 @@ class cwtensor:
     #################
     def add_stake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -884,7 +882,7 @@ class cwtensor:
 
     def add_stake_multiple(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -902,14 +900,14 @@ class cwtensor:
 
     def _do_stake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         &#34;&#34;&#34;Sends a stake extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to stake to.
             amount (:obj:`Balance`): Amount to stake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -949,7 +947,7 @@ class cwtensor:
     ###################
     def unstake_multiple(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -967,7 +965,7 @@ class cwtensor:
 
     def unstake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -985,14 +983,14 @@ class cwtensor:
 
     def _do_unstake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = False,
     ) -&gt; bool:
         &#34;&#34;&#34;Sends an unstake extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to unstake from.
             amount (:obj:`Balance`): Amount to unstake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -1032,7 +1030,7 @@ class cwtensor:
 
     def root_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
         prompt: bool = False,
     ) -&gt; bool:
@@ -1046,7 +1044,7 @@ class cwtensor:
 
     def _do_root_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         root_register_msg = {&#34;root_register&#34;: {&#34;hotkey&#34;: wallet.hotkey.address}}
@@ -1075,7 +1073,7 @@ class cwtensor:
 
     def root_set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
         version_key: int = 0,
@@ -1664,7 +1662,7 @@ class cwtensor:
 <dl>
 <dt id="cybertensor.cwtensor.cwtensor"><code class="flex name class">
 <span>class <span class="ident">cwtensor</span></span>
-<span>(</span><span>network: str = None, config: Config = None)</span>
+<span>(</span><span>network: str = None, config: <a title="cybertensor.config" href="config.html">cybertensor.config</a> = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Factory Class for cybertensor.cwtensor</p>
@@ -1672,7 +1670,7 @@ class cwtensor:
 By default, the cwtensor class connects to the Finney which serves as the main cybertensor network.</p>
 <p>Initializes a cwtensor chain interface.</p>
 <h2 id="args">Args</h2>
-<p>config (:obj:<code>Config</code>, <code>optional</code>):
+<p>config (:obj:<code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code>, <code>optional</code>):
 cybertensor.cwtensor.config()
 network (default='local or ws://127.0.0.1:9946', type=str)
 The cwtensor network flag. The likely choices are:
@@ -1692,10 +1690,10 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     &#34;&#34;&#34;
 
     @staticmethod
-    def config() -&gt; &#34;Config&#34;:
+    def config() -&gt; &#34;cybertensor.config&#34;:
         parser = argparse.ArgumentParser()
         cwtensor.add_args(parser)
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -1771,7 +1769,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
             return &#34;unknown&#34;, {}
 
     @staticmethod
-    def setup_config(network: str, config: &#34;Config&#34;):
+    def setup_config(network: str, config: &#34;cybertensor.config&#34;):
         if network is not None:
             (
                 evaluated_network,
@@ -1809,12 +1807,12 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     def __init__(
         self,
         network: str = None,
-        config: &#34;Config&#34; = None,
+        config: &#34;cybertensor.config&#34; = None,
         _mock: bool = False,
     ) -&gt; None:
         r&#34;&#34;&#34;Initializes a cwtensor chain interface.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.config`, `optional`):
                 cybertensor.cwtensor.config()
             network (default=&#39;local or ws://127.0.0.1:9946&#39;, type=str)
                 The cwtensor network flag. The likely choices are:
@@ -1867,7 +1865,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     #####################
     def nominate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         &#34;&#34;&#34;Becomes a delegate for the hotkey.&#34;&#34;&#34;
@@ -1879,7 +1877,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_nominate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         nominate_msg = {&#34;become_delegate&#34;: {&#34;hotkey&#34;: wallet.hotkey.address}}
@@ -1908,7 +1906,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def delegate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -1926,7 +1924,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_delegation(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: str,
         amount: &#34;Balance&#34;,
         wait_for_finalization: bool = True,
@@ -1958,7 +1956,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def undelegate(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -1976,7 +1974,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_undelegation(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         delegate: str,
         amount: &#34;Balance&#34;,
         wait_for_finalization: bool = True,
@@ -2011,7 +2009,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         uids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
@@ -2032,7 +2030,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         uids: List[int],
         vals: List[int],
         netuid: int,
@@ -2075,7 +2073,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     ######################
     def register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -2108,14 +2106,14 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     def _do_pow_register(
         self,
         netuid: int,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         pow_result: POWSolution,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         &#34;&#34;&#34;Sends a (POW) register extrinsic to the chain.
         Args:
             netuid (int): the subnet to register on.
-            wallet (Wallet): the wallet to register.
+            wallet (cybertensor.wallet): the wallet to register.
             pow_result (POWSolution): the pow result to register.
             wait_for_finalization (bool): if true, waits for the extrinsic to be finalized.
         Returns:
@@ -2159,7 +2157,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def burned_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -2177,7 +2175,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
         self,
         netuid: int,
         burn: int,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         burned_register_msg = {
@@ -2214,7 +2212,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     ##################
     def transfer(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         dest: str,
         amount: Union[Balance, float],
         wait_for_inclusion: bool = True,
@@ -2241,7 +2239,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_transfer(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         dest: Address,
         transfer_balance: Balance,
         wait_for_inclusion: bool = True,
@@ -2249,7 +2247,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     ) -&gt; Tuple[bool, Optional[str], Optional[str]]:
         &#34;&#34;&#34;Sends a transfer extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             dest (:obj:`str`): Destination public key address.
             transfer_balance (:obj:`Balance`): Amount to transfer.
             wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.
@@ -2292,7 +2290,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     #################
     def register_subnetwork(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization=True,
         prompt: bool = False,
     ) -&gt; bool:
@@ -2305,7 +2303,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def set_hyperparameter(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuid: int,
         parameter: str,
         value,
@@ -2328,7 +2326,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def serve(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         ip: str,
         port: int,
         protocol: int,
@@ -2361,7 +2359,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_serve_axon(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         call_params: AxonServeCallParams,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
@@ -2390,7 +2388,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def serve_prometheus(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         port: int,
         netuid: int,
         wait_for_finalization: bool = True,
@@ -2405,14 +2403,14 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_serve_prometheus(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         call_params: PrometheusServeCallParams,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         &#34;&#34;&#34;
         Sends a serve prometheus extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object.
+            wallet (:obj:`cybertensor.wallet`): Wallet object.
             call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization.
         Returns:
@@ -2448,7 +2446,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     #################
     def add_stake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -2466,7 +2464,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def add_stake_multiple(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -2484,14 +2482,14 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_stake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = True,
     ) -&gt; bool:
         &#34;&#34;&#34;Sends a stake extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to stake to.
             amount (:obj:`Balance`): Amount to stake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -2531,7 +2529,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
     ###################
     def unstake_multiple(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -2549,7 +2547,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def unstake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -2567,14 +2565,14 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_unstake(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = False,
     ) -&gt; bool:
         &#34;&#34;&#34;Sends an unstake extrinsic to the chain.
         Args:
-            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to unstake from.
             amount (:obj:`Balance`): Amount to unstake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -2614,7 +2612,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def root_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
         prompt: bool = False,
     ) -&gt; bool:
@@ -2628,7 +2626,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def _do_root_register(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         wait_for_finalization: bool = True,
     ) -&gt; Tuple[bool, Optional[str]]:
         root_register_msg = {&#34;root_register&#34;: {&#34;hotkey&#34;: wallet.hotkey.address}}
@@ -2657,7 +2655,7 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
     def root_set_weights(
         self,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
         netuids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
         version_key: int = 0,
@@ -3277,7 +3275,7 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.config"><code class="name flex">
-<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
+<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.config" href="config.html#cybertensor.config.config">config</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3286,10 +3284,10 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def config() -&gt; &#34;Config&#34;:
+def config() -&gt; &#34;cybertensor.config&#34;:
     parser = argparse.ArgumentParser()
     cwtensor.add_args(parser)
-    return Config(parser, args=[])</code></pre>
+    return cybertensor.config(parser, args=[])</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.determine_chain_endpoint_and_network"><code class="name flex">
@@ -3367,7 +3365,7 @@ def help(cls):
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.setup_config"><code class="name flex">
-<span>def <span class="ident">setup_config</span></span>(<span>network: str, config: Config)</span>
+<span>def <span class="ident">setup_config</span></span>(<span>network: str, config: <a title="cybertensor.config" href="config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3376,7 +3374,7 @@ def help(cls):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def setup_config(network: str, config: &#34;Config&#34;):
+def setup_config(network: str, config: &#34;cybertensor.config&#34;):
     if network is not None:
         (
             evaluated_network,
@@ -3439,7 +3437,7 @@ def block(self) -&gt; int:
 <h3>Methods</h3>
 <dl>
 <dt id="cybertensor.cwtensor.cwtensor.add_stake"><code class="name flex">
-<span>def <span class="ident">add_stake</span></span>(<span>self, wallet: Wallet, hotkey: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">add_stake</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, hotkey: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds the specified amount of stake to passed hotkey uid.</p></div>
@@ -3449,7 +3447,7 @@ def block(self) -&gt; int:
 </summary>
 <pre><code class="python">def add_stake(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     hotkey: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -3467,7 +3465,7 @@ def block(self) -&gt; int:
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.add_stake_multiple"><code class="name flex">
-<span>def <span class="ident">add_stake_multiple</span></span>(<span>self, wallet: Wallet, hotkeys: List[str], amounts: List[Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float]] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">add_stake_multiple</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, hotkeys: List[str], amounts: List[Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float]] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds stake to each hotkey in the list, using each amount, from a common coldkey.</p></div>
@@ -3477,7 +3475,7 @@ def block(self) -&gt; int:
 </summary>
 <pre><code class="python">def add_stake_multiple(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     hotkeys: List[str],
     amounts: List[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
@@ -3513,7 +3511,7 @@ def block(self) -&gt; int:
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.burned_register"><code class="name flex">
-<span>def <span class="ident">burned_register</span></span>(<span>self, wallet: Wallet, netuid: int, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">burned_register</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, netuid: int, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the wallet to chain by recycling GBOOT.</p></div>
@@ -3523,7 +3521,7 @@ def block(self) -&gt; int:
 </summary>
 <pre><code class="python">def burned_register(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     netuid: int,
     wait_for_finalization: bool = True,
     prompt: bool = False,
@@ -3539,7 +3537,7 @@ def block(self) -&gt; int:
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.delegate"><code class="name flex">
-<span>def <span class="ident">delegate</span></span>(<span>self, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">delegate</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds the specified amount of stake to the passed delegate using the passed wallet.</p></div>
@@ -3549,7 +3547,7 @@ def block(self) -&gt; int:
 </summary>
 <pre><code class="python">def delegate(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -4517,7 +4515,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.nominate"><code class="name flex">
-<span>def <span class="ident">nominate</span></span>(<span>self, wallet: Wallet, wait_for_finalization: bool = True) ‑> bool</span>
+<span>def <span class="ident">nominate</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, wait_for_finalization: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Becomes a delegate for the hotkey.</p></div>
@@ -4527,7 +4525,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def nominate(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     wait_for_finalization: bool = True,
 ) -&gt; bool:
     &#34;&#34;&#34;Becomes a delegate for the hotkey.&#34;&#34;&#34;
@@ -4539,7 +4537,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.register"><code class="name flex">
-<span>def <span class="ident">register</span></span>(<span>self, wallet: Wallet, netuid: int, wait_for_finalization: bool = True, prompt: bool = False, max_allowed_attempts: int = 3, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, TPB: int = 256, num_processes: Optional[int] = None, update_interval: Optional[int] = None, log_verbose: bool = False) ‑> bool</span>
+<span>def <span class="ident">register</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, netuid: int, wait_for_finalization: bool = True, prompt: bool = False, max_allowed_attempts: int = 3, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, TPB: int = 256, num_processes: Optional[int] = None, update_interval: Optional[int] = None, log_verbose: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the wallet to chain.</p></div>
@@ -4549,7 +4547,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def register(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     netuid: int,
     wait_for_finalization: bool = True,
     prompt: bool = False,
@@ -4581,7 +4579,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.register_subnetwork"><code class="name flex">
-<span>def <span class="ident">register_subnetwork</span></span>(<span>self, wallet: Wallet, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">register_subnetwork</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4591,7 +4589,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def register_subnetwork(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     wait_for_finalization=True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -4604,7 +4602,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.root_register"><code class="name flex">
-<span>def <span class="ident">root_register</span></span>(<span>self, wallet: Wallet, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">root_register</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the wallet to root network.</p></div>
@@ -4614,7 +4612,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def root_register(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -4628,7 +4626,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.root_set_weights"><code class="name flex">
-<span>def <span class="ident">root_set_weights</span></span>(<span>self, wallet: Wallet, netuids: Union[torch.LongTensor, torch.Tensor, list], weights: Union[torch.FloatTensor, torch.Tensor, list], version_key: int = 0, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">root_set_weights</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, netuids: Union[torch.LongTensor, torch.Tensor, list], weights: Union[torch.FloatTensor, torch.Tensor, list], version_key: int = 0, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets weights for the root network.</p></div>
@@ -4638,7 +4636,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def root_set_weights(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     netuids: Union[torch.LongTensor, torch.Tensor, list],
     weights: Union[torch.FloatTensor, torch.Tensor, list],
     version_key: int = 0,
@@ -4658,7 +4656,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.serve"><code class="name flex">
-<span>def <span class="ident">serve</span></span>(<span>self, wallet: Wallet, ip: str, port: int, protocol: int, netuid: int, placeholder1: int = 0, placeholder2: int = 0, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">serve</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, ip: str, port: int, protocol: int, netuid: int, placeholder1: int = 0, placeholder2: int = 0, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4668,7 +4666,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def serve(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     ip: str,
     port: int,
     protocol: int,
@@ -4711,7 +4709,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.serve_prometheus"><code class="name flex">
-<span>def <span class="ident">serve_prometheus</span></span>(<span>self, wallet: Wallet, port: int, netuid: int, wait_for_finalization: bool = True) ‑> bool</span>
+<span>def <span class="ident">serve_prometheus</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, port: int, netuid: int, wait_for_finalization: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4721,7 +4719,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def serve_prometheus(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     port: int,
     netuid: int,
     wait_for_finalization: bool = True,
@@ -4736,7 +4734,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.set_hyperparameter"><code class="name flex">
-<span>def <span class="ident">set_hyperparameter</span></span>(<span>self, wallet: Wallet, netuid: int, parameter: str, value, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_hyperparameter</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, netuid: int, parameter: str, value, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4746,7 +4744,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def set_hyperparameter(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     netuid: int,
     parameter: str,
     value,
@@ -4765,7 +4763,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.set_weights"><code class="name flex">
-<span>def <span class="ident">set_weights</span></span>(<span>self, wallet: Wallet, netuid: int, uids: Union[torch.LongTensor, torch.Tensor, list], weights: Union[torch.FloatTensor, torch.Tensor, list], version_key: int = 10, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_weights</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, netuid: int, uids: Union[torch.LongTensor, torch.Tensor, list], weights: Union[torch.FloatTensor, torch.Tensor, list], version_key: int = 10, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4775,7 +4773,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def set_weights(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     netuid: int,
     uids: Union[torch.LongTensor, torch.Tensor, list],
     weights: Union[torch.FloatTensor, torch.Tensor, list],
@@ -4854,7 +4852,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.transfer"><code class="name flex">
-<span>def <span class="ident">transfer</span></span>(<span>self, wallet: Wallet, dest: str, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float], wait_for_inclusion: bool = True, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">transfer</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, dest: str, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float], wait_for_inclusion: bool = True, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Transfers funds from this wallet to the destination public key address</p></div>
@@ -4864,7 +4862,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def transfer(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     dest: str,
     amount: Union[Balance, float],
     wait_for_inclusion: bool = True,
@@ -4897,7 +4895,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.undelegate"><code class="name flex">
-<span>def <span class="ident">undelegate</span></span>(<span>self, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">undelegate</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes the specified amount of stake from the passed delegate using the passed wallet.</p></div>
@@ -4907,7 +4905,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def undelegate(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -4925,7 +4923,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.unstake"><code class="name flex">
-<span>def <span class="ident">unstake</span></span>(<span>self, wallet: Wallet, hotkey: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">unstake</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, hotkey: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes stake into the wallet coldkey from the specified hotkey uid.</p></div>
@@ -4935,7 +4933,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def unstake(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     hotkey: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -4953,7 +4951,7 @@ List of neuron lite metadata objects.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.cwtensor.cwtensor.unstake_multiple"><code class="name flex">
-<span>def <span class="ident">unstake_multiple</span></span>(<span>self, wallet: Wallet, hotkeys: List[str], amounts: List[Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float]] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">unstake_multiple</span></span>(<span>self, wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, hotkeys: List[str], amounts: List[Union[<a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float]] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes stake from each hotkey in the list, using each amount, to a common coldkey.</p></div>
@@ -4963,7 +4961,7 @@ List of neuron lite metadata objects.</p></div>
 </summary>
 <pre><code class="python">def unstake_multiple(
     self,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
     hotkeys: List[str],
     amounts: List[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,

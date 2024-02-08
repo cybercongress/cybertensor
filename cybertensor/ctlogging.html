@@ -53,8 +53,7 @@ import re
 import torch
 from loguru import logger
 
-from .config import Config
-
+import cybertensor
 
 logger = logger.opt(colors=True)
 # Remove default sink.
@@ -80,7 +79,7 @@ class logging:
 
     def __new__(
         cls,
-        config: &#34;Config&#34; = None,
+        config: &#34;cybertensor.config&#34; = None,
         debug: bool = None,
         trace: bool = None,
         record_log: bool = None,
@@ -88,7 +87,7 @@ class logging:
     ):
         r&#34;&#34;&#34;Instantiate cybertensor logging system backend.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.config`, `optional`):
                 cybertensor.logging.config()
             debug (:obj:`bool`, `optional`):
                 Turn on debug.
@@ -158,11 +157,11 @@ class logging:
     @classmethod
     def config(cls):
         &#34;&#34;&#34;Get config from the argument parser
-        Return: Config object
+        Return: cybertensor.config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         logging.add_args(parser)
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -212,7 +211,7 @@ class logging:
             pass
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         &#34;&#34;&#34;Check config&#34;&#34;&#34;
         assert config.logging
 
@@ -339,7 +338,7 @@ class logging:
 <dl>
 <dt id="cybertensor.ctlogging.logging"><code class="flex name class">
 <span>class <span class="ident">logging</span></span>
-<span>(</span><span>config: Config = None, debug: bool = None, trace: bool = None, record_log: bool = None, logging_dir: str = None)</span>
+<span>(</span><span>config: <a title="cybertensor.config" href="config.html">cybertensor.config</a> = None, debug: bool = None, trace: bool = None, record_log: bool = None, logging_dir: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Standardize logging for cybertensor</p></div>
@@ -358,7 +357,7 @@ class logging:
 
     def __new__(
         cls,
-        config: &#34;Config&#34; = None,
+        config: &#34;cybertensor.config&#34; = None,
         debug: bool = None,
         trace: bool = None,
         record_log: bool = None,
@@ -366,7 +365,7 @@ class logging:
     ):
         r&#34;&#34;&#34;Instantiate cybertensor logging system backend.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.config`, `optional`):
                 cybertensor.logging.config()
             debug (:obj:`bool`, `optional`):
                 Turn on debug.
@@ -436,11 +435,11 @@ class logging:
     @classmethod
     def config(cls):
         &#34;&#34;&#34;Get config from the argument parser
-        Return: Config object
+        Return: cybertensor.config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         logging.add_args(parser)
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -490,7 +489,7 @@ class logging:
             pass
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         &#34;&#34;&#34;Check config&#34;&#34;&#34;
         assert config.logging
 
@@ -657,7 +656,7 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 </details>
 </dd>
 <dt id="cybertensor.ctlogging.logging.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Check config</p></div>
@@ -666,7 +665,7 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;Config&#34;):
+def check_config(cls, config: &#34;cybertensor.config&#34;):
     &#34;&#34;&#34;Check config&#34;&#34;&#34;
     assert config.logging</code></pre>
 </details>
@@ -676,7 +675,7 @@ def check_config(cls, config: &#34;Config&#34;):
 </code></dt>
 <dd>
 <div class="desc"><p>Get config from the argument parser
-Return: Config object</p></div>
+Return: cybertensor.config object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -684,11 +683,11 @@ Return: Config object</p></div>
 <pre><code class="python">@classmethod
 def config(cls):
     &#34;&#34;&#34;Get config from the argument parser
-    Return: Config object
+    Return: cybertensor.config object
     &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
     logging.add_args(parser)
-    return Config(parser, args=[])</code></pre>
+    return cybertensor.config(parser, args=[])</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.ctlogging.logging.debug"><code class="name flex">
