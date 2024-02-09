@@ -54,11 +54,13 @@ from rich.prompt import Confirm
 import cybertensor
 from ..utils import is_valid_address
 from ..utils.balance import Balance
+from ..wallet import Wallet
+from .. import __console__ as console
 
 
 def transfer_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     dest: Union[Address, str],
     amount: Union[Balance, float],
     wait_for_inclusion: bool = True,
@@ -68,7 +70,7 @@ def transfer_message(
 ) -&gt; bool:
     r&#34;&#34;&#34;Transfers funds from this wallet to the destination public key address
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object to make transfer from.
         dest (Union[cosmpy.crypto.address.Address, str]):
             Destination public key address of a receiver.
@@ -91,7 +93,7 @@ def transfer_message(
     &#34;&#34;&#34;
     # Validate destination address.
     if not is_valid_address(dest):
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:cross_mark: [red]Invalid destination address[/red]:[bold white]\n  {dest}[/bold white]&#34;
         )
         return False
@@ -106,12 +108,12 @@ def transfer_message(
         transfer_balance = amount
 
     # Check balance.
-    with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+    with console.status(&#34;:satellite: Checking Balance...&#34;):
         account_balance = cwtensor.get_balance(wallet.coldkey.address)
         # check existential deposit.
         existential_deposit = cwtensor.get_existential_deposit()
 
-    with cybertensor.__console__.status(&#34;:satellite: Transferring...&#34;):
+    with console.status(&#34;:satellite: Transferring...&#34;):
         fee = cwtensor.get_transfer_fee()
 
     if not keep_alive:
@@ -120,7 +122,7 @@ def transfer_message(
 
     # Check if we have enough balance.
     if account_balance &lt; (transfer_balance + fee + existential_deposit):
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:cross_mark: [red]Not enough balance[/red]:[bold white]\n&#34;
             f&#34;  balance: {account_balance}\n&#34;
             f&#34;  amount: {transfer_balance}\n&#34;
@@ -139,7 +141,7 @@ def transfer_message(
         ):
             return False
 
-    with cybertensor.__console__.status(&#34;:satellite: Transferring...&#34;):
+    with console.status(&#34;:satellite: Transferring...&#34;):
         success, tx_hash, err_msg = cwtensor._do_transfer(
             wallet,
             Address(dest),
@@ -149,27 +151,27 @@ def transfer_message(
         )
 
         if success:
-            cybertensor.__console__.print(
+            console.print(
                 &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
             )
-            cybertensor.__console__.print(f&#34;[green]Tx Hash: {tx_hash}[/green]&#34;)
+            console.print(f&#34;[green]Tx Hash: {tx_hash}[/green]&#34;)
 
             explorer_url = cybertensor.utils.get_explorer_url_for_network(
                 cwtensor.network, tx_hash, cwtensor.network_explorer
             )
             if explorer_url is not None:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;[green]Explorer Link: {explorer_url}[/green]&#34;
                 )
         else:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
             )
 
     if success:
-        with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+        with console.status(&#34;:satellite: Checking Balance...&#34;):
             new_balance = cwtensor.get_balance(wallet.coldkey.address)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Balance:\n&#34;
                 f&#34;  [blue]{account_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
             )
@@ -186,12 +188,12 @@ def transfer_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.transfer.transfer_message"><code class="name flex">
-<span>def <span class="ident">transfer_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, dest: Union[cosmpy.crypto.address.Address, str], amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float], wait_for_inclusion: bool = True, wait_for_finalization: bool = False, keep_alive: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">transfer_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, dest: Union[cosmpy.crypto.address.Address, str], amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float], wait_for_inclusion: bool = True, wait_for_finalization: bool = False, keep_alive: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Transfers funds from this wallet to the destination public key address</p>
 <h2 id="args">Args</h2>
-<p>wallet (cybertensor.wallet):
+<p>wallet (Wallet):
 cybertensor wallet object to make transfer from.
 dest (Union[cosmpy.crypto.address.Address, str]):
 Destination public key address of a receiver.
@@ -217,7 +219,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def transfer_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     dest: Union[Address, str],
     amount: Union[Balance, float],
     wait_for_inclusion: bool = True,
@@ -227,7 +229,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 ) -&gt; bool:
     r&#34;&#34;&#34;Transfers funds from this wallet to the destination public key address
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object to make transfer from.
         dest (Union[cosmpy.crypto.address.Address, str]):
             Destination public key address of a receiver.
@@ -250,7 +252,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     &#34;&#34;&#34;
     # Validate destination address.
     if not is_valid_address(dest):
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:cross_mark: [red]Invalid destination address[/red]:[bold white]\n  {dest}[/bold white]&#34;
         )
         return False
@@ -265,12 +267,12 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         transfer_balance = amount
 
     # Check balance.
-    with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+    with console.status(&#34;:satellite: Checking Balance...&#34;):
         account_balance = cwtensor.get_balance(wallet.coldkey.address)
         # check existential deposit.
         existential_deposit = cwtensor.get_existential_deposit()
 
-    with cybertensor.__console__.status(&#34;:satellite: Transferring...&#34;):
+    with console.status(&#34;:satellite: Transferring...&#34;):
         fee = cwtensor.get_transfer_fee()
 
     if not keep_alive:
@@ -279,7 +281,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
     # Check if we have enough balance.
     if account_balance &lt; (transfer_balance + fee + existential_deposit):
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:cross_mark: [red]Not enough balance[/red]:[bold white]\n&#34;
             f&#34;  balance: {account_balance}\n&#34;
             f&#34;  amount: {transfer_balance}\n&#34;
@@ -298,7 +300,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         ):
             return False
 
-    with cybertensor.__console__.status(&#34;:satellite: Transferring...&#34;):
+    with console.status(&#34;:satellite: Transferring...&#34;):
         success, tx_hash, err_msg = cwtensor._do_transfer(
             wallet,
             Address(dest),
@@ -308,27 +310,27 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         )
 
         if success:
-            cybertensor.__console__.print(
+            console.print(
                 &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
             )
-            cybertensor.__console__.print(f&#34;[green]Tx Hash: {tx_hash}[/green]&#34;)
+            console.print(f&#34;[green]Tx Hash: {tx_hash}[/green]&#34;)
 
             explorer_url = cybertensor.utils.get_explorer_url_for_network(
                 cwtensor.network, tx_hash, cwtensor.network_explorer
             )
             if explorer_url is not None:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;[green]Explorer Link: {explorer_url}[/green]&#34;
                 )
         else:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
             )
 
     if success:
-        with cybertensor.__console__.status(&#34;:satellite: Checking Balance...&#34;):
+        with console.status(&#34;:satellite: Checking Balance...&#34;):
             new_balance = cwtensor.get_balance(wallet.coldkey.address)
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;Balance:\n&#34;
                 f&#34;  [blue]{account_balance}[/blue] :arrow_right: [green]{new_balance}[/green]&#34;
             )

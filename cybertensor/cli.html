@@ -49,11 +49,10 @@ import sys
 from typing import List, Optional
 
 import cybertensor
+from . import __console__ as console
 from .commands import *
 from .commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
-
-# Create a console instance for CLI display.
-console = cybertensor.__console__
+from .config import Config
 
 ALIAS_TO_COMMAND = {
     &#34;subnets&#34;: &#34;subnets&#34;,
@@ -167,14 +166,14 @@ class cli:
 
     def __init__(
         self,
-        config: Optional[&#34;cybertensor.config&#34;] = None,
+        config: Optional[&#34;Config&#34;] = None,
         args: Optional[List[str]] = None,
     ):
         &#34;&#34;&#34;
         Initializes a cybertensor.CLI object.
 
         Args:
-            config (cybertensor.config, optional): The configuration settings for the CLI.
+            config (Config, optional): The configuration settings for the CLI.
             args (List[str], optional): List of command line arguments.
         &#34;&#34;&#34;
         # Turns on console for cli.
@@ -242,7 +241,7 @@ class cli:
         return parser
 
     @staticmethod
-    def create_config(args: List[str]) -&gt; &#34;cybertensor.config&#34;:
+    def create_config(args: List[str]) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;
         From the argument parser, add config to cybertensor.executor and local config
 
@@ -250,7 +249,7 @@ class cli:
             args (List[str]): List of command line arguments.
 
         Returns:
-            cybertensor.config: The configuration object for Cybertensor CLI.
+            Config: The configuration object for Cybertensor CLI.
         &#34;&#34;&#34;
         parser = cli.__create_parser__()
 
@@ -259,15 +258,15 @@ class cli:
             parser.print_help()
             sys.exit()
 
-        return cybertensor.config(parser, args=args)
+        return Config(parser, args=args)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         &#34;&#34;&#34;
         Checks if the essential configuration exists under different command
 
         Args:
-            config (cybertensor.config): The configuration settings for the CLI.
+            config (Config): The configuration settings for the CLI.
         &#34;&#34;&#34;
         # Check if command exists, if so, run the corresponding check_config.
         # If command doesn&#39;t exist, inform user and exit the program.
@@ -321,7 +320,7 @@ class cli:
 <dl>
 <dt id="cybertensor.cli.cli"><code class="flex name class">
 <span>class <span class="ident">cli</span></span>
-<span>(</span><span>config: Optional[ForwardRef('<a title="cybertensor.config" href="config.html">cybertensor.config</a>')] = None, args: Optional[List[str]] = None)</span>
+<span>(</span><span>config: Optional[ForwardRef('Config')] = None, args: Optional[List[str]] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Implementation of the Command Line Interface (CLI) class for the Cybertensor protocol.
@@ -329,7 +328,7 @@ This class handles operations like key management (hotkey and coldkey) and token
 <p>Initializes a cybertensor.CLI object.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>config</code></strong> :&ensp;<code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code>, optional</dt>
+<dt><strong><code>config</code></strong> :&ensp;<code>Config</code>, optional</dt>
 <dd>The configuration settings for the CLI.</dd>
 <dt><strong><code>args</code></strong> :&ensp;<code>List[str]</code>, optional</dt>
 <dd>List of command line arguments.</dd>
@@ -346,14 +345,14 @@ This class handles operations like key management (hotkey and coldkey) and token
 
     def __init__(
         self,
-        config: Optional[&#34;cybertensor.config&#34;] = None,
+        config: Optional[&#34;Config&#34;] = None,
         args: Optional[List[str]] = None,
     ):
         &#34;&#34;&#34;
         Initializes a cybertensor.CLI object.
 
         Args:
-            config (cybertensor.config, optional): The configuration settings for the CLI.
+            config (Config, optional): The configuration settings for the CLI.
             args (List[str], optional): List of command line arguments.
         &#34;&#34;&#34;
         # Turns on console for cli.
@@ -421,7 +420,7 @@ This class handles operations like key management (hotkey and coldkey) and token
         return parser
 
     @staticmethod
-    def create_config(args: List[str]) -&gt; &#34;cybertensor.config&#34;:
+    def create_config(args: List[str]) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;
         From the argument parser, add config to cybertensor.executor and local config
 
@@ -429,7 +428,7 @@ This class handles operations like key management (hotkey and coldkey) and token
             args (List[str]): List of command line arguments.
 
         Returns:
-            cybertensor.config: The configuration object for Cybertensor CLI.
+            Config: The configuration object for Cybertensor CLI.
         &#34;&#34;&#34;
         parser = cli.__create_parser__()
 
@@ -438,15 +437,15 @@ This class handles operations like key management (hotkey and coldkey) and token
             parser.print_help()
             sys.exit()
 
-        return cybertensor.config(parser, args=args)
+        return Config(parser, args=args)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;):
+    def check_config(config: &#34;Config&#34;):
         &#34;&#34;&#34;
         Checks if the essential configuration exists under different command
 
         Args:
-            config (cybertensor.config): The configuration settings for the CLI.
+            config (Config): The configuration settings for the CLI.
         &#34;&#34;&#34;
         # Check if command exists, if so, run the corresponding check_config.
         # If command doesn&#39;t exist, inform user and exit the program.
@@ -491,13 +490,13 @@ This class handles operations like key management (hotkey and coldkey) and token
 <h3>Static methods</h3>
 <dl>
 <dt id="cybertensor.cli.cli.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="config.html">cybertensor.config</a>)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the essential configuration exists under different command</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>config</code></strong> :&ensp;<code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code></dt>
+<dt><strong><code>config</code></strong> :&ensp;<code>Config</code></dt>
 <dd>The configuration settings for the CLI.</dd>
 </dl></div>
 <details class="source">
@@ -505,12 +504,12 @@ This class handles operations like key management (hotkey and coldkey) and token
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;):
+def check_config(config: &#34;Config&#34;):
     &#34;&#34;&#34;
     Checks if the essential configuration exists under different command
 
     Args:
-        config (cybertensor.config): The configuration settings for the CLI.
+        config (Config): The configuration settings for the CLI.
     &#34;&#34;&#34;
     # Check if command exists, if so, run the corresponding check_config.
     # If command doesn&#39;t exist, inform user and exit the program.
@@ -534,7 +533,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.cli.cli.create_config"><code class="name flex">
-<span>def <span class="ident">create_config</span></span>(<span>args: List[str]) ‑> <a title="cybertensor.config.config" href="config.html#cybertensor.config.config">config</a></span>
+<span>def <span class="ident">create_config</span></span>(<span>args: List[str]) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>From the argument parser, add config to cybertensor.executor and local config</p>
@@ -545,7 +544,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code></dt>
+<dt><code>Config</code></dt>
 <dd>The configuration object for Cybertensor CLI.</dd>
 </dl></div>
 <details class="source">
@@ -553,7 +552,7 @@ def check_config(config: &#34;cybertensor.config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def create_config(args: List[str]) -&gt; &#34;cybertensor.config&#34;:
+def create_config(args: List[str]) -&gt; &#34;Config&#34;:
     &#34;&#34;&#34;
     From the argument parser, add config to cybertensor.executor and local config
 
@@ -561,7 +560,7 @@ def create_config(args: List[str]) -&gt; &#34;cybertensor.config&#34;:
         args (List[str]): List of command line arguments.
 
     Returns:
-        cybertensor.config: The configuration object for Cybertensor CLI.
+        Config: The configuration object for Cybertensor CLI.
     &#34;&#34;&#34;
     parser = cli.__create_parser__()
 
@@ -570,7 +569,7 @@ def create_config(args: List[str]) -&gt; &#34;cybertensor.config&#34;:
         parser.print_help()
         sys.exit()
 
-    return cybertensor.config(parser, args=args)</code></pre>
+    return Config(parser, args=args)</code></pre>
 </details>
 </dd>
 </dl>

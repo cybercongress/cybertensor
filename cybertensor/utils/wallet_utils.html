@@ -52,10 +52,12 @@ from typing import Union
 from cosmpy.aerial.client import Coin
 from cosmpy.crypto.address import Address
 
-import cybertensor
+from cybertensor import __chain_address_prefix__
 
 
-def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Address]) -&gt; bool:
+def is_valid_cybertensor_address_or_public_key(
+    address: Union[str, bytes, Address]
+) -&gt; bool:
     &#34;&#34;&#34;
     Checks if the given address is a valid destination address.
 
@@ -65,9 +67,10 @@ def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Addres
     Returns:
         True if the address is a valid destination address, False otherwise.
     &#34;&#34;&#34;
-
-    # TODO
-    return True
+    if address is not None:
+        return is_valid_address(address)
+    # TODO  add public key validation
+    return False
 
 
 def is_valid_address(address: Union[str, Address]) -&gt; bool:
@@ -82,7 +85,7 @@ def is_valid_address(address: Union[str, Address]) -&gt; bool:
     &#34;&#34;&#34;
     try:
         Address(address)
-        if address.startswith(cybertensor.__chain_address_prefix__):
+        if address.startswith(__chain_address_prefix__):
             return True
     except RuntimeError:
         pass
@@ -206,7 +209,7 @@ def coin_from_str(string: str) -&gt; Coin:
     &#34;&#34;&#34;
     try:
         Address(address)
-        if address.startswith(cybertensor.__chain_address_prefix__):
+        if address.startswith(__chain_address_prefix__):
             return True
     except RuntimeError:
         pass
@@ -226,7 +229,9 @@ def coin_from_str(string: str) -&gt; Coin:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Address]) -&gt; bool:
+<pre><code class="python">def is_valid_cybertensor_address_or_public_key(
+    address: Union[str, bytes, Address]
+) -&gt; bool:
     &#34;&#34;&#34;
     Checks if the given address is a valid destination address.
 
@@ -236,9 +241,10 @@ def coin_from_str(string: str) -&gt; Coin:
     Returns:
         True if the address is a valid destination address, False otherwise.
     &#34;&#34;&#34;
-
-    # TODO
-    return True</code></pre>
+    if address is not None:
+        return is_valid_address(address)
+    # TODO  add public key validation
+    return False</code></pre>
 </details>
 </dd>
 </dl>

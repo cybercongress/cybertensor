@@ -53,20 +53,22 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from .. import __console__ as console
+from ..utils import weight_utils
+from ..wallet import Wallet
 
 logger = logger.opt(colors=True)
 
 
 def root_register_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
     r&#34;&#34;&#34;Registers the wallet to root network.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -85,7 +87,7 @@ def root_register_message(
         netuid=0, hotkey=wallet.hotkey.address
     )
     if is_registered:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:white_heavy_check_mark: [green]Already registered on root network.[/green]&#34;
         )
         return True
@@ -95,14 +97,14 @@ def root_register_message(
         if not Confirm.ask(&#34;Register to root network?&#34;):
             return False
 
-    with cybertensor.__console__.status(&#34;:satellite: Registering to root network...&#34;):
+    with console.status(&#34;:satellite: Registering to root network...&#34;):
         success, err_msg = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
 
         if success != True or success is False:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
             )
             time.sleep(0.5)
@@ -113,20 +115,20 @@ def root_register_message(
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Registered[/green]&#34;
                 )
                 return True
             else:
                 # neuron not found, try again
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:cross_mark: [red]Unknown error. Neuron not found.[/red]&#34;
                 )
 
 
 def set_root_weights_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
     version_key: int = 0,
@@ -135,7 +137,7 @@ def set_root_weights_message(
 ) -&gt; bool:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuids (List[int]):
             netuid of the subnet to set weights for.
@@ -177,7 +179,7 @@ def set_root_weights_message(
     formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
         x=weights, limit=max_weight_limit
     )
-    cybertensor.__console__.print(
+    console.print(
         f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;
     )
 
@@ -190,7 +192,7 @@ def set_root_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting root weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
         try:
@@ -206,13 +208,13 @@ def set_root_weights_message(
                 wait_for_finalization=wait_for_finalization,
             )
 
-            cybertensor.__console__.print(success, error_message)
+            console.print(success, error_message)
 
             if not wait_for_finalization:
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
                 )
                 cybertensor.logging.success(
@@ -221,7 +223,7 @@ def set_root_weights_message(
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;
                 )
                 cybertensor.logging.warning(
@@ -232,7 +234,7 @@ def set_root_weights_message(
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
             )
             cybertensor.logging.warning(
@@ -249,12 +251,12 @@ def set_root_weights_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.root.root_register_message"><code class="name flex">
-<span>def <span class="ident">root_register_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">root_register_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Registers the wallet to root network.</p>
 <h2 id="args">Args</h2>
-<p>wallet (cybertensor.wallet):
+<p>wallet (Wallet):
 cybertensor wallet object.
 wait_for_finalization (bool):
 If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -271,13 +273,13 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def root_register_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
     r&#34;&#34;&#34;Registers the wallet to root network.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -296,7 +298,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         netuid=0, hotkey=wallet.hotkey.address
     )
     if is_registered:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:white_heavy_check_mark: [green]Already registered on root network.[/green]&#34;
         )
         return True
@@ -306,14 +308,14 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         if not Confirm.ask(&#34;Register to root network?&#34;):
             return False
 
-    with cybertensor.__console__.status(&#34;:satellite: Registering to root network...&#34;):
+    with console.status(&#34;:satellite: Registering to root network...&#34;):
         success, err_msg = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
 
         if success != True or success is False:
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
             )
             time.sleep(0.5)
@@ -324,24 +326,24 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Registered[/green]&#34;
                 )
                 return True
             else:
                 # neuron not found, try again
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:cross_mark: [red]Unknown error. Neuron not found.[/red]&#34;
                 )</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.messages.root.set_root_weights_message"><code class="name flex">
-<span>def <span class="ident">set_root_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, netuids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_root_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, netuids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets the given weights and values on chain for wallet hotkey account.</p>
 <h2 id="args">Args</h2>
-<p>wallet (cybertensor.wallet):
+<p>wallet (Wallet):
 cybertensor wallet object.
 netuids (List[int]):
 netuid of the subnet to set weights for.
@@ -364,7 +366,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def set_root_weights_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     netuids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
     version_key: int = 0,
@@ -373,7 +375,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 ) -&gt; bool:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuids (List[int]):
             netuid of the subnet to set weights for.
@@ -415,7 +417,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
         x=weights, limit=max_weight_limit
     )
-    cybertensor.__console__.print(
+    console.print(
         f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;
     )
 
@@ -428,7 +430,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Setting root weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
         try:
@@ -444,13 +446,13 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
                 wait_for_finalization=wait_for_finalization,
             )
 
-            cybertensor.__console__.print(success, error_message)
+            console.print(success, error_message)
 
             if not wait_for_finalization:
                 return True
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
                 )
                 cybertensor.logging.success(
@@ -459,7 +461,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;
                 )
                 cybertensor.logging.warning(
@@ -470,7 +472,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
             )
             cybertensor.logging.warning(
