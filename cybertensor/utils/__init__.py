@@ -21,6 +21,7 @@ from typing import Dict, Optional
 
 import requests
 
+import cybertensor
 from .formatting import get_human_readable, millify
 from .wallet_utils import *
 
