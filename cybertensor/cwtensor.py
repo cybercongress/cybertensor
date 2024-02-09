@@ -20,7 +20,7 @@
 import argparse
 import copy
 import os
-from typing import List, Dict, Union, Optional, Tuple, TypedDict
+from typing import List, Dict, Union, Optional, Tuple
 
 import torch
 from cosmpy.aerial.client import LedgerClient

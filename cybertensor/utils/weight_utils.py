@@ -259,7 +259,7 @@ def process_weights_for_netuid(
         )  # creating minimum even non-zero weights
         weights[non_zero_weight_idx] += non_zero_weights
         cybertensor.logging.debug("final_weights", weights)
-        normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+        normalized_weights = normalize_max_weight(
             x=weights, limit=max_weight_limit
         )
         return torch.tensor(list(range(len(normalized_weights)))), normalized_weights
@@ -283,7 +283,7 @@ def process_weights_for_netuid(
     cybertensor.logging.debug("non_zero_weights", non_zero_weights)
 
     # Normalize weights and return.
-    normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+    normalized_weights = normalize_max_weight(
         x=non_zero_weights, limit=max_weight_limit
     )
     cybertensor.logging.debug("final_weights", normalized_weights)
