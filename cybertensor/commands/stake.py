@@ -220,21 +220,15 @@ class StakeCommand:
             and not config.get("stake_all")
             and not config.get("max_stake")
         ):
-            if not Confirm.ask(
-                f"Stake all {cybertensor.__giga_boot_symbol__} "
-                f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
-            ):
-                amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
-                try:
-                    config.amount = float(amount)
-                except ValueError:
-                    console.print(
-                        f":cross_mark:[red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
-                        f"[bold white]{amount}[/bold white]"
-                    )
-                    sys.exit()
-            else:
-                config.stake_all = True
+            amount = Prompt.ask(f"Enter {cybertensor.__giga_boot_symbol__} amount to stake")
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    f":cross_mark:[red]Invalid {cybertensor.__giga_boot_symbol__} amount[/red] "
+                    f"[bold white]{amount}[/bold white]"
+                )
+                sys.exit()
 
     @classmethod
     def add_args(cls, parser: argparse.ArgumentParser):

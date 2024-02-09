@@ -117,8 +117,8 @@ class MetagraphCommand:
                 ep.ip + ":" + str(ep.port)
                 if ep.is_serving
                 else "[yellow]none[/yellow]",
-                ep.hotkey[:16],
-                ep.coldkey[:16]
+                f"{ep.hotkey[:14]}...{ep.hotkey[-6:]}",
+                f"{ep.coldkey[:14]}...{ep.coldkey[-6:]}"
             ]
             total_stake += metagraph.total_stake[uid]
             total_rank += metagraph.ranks[uid]
