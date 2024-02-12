@@ -2,19 +2,15 @@ from argparse import ArgumentParser
 from random import sample
 from time import sleep
 from typing import Union, TypedDict, Optional
-from torch.multiprocessing import Pool
 
-from cyber_sdk.client.lcd import LCDClient
-from cyber_sdk.client.lcd.api.tx import CreateTxOptions, BlockTxBroadcastResult
-from cyber_sdk.core import Coin, Coins, AccAddress
-from cyber_sdk.core.bank import MsgSend
-from cyber_sdk.core.fee import Fee
-from cyber_sdk.exceptions import LCDResponseError
-from cyber_sdk.key.mnemonic import MnemonicKey
-from cyberutils.bash import execute_bash
-from cyberutils.contract import execute_contract
+import pandas as pd
+from cosmpy.aerial.tx_helpers import SubmittedTx
+from cosmpy.aerial.wallet import LocalWallet
+from cosmpy.crypto.address import Address
+from torch.multiprocessing import Pool
 from tqdm import tqdm
 
+from cybertensor import __local_network__ as network
 from cybertensor import cwtensor, Wallet
 
 
@@ -33,7 +29,6 @@ parser.add_argument("--send-to-contract", default="false")
 parser.add_argument("--activate-contract", default="false")
 parser.add_argument("--send-to-wallets", default="true")
 parser.add_argument("--threads", default=5)
-parser.add_argument("--lcd", default="http://localhost:1317")
 args = parser.parse_args()
 
 ADDRESSES_NUMBER = int(args.addresses)
@@ -41,33 +36,21 @@ SEND_TOKEN_TO_CONTRACT = args.send_to_contract.lower() in ["true", "1", "t", "y"
 ACTIVATE_CONTRACT = args.activate_contract.lower() in ["true", "1", "t", "y", "yes"]
 SEND_TOKEN_TO_WALLETS = args.send_to_wallets.lower() in ["true", "1", "t", "y", "yes"]
 NUMBER_OF_THREADS = int(args.threads)
-LCD_URL = args.lcd
 
 
 def send_coins(
-    to_address: Union[str, AccAddress], amount: int, denom: str = "boot"
-) -> Optional[BlockTxBroadcastResult]:
-    _msgs = [
-        MsgSend(
-            from_address=base_wallet_address,
-            to_address=AccAddress(to_address),
-            amount=Coins([Coin(amount=amount, denom=denom)]),
-        )
-    ]
-    _tx_signed = base_wallet.create_and_sign_tx(
-        CreateTxOptions(
-            msgs=_msgs,
-            memo="cybertensor test",
-            fee=Fee(1000000, Coins([Coin(amount=0, denom=tensor.token)])),
-            gas_adjustment=1.6,
-        )
-    )
-
+    to_address: Union[str, Address], amount: int, denom: str = "boot"
+) -> Optional[SubmittedTx]:
     try:
-        _tx_broadcasted = lcd_client.tx.broadcast(_tx_signed)
+        _tx_broadcasted = tensor.client.send_tokens(
+            destination=Address(to_address),
+            amount=amount,
+            denom=denom,
+            sender=base_wallet,
+        ).wait_to_complete()
         return _tx_broadcasted
-    except LCDResponseError as _e:
-        print(f"LCDResponseError: {_e}")
+    except Exception as _e:
+        print(f"Exception: {_e}")
         return None
 
 
@@ -79,41 +62,36 @@ def send_token_to_contract() -> None:
 
 def activate_contract() -> None:
     if ACTIVATE_CONTRACT:
-        tx = execute_contract(
-            execute_msgs=[{"activate": {}}],
-            wallet=base_wallet,
-            contract_address=tensor.contract_address,
-            lcd_client=lcd_client,
-            fee_denom=tensor.token,
-        )
-        print(tx)
-    print(f"contract balance: {tensor.get_balance(tensor.contract_address)}")
+        _tx = tensor.contract.execute(
+            args={"activate": {}}, sender=base_wallet
+        ).wait_to_complete()
+        print(_tx)
 
 
 def get_accounts(addresses_number: int = ADDRESSES_NUMBER) -> list[Account]:
-    accounts: list[Account] = []
-    for i in range(1, addresses_number + 1):
-        wallet_name = f"wallet{i}"
-        wallet = Wallet(name=wallet_name, hotkey=wallet_name, path="temp")
-        wallet.create_if_non_existent(
+    _accounts: list[Account] = []
+    for _i in range(1, addresses_number + 1):
+        _wallet_name = f"wallet{_i}"
+        _wallet = Wallet(name=_wallet_name, hotkey=_wallet_name, path="temp")
+        _wallet.create_if_non_existent(
             coldkey_use_password=False, hotkey_use_password=False
         )
-        wallet_address = wallet.get_coldkey().address
-        wallet_hotkey_address = wallet.get_hotkey().address
-        print(f"address: {wallet_address}")
-        amount = 20_000_000_000
+        _wallet_address = _wallet.get_coldkey().address
+        _wallet_hotkey_address = _wallet.get_hotkey().address
+        print(f"{_wallet_name} address uploaded: {_wallet_address}")
+        _amount = 20_000_000_000
         if SEND_TOKEN_TO_WALLETS:
-            send_coins(to_address=wallet_address, amount=amount)
-            send_coins(to_address=wallet_hotkey_address, amount=1_000_000)
-        accounts.append(
+            send_coins(to_address=_wallet_address, amount=_amount)
+            send_coins(to_address=_wallet_hotkey_address, amount=1_000_000)
+        _accounts.append(
             Account(
-                wallet=wallet,
-                wallet_address=wallet_address,
-                wallet_hotkey_address=wallet_hotkey_address,
-                start_amount=amount,
+                wallet=_wallet,
+                wallet_address=_wallet_address,
+                wallet_hotkey_address=_wallet_hotkey_address,
+                start_amount=_amount,
             )
         )
-    return accounts
+    return _accounts
 
 
 def workflow(
@@ -133,27 +111,27 @@ def workflow(
     subnets_weights: Optional[dict[int, list[list[int], list[float]]]] = None,
 ) -> None:
     try:
-        tensor = cwtensor(network="local")
+        _tensor = cwtensor(network="local")
         if register_subnetwork:
-            tensor.register_subnetwork(wallet=account["wallet"])
+            _tensor.register_subnetwork(wallet=account["wallet"])
         if root_register:
-            tensor.root_register(wallet=account["wallet"])
+            _tensor.root_register(wallet=account["wallet"])
         if netuids is None:
-            netuids = tensor.get_all_subnet_netuids()
+            netuids = _tensor.get_all_subnet_netuids()
         if subnet_register:
             for _netuid in netuids:
-                tensor.burned_register(wallet=account["wallet"], netuid=_netuid)
+                _tensor.burned_register(wallet=account["wallet"], netuid=_netuid)
         if subnet_nominate:
-            tensor.nominate(wallet=account["wallet"])
+            _tensor.nominate(wallet=account["wallet"])
         # you can stake only to root validators
         if self_stake:
-            tensor.add_stake(
+            _tensor.add_stake(
                 wallet=account["wallet"],
                 hotkey=account["wallet_hotkey_address"],
                 amount=self_stake_amount,
             )
         if self_unstake:
-            tensor.unstake(
+            _tensor.unstake(
                 wallet=account["wallet"],
                 hotkey=account["wallet_hotkey_address"],
                 amount=self_unstake_amount,
@@ -161,30 +139,34 @@ def workflow(
         if root_set_weight:
             if root_weights is None:
                 root_weights = sample(range(1, 1 + len(netuids)), len(netuids))
-                print(f'netuids: {netuids}'
-                      f'len(netuids): {len(netuids)}'
-                      f'root_weights: {root_weights}')
-            tensor.root_set_weights(
+                print(
+                    f"netuids: {netuids}\t"
+                    f"len(netuids): {len(netuids)}\t"
+                    f"root_weights: {root_weights}"
+                )
+            _tensor.root_set_weights(
                 wallet=account["wallet"], netuids=netuids, weights=root_weights
             )
         if subnets_set_weight:
             sleep(10)
             if subnets_weights is None:
                 subnets_weights = {
-                    netuid: [
+                    _netuid: [
                         [
-                            neuron.uid
-                            for neuron in tensor.metagraph(netuid=netuid).neurons
+                            _neuron.uid
+                            for _neuron in _tensor.metagraph(netuid=_netuid).neurons
                         ],
                         sample(
-                            range(1, 1 + len(tensor.metagraph(netuid=netuid).neurons)),
-                            len(tensor.metagraph(netuid=netuid).neurons),
+                            range(
+                                1, 1 + len(_tensor.metagraph(netuid=_netuid).neurons)
+                            ),
+                            len(_tensor.metagraph(netuid=_netuid).neurons),
                         ),
                     ]
-                    for netuid in netuids
+                    for _netuid in netuids
                 }
             for _netuid in subnets_weights.keys():
-                tensor.set_weights(
+                _tensor.set_weights(
                     wallet=account["wallet"],
                     netuid=_netuid,
                     uids=subnets_weights[_netuid][0],
@@ -195,50 +177,34 @@ def workflow(
 
 
 def display_state() -> None:
-    tensor = cwtensor(network="local")
-    netuids = tensor.get_all_subnet_netuids()
-    print(f"contract balance: {tensor.get_balance(tensor.contract_address)}")
-    print(f"existing subnets: {netuids}\n")
-    print(f"delegates: {tensor.get_delegates()}\n")
-    print(f"root weights {tensor.weights(netuid=0)}\n")
-    for netuid in netuids[1:]:
-        print(f"subnet {netuid} weights {tensor.weights(netuid=netuid)}")
+    _tensor = cwtensor(network="local")
+    _netuids = _tensor.get_all_subnet_netuids()
+    print(f"\ncontract address: {_tensor.contract_address}")
+    print(f"contract balance: {_tensor.get_balance(_tensor.contract_address)}")
+    print(f"existing subnets: {_netuids}\n")
+    print(f"delegates: {_tensor.get_delegates()}\n")
+    print(f"root weights {_tensor.weights(netuid=0)}\n")
+    for _netuid in _netuids[1:]:
+        print(f"subnet {_netuid} weights {_tensor.weights(netuid=_netuid)}")
 
-    for netuid in netuids:
-        print(f'{"subnet" + str(netuid) if netuid != 0 else "root"}:')
-        for i, _account in enumerate(accounts):
-            print(
-                f"\twallet {i + 1} registration: "
-                f'{tensor.is_hotkey_registered_on_subnet(hotkey=_account["wallet_hotkey_address"], netuid=netuid)}'
-            )
-
-
-def run_workflow(account_name: str) -> bool:
-    print(f"account name: {account_name}")
-    _output, _error = execute_bash(
-        f"source ./venv/bin/activate && python load_test_job.py --wallet-name={account_name}",
-        timeout=400,
-        shell=True,
-    )
-
-    if _output:
-        print(_output)
-        print(f"{account_name} done")
-        return True
-    else:
-        # print(f"{account_name} error: {_error}")
-        return False
+    _registration_data = [[f'{"subnet" + str(_netuid) if _netuid != 0 else "root"}'] +
+             [tensor.is_hotkey_registered_on_subnet(hotkey=_account["wallet_hotkey_address"], netuid=_netuid)
+              for _account in accounts]
+             for _netuid in _netuids]
+    _registration_columns = ['Subnet'] + [_account['wallet'].name for _account in accounts]
+    print('\nwallet registration:')
+    print(pd.DataFrame(data=_registration_data, columns=_registration_columns))
 
 
 if __name__ == "__main__":
     tensor = cwtensor(network="local")
-    mk = MnemonicKey(mnemonic=BASE_WALLET_SEED)
-    lcd_client = LCDClient(url=LCD_URL, chain_id=tensor.client.network_config.chain_id)
-    base_wallet = lcd_client.wallet(mk)
-    base_wallet_address = base_wallet.key.acc_address
+    base_wallet = LocalWallet.from_mnemonic(
+        mnemonic=BASE_WALLET_SEED, prefix=network.address_prefix
+    )
+    base_wallet_address = str(base_wallet)
     print(
         f"base address: {base_wallet_address}\n"
-        f"base address balance: {lcd_client.bank.balance(address=base_wallet_address)[0]}\n"
+        f"base address balance: {tensor.get_balance(address=base_wallet_address)}\n"
         f"number of wallets: {ADDRESSES_NUMBER}\n"
         f"send token to the contract: {SEND_TOKEN_TO_CONTRACT}\n"
         f"activate contract: {ACTIVATE_CONTRACT}\n"
@@ -248,10 +214,11 @@ if __name__ == "__main__":
     send_token_to_contract()
     activate_contract()
     accounts = get_accounts()
+    display_state()
 
     tasks = accounts
-    print(f"Number of tasks: {len(tasks):>,}")
-    print(f"Number of threads: {NUMBER_OF_THREADS:>,}")
+    print(f"\nnumber of tasks: {len(tasks):>,}")
+    print(f"number of threads: {NUMBER_OF_THREADS:>,}")
 
     with Pool(processes=NUMBER_OF_THREADS) as pool:
         res_participation = list(tqdm(pool.imap(workflow, tasks), total=len(tasks)))
