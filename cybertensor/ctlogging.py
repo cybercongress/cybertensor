@@ -25,7 +25,7 @@ import re
 import torch
 from loguru import logger
 
-from .config import Config
+from cybertensor.config import Config
 
 
 logger = logger.opt(colors=True)
@@ -101,7 +101,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=0,
+            level=40,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
