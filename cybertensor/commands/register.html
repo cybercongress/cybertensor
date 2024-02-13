@@ -50,12 +50,11 @@ import sys
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
-from . import defaults
-from .utils import check_netuid_set, check_for_cuda_reg_config
-from .. import __console__ as console
-from ..config import Config
-from ..utils.balance import Balance
-from ..wallet import Wallet
+from cybertensor import Balance
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
+
+console = cybertensor.__console__
 
 
 class RegisterCommand:
@@ -92,12 +91,12 @@ class RegisterCommand:
     def run(cli):
         r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = Wallet(config=cli.config)
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
             )
             sys.exit(1)
@@ -108,7 +107,7 @@ class RegisterCommand:
 
         # Check balance is sufficient
         if balance &lt; current_recycle:
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]&#34;
             )
             sys.exit(1)
@@ -130,7 +129,7 @@ class RegisterCommand:
         )
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
@@ -153,7 +152,7 @@ class RegisterCommand:
             default=argparse.SUPPRESS,
         )
 
-        Wallet.add_args(register_parser)
+        cybertensor.wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)
 
 
@@ -194,12 +193,12 @@ class PowRegisterCommand:
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
-        wallet = Wallet(config=cli.config)
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
             )
             sys.exit(1)
@@ -308,11 +307,11 @@ class PowRegisterCommand:
             required=False,
         )
 
-        Wallet.add_args(register_parser)
+        cybertensor.wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)
 
     @staticmethod
-    def check_config(config: &#34;Config&#34;):
+    def check_config(config: &#34;cybertensor.config&#34;):
         # if (
         #     not config.is_set(&#34;cwtensor.network&#34;)
         #     and not config.no_prompt
@@ -421,12 +420,12 @@ particularly when opting for CUDA-based GPU acceleration.</p>
     @staticmethod
     def run(cli):
         r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
-        wallet = Wallet(config=cli.config)
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
             )
             sys.exit(1)
@@ -535,11 +534,11 @@ particularly when opting for CUDA-based GPU acceleration.</p>
             required=False,
         )
 
-        Wallet.add_args(register_parser)
+        cybertensor.wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)
 
     @staticmethod
-    def check_config(config: &#34;Config&#34;):
+    def check_config(config: &#34;cybertensor.config&#34;):
         # if (
         #     not config.is_set(&#34;cwtensor.network&#34;)
         #     and not config.no_prompt
@@ -664,12 +663,12 @@ def add_args(parser: argparse.ArgumentParser):
         required=False,
     )
 
-    Wallet.add_args(register_parser)
+    cybertensor.wallet.add_args(register_parser)
     cybertensor.cwtensor.add_args(register_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.register.PowRegisterCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -678,7 +677,7 @@ def add_args(parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;Config&#34;):
+def check_config(config: &#34;cybertensor.config&#34;):
     # if (
     #     not config.is_set(&#34;cwtensor.network&#34;)
     #     and not config.no_prompt
@@ -720,12 +719,12 @@ def check_config(config: &#34;Config&#34;):
 <pre><code class="python">@staticmethod
 def run(cli):
     r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
-    wallet = Wallet(config=cli.config)
+    wallet = cybertensor.wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=cli.config)
 
     # Verify subnet exists
     if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-        console.print(
+        cybertensor.__console__.print(
             f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
         )
         sys.exit(1)
@@ -815,12 +814,12 @@ an understanding of the registration costs. Users should ensure their wallet is 
     def run(cli):
         r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
         config = cli.config.copy()
-        wallet = Wallet(config=cli.config)
+        wallet = cybertensor.wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
             )
             sys.exit(1)
@@ -831,7 +830,7 @@ an understanding of the registration costs. Users should ensure their wallet is 
 
         # Check balance is sufficient
         if balance &lt; current_recycle:
-            console.print(
+            cybertensor.__console__.print(
                 f&#34;[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]&#34;
             )
             sys.exit(1)
@@ -853,7 +852,7 @@ an understanding of the registration costs. Users should ensure their wallet is 
         )
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
@@ -876,7 +875,7 @@ an understanding of the registration costs. Users should ensure their wallet is 
             default=argparse.SUPPRESS,
         )
 
-        Wallet.add_args(register_parser)
+        cybertensor.wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -902,12 +901,12 @@ def add_args(cls, parser: argparse.ArgumentParser):
         default=argparse.SUPPRESS,
     )
 
-    Wallet.add_args(register_parser)
+    cybertensor.wallet.add_args(register_parser)
     cybertensor.cwtensor.add_args(register_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.register.RegisterCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -916,7 +915,7 @@ def add_args(cls, parser: argparse.ArgumentParser):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;Config&#34;):
+def check_config(cls, config: &#34;cybertensor.config&#34;):
     check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
@@ -941,12 +940,12 @@ def check_config(cls, config: &#34;Config&#34;):
 def run(cli):
     r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
     config = cli.config.copy()
-    wallet = Wallet(config=cli.config)
+    wallet = cybertensor.wallet(config=cli.config)
     cwtensor = cybertensor.cwtensor(config=config)
 
     # Verify subnet exists
     if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-        console.print(
+        cybertensor.__console__.print(
             f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
         )
         sys.exit(1)
@@ -957,7 +956,7 @@ def run(cli):
 
     # Check balance is sufficient
     if balance &lt; current_recycle:
-        console.print(
+        cybertensor.__console__.print(
             f&#34;[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]&#34;
         )
         sys.exit(1)

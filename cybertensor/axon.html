@@ -68,9 +68,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 import cybertensor
-from .keypair import Keypair
-from .wallet import Wallet
-from .config import Config
+from cybertensor.keypair import Keypair
 
 &#34;&#34;&#34; Create and init Axon, which services Forward and Backward requests from other neurons.
 &#34;&#34;&#34;
@@ -197,8 +195,8 @@ class axon:
 
     def __init__(
         self,
-        wallet: &#34;Wallet&#34; = None,
-        config: Optional[&#34;Config&#34;] = None,
+        wallet: &#34;cybertensor.wallet&#34; = None,
+        config: Optional[&#34;cybertensor.config&#34;] = None,
         port: Optional[int] = None,
         ip: Optional[str] = None,
         external_ip: Optional[str] = None,
@@ -207,9 +205,9 @@ class axon:
     ) -&gt; &#34;cybertensor.axon&#34;:
         r&#34;&#34;&#34;Creates a new cybertensor.Axon object from passed arguments.
         Args:
-            config (:obj:`Optional[Config]`, `optional`):
+            config (:obj:`Optional[cybertensor.config]`, `optional`):
                 cybertensor.axon.config()
-            wallet (:obj:`Optional[Wallet]`, `optional`):
+            wallet (:obj:`Optional[cybertensor.wallet]`, `optional`):
                 cybertensor wallet with hotkey and coldkeypub.
             port (:type:`Optional[int]`, `optional`):
                 Binding port.
@@ -243,7 +241,7 @@ class axon:
         self.config = config
 
         # Get wallet or use default.
-        self.wallet = wallet or Wallet()
+        self.wallet = wallet or cybertensor.wallet()
 
         # Build axon objects.
         self.uuid = str(uuid.uuid1())
@@ -439,16 +437,16 @@ class axon:
         return self
 
     @classmethod
-    def config(cls) -&gt; &#34;Config&#34;:
+    def config(cls) -&gt; &#34;cybertensor.config&#34;:
         &#34;&#34;&#34;
         Parses command-line arguments to form a cybertensor configuration object.
 
         Returns:
-            Config: Configuration object with settings from command-line arguments.
+            cybertensor.config: Configuration object with settings from command-line arguments.
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         axon.add_args(parser)  # Add specific axon-related arguments
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -573,12 +571,12 @@ class axon:
         return body_dict
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         &#34;&#34;&#34;
         This method checks the configuration for the axon&#39;s port and wallet.
 
         Args:
-            config (Config): The config object holding axon settings.
+            config (cybertensor.config): The config object holding axon settings.
 
         Raises:
             AssertionError: If the axon or external ports are not in range [1024, 65535]
@@ -2030,7 +2028,7 @@ def run_in_thread(self):
 </dd>
 <dt id="cybertensor.axon.axon"><code class="flex name class">
 <span>class <span class="ident">axon</span></span>
-<span>(</span><span>wallet: Wallet = None, config: Optional[ForwardRef('Config')] = None, port: Optional[int] = None, ip: Optional[str] = None, external_ip: Optional[str] = None, external_port: Optional[int] = None, max_workers: Optional[int] = None)</span>
+<span>(</span><span>wallet: <a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a> = None, config: Optional[ForwardRef('<a title="cybertensor.config" href="config.html">cybertensor.config</a>')] = None, port: Optional[int] = None, ip: Optional[str] = None, external_ip: Optional[str] = None, external_port: Optional[int] = None, max_workers: Optional[int] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The <code><a title="cybertensor.axon.axon" href="#cybertensor.axon.axon">axon</a></code> class is an object that forms the core part of cybertensor's serving synapses.
@@ -2091,9 +2089,9 @@ my_axon.attach(
 </code></pre>
 <p>Creates a new cybertensor.Axon object from passed arguments.</p>
 <h2 id="args">Args</h2>
-<p>config (:obj:<code>Optional[Config]</code>, <code>optional</code>):
+<p>config (:obj:<code>Optional[<a title="cybertensor.config" href="config.html">cybertensor.config</a>]</code>, <code>optional</code>):
 cybertensor.axon.config()
-wallet (:obj:<code>Optional[Wallet]</code>, <code>optional</code>):
+wallet (:obj:<code>Optional[<a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>]</code>, <code>optional</code>):
 cybertensor wallet with hotkey and coldkeypub.
 port (:type:<code>Optional[int]</code>, <code>optional</code>):
 Binding port.
@@ -2191,8 +2189,8 @@ Used to create the threadpool if not passed, specifies the number of active thre
 
     def __init__(
         self,
-        wallet: &#34;Wallet&#34; = None,
-        config: Optional[&#34;Config&#34;] = None,
+        wallet: &#34;cybertensor.wallet&#34; = None,
+        config: Optional[&#34;cybertensor.config&#34;] = None,
         port: Optional[int] = None,
         ip: Optional[str] = None,
         external_ip: Optional[str] = None,
@@ -2201,9 +2199,9 @@ Used to create the threadpool if not passed, specifies the number of active thre
     ) -&gt; &#34;cybertensor.axon&#34;:
         r&#34;&#34;&#34;Creates a new cybertensor.Axon object from passed arguments.
         Args:
-            config (:obj:`Optional[Config]`, `optional`):
+            config (:obj:`Optional[cybertensor.config]`, `optional`):
                 cybertensor.axon.config()
-            wallet (:obj:`Optional[Wallet]`, `optional`):
+            wallet (:obj:`Optional[cybertensor.wallet]`, `optional`):
                 cybertensor wallet with hotkey and coldkeypub.
             port (:type:`Optional[int]`, `optional`):
                 Binding port.
@@ -2237,7 +2235,7 @@ Used to create the threadpool if not passed, specifies the number of active thre
         self.config = config
 
         # Get wallet or use default.
-        self.wallet = wallet or Wallet()
+        self.wallet = wallet or cybertensor.wallet()
 
         # Build axon objects.
         self.uuid = str(uuid.uuid1())
@@ -2433,16 +2431,16 @@ Used to create the threadpool if not passed, specifies the number of active thre
         return self
 
     @classmethod
-    def config(cls) -&gt; &#34;Config&#34;:
+    def config(cls) -&gt; &#34;cybertensor.config&#34;:
         &#34;&#34;&#34;
         Parses command-line arguments to form a cybertensor configuration object.
 
         Returns:
-            Config: Configuration object with settings from command-line arguments.
+            cybertensor.config: Configuration object with settings from command-line arguments.
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         axon.add_args(parser)  # Add specific axon-related arguments
-        return Config(parser, args=[])
+        return cybertensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -2567,12 +2565,12 @@ Used to create the threadpool if not passed, specifies the number of active thre
         return body_dict
 
     @classmethod
-    def check_config(cls, config: &#34;Config&#34;):
+    def check_config(cls, config: &#34;cybertensor.config&#34;):
         &#34;&#34;&#34;
         This method checks the configuration for the axon&#39;s port and wallet.
 
         Args:
-            config (Config): The config object holding axon settings.
+            config (cybertensor.config): The config object holding axon settings.
 
         Raises:
             AssertionError: If the axon or external ports are not in range [1024, 65535]
@@ -2783,13 +2781,13 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 </details>
 </dd>
 <dt id="cybertensor.axon.axon.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="config.html">cybertensor.config</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This method checks the configuration for the axon's port and wallet.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>config</code></strong> :&ensp;<code>Config</code></dt>
+<dt><strong><code>config</code></strong> :&ensp;<code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code></dt>
 <dd>The config object holding axon settings.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
@@ -2802,12 +2800,12 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def check_config(cls, config: &#34;Config&#34;):
+def check_config(cls, config: &#34;cybertensor.config&#34;):
     &#34;&#34;&#34;
     This method checks the configuration for the axon&#39;s port and wallet.
 
     Args:
-        config (Config): The config object holding axon settings.
+        config (cybertensor.config): The config object holding axon settings.
 
     Raises:
         AssertionError: If the axon or external ports are not in range [1024, 65535]
@@ -2822,13 +2820,13 @@ def check_config(cls, config: &#34;Config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.axon.axon.config"><code class="name flex">
-<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
+<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.config" href="config.html#cybertensor.config.config">config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parses command-line arguments to form a cybertensor configuration object.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Config</code></dt>
+<dt><code><a title="cybertensor.config" href="config.html">cybertensor.config</a></code></dt>
 <dd>Configuration object with settings from command-line arguments.</dd>
 </dl></div>
 <details class="source">
@@ -2836,16 +2834,16 @@ def check_config(cls, config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def config(cls) -&gt; &#34;Config&#34;:
+def config(cls) -&gt; &#34;cybertensor.config&#34;:
     &#34;&#34;&#34;
     Parses command-line arguments to form a cybertensor configuration object.
 
     Returns:
-        Config: Configuration object with settings from command-line arguments.
+        cybertensor.config: Configuration object with settings from command-line arguments.
     &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
     axon.add_args(parser)  # Add specific axon-related arguments
-    return Config(parser, args=[])</code></pre>
+    return cybertensor.config(parser, args=[])</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.axon.axon.help"><code class="name flex">

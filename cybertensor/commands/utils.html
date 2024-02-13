@@ -55,9 +55,8 @@ from rich.prompt import Confirm, PromptBase
 
 import cybertensor
 from . import defaults
-from .wallets import Wallet
-from .. import __console__ as console
-from ..config import Config
+
+console = cybertensor.__console__
 
 
 class IntListPrompt(PromptBase):
@@ -76,7 +75,7 @@ class IntListPrompt(PromptBase):
 
 
 def check_netuid_set(
-    config: &#34;Config&#34;,
+    config: &#34;cybertensor.config&#34;,
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     allow_none: bool = False,
 ):
@@ -107,7 +106,7 @@ def check_netuid_set(
             raise ValueError(&#39;netuid must be an integer or &#34;None&#34; (if applicable)&#39;)
 
 
-def check_for_cuda_reg_config(config: &#34;Config&#34;) -&gt; None:
+def check_for_cuda_reg_config(config: &#34;cybertensor.config&#34;) -&gt; None:
     &#34;&#34;&#34;Checks, when CUDA is available, if the user would like to register with their CUDA device.&#34;&#34;&#34;
     if torch.cuda.is_available():
         if not config.no_prompt:
@@ -160,7 +159,7 @@ def check_for_cuda_reg_config(config: &#34;Config&#34;) -&gt; None:
                 config.pow_register.cuda.use_cuda = defaults.pow_register.cuda.use_cuda
 
 
-def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;Wallet&#34;]:
+def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;cybertensor.wallet&#34;]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + &#34;/&#34; + wallet.name + &#34;/hotkeys&#34;
     try:
@@ -169,7 +168,7 @@ def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;Wallet&#34;]:
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = Wallet(
+            hotkey_for_name = cybertensor.wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (
@@ -182,17 +181,17 @@ def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;Wallet&#34;]:
     return hotkey_wallets
 
 
-def get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
+def get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;cybertensor.wallet&#34;]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [Wallet(path=path, name=name) for name in wallet_names]
+        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
     return wallets
 
 
-def get_all_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
+def get_all_wallets_for_path(path: str) -&gt; List[&#34;cybertensor.wallet&#34;]:
     all_wallets = []
     cold_wallets = get_coldkey_wallets_for_path(path)
     for cold_wallet in cold_wallets:
@@ -254,7 +253,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.commands.utils.check_for_cuda_reg_config"><code class="name flex">
-<span>def <span class="ident">check_for_cuda_reg_config</span></span>(<span>config: Config) ‑> None</span>
+<span>def <span class="ident">check_for_cuda_reg_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks, when CUDA is available, if the user would like to register with their CUDA device.</p></div>
@@ -262,7 +261,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def check_for_cuda_reg_config(config: &#34;Config&#34;) -&gt; None:
+<pre><code class="python">def check_for_cuda_reg_config(config: &#34;cybertensor.config&#34;) -&gt; None:
     &#34;&#34;&#34;Checks, when CUDA is available, if the user would like to register with their CUDA device.&#34;&#34;&#34;
     if torch.cuda.is_available():
         if not config.no_prompt:
@@ -316,7 +315,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 </details>
 </dd>
 <dt id="cybertensor.commands.utils.check_netuid_set"><code class="name flex">
-<span>def <span class="ident">check_netuid_set</span></span>(<span>config: Config, cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, allow_none: bool = False)</span>
+<span>def <span class="ident">check_netuid_set</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>, cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, allow_none: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -325,7 +324,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def check_netuid_set(
-    config: &#34;Config&#34;,
+    config: &#34;cybertensor.config&#34;,
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     allow_none: bool = False,
 ):
@@ -357,7 +356,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 </details>
 </dd>
 <dt id="cybertensor.commands.utils.get_all_wallets_for_path"><code class="name flex">
-<span>def <span class="ident">get_all_wallets_for_path</span></span>(<span>path: str) ‑> List[<a title="cybertensor.wallet.Wallet" href="../wallet.html#cybertensor.wallet.Wallet">Wallet</a>]</span>
+<span>def <span class="ident">get_all_wallets_for_path</span></span>(<span>path: str) ‑> List[<a title="cybertensor.wallet.wallet" href="../wallet.html#cybertensor.wallet.wallet">wallet</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -365,7 +364,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_all_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
+<pre><code class="python">def get_all_wallets_for_path(path: str) -&gt; List[&#34;cybertensor.wallet&#34;]:
     all_wallets = []
     cold_wallets = get_coldkey_wallets_for_path(path)
     for cold_wallet in cold_wallets:
@@ -378,7 +377,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 </details>
 </dd>
 <dt id="cybertensor.commands.utils.get_coldkey_wallets_for_path"><code class="name flex">
-<span>def <span class="ident">get_coldkey_wallets_for_path</span></span>(<span>path: str) ‑> List[<a title="cybertensor.wallet.Wallet" href="../wallet.html#cybertensor.wallet.Wallet">Wallet</a>]</span>
+<span>def <span class="ident">get_coldkey_wallets_for_path</span></span>(<span>path: str) ‑> List[<a title="cybertensor.wallet.wallet" href="../wallet.html#cybertensor.wallet.wallet">wallet</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -386,10 +385,10 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
+<pre><code class="python">def get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;cybertensor.wallet&#34;]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [Wallet(path=path, name=name) for name in wallet_names]
+        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
@@ -413,7 +412,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 </details>
 </dd>
 <dt id="cybertensor.commands.utils.get_hotkey_wallets_for_wallet"><code class="name flex">
-<span>def <span class="ident">get_hotkey_wallets_for_wallet</span></span>(<span>wallet) ‑> List[<a title="cybertensor.wallet.Wallet" href="../wallet.html#cybertensor.wallet.Wallet">Wallet</a>]</span>
+<span>def <span class="ident">get_hotkey_wallets_for_wallet</span></span>(<span>wallet) ‑> List[<a title="cybertensor.wallet.wallet" href="../wallet.html#cybertensor.wallet.wallet">wallet</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -421,7 +420,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;Wallet&#34;]:
+<pre><code class="python">def get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;cybertensor.wallet&#34;]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + &#34;/&#34; + wallet.name + &#34;/hotkeys&#34;
     try:
@@ -430,7 +429,7 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = Wallet(
+            hotkey_for_name = cybertensor.wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (

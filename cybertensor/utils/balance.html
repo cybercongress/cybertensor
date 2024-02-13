@@ -50,7 +50,7 @@ from typing import Union
 
 from cosmpy.aerial.client import Coin
 
-from cybertensor import __giga_boot_symbol__, __boot_symbol__
+import cybertensor
 
 
 class Balance:
@@ -66,8 +66,8 @@ class Balance:
         gboot: A float property that gives the balance in gboot units.
     &#34;&#34;&#34;
 
-    unit: str = __giga_boot_symbol__  # This is the gboot unit
-    boot_unit: str = __boot_symbol__  # This is the boot unit
+    unit: str = cybertensor.__giga_boot_symbol__  # This is the gboot unit
+    boot_unit: str = cybertensor.__boot_symbol__  # This is the boot unit
     boot: int
     gboot: float
 
@@ -405,8 +405,8 @@ If balance is a list of cosmpy.aerial.client.Coin, the amount of boot is retriev
         gboot: A float property that gives the balance in gboot units.
     &#34;&#34;&#34;
 
-    unit: str = __giga_boot_symbol__  # This is the gboot unit
-    boot_unit: str = __boot_symbol__  # This is the boot unit
+    unit: str = cybertensor.__giga_boot_symbol__  # This is the gboot unit
+    boot_unit: str = cybertensor.__boot_symbol__  # This is the boot unit
     boot: int
     gboot: float
 

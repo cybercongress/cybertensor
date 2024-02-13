@@ -29,7 +29,7 @@
 <pre><code class="python">import datetime
 import math
 import time
-from typing import List, Dict, Set, Optional
+from typing import List, Dict, Set
 from prometheus_client import Counter, Info, Histogram, Gauge
 
 import torch
@@ -39,8 +39,6 @@ from rich.style import Style
 from rich.table import Table
 
 import cybertensor
-from ..wallet import Wallet
-from ..config import Config
 
 
 class ValidatorLogger:
@@ -49,11 +47,11 @@ class ValidatorLogger:
     Including console log styling, console table print and prometheus.
 
     Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config=None):
         # Neuron stats recorded by validator neuron/nucleus
         #   [Column_name, key_name, format_string, rich_style]  # description
         self.config = config
@@ -606,7 +604,7 @@ class ValidatorLogger:
         )
 
     def print_console_validator_identifier(
-        self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
+        self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
     ):
         r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -700,11 +698,11 @@ class ValidatorPrometheus:
     r&#34;&#34;&#34;
     Prometheis logging object for validator.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
-    def __init__(self, config: Config):
+    def __init__(self, config):
         self.config = config
         self.info = Info(&#34;neuron_info&#34;, &#34;Info summaries for the running server-miner.&#34;)
         self.gauges = Gauge(
@@ -728,7 +726,7 @@ class ValidatorPrometheus:
         parameters: torch.nn.parameter.Parameter,
         uid: int,
         network: str,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
     ):
         r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 
@@ -808,13 +806,13 @@ class ValidatorPrometheus:
 <dl>
 <dt id="cybertensor.messages.log_utilities.ValidatorLogger"><code class="flex name class">
 <span>class <span class="ident">ValidatorLogger</span></span>
-<span>(</span><span>config: Optional[<a title="cybertensor.config.Config" href="../config.html#cybertensor.config.Config">Config</a>] = None)</span>
+<span>(</span><span>config=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Logger object for handling all logging function specific to validator.
 Including console log styling, console table print and prometheus.</p>
 <h2 id="args">Args</h2>
-<p>config (:obj:<code>Config</code>, <code>optional</code>):
+<p>config (:obj:<code>cybertensor.Config</code>, <code>optional</code>):
 cybertensor.server.config()</p></div>
 <details class="source">
 <summary>
@@ -826,11 +824,11 @@ cybertensor.server.config()</p></div>
     Including console log styling, console table print and prometheus.
 
     Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config=None):
         # Neuron stats recorded by validator neuron/nucleus
         #   [Column_name, key_name, format_string, rich_style]  # description
         self.config = config
@@ -1383,7 +1381,7 @@ cybertensor.server.config()</p></div>
         )
 
     def print_console_validator_identifier(
-        self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
+        self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
     ):
         r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -1577,7 +1575,7 @@ cybertensor.server.config()</p></div>
 </details>
 </dd>
 <dt id="cybertensor.messages.log_utilities.ValidatorLogger.print_console_validator_identifier"><code class="name flex">
-<span>def <span class="ident">print_console_validator_identifier</span></span>(<span>self, uid: int, wallet: Wallet, external_ip: str)</span>
+<span>def <span class="ident">print_console_validator_identifier</span></span>(<span>self, uid: int, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, external_ip: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Console print for validator identifier.</p></div>
@@ -1586,7 +1584,7 @@ cybertensor.server.config()</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def print_console_validator_identifier(
-    self, uid: int, wallet: &#34;Wallet&#34;, external_ip: str
+    self, uid: int, wallet: &#34;cybertensor.wallet&#34;, external_ip: str
 ):
     r&#34;&#34;&#34;Console print for validator identifier.&#34;&#34;&#34;
 
@@ -2072,12 +2070,12 @@ cybertensor.server.config()</p></div>
 </dd>
 <dt id="cybertensor.messages.log_utilities.ValidatorPrometheus"><code class="flex name class">
 <span>class <span class="ident">ValidatorPrometheus</span></span>
-<span>(</span><span>config: <a title="cybertensor.config.Config" href="../config.html#cybertensor.config.Config">Config</a>)</span>
+<span>(</span><span>config)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Prometheis logging object for validator.
 Args:
-config (:obj:<code>Config</code>, <code>optional</code>):
+config (:obj:<code>cybertensor.Config</code>, <code>optional</code>):
 cybertensor.server.config()</p></div>
 <details class="source">
 <summary>
@@ -2087,11 +2085,11 @@ cybertensor.server.config()</p></div>
     r&#34;&#34;&#34;
     Prometheis logging object for validator.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (:obj:`cybertensor.Config`, `optional`):
                 cybertensor.server.config()
     &#34;&#34;&#34;
 
-    def __init__(self, config: Config):
+    def __init__(self, config):
         self.config = config
         self.info = Info(&#34;neuron_info&#34;, &#34;Info summaries for the running server-miner.&#34;)
         self.gauges = Gauge(
@@ -2115,7 +2113,7 @@ cybertensor.server.config()</p></div>
         parameters: torch.nn.parameter.Parameter,
         uid: int,
         network: str,
-        wallet: &#34;Wallet&#34;,
+        wallet: &#34;cybertensor.wallet&#34;,
     ):
         r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 
@@ -2246,7 +2244,7 @@ cybertensor.server.config()</p></div>
 </details>
 </dd>
 <dt id="cybertensor.messages.log_utilities.ValidatorPrometheus.log_run_info"><code class="name flex">
-<span>def <span class="ident">log_run_info</span></span>(<span>self, parameters: torch.nn.parameter.Parameter, uid: int, network: str, wallet: Wallet)</span>
+<span>def <span class="ident">log_run_info</span></span>(<span>self, parameters: torch.nn.parameter.Parameter, uid: int, network: str, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set up prometheus running info.</p></div>
@@ -2259,7 +2257,7 @@ cybertensor.server.config()</p></div>
     parameters: torch.nn.parameter.Parameter,
     uid: int,
     network: str,
-    wallet: &#34;Wallet&#34;,
+    wallet: &#34;cybertensor.wallet&#34;,
 ):
     r&#34;&#34;&#34;Set up prometheus running info.&#34;&#34;&#34;
 

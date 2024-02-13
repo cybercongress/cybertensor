@@ -58,7 +58,6 @@ import torch
 from fastapi import Response
 
 import cybertensor
-from .wallet import Wallet
 
 
 class dendrite(torch.nn.Module):
@@ -109,7 +108,7 @@ class dendrite(torch.nn.Module):
     NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.
 
     Example with a context manager:
-        &gt;&gt;&gt; aysnc with dendrite(wallet = Wallet()) as d:
+        &gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
         &gt;&gt;&gt;     print(d)
         &gt;&gt;&gt;     d( &lt;axon&gt; ) # ping axon
         &gt;&gt;&gt;     d( [&lt;axons&gt;] ) # ping multiple
@@ -118,7 +117,7 @@ class dendrite(torch.nn.Module):
     However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.
 
     Example without a context manager:
-        &gt;&gt;&gt; d = dendrite(wallet = Wallet() )
+        &gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
         &gt;&gt;&gt; print(d)
         &gt;&gt;&gt; d( &lt;axon&gt; ) # ping axon
         &gt;&gt;&gt; d( [&lt;axons&gt;] ) # ping multiple
@@ -126,15 +125,15 @@ class dendrite(torch.nn.Module):
     &#34;&#34;&#34;
 
     def __init__(
-        self, wallet: Optional[Union[Wallet, cybertensor.keypair]] = None
+        self, wallet: Optional[Union[cybertensor.wallet, cybertensor.keypair]] = None
     ):
         &#34;&#34;&#34;
         Initializes the Dendrite object, setting up essential properties.
 
         Args:
-            wallet (Optional[Union[&#39;Wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
+            wallet (Optional[Union[&#39;cybertensor.wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
                 The user&#39;s wallet or keypair used for signing messages. Defaults to None,
-                in which case a new Wallet().hotkey is generated and used.
+                in which case a new cybertensor.wallet().hotkey is generated and used.
         &#34;&#34;&#34;
         # Initialize the parent class
         super(dendrite, self).__init__()
@@ -147,8 +146,8 @@ class dendrite(torch.nn.Module):
 
         # If a wallet or keypair is provided, use its hotkey. If not, generate a new one.
         self.keypair = (
-            wallet.hotkey if isinstance(wallet, Wallet) else wallet
-        ) or Wallet().hotkey
+            wallet.hotkey if isinstance(wallet, cybertensor.wallet) else wallet
+        ) or cybertensor.wallet().hotkey
 
         self.synapse_history: list = []
 
@@ -740,7 +739,7 @@ class dendrite(torch.nn.Module):
 <dl>
 <dt id="cybertensor.dendrite.dendrite"><code class="flex name class">
 <span>class <span class="ident">dendrite</span></span>
-<span>(</span><span>wallet: Optional[Union[Wallet, <a title="cybertensor.keypair" href="keypair.html">cybertensor.keypair</a>]] = None)</span>
+<span>(</span><span>wallet: Optional[Union[<a title="cybertensor.wallet" href="wallet.html">cybertensor.wallet</a>, <a title="cybertensor.keypair" href="keypair.html">cybertensor.keypair</a>]] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The Dendrite class, inheriting from PyTorch's Module class, represents the abstracted
@@ -782,7 +781,7 @@ Synchronously closes the internal aiohttp client session.</p>
 Asynchronously closes the internal aiohttp client session.</p>
 <p>NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.</p>
 <p>Example with a context manager:
-&gt;&gt;&gt; aysnc with dendrite(wallet = Wallet()) as d:
+&gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
 &gt;&gt;&gt;
 print(d)
 &gt;&gt;&gt;
@@ -793,16 +792,16 @@ d( [<axons>] ) # ping multiple
 d( cybertensor.axon(), cybertensor.Synapse )</p>
 <p>However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.</p>
 <p>Example without a context manager:
-&gt;&gt;&gt; d = dendrite(wallet = Wallet() )
+&gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
 &gt;&gt;&gt; print(d)
 &gt;&gt;&gt; d( <axon> ) # ping axon
 &gt;&gt;&gt; d( [<axons>] ) # ping multiple
 &gt;&gt;&gt; d( cybertensor.axon(), cybertensor.Synapse )</p>
 <p>Initializes the Dendrite object, setting up essential properties.</p>
 <h2 id="args">Args</h2>
-<p>wallet (Optional[Union['Wallet', 'cybertensor.keypair']], optional):
+<p>wallet (Optional[Union['cybertensor.wallet', 'cybertensor.keypair']], optional):
 The user's wallet or keypair used for signing messages. Defaults to None,
-in which case a new Wallet().hotkey is generated and used.</p></div>
+in which case a new cybertensor.wallet().hotkey is generated and used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -855,7 +854,7 @@ in which case a new Wallet().hotkey is generated and used.</p></div>
     NOTE: When working with async aiohttp client sessions, it is recommended to use a context manager.
 
     Example with a context manager:
-        &gt;&gt;&gt; aysnc with dendrite(wallet = Wallet()) as d:
+        &gt;&gt;&gt; aysnc with dendrite(wallet = cybertensor.wallet()) as d:
         &gt;&gt;&gt;     print(d)
         &gt;&gt;&gt;     d( &lt;axon&gt; ) # ping axon
         &gt;&gt;&gt;     d( [&lt;axons&gt;] ) # ping multiple
@@ -864,7 +863,7 @@ in which case a new Wallet().hotkey is generated and used.</p></div>
     However, you are able to safely call dendrite.query() without a context manager in a synchronous setting.
 
     Example without a context manager:
-        &gt;&gt;&gt; d = dendrite(wallet = Wallet() )
+        &gt;&gt;&gt; d = dendrite(wallet = cybertensor.wallet() )
         &gt;&gt;&gt; print(d)
         &gt;&gt;&gt; d( &lt;axon&gt; ) # ping axon
         &gt;&gt;&gt; d( [&lt;axons&gt;] ) # ping multiple
@@ -872,15 +871,15 @@ in which case a new Wallet().hotkey is generated and used.</p></div>
     &#34;&#34;&#34;
 
     def __init__(
-        self, wallet: Optional[Union[Wallet, cybertensor.keypair]] = None
+        self, wallet: Optional[Union[cybertensor.wallet, cybertensor.keypair]] = None
     ):
         &#34;&#34;&#34;
         Initializes the Dendrite object, setting up essential properties.
 
         Args:
-            wallet (Optional[Union[&#39;Wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
+            wallet (Optional[Union[&#39;cybertensor.wallet&#39;, &#39;cybertensor.keypair&#39;]], optional):
                 The user&#39;s wallet or keypair used for signing messages. Defaults to None,
-                in which case a new Wallet().hotkey is generated and used.
+                in which case a new cybertensor.wallet().hotkey is generated and used.
         &#34;&#34;&#34;
         # Initialize the parent class
         super(dendrite, self).__init__()
@@ -893,8 +892,8 @@ in which case a new Wallet().hotkey is generated and used.</p></div>
 
         # If a wallet or keypair is provided, use its hotkey. If not, generate a new one.
         self.keypair = (
-            wallet.hotkey if isinstance(wallet, Wallet) else wallet
-        ) or Wallet().hotkey
+            wallet.hotkey if isinstance(wallet, cybertensor.wallet) else wallet
+        ) or cybertensor.wallet().hotkey
 
         self.synapse_history: list = []
 

@@ -61,7 +61,7 @@ class InvalidConfigFile(Exception):
     pass
 
 
-class Config(DefaultMunch):
+class config(DefaultMunch):
     &#34;&#34;&#34;
     Implementation of the config class, which manages the config of different cybertensor modules.
     &#34;&#34;&#34;
@@ -80,7 +80,7 @@ class Config(DefaultMunch):
                 Default value for the Config. Defaults to None.
                 This default will be returned for attributes that are undefined.
         Returns:
-            config (Config):
+            config (cybertensor.config):
                 Nested config object created from parser arguments.
     &#34;&#34;&#34;
 
@@ -158,7 +158,7 @@ class Config(DefaultMunch):
             config_file_path = None
 
         # Parse args not strict
-        config_params = Config.__parse_args__(args=args, parser=parser, strict=False)
+        config_params = config.__parse_args__(args=args, parser=parser, strict=False)
 
         # 2. Optionally check for --strict
         ## strict=True when passed in OR when --strict is set
@@ -175,12 +175,12 @@ class Config(DefaultMunch):
                 print(&#34;Error in loading: {} using default parser settings&#34;.format(e))
 
         # 2. Continue with loading in params.
-        params = Config.__parse_args__(args=args, parser=parser, strict=strict)
+        params = config.__parse_args__(args=args, parser=parser, strict=strict)
 
         _config = self
 
         # Splits params and add to config
-        Config.__split_params__(params=params, _config=_config)
+        config.__split_params__(params=params, _config=_config)
 
         # Make the is_set map
         _config[&#34;__is_set&#34;] = {}
@@ -231,7 +231,7 @@ class Config(DefaultMunch):
                             cmd_parser._defaults.clear()  # Needed for quirk of argparse
 
         ## Reparse the args, but this time with the defaults as argparse.SUPPRESS
-        params_no_defaults = Config.__parse_args__(
+        params_no_defaults = config.__parse_args__(
             args=args, parser=parser_no_defaults, strict=strict
         )
 
@@ -248,8 +248,8 @@ class Config(DefaultMunch):
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: &#34;Config&#34;):
-        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: &#34;config&#34;):
+        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(&#34;.&#34;)
             head = _config
@@ -261,7 +261,7 @@ class Config(DefaultMunch):
                     head = getattr(head, keys[0])
                     keys = keys[1:]
                 else:
-                    head[keys[0]] = Config()
+                    head[keys[0]] = config()
                     head = head[keys[0]]
                     keys = keys[1:]
             if len(keys) == 1:
@@ -296,11 +296,11 @@ class Config(DefaultMunch):
 
         return params
 
-    def __deepcopy__(self, memo) -&gt; &#34;Config&#34;:
+    def __deepcopy__(self, memo) -&gt; &#34;config&#34;:
         _default = self.__default__
 
         config_state = self.__getstate__()
-        config_copy = Config()
+        config_copy = config()
         memo[id(self)] = config_copy
 
         config_copy.__setstate__(config_state)
@@ -321,7 +321,7 @@ class Config(DefaultMunch):
             d.pop(&#34;__is_set&#34;, None)
         for k, v in list(d.items()):
             if isinstance(v, dict):
-                Config._remove_private_keys(v)
+                config._remove_private_keys(v)
         return d
 
     def __str__(self) -&gt; str:
@@ -329,10 +329,10 @@ class Config(DefaultMunch):
         visible = copy.deepcopy(self.toDict())
         visible.pop(&#34;__parser&#34;, None)
         visible.pop(&#34;__is_set&#34;, None)
-        cleaned = Config._remove_private_keys(visible)
+        cleaned = config._remove_private_keys(visible)
         return &#34;\n&#34; + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -&gt; &#34;Config&#34;:
+    def copy(self) -&gt; &#34;config&#34;:
         return copy.deepcopy(self)
 
     def to_string(self, items) -&gt; str:
@@ -369,7 +369,7 @@ class Config(DefaultMunch):
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
+    def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
         &#34;&#34;&#34;
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -400,7 +400,7 @@ class Config(DefaultMunch):
 T = TypeVar(&#34;T&#34;, bound=&#34;DefaultConfig&#34;)
 
 
-class DefaultConfig(Config):
+class DefaultConfig(config):
     &#34;&#34;&#34;
     A Config with a set of default values.
     &#34;&#34;&#34;
@@ -422,8 +422,95 @@ class DefaultConfig(Config):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="cybertensor.config.Config"><code class="flex name class">
-<span>class <span class="ident">Config</span></span>
+<dt id="cybertensor.config.DefaultConfig"><code class="flex name class">
+<span>class <span class="ident">DefaultConfig</span></span>
+<span>(</span><span>parser: argparse.ArgumentParser = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A Config with a set of default values.</p>
+<p>Construct a new DefaultMunch. Like collections.defaultdict, the
+first argument is the default value; subsequent arguments are the
+same as those for dict.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DefaultConfig(config):
+    &#34;&#34;&#34;
+    A Config with a set of default values.
+    &#34;&#34;&#34;
+
+    @classmethod
+    def default(cls: Type[T]) -&gt; T:
+        &#34;&#34;&#34;
+        Get default config.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;Function default is not implemented.&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.config.config" href="#cybertensor.config.config">config</a></li>
+<li>munch.DefaultMunch</li>
+<li>munch.Munch</li>
+<li>builtins.dict</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.config.DefaultConfig.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>) ‑> ~T</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get default config.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def default(cls: Type[T]) -&gt; T:
+    &#34;&#34;&#34;
+    Get default config.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;Function default is not implemented.&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="cybertensor.config.config" href="#cybertensor.config.config">config</a></b></code>:
+<ul class="hlist">
+<li><code><a title="cybertensor.config.config.copy" href="#cybertensor.config.config.copy">copy</a></code></li>
+<li><code><a title="cybertensor.config.config.is_set" href="#cybertensor.config.config.is_set">is_set</a></code></li>
+<li><code><a title="cybertensor.config.config.merge" href="#cybertensor.config.config.merge">merge</a></code></li>
+<li><code><a title="cybertensor.config.config.merge_all" href="#cybertensor.config.config.merge_all">merge_all</a></code></li>
+<li><code><a title="cybertensor.config.config.to_string" href="#cybertensor.config.config.to_string">to_string</a></code></li>
+<li><code><a title="cybertensor.config.config.update_with_kwargs" href="#cybertensor.config.config.update_with_kwargs">update_with_kwargs</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="cybertensor.config.InvalidConfigFile"><code class="flex name class">
+<span>class <span class="ident">InvalidConfigFile</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>In place of YAMLError</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InvalidConfigFile(Exception):
+    &#34;&#34;&#34;In place of YAMLError&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.config.config"><code class="flex name class">
+<span>class <span class="ident">config</span></span>
 <span>(</span><span>parser: argparse.ArgumentParser = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
 </code></dt>
 <dd>
@@ -435,7 +522,7 @@ same as those for dict.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Config(DefaultMunch):
+<pre><code class="python">class config(DefaultMunch):
     &#34;&#34;&#34;
     Implementation of the config class, which manages the config of different cybertensor modules.
     &#34;&#34;&#34;
@@ -454,7 +541,7 @@ same as those for dict.</p></div>
                 Default value for the Config. Defaults to None.
                 This default will be returned for attributes that are undefined.
         Returns:
-            config (Config):
+            config (cybertensor.config):
                 Nested config object created from parser arguments.
     &#34;&#34;&#34;
 
@@ -532,7 +619,7 @@ same as those for dict.</p></div>
             config_file_path = None
 
         # Parse args not strict
-        config_params = Config.__parse_args__(args=args, parser=parser, strict=False)
+        config_params = config.__parse_args__(args=args, parser=parser, strict=False)
 
         # 2. Optionally check for --strict
         ## strict=True when passed in OR when --strict is set
@@ -549,12 +636,12 @@ same as those for dict.</p></div>
                 print(&#34;Error in loading: {} using default parser settings&#34;.format(e))
 
         # 2. Continue with loading in params.
-        params = Config.__parse_args__(args=args, parser=parser, strict=strict)
+        params = config.__parse_args__(args=args, parser=parser, strict=strict)
 
         _config = self
 
         # Splits params and add to config
-        Config.__split_params__(params=params, _config=_config)
+        config.__split_params__(params=params, _config=_config)
 
         # Make the is_set map
         _config[&#34;__is_set&#34;] = {}
@@ -605,7 +692,7 @@ same as those for dict.</p></div>
                             cmd_parser._defaults.clear()  # Needed for quirk of argparse
 
         ## Reparse the args, but this time with the defaults as argparse.SUPPRESS
-        params_no_defaults = Config.__parse_args__(
+        params_no_defaults = config.__parse_args__(
             args=args, parser=parser_no_defaults, strict=strict
         )
 
@@ -622,8 +709,8 @@ same as those for dict.</p></div>
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: &#34;Config&#34;):
-        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: &#34;config&#34;):
+        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(&#34;.&#34;)
             head = _config
@@ -635,7 +722,7 @@ same as those for dict.</p></div>
                     head = getattr(head, keys[0])
                     keys = keys[1:]
                 else:
-                    head[keys[0]] = Config()
+                    head[keys[0]] = config()
                     head = head[keys[0]]
                     keys = keys[1:]
             if len(keys) == 1:
@@ -670,11 +757,11 @@ same as those for dict.</p></div>
 
         return params
 
-    def __deepcopy__(self, memo) -&gt; &#34;Config&#34;:
+    def __deepcopy__(self, memo) -&gt; &#34;config&#34;:
         _default = self.__default__
 
         config_state = self.__getstate__()
-        config_copy = Config()
+        config_copy = config()
         memo[id(self)] = config_copy
 
         config_copy.__setstate__(config_state)
@@ -695,7 +782,7 @@ same as those for dict.</p></div>
             d.pop(&#34;__is_set&#34;, None)
         for k, v in list(d.items()):
             if isinstance(v, dict):
-                Config._remove_private_keys(v)
+                config._remove_private_keys(v)
         return d
 
     def __str__(self) -&gt; str:
@@ -703,10 +790,10 @@ same as those for dict.</p></div>
         visible = copy.deepcopy(self.toDict())
         visible.pop(&#34;__parser&#34;, None)
         visible.pop(&#34;__is_set&#34;, None)
-        cleaned = Config._remove_private_keys(visible)
+        cleaned = config._remove_private_keys(visible)
         return &#34;\n&#34; + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -&gt; &#34;Config&#34;:
+    def copy(self) -&gt; &#34;config&#34;:
         return copy.deepcopy(self)
 
     def to_string(self, items) -&gt; str:
@@ -743,7 +830,7 @@ same as those for dict.</p></div>
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
+    def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
         &#34;&#34;&#34;
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -782,8 +869,8 @@ same as those for dict.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="cybertensor.config.Config.merge_all"><code class="name flex">
-<span>def <span class="ident">merge_all</span></span>(<span>configs: List[ForwardRef('<a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a>')]) ‑> <a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></span>
+<dt id="cybertensor.config.config.merge_all"><code class="name flex">
+<span>def <span class="ident">merge_all</span></span>(<span>configs: List[ForwardRef('<a title="cybertensor.config.config" href="#cybertensor.config.config">config</a>')]) ‑> <a title="cybertensor.config.config" href="#cybertensor.config.config">config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Merge all configs in the list into one config.
@@ -799,7 +886,7 @@ Merged config object.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
+def merge_all(cls, configs: List[&#34;config&#34;]) -&gt; &#34;config&#34;:
     &#34;&#34;&#34;
     Merge all configs in the list into one config.
     If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -821,8 +908,8 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="cybertensor.config.Config.copy"><code class="name flex">
-<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></span>
+<dt id="cybertensor.config.config.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="cybertensor.config.config" href="#cybertensor.config.config">config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>D.copy() -&gt; a shallow copy of D</p></div>
@@ -830,11 +917,11 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def copy(self) -&gt; &#34;Config&#34;:
+<pre><code class="python">def copy(self) -&gt; &#34;config&#34;:
     return copy.deepcopy(self)</code></pre>
 </details>
 </dd>
-<dt id="cybertensor.config.Config.is_set"><code class="name flex">
+<dt id="cybertensor.config.config.is_set"><code class="name flex">
 <span>def <span class="ident">is_set</span></span>(<span>self, param_name: str) ‑> bool</span>
 </code></dt>
 <dd>
@@ -853,7 +940,7 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
         return self.get(&#34;__is_set&#34;)[param_name]</code></pre>
 </details>
 </dd>
-<dt id="cybertensor.config.Config.merge"><code class="name flex">
+<dt id="cybertensor.config.config.merge"><code class="name flex">
 <span>def <span class="ident">merge</span></span>(<span>self, b)</span>
 </code></dt>
 <dd>
@@ -877,7 +964,7 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
     self = self._merge(self, b)</code></pre>
 </details>
 </dd>
-<dt id="cybertensor.config.Config.to_string"><code class="name flex">
+<dt id="cybertensor.config.config.to_string"><code class="name flex">
 <span>def <span class="ident">to_string</span></span>(<span>self, items) ‑> str</span>
 </code></dt>
 <dd>
@@ -891,7 +978,7 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
     return &#34;\n&#34; + yaml.dump(items.toDict())</code></pre>
 </details>
 </dd>
-<dt id="cybertensor.config.Config.update_with_kwargs"><code class="name flex">
+<dt id="cybertensor.config.config.update_with_kwargs"><code class="name flex">
 <span>def <span class="ident">update_with_kwargs</span></span>(<span>self, kwargs)</span>
 </code></dt>
 <dd>
@@ -907,93 +994,6 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
 </details>
 </dd>
 </dl>
-</dd>
-<dt id="cybertensor.config.DefaultConfig"><code class="flex name class">
-<span>class <span class="ident">DefaultConfig</span></span>
-<span>(</span><span>parser: argparse.ArgumentParser = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A Config with a set of default values.</p>
-<p>Construct a new DefaultMunch. Like collections.defaultdict, the
-first argument is the default value; subsequent arguments are the
-same as those for dict.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class DefaultConfig(Config):
-    &#34;&#34;&#34;
-    A Config with a set of default values.
-    &#34;&#34;&#34;
-
-    @classmethod
-    def default(cls: Type[T]) -&gt; T:
-        &#34;&#34;&#34;
-        Get default config.
-        &#34;&#34;&#34;
-        raise NotImplementedError(&#34;Function default is not implemented.&#34;)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></li>
-<li>munch.DefaultMunch</li>
-<li>munch.Munch</li>
-<li>builtins.dict</li>
-</ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="cybertensor.config.DefaultConfig.default"><code class="name flex">
-<span>def <span class="ident">default</span></span>(<span>) ‑> ~T</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Get default config.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def default(cls: Type[T]) -&gt; T:
-    &#34;&#34;&#34;
-    Get default config.
-    &#34;&#34;&#34;
-    raise NotImplementedError(&#34;Function default is not implemented.&#34;)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></b></code>:
-<ul class="hlist">
-<li><code><a title="cybertensor.config.Config.copy" href="#cybertensor.config.Config.copy">copy</a></code></li>
-<li><code><a title="cybertensor.config.Config.is_set" href="#cybertensor.config.Config.is_set">is_set</a></code></li>
-<li><code><a title="cybertensor.config.Config.merge" href="#cybertensor.config.Config.merge">merge</a></code></li>
-<li><code><a title="cybertensor.config.Config.merge_all" href="#cybertensor.config.Config.merge_all">merge_all</a></code></li>
-<li><code><a title="cybertensor.config.Config.to_string" href="#cybertensor.config.Config.to_string">to_string</a></code></li>
-<li><code><a title="cybertensor.config.Config.update_with_kwargs" href="#cybertensor.config.Config.update_with_kwargs">update_with_kwargs</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="cybertensor.config.InvalidConfigFile"><code class="flex name class">
-<span>class <span class="ident">InvalidConfigFile</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>In place of YAMLError</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class InvalidConfigFile(Exception):
-    &#34;&#34;&#34;In place of YAMLError&#34;&#34;&#34;
-
-    pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -1012,17 +1012,6 @@ def default(cls: Type[T]) -&gt; T:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="cybertensor.config.Config" href="#cybertensor.config.Config">Config</a></code></h4>
-<ul class="two-column">
-<li><code><a title="cybertensor.config.Config.copy" href="#cybertensor.config.Config.copy">copy</a></code></li>
-<li><code><a title="cybertensor.config.Config.is_set" href="#cybertensor.config.Config.is_set">is_set</a></code></li>
-<li><code><a title="cybertensor.config.Config.merge" href="#cybertensor.config.Config.merge">merge</a></code></li>
-<li><code><a title="cybertensor.config.Config.merge_all" href="#cybertensor.config.Config.merge_all">merge_all</a></code></li>
-<li><code><a title="cybertensor.config.Config.to_string" href="#cybertensor.config.Config.to_string">to_string</a></code></li>
-<li><code><a title="cybertensor.config.Config.update_with_kwargs" href="#cybertensor.config.Config.update_with_kwargs">update_with_kwargs</a></code></li>
-</ul>
-</li>
-<li>
 <h4><code><a title="cybertensor.config.DefaultConfig" href="#cybertensor.config.DefaultConfig">DefaultConfig</a></code></h4>
 <ul class="">
 <li><code><a title="cybertensor.config.DefaultConfig.default" href="#cybertensor.config.DefaultConfig.default">default</a></code></li>
@@ -1030,6 +1019,17 @@ def default(cls: Type[T]) -&gt; T:
 </li>
 <li>
 <h4><code><a title="cybertensor.config.InvalidConfigFile" href="#cybertensor.config.InvalidConfigFile">InvalidConfigFile</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.config.config" href="#cybertensor.config.config">config</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.config.config.copy" href="#cybertensor.config.config.copy">copy</a></code></li>
+<li><code><a title="cybertensor.config.config.is_set" href="#cybertensor.config.config.is_set">is_set</a></code></li>
+<li><code><a title="cybertensor.config.config.merge" href="#cybertensor.config.config.merge">merge</a></code></li>
+<li><code><a title="cybertensor.config.config.merge_all" href="#cybertensor.config.config.merge_all">merge_all</a></code></li>
+<li><code><a title="cybertensor.config.config.to_string" href="#cybertensor.config.config.to_string">to_string</a></code></li>
+<li><code><a title="cybertensor.config.config.update_with_kwargs" href="#cybertensor.config.config.update_with_kwargs">update_with_kwargs</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

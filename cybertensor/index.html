@@ -92,7 +92,7 @@ def turn_console_on():
     __console__ = Console()
 
 
-turn_console_on()
+turn_console_off()
 
 
 # Logging helpers.
@@ -198,10 +198,10 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     contract_address=&#34;pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9&#34;,
 )
 
-__contract_path__ = None
-__contract_schema_path__ = &#34;contract/schema&#34;
+__contract_path__ = Path(__file__).home() / &#34;.cybertensor/contract/cybernet.wasm&#34;
+__contract_schema_path__ = Path(__file__).home() / &#34;.cybertensor/contract/schema&#34;
 
-__default_gas__ = None
+__default_gas__ = 1_000_000
 __default_transfer_gas__ = 100_000
 
 from .errors import *
@@ -223,16 +223,15 @@ from .stream import *
 from .tensor import *
 from .axon import axon as axon
 from .dendrite import dendrite as dendrite
-from .config import Config
 
 configs = [
     axon.config(),
-    Config(),
+    cybertensor.config(),
     PriorityThreadPoolExecutor.config(),
-    Wallet.config(),
+    wallet.config(),
     logging.config(),
 ]
-defaults = Config.merge_all(configs)</code></pre>
+defaults = config.merge_all(configs)</code></pre>
 </details>
 </section>
 <section>
