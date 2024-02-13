@@ -118,6 +118,7 @@ def workflow(
             _tensor.root_register(wallet=account["wallet"])
         if netuids is None:
             netuids = _tensor.get_all_subnet_netuids()
+        _subnetuids = [_netuid for _netuid in netuids if _netuid != 0]
         if subnet_register:
             for _netuid in netuids:
                 _tensor.burned_register(wallet=account["wallet"], netuid=_netuid)
@@ -138,14 +139,13 @@ def workflow(
             )
         if root_set_weight:
             if root_weights is None:
-                root_weights = sample(range(1, 1 + len(netuids)), len(netuids))
+                root_weights = sample(range(1, 1 + len(_subnetuids)), len(_subnetuids))
                 print(
-                    f"netuids: {netuids}\t"
-                    f"len(netuids): {len(netuids)}\t"
+                    f"netuids: {_subnetuids}\t"
                     f"root_weights: {root_weights}"
                 )
             _tensor.root_set_weights(
-                wallet=account["wallet"], netuids=netuids, weights=root_weights
+                wallet=account["wallet"], netuids=_subnetuids, weights=root_weights, wait_for_finalization=True
             )
         if subnets_set_weight:
             sleep(10)
@@ -163,7 +163,7 @@ def workflow(
                             len(_tensor.metagraph(netuid=_netuid).neurons),
                         ),
                     ]
-                    for _netuid in netuids
+                    for _netuid in _subnetuids
                 }
             for _netuid in subnets_weights.keys():
                 _tensor.set_weights(
