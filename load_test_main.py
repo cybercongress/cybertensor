@@ -1,7 +1,10 @@
+import warnings
 from argparse import ArgumentParser
 from random import sample
 from time import sleep
 from typing import Union, TypedDict, Optional
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import pandas as pd
 from cosmpy.aerial.tx_helpers import SubmittedTx
@@ -145,10 +148,12 @@ def workflow(
                     f"root_weights: {root_weights}"
                 )
             _tensor.root_set_weights(
-                wallet=account["wallet"], netuids=_subnetuids, weights=root_weights, wait_for_finalization=True
+                wallet=account["wallet"],
+                netuids=_subnetuids,
+                weights=root_weights,
+                wait_for_finalization=True,
             )
         if subnets_set_weight:
-            sleep(10)
             if subnets_weights is None:
                 subnets_weights = {
                     _netuid: [
@@ -166,6 +171,7 @@ def workflow(
                     for _netuid in _subnetuids
                 }
             for _netuid in subnets_weights.keys():
+                sleep(10)
                 _tensor.set_weights(
                     wallet=account["wallet"],
                     netuid=_netuid,
@@ -187,12 +193,20 @@ def display_state() -> None:
     for _netuid in _netuids[1:]:
         print(f"subnet {_netuid} weights {_tensor.weights(netuid=_netuid)}")
 
-    _registration_data = [[f'{"subnet" + str(_netuid) if _netuid != 0 else "root"}'] +
-             [tensor.is_hotkey_registered_on_subnet(hotkey=_account["wallet_hotkey_address"], netuid=_netuid)
-              for _account in accounts]
-             for _netuid in _netuids]
-    _registration_columns = ['Subnet'] + [_account['wallet'].name for _account in accounts]
-    print('\nwallet registration:')
+    _registration_data = [
+        [f'{"subnet" + str(_netuid) if _netuid != 0 else "root"}']
+        + [
+            tensor.is_hotkey_registered_on_subnet(
+                hotkey=_account["wallet_hotkey_address"], netuid=_netuid
+            )
+            for _account in accounts
+        ]
+        for _netuid in _netuids
+    ]
+    _registration_columns = ["Subnet"] + [
+        _account["wallet"].name for _account in accounts
+    ]
+    print("\nwallet registration:")
     print(pd.DataFrame(data=_registration_data, columns=_registration_columns))
 
 
