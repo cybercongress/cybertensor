@@ -1,0 +1,856 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "get_delegates"
+      ],
+      "properties": {
+        "get_delegates": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_delegate"
+      ],
+      "properties": {
+        "get_delegate": {
+          "type": "object",
+          "required": [
+            "delegate"
+          ],
+          "properties": {
+            "delegate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_delegated"
+      ],
+      "properties": {
+        "get_delegated": {
+          "type": "object",
+          "required": [
+            "delegatee"
+          ],
+          "properties": {
+            "delegatee": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_neurons_lite"
+      ],
+      "properties": {
+        "get_neurons_lite": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_neuron_lite"
+      ],
+      "properties": {
+        "get_neuron_lite": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "uid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "uid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_neurons"
+      ],
+      "properties": {
+        "get_neurons": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_neuron"
+      ],
+      "properties": {
+        "get_neuron": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "uid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "uid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnet_info"
+      ],
+      "properties": {
+        "get_subnet_info": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnets_info"
+      ],
+      "properties": {
+        "get_subnets_info": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnet_hyperparams"
+      ],
+      "properties": {
+        "get_subnet_hyperparams": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_stake_info_for_coldkey"
+      ],
+      "properties": {
+        "get_stake_info_for_coldkey": {
+          "type": "object",
+          "required": [
+            "coldkey"
+          ],
+          "properties": {
+            "coldkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_stake_info_for_coldkeys"
+      ],
+      "properties": {
+        "get_stake_info_for_coldkeys": {
+          "type": "object",
+          "required": [
+            "coldkeys"
+          ],
+          "properties": {
+            "coldkeys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_total_stake_for_hotkey"
+      ],
+      "properties": {
+        "get_total_stake_for_hotkey": {
+          "type": "object",
+          "required": [
+            "address"
+          ],
+          "properties": {
+            "address": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_total_stake_for_coldkey"
+      ],
+      "properties": {
+        "get_total_stake_for_coldkey": {
+          "type": "object",
+          "required": [
+            "address"
+          ],
+          "properties": {
+            "address": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_stake_for_coldkey_and_hotkey"
+      ],
+      "properties": {
+        "get_stake_for_coldkey_and_hotkey": {
+          "type": "object",
+          "required": [
+            "coldkey",
+            "hotkey"
+          ],
+          "properties": {
+            "coldkey": {
+              "type": "string"
+            },
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_hotkey_owner"
+      ],
+      "properties": {
+        "get_hotkey_owner": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_uid_for_hotkey_on_subnet"
+      ],
+      "properties": {
+        "get_uid_for_hotkey_on_subnet": {
+          "type": "object",
+          "required": [
+            "hotkey",
+            "netuid"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_netuids_for_hotkey"
+      ],
+      "properties": {
+        "get_netuids_for_hotkey": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_hotkey_exist"
+      ],
+      "properties": {
+        "get_hotkey_exist": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_stake"
+      ],
+      "properties": {
+        "get_stake": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_delegate_take"
+      ],
+      "properties": {
+        "get_delegate_take": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnet_exist"
+      ],
+      "properties": {
+        "get_subnet_exist": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnet_owner"
+      ],
+      "properties": {
+        "get_subnet_owner": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_max_weight_limit"
+      ],
+      "properties": {
+        "get_max_weight_limit": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_min_allowed_weights"
+      ],
+      "properties": {
+        "get_min_allowed_weights": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_burn"
+      ],
+      "properties": {
+        "get_burn": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_difficulty"
+      ],
+      "properties": {
+        "get_difficulty": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_tempo"
+      ],
+      "properties": {
+        "get_tempo": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_emission_value_by_subnet"
+      ],
+      "properties": {
+        "get_emission_value_by_subnet": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_network_registration_cost"
+      ],
+      "properties": {
+        "get_network_registration_cost": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_total_networks"
+      ],
+      "properties": {
+        "get_total_networks": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_networks_added"
+      ],
+      "properties": {
+        "get_networks_added": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_all_subnet_netuids"
+      ],
+      "properties": {
+        "get_all_subnet_netuids": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_total_issuance"
+      ],
+      "properties": {
+        "get_total_issuance": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_total_stake"
+      ],
+      "properties": {
+        "get_total_stake": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_tx_rate_limit"
+      ],
+      "properties": {
+        "get_tx_rate_limit": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_axon_info"
+      ],
+      "properties": {
+        "get_axon_info": {
+          "type": "object",
+          "required": [
+            "hotkey",
+            "netuid"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_prometheus_info"
+      ],
+      "properties": {
+        "get_prometheus_info": {
+          "type": "object",
+          "required": [
+            "hotkey",
+            "netuid"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_weights"
+      ],
+      "properties": {
+        "get_weights": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_weights_sparse"
+      ],
+      "properties": {
+        "get_weights_sparse": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_state"
+      ],
+      "properties": {
+        "get_state": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

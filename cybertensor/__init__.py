@@ -170,8 +170,8 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     contract_address="pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9",
 )
 
-__contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
-__contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
+__contract_path__ = None
+__contract_schema_path__ = "contract/schema"
 
 __default_gas__ = None
 __default_transfer_gas__ = 100_000
