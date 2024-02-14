@@ -105,6 +105,11 @@ class NotDelegateError(StakeError):
     pass
 
 
+class NotSetWeightError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a hotkey you are trying to set weight is not set.&#34;&#34;&#34;
+    pass
+
+
 class KeyFileError(Exception):
     r&#34;&#34;&#34;Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid.&#34;&#34;&#34;
     pass</code></pre>
@@ -208,6 +213,7 @@ class KeyFileError(Exception):
 <li><a title="cybertensor.errors.IdentityError" href="#cybertensor.errors.IdentityError">IdentityError</a></li>
 <li><a title="cybertensor.errors.NominationError" href="#cybertensor.errors.NominationError">NominationError</a></li>
 <li><a title="cybertensor.errors.NotRegisteredError" href="#cybertensor.errors.NotRegisteredError">NotRegisteredError</a></li>
+<li><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></li>
 <li><a title="cybertensor.errors.RegistrationError" href="#cybertensor.errors.RegistrationError">RegistrationError</a></li>
 <li><a title="cybertensor.errors.StakeError" href="#cybertensor.errors.StakeError">StakeError</a></li>
 <li><a title="cybertensor.errors.TransferError" href="#cybertensor.errors.TransferError">TransferError</a></li>
@@ -310,6 +316,27 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class NotRegisteredError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a neuron is not registered, and the transaction requires it to be.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NotSetWeightError"><code class="flex name class">
+<span>class <span class="ident">NotSetWeightError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a hotkey you are trying to set weight is not set.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotSetWeightError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a hotkey you are trying to set weight is not set.&#34;&#34;&#34;
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -449,6 +476,9 @@ class KeyFileError(Exception):
 </li>
 <li>
 <h4><code><a title="cybertensor.errors.NotRegisteredError" href="#cybertensor.errors.NotRegisteredError">NotRegisteredError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="cybertensor.errors.RegistrationError" href="#cybertensor.errors.RegistrationError">RegistrationError</a></code></h4>

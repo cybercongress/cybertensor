@@ -98,25 +98,20 @@ def root_register_message(
             return False
 
     with console.status(&#34;:satellite: Registering to root network...&#34;):
-        success, err_msg = cwtensor._do_root_register(
+        success = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
-
-        if success != True or success is False:
-            console.print(
-                f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
-            )
-            time.sleep(0.5)
+        time.sleep(0.5)
 
         # Successful registration, final check for neuron and pubkey
-        else:
+        if success is True:
             is_registered = cwtensor.is_hotkey_registered(
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
                 console.print(
-                    &#34;:white_heavy_check_mark: [green]Registered[/green]&#34;
+                    &#34;:white_heavy_check_mark: [green]Registered in root[/green]&#34;
                 )
                 return True
             else:
@@ -124,6 +119,8 @@ def root_register_message(
                 console.print(
                     &#34;:cross_mark: [red]Unknown error. Neuron not found.[/red]&#34;
                 )
+
+        return False
 
 
 def set_root_weights_message(
@@ -176,12 +173,8 @@ def set_root_weights_message(
         )
 
     # Normalize the weights to max value.
-    formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
-        x=weights, limit=max_weight_limit
-    )
-    console.print(
-        f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;
-    )
+    formatted_weights = normalize_max_weight(x=weights, limit=max_weight_limit)
+    console.print(f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;)
 
     # Ask before moving on.
     if prompt:
@@ -195,52 +188,17 @@ def set_root_weights_message(
     with console.status(
         f&#34;:satellite: Setting root weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
-        try:
-            weight_uids, weight_vals = weight_utils.convert_weights_and_uids_for_emit(
-                netuids, weights
-            )
-            success, error_message = cwtensor._do_set_weights(
-                wallet=wallet,
-                netuid=0,
-                uids=weight_uids,
-                vals=weight_vals,
-                version_key=version_key,
-                wait_for_finalization=wait_for_finalization,
-            )
-
-            console.print(success, error_message)
-
-            if not wait_for_finalization:
-                return True
-
-            if success is True:
-                console.print(
-                    &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
-                )
-                cybertensor.logging.success(
-                    prefix=&#34;Set weights&#34;,
-                    sufix=&#34;&lt;green&gt;Finalized: &lt;/green&gt;&#34; + str(success),
-                )
-                return True
-            else:
-                console.print(
-                    f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;
-                )
-                cybertensor.logging.warning(
-                    prefix=&#34;Set weights&#34;,
-                    sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{error_message}&#34;,
-                )
-                return False
-
-        except Exception as e:
-            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            console.print(
-                f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
-            )
-            cybertensor.logging.warning(
-                prefix=&#34;Set weights&#34;, sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{e}&#34;
-            )
-            return False</code></pre>
+        weight_uids, weight_vals = convert_weights_and_uids_for_emit(
+            netuids, weights
+        )
+        return cwtensor._do_set_weights(
+            wallet=wallet,
+            netuid=0,
+            uids=weight_uids,
+            vals=weight_vals,
+            version_key=version_key,
+            wait_for_finalization=wait_for_finalization,
+        )</code></pre>
 </details>
 </section>
 <section>
@@ -309,32 +267,29 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
             return False
 
     with console.status(&#34;:satellite: Registering to root network...&#34;):
-        success, err_msg = cwtensor._do_root_register(
+        success = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
-
-        if success != True or success is False:
-            console.print(
-                f&#34;:cross_mark: [red]Failed[/red]: error:{err_msg}&#34;
-            )
-            time.sleep(0.5)
+        time.sleep(0.5)
 
         # Successful registration, final check for neuron and pubkey
-        else:
+        if success is True:
             is_registered = cwtensor.is_hotkey_registered(
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
                 console.print(
-                    &#34;:white_heavy_check_mark: [green]Registered[/green]&#34;
+                    &#34;:white_heavy_check_mark: [green]Registered in root[/green]&#34;
                 )
                 return True
             else:
                 # neuron not found, try again
                 console.print(
                     &#34;:cross_mark: [red]Unknown error. Neuron not found.[/red]&#34;
-                )</code></pre>
+                )
+
+        return False</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.messages.root.set_root_weights_message"><code class="name flex">
@@ -414,12 +369,8 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         )
 
     # Normalize the weights to max value.
-    formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
-        x=weights, limit=max_weight_limit
-    )
-    console.print(
-        f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;
-    )
+    formatted_weights = normalize_max_weight(x=weights, limit=max_weight_limit)
+    console.print(f&#34;\nNormalized weights: \n\t{weights} -&gt; {formatted_weights}\n&#34;)
 
     # Ask before moving on.
     if prompt:
@@ -433,52 +384,17 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     with console.status(
         f&#34;:satellite: Setting root weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
-        try:
-            weight_uids, weight_vals = weight_utils.convert_weights_and_uids_for_emit(
-                netuids, weights
-            )
-            success, error_message = cwtensor._do_set_weights(
-                wallet=wallet,
-                netuid=0,
-                uids=weight_uids,
-                vals=weight_vals,
-                version_key=version_key,
-                wait_for_finalization=wait_for_finalization,
-            )
-
-            console.print(success, error_message)
-
-            if not wait_for_finalization:
-                return True
-
-            if success is True:
-                console.print(
-                    &#34;:white_heavy_check_mark: [green]Finalized[/green]&#34;
-                )
-                cybertensor.logging.success(
-                    prefix=&#34;Set weights&#34;,
-                    sufix=&#34;&lt;green&gt;Finalized: &lt;/green&gt;&#34; + str(success),
-                )
-                return True
-            else:
-                console.print(
-                    f&#34;:cross_mark: [red]Failed[/red]: error:{error_message}&#34;
-                )
-                cybertensor.logging.warning(
-                    prefix=&#34;Set weights&#34;,
-                    sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{error_message}&#34;,
-                )
-                return False
-
-        except Exception as e:
-            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            console.print(
-                f&#34;:cross_mark: [red]Failed[/red]: error:{e}&#34;
-            )
-            cybertensor.logging.warning(
-                prefix=&#34;Set weights&#34;, sufix=f&#34;&lt;red&gt;Failed: &lt;/red&gt;{e}&#34;
-            )
-            return False</code></pre>
+        weight_uids, weight_vals = convert_weights_and_uids_for_emit(
+            netuids, weights
+        )
+        return cwtensor._do_set_weights(
+            wallet=wallet,
+            netuid=0,
+            uids=weight_uids,
+            vals=weight_vals,
+            version_key=version_key,
+            wait_for_finalization=wait_for_finalization,
+        )</code></pre>
 </details>
 </dd>
 </dl>
