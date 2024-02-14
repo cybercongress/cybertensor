@@ -54,7 +54,7 @@ from cosmpy.mnemonic import (
     validate_mnemonic_and_normalise,
 )
 
-import cybertensor
+from cybertensor import __chain_address_prefix__
 
 
 class Keypair:
@@ -77,7 +77,7 @@ class Keypair:
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         self.prefix = prefix
 
@@ -148,7 +148,7 @@ class Keypair:
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         mnemonic = validate_mnemonic_and_normalise(mnemonic)
 
@@ -177,7 +177,7 @@ class Keypair:
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         return cls(
             public_key=PrivateKey(private_key).public_key.public_key,
@@ -303,7 +303,7 @@ mnemonic or URI containing soft and hard derivation paths. With these Keypairs d
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         self.prefix = prefix
 
@@ -374,7 +374,7 @@ mnemonic or URI containing soft and hard derivation paths. With these Keypairs d
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         mnemonic = validate_mnemonic_and_normalise(mnemonic)
 
@@ -403,7 +403,7 @@ mnemonic or URI containing soft and hard derivation paths. With these Keypairs d
         &#34;&#34;&#34;
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         return cls(
             public_key=PrivateKey(private_key).public_key.public_key,
@@ -492,7 +492,7 @@ def create_from_mnemonic(
     &#34;&#34;&#34;
 
     if prefix is None:
-        prefix = cybertensor.__chain_address_prefix__
+        prefix = __chain_address_prefix__
 
     mnemonic = validate_mnemonic_and_normalise(mnemonic)
 
@@ -544,7 +544,7 @@ def create_from_private_key(
     &#34;&#34;&#34;
 
     if prefix is None:
-        prefix = cybertensor.__chain_address_prefix__
+        prefix = __chain_address_prefix__
 
     return cls(
         public_key=PrivateKey(private_key).public_key.public_key,

@@ -46,7 +46,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from pathlib import Path
 from typing import Optional, Union
 
 # Install and apply nest asyncio to allow the async functions
@@ -92,7 +91,7 @@ def turn_console_on():
     __console__ = Console()
 
 
-turn_console_off()
+turn_console_on()
 
 
 # Logging helpers.
@@ -198,40 +197,40 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     contract_address=&#34;pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9&#34;,
 )
 
-__contract_path__ = Path(__file__).home() / &#34;.cybertensor/contract/cybernet.wasm&#34;
-__contract_schema_path__ = Path(__file__).home() / &#34;.cybertensor/contract/schema&#34;
+__contract_path__ = None
+__contract_schema_path__ = &#34;contract/schema&#34;
 
-__default_gas__ = 1_000_000
+__default_gas__ = None
 __default_transfer_gas__ = 100_000
 
-from .errors import *
-from .config import *
-from .keyfile import *
-from .keypair import *
-from .wallet import *
-from .utils import *
-from .utils.balance import Balance as Balance
-from .chain_data import *
-from .cwtensor import cwtensor as cwtensor
-from .cli import cli as cli, COMMANDS as ALL_COMMANDS
-from .ctlogging import logging as logging
-from .metagraph import metagraph as metagraph
-from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
+from cybertensor.errors import *
+from cybertensor.keyfile import keyfile
+from cybertensor.keypair import Keypair
+from cybertensor.wallet import Wallet
+from cybertensor.utils import *
+from cybertensor.utils.balance import Balance
+from cybertensor.chain_data import AxonInfo, NeuronInfo, NeuronInfoLite, PrometheusInfo, StakeInfo, SubnetInfo, SubnetHyperparameters
+from cybertensor.cwtensor import cwtensor
+from cybertensor.cli import cli, COMMANDS as ALL_COMMANDS
+from cybertensor.ctlogging import logging
+from cybertensor.metagraph import metagraph
+from cybertensor.threadpool import PriorityThreadPoolExecutor
 
-from .synapse import *
-from .stream import *
-from .tensor import *
-from .axon import axon as axon
-from .dendrite import dendrite as dendrite
+from cybertensor.synapse import TerminalInfo, Synapse
+from cybertensor.stream import StreamingSynapse
+from cybertensor.tensor import tensor, Tensor
+from cybertensor.axon import axon
+from cybertensor.dendrite import dendrite
+from cybertensor.config import Config
 
 configs = [
     axon.config(),
-    cybertensor.config(),
+    Config(),
     PriorityThreadPoolExecutor.config(),
-    wallet.config(),
+    Wallet.config(),
     logging.config(),
 ]
-defaults = config.merge_all(configs)</code></pre>
+defaults = Config.merge_all(configs)</code></pre>
 </details>
 </section>
 <section>
@@ -324,31 +323,6 @@ defaults = config.merge_all(configs)</code></pre>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="cybertensor.bip39_generate"><code class="name flex">
-<span>def <span class="ident">bip39_generate</span></span>(<span>words, language_code, /)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generates a new mnemonic</p>
-<h1 id="arguments">Arguments</h1>
-<ul>
-<li><code>words</code> - The amount of words to generate, valid values are 12, 15, 18, 21 and 24</li>
-</ul>
-<h1 id="returns">Returns</h1>
-<p>A string containing the mnemonic words.</p></div>
-</dd>
-<dt id="cybertensor.bip39_validate"><code class="name flex">
-<span>def <span class="ident">bip39_validate</span></span>(<span>phrase, language_code, /)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Validates a BIP39 phrase</p>
-<h1 id="arguments">Arguments</h1>
-<ul>
-<li><code>phrase</code> - Mnemonic phrase</li>
-<li><code>language_code</code> - The language to use, valid values are: 'en', 'zh-hans', 'zh-hant', 'fr', 'it', 'ja', 'ko', 'es'. Defaults to 'en'</li>
-</ul>
-<h1 id="returns">Returns</h1>
-<p>Returns boolean with validation result</p></div>
-</dd>
 <dt id="cybertensor.debug"><code class="name flex">
 <span>def <span class="ident">debug</span></span>(<span>on: bool = True)</span>
 </code></dt>
@@ -496,9 +470,7 @@ defaults = config.merge_all(configs)</code></pre>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
-<li><code><a title="cybertensor.bip39_generate" href="#cybertensor.bip39_generate">bip39_generate</a></code></li>
-<li><code><a title="cybertensor.bip39_validate" href="#cybertensor.bip39_validate">bip39_validate</a></code></li>
+<ul class="">
 <li><code><a title="cybertensor.debug" href="#cybertensor.debug">debug</a></code></li>
 <li><code><a title="cybertensor.trace" href="#cybertensor.trace">trace</a></code></li>
 <li><code><a title="cybertensor.turn_console_off" href="#cybertensor.turn_console_off">turn_console_off</a></code></li>

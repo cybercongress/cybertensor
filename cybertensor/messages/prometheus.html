@@ -48,13 +48,15 @@
 import json
 
 import cybertensor
-import cybertensor.utils.networking as net
+from cybertensor import __console__ as console
 from cybertensor.types import PrometheusServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
 
 
 def prometheus_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     port: int,
     netuid: int,
     ip: int = None,
@@ -64,7 +66,7 @@ def prometheus_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             cybertensor cwtensor object.
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4
@@ -85,7 +87,7 @@ def prometheus_message(
     if ip is None:
         try:
             external_ip = net.get_external_ip()
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]&#34;
             )
             cybertensor.logging.success(
@@ -105,7 +107,7 @@ def prometheus_message(
         &#34;ip_type&#34;: net.ip_version(external_ip),
     }
 
-    with cybertensor.__console__.status(&#34;:satellite: Checking Prometheus...&#34;):
+    with console.status(&#34;:satellite: Checking Prometheus...&#34;):
         neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
             wallet.hotkey.address, netuid=netuid
         )
@@ -117,7 +119,7 @@ def prometheus_message(
         }
 
     if neuron_up_to_date:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:white_heavy_check_mark: [green]Prometheus already Served[/green]\n&#34;
             f&#34;[green not bold]- Status: [/green not bold] |&#34;
             f&#34;[green not bold] ip: [/green not bold][white not bold]{net.int_to_ip(neuron.prometheus_info.ip)}[/white not bold] |&#34;
@@ -126,7 +128,7 @@ def prometheus_message(
             f&#34;[green not bold] version: [/green not bold][white not bold]{neuron.prometheus_info.version}[/white not bold] |&#34;
         )
 
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:white_heavy_check_mark: [white]Prometheus already served.[/white] {external_ip}&#34;
         )
         return True
@@ -134,7 +136,7 @@ def prometheus_message(
     # Add netuid, not in prometheus_info
     call_params[&#34;netuid&#34;] = netuid
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Serving prometheus on: [white]{cwtensor.network}:{netuid}[/white] ...&#34;
     ):
         success, err = cwtensor._do_serve_prometheus(
@@ -145,13 +147,13 @@ def prometheus_message(
 
         if wait_for_finalization:
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:white_heavy_check_mark: [green]Served prometheus[/green]\n&#34;
                     f&#34;  [bold white]{json.dumps(call_params, indent=4, sort_keys=True)}[/bold white]&#34;
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [green]Failed to serve prometheus[/green] error: {err}&#34;
                 )
                 return False
@@ -167,14 +169,14 @@ def prometheus_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.prometheus.prometheus_message"><code class="name flex">
-<span>def <span class="ident">prometheus_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet" href="../wallet.html">cybertensor.wallet</a>, port: int, netuid: int, ip: int = None, wait_for_finalization=True) ‑> bool</span>
+<span>def <span class="ident">prometheus_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, port: int, netuid: int, ip: int = None, wait_for_finalization=True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Subscribes a cybertensor endpoint to the substensor chain.</p>
 <h2 id="args">Args</h2>
 <p>cwtensor (cybertensor.cwtensor):
 cybertensor cwtensor object.
-wallet (cybertensor.wallet):
+wallet (Wallet):
 cybertensor wallet object.
 ip (str):
 endpoint host port i.e. 192.122.31.4
@@ -195,7 +197,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </summary>
 <pre><code class="python">def prometheus_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
-    wallet: &#34;cybertensor.wallet&#34;,
+    wallet: &#34;Wallet&#34;,
     port: int,
     netuid: int,
     ip: int = None,
@@ -205,7 +207,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     Args:
         cwtensor (cybertensor.cwtensor):
             cybertensor cwtensor object.
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4
@@ -226,7 +228,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     if ip is None:
         try:
             external_ip = net.get_external_ip()
-            cybertensor.__console__.print(
+            console.print(
                 f&#34;:white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]&#34;
             )
             cybertensor.logging.success(
@@ -246,7 +248,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         &#34;ip_type&#34;: net.ip_version(external_ip),
     }
 
-    with cybertensor.__console__.status(&#34;:satellite: Checking Prometheus...&#34;):
+    with console.status(&#34;:satellite: Checking Prometheus...&#34;):
         neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
             wallet.hotkey.address, netuid=netuid
         )
@@ -258,7 +260,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         }
 
     if neuron_up_to_date:
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:white_heavy_check_mark: [green]Prometheus already Served[/green]\n&#34;
             f&#34;[green not bold]- Status: [/green not bold] |&#34;
             f&#34;[green not bold] ip: [/green not bold][white not bold]{net.int_to_ip(neuron.prometheus_info.ip)}[/white not bold] |&#34;
@@ -267,7 +269,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
             f&#34;[green not bold] version: [/green not bold][white not bold]{neuron.prometheus_info.version}[/white not bold] |&#34;
         )
 
-        cybertensor.__console__.print(
+        console.print(
             f&#34;:white_heavy_check_mark: [white]Prometheus already served.[/white] {external_ip}&#34;
         )
         return True
@@ -275,7 +277,7 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     # Add netuid, not in prometheus_info
     call_params[&#34;netuid&#34;] = netuid
 
-    with cybertensor.__console__.status(
+    with console.status(
         f&#34;:satellite: Serving prometheus on: [white]{cwtensor.network}:{netuid}[/white] ...&#34;
     ):
         success, err = cwtensor._do_serve_prometheus(
@@ -286,13 +288,13 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 
         if wait_for_finalization:
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:white_heavy_check_mark: [green]Served prometheus[/green]\n&#34;
                     f&#34;  [bold white]{json.dumps(call_params, indent=4, sort_keys=True)}[/bold white]&#34;
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f&#34;:cross_mark: [green]Failed to serve prometheus[/green] error: {err}&#34;
                 )
                 return False

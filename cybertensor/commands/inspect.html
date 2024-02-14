@@ -53,23 +53,25 @@ from rich.table import Table
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import get_delegates_details, DelegatesDetails
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import get_delegates_details, DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
-console = cybertensor.__console__
 
-
-def _get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;cybertensor.wallet&#34;]:
+def _get_coldkey_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
     return wallets
 
 
-def _get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;cybertensor.wallet&#34;]:
+def _get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;Wallet&#34;]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + &#34;/&#34; + wallet.name + &#34;/hotkeys&#34;
     try:
@@ -78,7 +80,7 @@ def _get_hotkey_wallets_for_wallet(wallet) -&gt; List[&#34;cybertensor.wallet&#3
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = cybertensor.wallet(
+            hotkey_for_name = Wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (
@@ -138,7 +140,7 @@ class InspectCommand:
         if cli.config.get(&#34;all&#34;, d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=cli.config)]
+            wallets = [Wallet(config=cli.config)]
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         netuids = cwtensor.get_all_subnet_netuids()
@@ -147,7 +149,7 @@ class InspectCommand:
             Dict[str, DelegatesDetails]
         ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
         if registered_delegate_info is None:
-            cybertensor.__console__.print(
+            console.print(
                 &#34;:warning:[yellow]Could not get delegate info from chain.[/yellow]&#34;
             )
             registered_delegate_info = {}
@@ -187,7 +189,7 @@ class InspectCommand:
         )
         for wallet in tqdm(wallets):
             delegates: List[
-                Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
+                Tuple[cybertensor.DelegateInfo, Balance]
             ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
@@ -239,13 +241,13 @@ class InspectCommand:
                             str(netuid),
                             f&#34;{hotkey_name}{neuron.hotkey}&#34;,
                             str(neuron.stake),
-                            str(cybertensor.Balance.from_boot(neuron.emission)),
+                            str(Balance.from_boot(neuron.emission)),
                         )
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;) -&gt; None:
+    def check_config(config: &#34;Config&#34;) -&gt; None:
         if (
             not config.get(&#34;all&#34;, d=None)
             and not config.is_set(&#34;wallet.name&#34;)
@@ -266,7 +268,7 @@ class InspectCommand:
             default=False,
         )
 
-        cybertensor.wallet.add_args(inspect_parser)
+        Wallet.add_args(inspect_parser)
         cybertensor.cwtensor.add_args(inspect_parser)</code></pre>
 </details>
 </section>
@@ -364,7 +366,7 @@ part of the cybertensor CLI and not as a standalone function within user code.</
         if cli.config.get(&#34;all&#34;, d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=cli.config)]
+            wallets = [Wallet(config=cli.config)]
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         netuids = cwtensor.get_all_subnet_netuids()
@@ -373,7 +375,7 @@ part of the cybertensor CLI and not as a standalone function within user code.</
             Dict[str, DelegatesDetails]
         ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
         if registered_delegate_info is None:
-            cybertensor.__console__.print(
+            console.print(
                 &#34;:warning:[yellow]Could not get delegate info from chain.[/yellow]&#34;
             )
             registered_delegate_info = {}
@@ -413,7 +415,7 @@ part of the cybertensor CLI and not as a standalone function within user code.</
         )
         for wallet in tqdm(wallets):
             delegates: List[
-                Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
+                Tuple[cybertensor.DelegateInfo, Balance]
             ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
@@ -465,13 +467,13 @@ part of the cybertensor CLI and not as a standalone function within user code.</
                             str(netuid),
                             f&#34;{hotkey_name}{neuron.hotkey}&#34;,
                             str(neuron.stake),
-                            str(cybertensor.Balance.from_boot(neuron.emission)),
+                            str(Balance.from_boot(neuron.emission)),
                         )
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: &#34;cybertensor.config&#34;) -&gt; None:
+    def check_config(config: &#34;Config&#34;) -&gt; None:
         if (
             not config.get(&#34;all&#34;, d=None)
             and not config.is_set(&#34;wallet.name&#34;)
@@ -492,7 +494,7 @@ part of the cybertensor CLI and not as a standalone function within user code.</
             default=False,
         )
 
-        cybertensor.wallet.add_args(inspect_parser)
+        Wallet.add_args(inspect_parser)
         cybertensor.cwtensor.add_args(inspect_parser)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -518,12 +520,12 @@ def add_args(parser: argparse.ArgumentParser) -&gt; None:
         default=False,
     )
 
-    cybertensor.wallet.add_args(inspect_parser)
+    Wallet.add_args(inspect_parser)
     cybertensor.cwtensor.add_args(inspect_parser)</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.inspect.InspectCommand.check_config"><code class="name flex">
-<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>) ‑> None</span>
+<span>def <span class="ident">check_config</span></span>(<span>config: Config) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -532,7 +534,7 @@ def add_args(parser: argparse.ArgumentParser) -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def check_config(config: &#34;cybertensor.config&#34;) -&gt; None:
+def check_config(config: &#34;Config&#34;) -&gt; None:
     if (
         not config.get(&#34;all&#34;, d=None)
         and not config.is_set(&#34;wallet.name&#34;)
@@ -557,7 +559,7 @@ def run(cli) -&gt; None:
     if cli.config.get(&#34;all&#34;, d=False) is True:
         wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
     else:
-        wallets = [cybertensor.wallet(config=cli.config)]
+        wallets = [Wallet(config=cli.config)]
     cwtensor = cybertensor.cwtensor(config=cli.config)
 
     netuids = cwtensor.get_all_subnet_netuids()
@@ -566,7 +568,7 @@ def run(cli) -&gt; None:
         Dict[str, DelegatesDetails]
     ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
     if registered_delegate_info is None:
-        cybertensor.__console__.print(
+        console.print(
             &#34;:warning:[yellow]Could not get delegate info from chain.[/yellow]&#34;
         )
         registered_delegate_info = {}
@@ -606,7 +608,7 @@ def run(cli) -&gt; None:
     )
     for wallet in tqdm(wallets):
         delegates: List[
-            Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
+            Tuple[cybertensor.DelegateInfo, Balance]
         ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
         if not wallet.coldkeypub_file.exists_on_device():
             continue
@@ -658,10 +660,10 @@ def run(cli) -&gt; None:
                         str(netuid),
                         f&#34;{hotkey_name}{neuron.hotkey}&#34;,
                         str(neuron.stake),
-                        str(cybertensor.Balance.from_boot(neuron.emission)),
+                        str(Balance.from_boot(neuron.emission)),
                     )
 
-    cybertensor.__console__.print(table)</code></pre>
+    console.print(table)</code></pre>
 </details>
 </dd>
 </dl>

@@ -48,7 +48,8 @@ from typing import Callable
 
 from loguru import logger
 
-import cybertensor
+from cybertensor import __blocktime__
+from cybertensor.config import Config
 
 # Workers are created as daemon threads. This is done to allow the interpreter
 # to exit when there are still idle threads in a ThreadPoolExecutor&#39;s thread
@@ -80,7 +81,7 @@ class _WorkItem(object):
         &#34;&#34;&#34;Run the given work item&#34;&#34;&#34;
         # Checks if future is canceled or if work item is stale
         if (not self.future.set_running_or_notify_cancel()) or (
-            time.time() - self.start_time &gt; cybertensor.__blocktime__
+            time.time() - self.start_time &gt; __blocktime__
         ):
             return
 
@@ -222,13 +223,13 @@ class PriorityThreadPoolExecutor(_base.Executor):
             pass
 
     @classmethod
-    def config(cls) -&gt; &#34;cybertensor.config&#34;:
+    def config(cls) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;Get config from the argument parser
-        Return: cybertensor.config object
+        Return: Config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         PriorityThreadPoolExecutor.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @property
     def is_empty(self):
@@ -451,13 +452,13 @@ execute the given calls.</dd>
             pass
 
     @classmethod
-    def config(cls) -&gt; &#34;cybertensor.config&#34;:
+    def config(cls) -&gt; &#34;Config&#34;:
         &#34;&#34;&#34;Get config from the argument parser
-        Return: cybertensor.config object
+        Return: Config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
         PriorityThreadPoolExecutor.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @property
     def is_empty(self):
@@ -595,23 +596,23 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 </details>
 </dd>
 <dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.config"><code class="name flex">
-<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.config" href="config.html#cybertensor.config.config">config</a></span>
+<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get config from the argument parser
-Return: cybertensor.config object</p></div>
+Return: Config object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def config(cls) -&gt; &#34;cybertensor.config&#34;:
+def config(cls) -&gt; &#34;Config&#34;:
     &#34;&#34;&#34;Get config from the argument parser
-    Return: cybertensor.config object
+    Return: Config object
     &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
     PriorityThreadPoolExecutor.add_args(parser)
-    return cybertensor.config(parser, args=[])</code></pre>
+    return Config(parser, args=[])</code></pre>
 </details>
 </dd>
 </dl>
