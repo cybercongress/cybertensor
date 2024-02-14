@@ -17,19 +17,16 @@
 # DEALINGS IN THE SOFTWARE.
 
 from setuptools import setup, find_packages
-from pkg_resources import parse_requirements
 from os import path
 from io import open
 import codecs
 import re
 import os
 import pathlib
-import subprocess
 
 
 def read_requirements(path):
     requirements = []
-    git_requirements = []
 
     with pathlib.Path(path).open() as requirements_txt:
         for line in requirements_txt:
@@ -73,7 +70,7 @@ setup(
     include_package_data=True,
     author_email="",
     license="MIT",
-    python_requires="3.9,<3.12",
+    python_requires=">=3.9.6, <3.12",
     install_requires=requirements,
     extras_require={
         "dev": extra_requirements_dev,

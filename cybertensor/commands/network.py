@@ -213,6 +213,7 @@ class SubnetListCommand:
                     # TODO revisit
                     # f"{delegate_info[subnet.owner_ss58].name if subnet.owner_ss58 in delegate_info else subnet.owner_ss58}",
                     f"{delegate_info[subnet.owner].owner if subnet.owner in delegate_info else subnet.owner}",
+                    f"{subnet.metadata}",
                 )
             )
         table = Table(
@@ -243,6 +244,7 @@ class SubnetListCommand:
         table.add_column("[overline white]BURN", style="white", justify="center")
         table.add_column("[overline white]POW", style="white", justify="center")
         table.add_column("[overline white]SUDO", style="white")
+        table.add_column("[overline white]METADATA", style="white")
         for row in rows:
             table.add_row(*row)
         console.print(table)

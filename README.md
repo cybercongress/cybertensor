@@ -2,6 +2,7 @@
 <p>
     <img alt="GitHub" src="https://img.shields.io/github/license/cybercongress/cybertensor">
     <img alt="Python" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue">
+    <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/cybertensor">
 </p>
 
 ## [Step-by-step guide](./docs/basic-flow.md)
@@ -13,11 +14,18 @@
 2. Subnet for knowledge domains
 3. Subnet for network infrastructure operators
 4. Subnet for relayers infrastructure operators
-5. Your idea here
+5. Subnet for IPFS nodes operators
+6. Your idea here
 
 ```When? Soon```
 
+
 ## Install
+
+0. With pip:
+```
+pip3 install cybertensor
+```
 
 1. From source:
 ```bash

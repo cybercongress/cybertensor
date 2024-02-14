@@ -207,7 +207,8 @@ def show_delegates(
         table.add_row(
             str(i),
             Text(delegate_name, style=f"link {delegate_url}"),
-            f"{delegate.hotkey:16.16}...",
+            f"{delegate.hotkey[:16]}...{delegate.hotkey[-8:]}",
+            # f"{delegate.hotkey}",
             str(len([nom for nom in delegate.nominators if nom[1].boot > 0])),
             f"{owner_stake!s:13.13}",
             f"{delegate.total_stake!s:13.13}",
@@ -328,21 +329,15 @@ class DelegateStakeCommand:
 
         # Get amount.
         if not config.get("amount") and not config.get("stake_all"):
-            if not Confirm.ask(
-                f"Stake all {cwtensor.giga_token_symbol} "
-                f"from account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
-            ):
-                amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to stake")
-                try:
-                    config.amount = float(amount)
-                except ValueError:
-                    console.print(
-                        f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
-                        f"[bold white]{amount}[/bold white]"
-                    )
-                    sys.exit()
-            else:
-                config.stake_all = True
+            amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to stake")
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
+                    f"[bold white]{amount}[/bold white]"
+                )
+                sys.exit()
 
 
 class DelegateUnstakeCommand:
@@ -450,21 +445,15 @@ class DelegateUnstakeCommand:
 
         # Get amount.
         if not config.get("amount") and not config.get("unstake_all"):
-            if not Confirm.ask(
-                f"Unstake all {cwtensor.giga_token_symbol} "
-                f"to account: [bold]'{config.wallet.get('name', defaults.wallet.name)}'[/bold]?"
-            ):
-                amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to unstake")
-                try:
-                    config.amount = float(amount)
-                except ValueError:
-                    console.print(
-                        f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
-                        f"[bold white]{amount}[/bold white]"
-                    )
-                    sys.exit()
-            else:
-                config.unstake_all = True
+            amount = Prompt.ask(f"Enter {cwtensor.giga_token_symbol} amount to unstake")
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    f":cross_mark: [red]Invalid {cwtensor.giga_token_symbol} amount[/red] "
+                    f"[bold white]{amount}[/bold white]"
+                )
+                sys.exit()
 
 
 class ListDelegatesCommand:
@@ -671,9 +660,9 @@ class MyDelegatesCommand:
     --all flag can be specified to aggregate information across all wallets.
 
     Example usage:
-    >>> ctcli my_delegates
-    >>> ctcli my_delegates --all
-    >>> ctcli my_delegates --wallet.name my_wallet
+    >>> ctcli root my_delegates
+    >>> ctcli root my_delegates --all
+    >>> ctcli root my_delegates --wallet.name my_wallet
 
     Note:
     This function is typically called by the CLI parser and is not intended to be used
@@ -795,7 +784,7 @@ class MyDelegatesCommand:
                     table.add_row(
                         wallet.name,
                         Text(delegate_name, style=f"link {delegate_url}"),
-                        f"{delegate[0].hotkey:16.16}...",
+                        f"{delegate[0].hotkey[:16]}...{delegate[0].hotkey[-8:]}",
                         f"{my_delegates[delegate[0].hotkey]!s:16.16}",
                         f"{delegate[0].total_daily_return.gboot * (my_delegates[delegate[0].hotkey] / delegate[0].total_stake.gboot)!s:6.6}",
                         str(len(delegate[0].nominators)),
