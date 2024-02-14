@@ -77,6 +77,11 @@ class NotDelegateError(StakeError):
     pass
 
 
+class NotSetWeightError(ChainTransactionError):
+    r"""Error raised when a hotkey you are trying to set weight is not set."""
+    pass
+
+
 class KeyFileError(Exception):
     r"""Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid."""
     pass

@@ -254,10 +254,11 @@ class cwtensor:
         return self.__str__()
 
     # TODO check decorator and improve error handling
-    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    @retry(delay=3, tries=3, backoff=2, max_delay=8)
     def make_call_with_retry(self, wait_for_finalization: bool,
                              msg: dict,
-                             signer_wallet: LocalWallet, error,
+                             signer_wallet: LocalWallet,
+                             error,
                              gas: Optional[int] = cybertensor.__default_gas__,
                              funds: Optional[str] = None) -> Optional[bool]:
         if not wait_for_finalization:
@@ -275,7 +276,49 @@ class cwtensor:
             except Exception as e:
                 raise error(e.__str__())
 
-    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    def _execute_contract(self, wait_for_finalization: bool,
+                          msg: dict,
+                          wallet: Wallet,
+                          error,
+                          logging_prefix: str,
+                          use_hotkey: bool = True,
+                          success_text: str = 'Finalized',
+                          exception_text: str = 'Failed',
+                          gas: Optional[int] = cybertensor.__default_gas__,
+                          funds: Optional[str] = None):
+        try:
+            _private_key = wallet.hotkey.private_key if use_hotkey else wallet.coldkey.private_key
+            signer_wallet = LocalWallet(
+                PrivateKey(_private_key), self.address_prefix
+            )
+            res = self.make_call_with_retry(
+                wait_for_finalization=wait_for_finalization,
+                msg=msg,
+                signer_wallet=signer_wallet,
+                error=error,
+                gas=gas,
+                funds=funds)
+            if res is True:
+                console.print(
+                    f":white_heavy_check_mark: [green]{success_text}[/green]"
+                )
+                cybertensor.logging.success(
+                        prefix=logging_prefix,
+                        sufix=f"<green>{success_text}</green>",
+                    )
+                return True
+        except Exception as e:
+            console.print(
+                f":cross_mark: [red]{exception_text}[/red]: error:{e}"
+            )
+            cybertensor.logging.warning(
+                prefix=logging_prefix,
+                sufix=f"[red]{exception_text}[/red]: error:{e}",
+            )
+
+        return False
+
+    @retry(delay=3, tries=3, backoff=2, max_delay=8)
     def make_call_with_retry_2(self, wait_for_finalization: bool,
                                msg: dict, signer_wallet: LocalWallet, gas: Optional[int] = cybertensor.__default_gas__,
                                funds: Optional[str] = None) -> [bool, Optional[str]]:
@@ -432,7 +475,8 @@ class cwtensor:
         netuid: int,
         version_key: int = cybertensor.__version_as_int__,
         wait_for_finalization: bool = True,
-    ) -> Tuple[bool, Optional[str]]:  # (success, error_message)
+    ) -> bool:
+
         set_weights_msg = {
             "set_weights": {
                 "netuid": netuid,
@@ -441,14 +485,14 @@ class cwtensor:
                 "version_key": version_key,
             }
         }
-        signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), self.address_prefix
-        )
 
-        return self.make_call_with_retry_2(
+        return self._execute_contract(
             wait_for_finalization=wait_for_finalization,
             msg=set_weights_msg,
-            signer_wallet=signer_wallet)
+            wallet=wallet,
+            error=NotSetWeightError,
+            logging_prefix='Set weights'
+        )
 
     ######################
     #### Registration ####
@@ -927,16 +971,18 @@ class cwtensor:
         self,
         wallet: "Wallet",
         wait_for_finalization: bool = True,
-    ) -> Tuple[bool, Optional[str]]:
-        root_register_msg = {"root_register": {"hotkey": wallet.hotkey.address}}
-        signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), self.address_prefix
-        )
+    ) -> bool:
 
-        return self.make_call_with_retry_2(
+        root_register_msg = {"root_register": {"hotkey": wallet.hotkey.address}}
+
+        return self._execute_contract(
             wait_for_finalization=wait_for_finalization,
             msg=root_register_msg,
-            signer_wallet=signer_wallet)
+            wallet=wallet,
+            error=RegistrationError,
+            use_hotkey=False,
+            logging_prefix='root register',
+            exception_text='Neuron was not registered in root')
 
     def root_set_weights(
         self,
