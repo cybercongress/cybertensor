@@ -25,11 +25,12 @@ from rich.table import Table
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import get_delegates_details, DelegatesDetails
-from ..config import Config
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import get_delegates_details, DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
@@ -160,7 +161,7 @@ class InspectCommand:
         )
         for wallet in tqdm(wallets):
             delegates: List[
-                Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
+                Tuple[cybertensor.DelegateInfo, Balance]
             ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
@@ -212,7 +213,7 @@ class InspectCommand:
                             str(netuid),
                             f"{hotkey_name}{neuron.hotkey}",
                             str(neuron.stake),
-                            str(cybertensor.Balance.from_boot(neuron.emission)),
+                            str(Balance.from_boot(neuron.emission)),
                         )
 
         console.print(table)

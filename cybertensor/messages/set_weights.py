@@ -24,9 +24,9 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-from .. import __console__ as console
-from ..utils import weight_utils
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.utils import weight_utils
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 

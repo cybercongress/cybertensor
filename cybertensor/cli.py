@@ -21,10 +21,10 @@ import sys
 from typing import List, Optional
 
 import cybertensor
-from . import __console__ as console
-from .commands import *
-from .commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
-from .config import Config
+from cybertensor.commands import *
+from cybertensor.commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
+from cybertensor.config import Config
+from cybertensor import __console__ as console
 
 ALIAS_TO_COMMAND = {
     "subnets": "subnets",

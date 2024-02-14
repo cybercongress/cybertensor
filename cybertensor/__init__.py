@@ -18,7 +18,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from pathlib import Path
 from typing import Optional, Union
 
 # Install and apply nest asyncio to allow the async functions
@@ -176,26 +175,25 @@ __contract_schema_path__ = "contract/schema"
 __default_gas__ = None
 __default_transfer_gas__ = 100_000
 
-from .errors import *
-from .config import *
-from .keyfile import *
-from .keypair import *
-from .wallet import *
-from .utils import *
-from .utils.balance import Balance as Balance
-from .chain_data import *
-from .cwtensor import cwtensor as cwtensor
-from .cli import cli as cli, COMMANDS as ALL_COMMANDS
-from .ctlogging import logging as logging
-from .metagraph import metagraph as metagraph
-from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
+from cybertensor.errors import *
+from cybertensor.keyfile import keyfile
+from cybertensor.keypair import Keypair
+from cybertensor.wallet import Wallet
+from cybertensor.utils import *
+from cybertensor.utils.balance import Balance
+from cybertensor.chain_data import AxonInfo, NeuronInfo, NeuronInfoLite, PrometheusInfo, StakeInfo, SubnetInfo, SubnetHyperparameters
+from cybertensor.cwtensor import cwtensor
+from cybertensor.cli import cli, COMMANDS as ALL_COMMANDS
+from cybertensor.ctlogging import logging
+from cybertensor.metagraph import metagraph
+from cybertensor.threadpool import PriorityThreadPoolExecutor
 
-from .synapse import *
-from .stream import *
-from .tensor import *
-from .axon import axon as axon
-from .dendrite import dendrite as dendrite
-from .config import Config
+from cybertensor.synapse import TerminalInfo, Synapse
+from cybertensor.stream import StreamingSynapse
+from cybertensor.tensor import tensor, Tensor
+from cybertensor.axon import axon
+from cybertensor.dendrite import dendrite
+from cybertensor.config import Config
 
 configs = [
     axon.config(),

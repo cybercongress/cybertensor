@@ -26,11 +26,11 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 import cybertensor
-from . import defaults
-from .utils import DelegatesDetails, check_netuid_set
-from .. import __console__ as console
-from ..config import Config
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import DelegatesDetails, check_netuid_set
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class RegisterSubnetworkCommand:

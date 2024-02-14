@@ -23,16 +23,16 @@ from typing import List, Union, Optional
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils.balance import Balance
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 def __do_remove_stake_single(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkey: str,
-    amount: "cybertensor.Balance",
+    amount: "Balance",
     wait_for_finalization: bool = True,
 ) -> bool:
     r"""
@@ -42,7 +42,7 @@ def __do_remove_stake_single(
             Cybertensor wallet object.
         hotkey (str):
             Hotkey address to unstake from.
-        amount (cybertensor.Balance):
+        amount (Balance):
             Amount to unstake as cybertensor balance object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -114,12 +114,12 @@ def unstake_message(
             coldkey=wallet.coldkeypub.address, hotkey=hotkey
         )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Unstake it all.
         unstaking_balance = old_stake
-    elif not isinstance(amount, cybertensor.Balance):
-        unstaking_balance = cybertensor.Balance.from_gboot(amount)
+    elif not isinstance(amount, Balance):
+        unstaking_balance = Balance.from_gboot(amount)
     else:
         unstaking_balance = amount
 
@@ -235,7 +235,7 @@ def unstake_multiple_message(
         isinstance(amount, (Balance, float)) for amount in amounts
     ):
         raise TypeError(
-            "amounts must be a [list of cybertensor.Balance or float] or None"
+            "amounts must be a [list of Balance or float] or None"
         )
 
     if amounts is None:
@@ -243,7 +243,7 @@ def unstake_multiple_message(
     else:
         # Convert to Balance
         amounts = [
-            cybertensor.Balance.from_gboot(amount)
+            Balance.from_gboot(amount)
             if isinstance(amount, float)
             else amount
             for amount in amounts
@@ -270,12 +270,12 @@ def unstake_multiple_message(
 
     successful_unstakes = 0
     for idx, (hotkey, amount, old_stake) in enumerate(zip(hotkey, amounts, old_stakes)):
-        # Covert to cybertensor.Balance
+        # Covert to Balance
         if amount is None:
             # Unstake it all.
             unstaking_balance = old_stake
-        elif not isinstance(amount, cybertensor.Balance):
-            unstaking_balance = cybertensor.Balance.from_gboot(amount)
+        elif not isinstance(amount, Balance):
+            unstaking_balance = Balance.from_gboot(amount)
         else:
             unstaking_balance = amount
 

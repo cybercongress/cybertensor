@@ -22,17 +22,17 @@ import sys
 from typing import List, Dict, Optional
 
 from rich.console import Text
-from rich.prompt import Confirm
 from rich.prompt import Prompt
 from rich.table import Table
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import DelegatesDetails
-from .. import __console__ as console
-from ..config import Config
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
@@ -168,7 +168,7 @@ def show_delegates(
                     lambda x: x[0] == delegate.owner, delegate.nominators
                 ),  # filter for owner
             ),
-            cybertensor.Balance.from_boot(0),  # default to 0 if no owner stake.
+            Balance.from_boot(0),  # default to 0 if no owner stake.
         )
         if delegate.hotkey in registered_delegate_info:
             delegate_name = registered_delegate_info[delegate.hotkey].name
@@ -215,8 +215,8 @@ def show_delegates(
             rate_change_in_stake_str,
             str(delegate.registrations),
             f"{delegate.take * 100:.1f}%",
-            f"{cybertensor.Balance.from_gboot(delegate.total_daily_return.gboot * (1000 / (0.001 + delegate.total_stake.gboot)))!s:6.6}",
-            f"{cybertensor.Balance.from_gboot(delegate.total_daily_return.gboot * (0.18)) !s:6.6}",
+            f"{Balance.from_gboot(delegate.total_daily_return.gboot * (1000 / (0.001 + delegate.total_stake.gboot)))!s:6.6}",
+            f"{Balance.from_gboot(delegate.total_daily_return.gboot * (0.18)) !s:6.6}",
             str(delegate_description),
             end_section=True,
         )
@@ -765,7 +765,7 @@ class MyDelegatesCommand:
                             delegate[0].nominators,
                         ),  # filter for owner
                     ),
-                    cybertensor.Balance.from_boot(0),  # default to 0 if no owner stake.
+                    Balance.from_boot(0),  # default to 0 if no owner stake.
                 )
                 if delegate[0].hotkey in registered_delegate_info:
                     delegate_name = registered_delegate_info[

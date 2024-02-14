@@ -30,7 +30,7 @@ import torch
 from fastapi import Response
 
 import cybertensor
-from .wallet import Wallet
+from cybertensor.wallet import Wallet
 
 
 class dendrite(torch.nn.Module):

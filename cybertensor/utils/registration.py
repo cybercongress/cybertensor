@@ -17,10 +17,10 @@ from rich import console as rich_console
 from rich import status as rich_status
 
 import cybertensor
-from ._register_cuda import solve_cuda
-from .formatting import get_human_readable, millify
-from .. import __console__ as console
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.utils._register_cuda import solve_cuda
+from cybertensor.utils.formatting import get_human_readable, millify
+from cybertensor.wallet import Wallet
 
 
 class CUDAException(Exception):

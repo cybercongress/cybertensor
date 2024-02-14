@@ -27,15 +27,16 @@ from rich.table import Table
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import (
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import (
     get_hotkey_wallets_for_wallet,
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
 )
-from ..config import Config
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 class OverviewCommand:
@@ -83,7 +84,7 @@ class OverviewCommand:
         cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
-        total_balance = cybertensor.Balance(0)
+        total_balance = Balance(0)
 
         # We are printing for every coldkey.
         if cli.config.get("all", d=None):
@@ -185,7 +186,7 @@ class OverviewCommand:
                     neurons[str(netuid)] = neurons_result
 
             total_coldkey_stake_from_metagraph = defaultdict(
-                lambda: cybertensor.Balance(0.0)
+                lambda: Balance(0.0)
             )
             checked_hotkeys = set()
             for neuron_list in neurons.values():
@@ -246,7 +247,7 @@ class OverviewCommand:
                     de_registered_neuron.coldkey = (
                         coldkey_wallet.coldkeypub.address
                     )
-                    de_registered_neuron.total_stake = cybertensor.Balance(our_stake)
+                    de_registered_neuron.total_stake = Balance(our_stake)
 
                     de_registered_neurons.append(de_registered_neuron)
 
@@ -558,12 +559,12 @@ class OverviewCommand:
     def _get_de_registered_stake_for_coldkey_wallet(
         args_tuple,
     ) -> Tuple[
-        "Wallet", List[Tuple[str, "cybertensor.Balance"]], Optional[str]
+        "Wallet", List[Tuple[str, "Balance"]], Optional[str]
     ]:
         cwtensor_config, all_hotkey_addresses, coldkey_wallet = args_tuple
 
         # List of (hotkey_addr, our_stake) tuples.
-        result: List[Tuple[str, "cybertensor.Balance"]] = []
+        result: List[Tuple[str, "Balance"]] = []
 
         try:
             cwtensor = cybertensor.cwtensor(config=cwtensor_config)

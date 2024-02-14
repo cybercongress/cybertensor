@@ -22,8 +22,8 @@ from typing import List, Tuple, Dict, Optional, Any
 
 import cybertensor
 # from cybertensor import SubnetHyperparameters
-from .utils import networking as net, U16_MAX, U16_NORMALIZED_FLOAT, GIGA
-from .utils.balance import Balance
+from cybertensor.utils import networking as net, U16_MAX, U16_NORMALIZED_FLOAT, GIGA
+from cybertensor.utils.balance import Balance
 
 
 # Dataclasses for chain data.

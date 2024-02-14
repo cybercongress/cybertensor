@@ -23,9 +23,9 @@ from typing import List, Union, Optional
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils.balance import Balance
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 def add_stake_message(
@@ -93,18 +93,18 @@ def add_stake_message(
             coldkey=wallet.coldkeypub.address, hotkey=hotkey
         )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Stake it all.
-        staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
-    elif not isinstance(amount, cybertensor.Balance):
-        staking_balance = cybertensor.Balance.from_gboot(amount)
+        staking_balance = Balance.from_gboot(old_balance.gboot)
+    elif not isinstance(amount, Balance):
+        staking_balance = Balance.from_gboot(amount)
     else:
         staking_balance = amount
 
     # Remove existential balance to keep key alive.
-    if staking_balance > cybertensor.Balance.from_boot(1000000):
-        staking_balance = staking_balance - cybertensor.Balance.from_boot(1000000)
+    if staking_balance > Balance.from_boot(1000000):
+        staking_balance = staking_balance - Balance.from_boot(1000000)
     else:
         staking_balance = staking_balance
 
@@ -236,7 +236,7 @@ def add_stake_multiple_message(
         isinstance(amount, (Balance, float)) for amount in amounts
     ):
         raise TypeError(
-            "amounts must be a [list of cybertensor.Balance or float] or None"
+            "amounts must be a [list of Balance or float] or None"
         )
 
     if amounts is None:
@@ -244,7 +244,7 @@ def add_stake_multiple_message(
     else:
         # Convert to Balance
         amounts = [
-            cybertensor.Balance.from_gboot(amount)
+            Balance.from_gboot(amount)
             if isinstance(amount, float)
             else amount
             for amount in amounts
@@ -279,7 +279,7 @@ def add_stake_multiple_message(
     if total_staking_boot == 0:
         # Staking all to the first wallet.
         if old_balance.boot > 1000000:
-            old_balance -= cybertensor.Balance.from_boot(1000000)
+            old_balance -= Balance.from_boot(1000000)
 
     elif total_staking_boot < 1000000:
         # Staking less than 1000 boot to the wallets.
@@ -297,14 +297,14 @@ def add_stake_multiple_message(
         zip(hotkeys, amounts, old_stakes)
     ):
         staking_all = False
-        # Convert to cybertensor.Balance
+        # Convert to Balance
         if amount is None:
             # Stake it all.
-            staking_balance = cybertensor.Balance.from_gboot(old_balance.gboot)
+            staking_balance = Balance.from_gboot(old_balance.gboot)
             staking_all = True
         else:
             # Amounts are cast to balance earlier in the function
-            assert isinstance(amount, cybertensor.Balance)
+            assert isinstance(amount, Balance)
             staking_balance = amount
 
         # Check enough to stake
@@ -409,7 +409,7 @@ def __do_add_stake_single(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkey: str,
-    amount: "cybertensor.Balance",
+    amount: "Balance",
     wait_for_finalization: bool = True,
 ) -> bool:
     r"""
@@ -419,7 +419,7 @@ def __do_add_stake_single(
             cybertensor wallet object.
         hotkey (str):
             Hotkey to stake to.
-        amount (cybertensor.Balance):
+        amount (Balance):
             Amount to stake as cybertensor balance object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,

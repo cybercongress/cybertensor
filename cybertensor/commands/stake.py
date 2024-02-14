@@ -21,9 +21,9 @@ import sys
 
 from rich.prompt import Confirm
 
-from .utils import get_hotkey_wallets_for_wallet
-from ..config import Config
-from ..utils.balance import Balance
+from cybertensor.commands.utils import get_hotkey_wallets_for_wallet
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
 
 
 class StakeCommand:

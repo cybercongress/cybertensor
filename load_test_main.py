@@ -1,6 +1,6 @@
 import warnings
 from argparse import ArgumentParser
-from random import sample
+from random import sample, randint
 from time import sleep
 from typing import Union, TypedDict, Optional
 
@@ -113,6 +113,7 @@ def workflow(
     subnets_set_weight: bool = True,
     subnets_weights: Optional[dict[int, list[list[int], list[float]]]] = None,
 ) -> None:
+    sleep(randint(0, 40))
     try:
         _tensor = cwtensor(network="local")
         if register_subnetwork:

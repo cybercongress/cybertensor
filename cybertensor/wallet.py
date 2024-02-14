@@ -24,9 +24,9 @@ from typing import Optional, Union, Tuple, Dict, overload
 from termcolor import colored
 
 import cybertensor
-from .config import Config
-from .keypair import Keypair
-from .utils import is_valid_cybertensor_address_or_public_key
+from cybertensor.config import Config
+from cybertensor.keypair import Keypair
+from cybertensor.utils import is_valid_cybertensor_address_or_public_key
 
 
 def display_mnemonic_msg(keypair: Keypair, key_type: str):

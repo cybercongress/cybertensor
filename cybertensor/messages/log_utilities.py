@@ -11,8 +11,8 @@ from rich.style import Style
 from rich.table import Table
 
 import cybertensor
-from ..wallet import Wallet
-from ..config import Config
+from cybertensor.wallet import Wallet
+from cybertensor.config import Config
 
 
 class ValidatorLogger:

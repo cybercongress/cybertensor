@@ -63,22 +63,22 @@ defaults: Munch = munchify(
     }
 )
 
-from .overview import OverviewCommand
-from .stake import StakeCommand, StakeShow
-from .unstake import UnStakeCommand
-from .register import (
+from cybertensor.commands.overview import OverviewCommand
+from cybertensor.commands.stake import StakeCommand, StakeShow
+from cybertensor.commands.unstake import UnStakeCommand
+from cybertensor.commands.register import (
     PowRegisterCommand,
     RegisterCommand,
     # RunFaucetCommand
 )
-from .delegates import (
+from cybertensor.commands.delegates import (
     NominateCommand,
     ListDelegatesCommand,
     DelegateStakeCommand,
     DelegateUnstakeCommand,
     MyDelegatesCommand,
 )
-from .wallets import (
+from cybertensor.commands.wallets import (
     NewColdkeyCommand,
     NewHotkeyCommand,
     RegenColdkeyCommand,
@@ -88,12 +88,12 @@ from .wallets import (
     WalletCreateCommand,
     WalletBalanceCommand,
 )
-from .transfer import TransferCommand
-from .inspect import InspectCommand
-from .metagraph import MetagraphCommand
-from .list import ListCommand
-# from .misc import UpdateCommand
-from .network import (
+from cybertensor.commands.transfer import TransferCommand
+from cybertensor.commands.inspect import InspectCommand
+from cybertensor.commands.metagraph import MetagraphCommand
+from cybertensor.commands.list import ListCommand
+# from cybertensor.commands.misc import UpdateCommand
+from cybertensor.commands.network import (
     RegisterSubnetworkCommand,
     SubnetLockCostCommand,
     SubnetListCommand,
@@ -101,7 +101,7 @@ from .network import (
     SubnetHyperparamsCommand,
     SubnetGetHyperparamsCommand,
 )
-from .root import (
+from cybertensor.commands.root import (
     RootRegisterCommand,
     RootList,
     RootSetWeightsCommand,

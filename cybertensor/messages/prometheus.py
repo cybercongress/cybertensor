@@ -20,11 +20,10 @@
 import json
 
 import cybertensor
-
-from ..wallet import Wallet
-from ..utils import networking as net
-from ..types import PrometheusServeCallParams
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.types import PrometheusServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
 
 
 def prometheus_message(

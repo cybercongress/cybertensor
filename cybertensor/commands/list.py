@@ -23,8 +23,8 @@ from rich import print
 from rich.tree import Tree
 
 import cybertensor
-from ..wallet import Wallet
-from ..config import Config
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class ListCommand:

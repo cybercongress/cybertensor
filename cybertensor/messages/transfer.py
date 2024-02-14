@@ -24,10 +24,10 @@ from cosmpy.crypto.address import Address
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils import is_valid_address
-from ..utils.balance import Balance
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor.utils import is_valid_address
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
+from cybertensor import __console__ as console
 
 
 def transfer_message(
@@ -73,9 +73,9 @@ def transfer_message(
     # Unlock wallet coldkey.
     wallet.coldkey
 
-    # Convert to cybertensor.Balance
-    if not isinstance(amount, cybertensor.Balance):
-        transfer_balance = cybertensor.Balance.from_gboot(amount)
+    # Convert to Balance
+    if not isinstance(amount, Balance):
+        transfer_balance = Balance.from_gboot(amount)
     else:
         transfer_balance = amount
 
@@ -90,7 +90,7 @@ def transfer_message(
 
     if not keep_alive:
         # Check if the transfer should keep_alive the account
-        existential_deposit = cybertensor.Balance(0)
+        existential_deposit = Balance(0)
 
     # Check if we have enough balance.
     if account_balance < (transfer_balance + fee + existential_deposit):

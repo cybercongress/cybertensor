@@ -23,10 +23,10 @@ import sys
 from rich.prompt import Prompt
 
 import cybertensor
-from . import defaults
-from .. import __console__ as console
-from ..config import Config
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class TransferCommand:

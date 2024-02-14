@@ -230,7 +230,7 @@ def process_weights_for_netuid(
     if not isinstance(weights, torch.FloatTensor):
         weights = weights.type(torch.float32)
 
-    # Network configuration parameters from an cwtensor.
+    # Network configuration parameters from a cwtensor.
     # These parameters determine the range of acceptable weights for each neuron.
     quantile = exclude_quantile / U16_MAX
     min_allowed_weights = cwtensor.min_allowed_weights(netuid=netuid)

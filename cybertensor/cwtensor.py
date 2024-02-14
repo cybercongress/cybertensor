@@ -32,7 +32,8 @@ from loguru import logger
 from retry import retry
 
 import cybertensor
-from .chain_data import (
+from cybertensor import __console__ as console
+from cybertensor.chain_data import (
     NeuronInfo,
     DelegateInfo,
     PrometheusInfo,
@@ -42,34 +43,34 @@ from .chain_data import (
     NeuronInfoLite,
     AxonInfo,
 )
-from .commands.utils import DelegatesDetails
-from .config import Config
-from .errors import *
-from .messages.delegation import (
+from cybertensor.commands.utils import DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.errors import *
+from cybertensor.messages.delegation import (
     delegate_message,
     nominate_message,
     undelegate_message,
 )
-from .messages.network import (
+from cybertensor.messages.network import (
     register_subnetwork_message,
     set_hyperparameter_message,
 )
-from .messages.prometheus import prometheus_message
-from .messages.registration import (
+from cybertensor.messages.prometheus import prometheus_message
+from cybertensor.messages.registration import (
     register_message,
     burned_register_message,
 )
-from .messages.root import root_register_message, set_root_weights_message
-from .messages.serving import serve_message, serve_axon_message
-from .messages.set_weights import set_weights_message
-from .messages.staking import add_stake_message, add_stake_multiple_message
-from .messages.transfer import transfer_message
-from .messages.unstaking import unstake_message, unstake_multiple_message
-from .types import AxonServeCallParams, PrometheusServeCallParams
-from .utils import U16_NORMALIZED_FLOAT, coin_from_str
-from .utils.balance import Balance
-from .utils.registration import POWSolution
-from .wallet import Wallet
+from cybertensor.messages.root import root_register_message, set_root_weights_message
+from cybertensor.messages.serving import serve_message, serve_axon_message
+from cybertensor.messages.set_weights import set_weights_message
+from cybertensor.messages.staking import add_stake_message, add_stake_multiple_message
+from cybertensor.messages.transfer import transfer_message
+from cybertensor.messages.unstaking import unstake_message, unstake_multiple_message
+from cybertensor.types import AxonServeCallParams, PrometheusServeCallParams
+from cybertensor.utils import U16_NORMALIZED_FLOAT, coin_from_str
+from cybertensor.utils.balance import Balance
+from cybertensor.utils.registration import POWSolution
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 

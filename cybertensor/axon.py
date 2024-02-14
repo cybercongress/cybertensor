@@ -40,9 +40,9 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 import cybertensor
-from .keypair import Keypair
-from .wallet import Wallet
-from .config import Config
+from cybertensor.keypair import Keypair
+from cybertensor.wallet import Wallet
+from cybertensor.config import Config
 
 """ Create and init Axon, which services Forward and Backward requests from other neurons.
 """

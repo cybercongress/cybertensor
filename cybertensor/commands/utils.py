@@ -26,10 +26,10 @@ import torch
 from rich.prompt import Confirm, PromptBase
 
 import cybertensor
-from . import defaults
-from .wallets import Wallet
-from .. import __console__ as console
-from ..config import Config
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class IntListPrompt(PromptBase):

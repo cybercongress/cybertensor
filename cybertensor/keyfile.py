@@ -37,10 +37,10 @@ from rich.prompt import Confirm
 from termcolor import colored
 
 import cybertensor
-from .keypair import Keypair
-from . import __console__ as console
-from . import __chain_address_prefix__
-from .errors import KeyFileError
+from cybertensor import __chain_address_prefix__
+from cybertensor.errors import KeyFileError
+from cybertensor.keypair import Keypair
+from cybertensor import __console__ as console
 
 NACL_SALT = b"\x13q\x83\xdf\xf1Z\t\xbc\x9c\x90\xb5Q\x879\xe9\xb1"
 

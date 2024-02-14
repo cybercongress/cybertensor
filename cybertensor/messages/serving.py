@@ -21,10 +21,10 @@ import json
 from rich.prompt import Confirm
 
 import cybertensor
-from .. import __console__ as console
-from ..types import AxonServeCallParams
-from ..utils import networking as net
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.types import AxonServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
 
 
 def serve_message(

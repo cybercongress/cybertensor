@@ -23,12 +23,12 @@ from rich.prompt import Confirm, Prompt
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import get_hotkey_wallets_for_wallet
-from .. import __console__ as console
-from ..config import Config
-from ..utils.balance import Balance
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import get_hotkey_wallets_for_wallet
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 class UnStakeCommand:

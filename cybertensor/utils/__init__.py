@@ -22,8 +22,8 @@ from typing import Dict, Optional
 import requests
 
 import cybertensor
-from .formatting import get_human_readable, millify
-from .wallet_utils import *
+from cybertensor.utils.formatting import get_human_readable, millify
+from cybertensor.utils.wallet_utils import is_valid_cybertensor_address_or_public_key, is_valid_address, coin_from_str
 
 GIGA = 1e9
 U16_MAX = 65535

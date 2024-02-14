@@ -21,9 +21,10 @@ import argparse
 from rich.table import Table
 
 import cybertensor
-from .utils import check_netuid_set
-from .. import __console__ as console
-from ..config import Config
+from cybertensor import __console__ as console
+from cybertensor.commands.utils import check_netuid_set
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
 
 
 # TODO change tokens in table to boot and gigaboot
@@ -84,10 +85,10 @@ class MetagraphCommand:
         metagraph: cybertensor.metagraph = cwtensor.metagraph(netuid=cli.config.netuid)
         metagraph.save()
         difficulty = cwtensor.difficulty(cli.config.netuid)
-        # subnet_emission = cybertensor.Balance.from_gboot(
+        # subnet_emission = Balance.from_gboot(
         #     cwtensor.get_emission_value_by_subnet(cli.config.netuid)
         # )
-        total_issuance = cybertensor.Balance.from_boot(cwtensor.total_issuance().boot)
+        total_issuance = Balance.from_boot(cwtensor.total_issuance().boot)
 
         TABLE_DATA = []
         total_stake = 0.0
@@ -137,7 +138,7 @@ class MetagraphCommand:
             metagraph.block.item(),
             sum(metagraph.active.tolist()),
             metagraph.n.item(),
-            cybertensor.Balance.from_gboot(total_stake),
+            Balance.from_gboot(total_stake),
             total_issuance,
             difficulty,
         )

@@ -22,9 +22,9 @@ from cosmpy.crypto.keypairs import PrivateKey
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils.balance import Balance
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 def register_subnetwork_message(

@@ -24,10 +24,10 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-from .. import __console__ as console
-from ..errors import *
-from ..utils.balance import Balance
-from ..wallet import Wallet
+from cybertensor import __console__ as console
+from cybertensor.errors import *
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 
@@ -140,18 +140,18 @@ def delegate_message(
         coldkey=wallet.coldkeypub.address, hotkey=delegate
     )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Stake it all.
-        staking_balance = cybertensor.Balance.from_gboot(my_prev_coldkey_balance.gboot)
-    elif not isinstance(amount, cybertensor.Balance):
-        staking_balance = cybertensor.Balance.from_gboot(amount)
+        staking_balance = Balance.from_gboot(my_prev_coldkey_balance.gboot)
+    elif not isinstance(amount, Balance):
+        staking_balance = Balance.from_gboot(amount)
     else:
         staking_balance = amount
 
     # Remove existential balance to keep key alive.
-    if staking_balance > cybertensor.Balance.from_boot(1000000):
-        staking_balance = staking_balance - cybertensor.Balance.from_boot(1000000)
+    if staking_balance > Balance.from_boot(1000000):
+        staking_balance = staking_balance - Balance.from_boot(1000000)
     else:
         staking_balance = staking_balance
 
@@ -274,13 +274,13 @@ def undelegate_message(
         coldkey=wallet.coldkeypub.address, hotkey=delegate
     )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Stake it all.
-        unstaking_balance = cybertensor.Balance.from_gboot(my_prev_delegated_stake.gboot)
+        unstaking_balance = Balance.from_gboot(my_prev_delegated_stake.gboot)
 
-    elif not isinstance(amount, cybertensor.Balance):
-        unstaking_balance = cybertensor.Balance.from_gboot(amount)
+    elif not isinstance(amount, Balance):
+        unstaking_balance = Balance.from_gboot(amount)
 
     else:
         unstaking_balance = amount

@@ -24,10 +24,10 @@ import torch
 from rich.prompt import Confirm
 
 import cybertensor
-from ..utils.balance import Balance
-from ..utils.registration import POWSolution, create_pow
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor import __console__ as console
+from cybertensor.utils.balance import Balance
+from cybertensor.utils.registration import POWSolution, create_pow
+from cybertensor.wallet import Wallet
 
 
 def register_message(
