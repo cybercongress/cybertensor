@@ -840,7 +840,7 @@ class WalletBalanceCommand:
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         balance_parser = parser.add_parser(
-            &#34;balance&#34;, help=&#34;&#34;&#34;Checks the balance of the wallet.&#34;&#34;&#34;
+            &#34;balance&#34;, help=&#34;&#34;&#34;Checks balances of wallets in the wallet path.&#34;&#34;&#34;
         )
         Wallet.add_args(balance_parser)
         cybertensor.cwtensor.add_args(balance_parser)
@@ -2319,7 +2319,7 @@ It helps in keeping track of assets and ensuring the wallet's financial health.<
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         balance_parser = parser.add_parser(
-            &#34;balance&#34;, help=&#34;&#34;&#34;Checks the balance of the wallet.&#34;&#34;&#34;
+            &#34;balance&#34;, help=&#34;&#34;&#34;Checks balances of wallets in the wallet path.&#34;&#34;&#34;
         )
         Wallet.add_args(balance_parser)
         cybertensor.cwtensor.add_args(balance_parser)
@@ -2352,7 +2352,7 @@ It helps in keeping track of assets and ensuring the wallet's financial health.<
 <pre><code class="python">@staticmethod
 def add_args(parser: argparse.ArgumentParser):
     balance_parser = parser.add_parser(
-        &#34;balance&#34;, help=&#34;&#34;&#34;Checks the balance of the wallet.&#34;&#34;&#34;
+        &#34;balance&#34;, help=&#34;&#34;&#34;Checks balances of wallets in the wallet path.&#34;&#34;&#34;
     )
     Wallet.add_args(balance_parser)
     cybertensor.cwtensor.add_args(balance_parser)</code></pre>

@@ -50,8 +50,13 @@ from typing import Dict, Optional
 import requests
 
 import cybertensor
+from cybertensor import NetworkConfigCwTensor
 from cybertensor.utils.formatting import get_human_readable, millify
-from cybertensor.utils.wallet_utils import is_valid_cybertensor_address_or_public_key, is_valid_address, coin_from_str
+from cybertensor.utils.wallet_utils import (
+    is_valid_cybertensor_address_or_public_key,
+    is_valid_address,
+    coin_from_str,
+)
 
 GIGA = 1e9
 U16_MAX = 65535
@@ -117,15 +122,14 @@ def get_explorer_root_url_by_network_from_map(
 
 
 def get_explorer_url_for_network(
-    network: str, tx_hash: str, network_map: Dict[str, str]
+    network_config: &#34;NetworkConfigCwTensor&#34;, tx_hash: str
 ) -&gt; Optional[str]:
     r&#34;&#34;&#34;
-    Returns the explorer url for the given block hash and network.
+    Returns the explorer url for the given tx hash and network config.
 
     Args:
-        network(str): The network to get the explorer url for.
+        network_config(&#34;NetworkConfigCwTensor&#34;): The network config to get the explorer url for.
         tx_hash(str): The transaction hash to get the explorer url for.
-        network_map(Dict[str, str]): The network map to get the explorer url from.
 
     Returns:
         The explorer url for the given block hash and network.
@@ -133,10 +137,7 @@ def get_explorer_url_for_network(
     &#34;&#34;&#34;
 
     explorer_url: Optional[str] = None
-    # Will be None if the network is not known. i.e. not in network_map
-    explorer_root_url: Optional[str] = get_explorer_root_url_by_network_from_map(
-        network, network_map
-    )
+    explorer_root_url = network_config.network_explorer
 
     if explorer_root_url is not None:
         # We are on a known network.
@@ -247,14 +248,13 @@ Or None if the network is not in the network map.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.utils.get_explorer_url_for_network"><code class="name flex">
-<span>def <span class="ident">get_explorer_url_for_network</span></span>(<span>network: str, tx_hash: str, network_map: Dict[str, str]) ‑> Optional[str]</span>
+<span>def <span class="ident">get_explorer_url_for_network</span></span>(<span>network_config: NetworkConfigCwTensor, tx_hash: str) ‑> Optional[str]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the explorer url for the given block hash and network.</p>
+<div class="desc"><p>Returns the explorer url for the given tx hash and network config.</p>
 <h2 id="args">Args</h2>
-<p>network(str): The network to get the explorer url for.
-tx_hash(str): The transaction hash to get the explorer url for.
-network_map(Dict[str, str]): The network map to get the explorer url from.</p>
+<p>network_config("NetworkConfigCwTensor"): The network config to get the explorer url for.
+tx_hash(str): The transaction hash to get the explorer url for.</p>
 <h2 id="returns">Returns</h2>
 <p>The explorer url for the given block hash and network.
 Or None if the network is not known.</p></div>
@@ -263,15 +263,14 @@ Or None if the network is not known.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_explorer_url_for_network(
-    network: str, tx_hash: str, network_map: Dict[str, str]
+    network_config: &#34;NetworkConfigCwTensor&#34;, tx_hash: str
 ) -&gt; Optional[str]:
     r&#34;&#34;&#34;
-    Returns the explorer url for the given block hash and network.
+    Returns the explorer url for the given tx hash and network config.
 
     Args:
-        network(str): The network to get the explorer url for.
+        network_config(&#34;NetworkConfigCwTensor&#34;): The network config to get the explorer url for.
         tx_hash(str): The transaction hash to get the explorer url for.
-        network_map(Dict[str, str]): The network map to get the explorer url from.
 
     Returns:
         The explorer url for the given block hash and network.
@@ -279,10 +278,7 @@ Or None if the network is not known.</p></div>
     &#34;&#34;&#34;
 
     explorer_url: Optional[str] = None
-    # Will be None if the network is not known. i.e. not in network_map
-    explorer_root_url: Optional[str] = get_explorer_root_url_by_network_from_map(
-        network, network_map
-    )
+    explorer_root_url = network_config.network_explorer
 
     if explorer_root_url is not None:
         # We are on a known network.

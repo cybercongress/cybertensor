@@ -243,7 +243,7 @@ def encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -&gt; bytes:
     Returns:
         encrypted_data (bytes): The encrypted data.
     &#34;&#34;&#34;
-    password = cybertensor.ask_password_to_encrypt() if password is None else password
+    password = ask_password_to_encrypt() if password is None else password
     password = bytes(password, &#34;utf-8&#34;)
     kdf = pwhash.argon2i.kdf
     key = kdf(
@@ -416,7 +416,7 @@ class keyfile:
         self.make_dirs()
         keyfile_data = serialized_keypair_to_keyfile_data(keypair)
         if encrypt:
-            keyfile_data = cybertensor.encrypt_keyfile_data(keyfile_data, password)
+            keyfile_data = encrypt_keyfile_data(keyfile_data, password)
         self._write_keyfile_data_to_file(keyfile_data, overwrite=overwrite)
 
     def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
@@ -1048,7 +1048,7 @@ class Mockkeyfile:
     Returns:
         encrypted_data (bytes): The encrypted data.
     &#34;&#34;&#34;
-    password = cybertensor.ask_password_to_encrypt() if password is None else password
+    password = ask_password_to_encrypt() if password is None else password
     password = bytes(password, &#34;utf-8&#34;)
     kdf = pwhash.argon2i.kdf
     key = kdf(
@@ -1892,7 +1892,7 @@ since no actual filesystem operations are needed.</p></div>
         self.make_dirs()
         keyfile_data = serialized_keypair_to_keyfile_data(keypair)
         if encrypt:
-            keyfile_data = cybertensor.encrypt_keyfile_data(keyfile_data, password)
+            keyfile_data = encrypt_keyfile_data(keyfile_data, password)
         self._write_keyfile_data_to_file(keyfile_data, overwrite=overwrite)
 
     def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
@@ -2646,7 +2646,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
     self.make_dirs()
     keyfile_data = serialized_keypair_to_keyfile_data(keypair)
     if encrypt:
-        keyfile_data = cybertensor.encrypt_keyfile_data(keyfile_data, password)
+        keyfile_data = encrypt_keyfile_data(keyfile_data, password)
     self._write_keyfile_data_to_file(keyfile_data, overwrite=overwrite)</code></pre>
 </details>
 </dd>
