@@ -812,7 +812,7 @@ class WalletBalanceCommand:
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         balance_parser = parser.add_parser(
-            "balance", help="""Checks the balance of the wallet."""
+            "balance", help="""Checks balances of wallets in the wallet path."""
         )
         Wallet.add_args(balance_parser)
         cybertensor.cwtensor.add_args(balance_parser)
