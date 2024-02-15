@@ -86,8 +86,7 @@ def set_weights_message(
     with console.status(
         f":satellite: Setting weights on [white]{cwtensor.network}[/white] ..."
     ):
-        try:
-            success, error_message = cwtensor._do_set_weights(
+        return cwtensor._do_set_weights(
                 wallet=wallet,
                 netuid=netuid,
                 uids=weight_uids,
@@ -95,33 +94,3 @@ def set_weights_message(
                 version_key=version_key,
                 wait_for_finalization=wait_for_finalization,
             )
-
-            if not wait_for_finalization:
-                return True
-
-            if success is True:
-                console.print(
-                    ":white_heavy_check_mark: [green]Finalized[/green]"
-                )
-                cybertensor.logging.success(
-                    prefix="Set weights",
-                    sufix=f"<green>Finalized: </green>{success}",
-                )
-                return True
-            else:
-                console.print(
-                    f":cross_mark: [red]Failed[/red]: error:{error_message}",
-                )
-                cybertensor.logging.warning(
-                    prefix="Set weights",
-                    sufix=f"<red>Failed: </red>{error_message}",
-                )
-                return False
-
-        except Exception as e:
-            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            console.print(f":cross_mark: [red]Failed[/red]: error:{e}")
-            cybertensor.logging.warning(
-                prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
-            )
-            return False
