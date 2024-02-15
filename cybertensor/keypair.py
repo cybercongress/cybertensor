@@ -1,5 +1,5 @@
 # The MIT License (MIT)
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -26,7 +26,7 @@ from cosmpy.mnemonic import (
     validate_mnemonic_and_normalise,
 )
 
-import cybertensor
+from cybertensor import __chain_address_prefix__
 
 
 class Keypair:
@@ -49,7 +49,7 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         self.prefix = prefix
 
@@ -120,7 +120,7 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         mnemonic = validate_mnemonic_and_normalise(mnemonic)
 
@@ -149,7 +149,7 @@ class Keypair:
         """
 
         if prefix is None:
-            prefix = cybertensor.__chain_address_prefix__
+            prefix = __chain_address_prefix__
 
         return cls(
             public_key=PrivateKey(private_key).public_key.public_key,

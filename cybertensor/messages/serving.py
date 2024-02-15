@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -21,13 +21,15 @@ import json
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.networking as net
+from cybertensor import __console__ as console
 from cybertensor.types import AxonServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
 
 
 def serve_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     ip: str,
     port: int,
     protocol: int,
@@ -37,9 +39,9 @@ def serve_message(
     wait_for_finalization=True,
     prompt: bool = False,
 ) -> bool:
-    r"""Subscribes an cybertensor endpoint to the substensor chain.
+    r"""Subscribes a cybertensor endpoint to the substensor chain.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4
@@ -167,7 +169,7 @@ def serve_axon_message(
     if axon.external_ip is None:
         try:
             external_ip = net.get_external_ip()
-            cybertensor.__console__.print(
+            console.print(
                 f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )
             cybertensor.logging.success(

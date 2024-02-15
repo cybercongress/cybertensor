@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2022 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -33,7 +33,7 @@ class InvalidConfigFile(Exception):
     pass
 
 
-class config(DefaultMunch):
+class Config(DefaultMunch):
     """
     Implementation of the config class, which manages the config of different cybertensor modules.
     """
@@ -52,7 +52,7 @@ class config(DefaultMunch):
                 Default value for the Config. Defaults to None.
                 This default will be returned for attributes that are undefined.
         Returns:
-            config (cybertensor.config):
+            config (Config):
                 Nested config object created from parser arguments.
     """
 
@@ -130,7 +130,7 @@ class config(DefaultMunch):
             config_file_path = None
 
         # Parse args not strict
-        config_params = config.__parse_args__(args=args, parser=parser, strict=False)
+        config_params = Config.__parse_args__(args=args, parser=parser, strict=False)
 
         # 2. Optionally check for --strict
         ## strict=True when passed in OR when --strict is set
@@ -147,12 +147,12 @@ class config(DefaultMunch):
                 print("Error in loading: {} using default parser settings".format(e))
 
         # 2. Continue with loading in params.
-        params = config.__parse_args__(args=args, parser=parser, strict=strict)
+        params = Config.__parse_args__(args=args, parser=parser, strict=strict)
 
         _config = self
 
         # Splits params and add to config
-        config.__split_params__(params=params, _config=_config)
+        Config.__split_params__(params=params, _config=_config)
 
         # Make the is_set map
         _config["__is_set"] = {}
@@ -203,7 +203,7 @@ class config(DefaultMunch):
                             cmd_parser._defaults.clear()  # Needed for quirk of argparse
 
         ## Reparse the args, but this time with the defaults as argparse.SUPPRESS
-        params_no_defaults = config.__parse_args__(
+        params_no_defaults = Config.__parse_args__(
             args=args, parser=parser_no_defaults, strict=strict
         )
 
@@ -220,8 +220,8 @@ class config(DefaultMunch):
         }
 
     @staticmethod
-    def __split_params__(params: argparse.Namespace, _config: "config"):
-        # Splits params on dot syntax i.e neuron.axon_port and adds to _config
+    def __split_params__(params: argparse.Namespace, _config: "Config"):
+        # Splits params on dot syntax i.e. neuron.axon_port and adds to _config
         for arg_key, arg_val in params.__dict__.items():
             split_keys = arg_key.split(".")
             head = _config
@@ -233,7 +233,7 @@ class config(DefaultMunch):
                     head = getattr(head, keys[0])
                     keys = keys[1:]
                 else:
-                    head[keys[0]] = config()
+                    head[keys[0]] = Config()
                     head = head[keys[0]]
                     keys = keys[1:]
             if len(keys) == 1:
@@ -268,11 +268,11 @@ class config(DefaultMunch):
 
         return params
 
-    def __deepcopy__(self, memo) -> "config":
+    def __deepcopy__(self, memo) -> "Config":
         _default = self.__default__
 
         config_state = self.__getstate__()
-        config_copy = config()
+        config_copy = Config()
         memo[id(self)] = config_copy
 
         config_copy.__setstate__(config_state)
@@ -293,7 +293,7 @@ class config(DefaultMunch):
             d.pop("__is_set", None)
         for k, v in list(d.items()):
             if isinstance(v, dict):
-                config._remove_private_keys(v)
+                Config._remove_private_keys(v)
         return d
 
     def __str__(self) -> str:
@@ -301,10 +301,10 @@ class config(DefaultMunch):
         visible = copy.deepcopy(self.toDict())
         visible.pop("__parser", None)
         visible.pop("__is_set", None)
-        cleaned = config._remove_private_keys(visible)
+        cleaned = Config._remove_private_keys(visible)
         return "\n" + yaml.dump(cleaned, sort_keys=False)
 
-    def copy(self) -> "config":
+    def copy(self) -> "Config":
         return copy.deepcopy(self)
 
     def to_string(self, items) -> str:
@@ -341,7 +341,7 @@ class config(DefaultMunch):
         self = self._merge(self, b)
 
     @classmethod
-    def merge_all(cls, configs: List["config"]) -> "config":
+    def merge_all(cls, configs: List["Config"]) -> "Config":
         """
         Merge all configs in the list into one config.
         If there is a conflict, the value from the last configuration in the list will take precedence.
@@ -372,7 +372,7 @@ class config(DefaultMunch):
 T = TypeVar("T", bound="DefaultConfig")
 
 
-class DefaultConfig(config):
+class DefaultConfig(Config):
     """
     A Config with a set of default values.
     """

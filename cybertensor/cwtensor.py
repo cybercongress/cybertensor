@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -20,7 +20,7 @@
 import argparse
 import copy
 import os
-from typing import List, Dict, Union, Optional, Tuple, TypedDict
+from typing import List, Dict, Union, Optional, Tuple
 
 import torch
 from cosmpy.aerial.client import LedgerClient
@@ -32,7 +32,8 @@ from loguru import logger
 from retry import retry
 
 import cybertensor
-from .chain_data import (
+from cybertensor import __console__ as console
+from cybertensor.chain_data import (
     NeuronInfo,
     DelegateInfo,
     PrometheusInfo,
@@ -42,32 +43,34 @@ from .chain_data import (
     NeuronInfoLite,
     AxonInfo,
 )
-from .commands.utils import DelegatesDetails
-from .errors import *
-from .messages.delegation import (
+from cybertensor.commands.utils import DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.errors import *
+from cybertensor.messages.delegation import (
     delegate_message,
     nominate_message,
     undelegate_message,
 )
-from .messages.network import (
+from cybertensor.messages.network import (
     register_subnetwork_message,
     set_hyperparameter_message,
 )
-from .messages.prometheus import prometheus_message
-from .messages.registration import (
+from cybertensor.messages.prometheus import prometheus_message
+from cybertensor.messages.registration import (
     register_message,
     burned_register_message,
 )
-from .messages.root import root_register_message, set_root_weights_message
-from .messages.serving import serve_message, serve_axon_message
-from .messages.set_weights import set_weights_message
-from .messages.staking import add_stake_message, add_stake_multiple_message
-from .messages.transfer import transfer_message
-from .messages.unstaking import unstake_message, unstake_multiple_message
-from .types import AxonServeCallParams, PrometheusServeCallParams
-from .utils import U16_NORMALIZED_FLOAT, coin_from_str
-from .utils.balance import Balance
-from .utils.registration import POWSolution
+from cybertensor.messages.root import root_register_message, set_root_weights_message
+from cybertensor.messages.serving import serve_message, serve_axon_message
+from cybertensor.messages.set_weights import set_weights_message
+from cybertensor.messages.staking import add_stake_message, add_stake_multiple_message
+from cybertensor.messages.transfer import transfer_message
+from cybertensor.messages.unstaking import unstake_message, unstake_multiple_message
+from cybertensor.types import AxonServeCallParams, PrometheusServeCallParams
+from cybertensor.utils import U16_NORMALIZED_FLOAT, coin_from_str
+from cybertensor.utils.balance import Balance
+from cybertensor.utils.registration import POWSolution
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 
@@ -80,10 +83,10 @@ class cwtensor:
     """
 
     @staticmethod
-    def config() -> "cybertensor.config":
+    def config() -> "Config":
         parser = argparse.ArgumentParser()
         cwtensor.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -159,7 +162,7 @@ class cwtensor:
             return "unknown", {}
 
     @staticmethod
-    def setup_config(network: str, config: "cybertensor.config"):
+    def setup_config(network: str, config: "Config"):
         if network is not None:
             (
                 evaluated_network,
@@ -197,12 +200,12 @@ class cwtensor:
     def __init__(
         self,
         network: str = None,
-        config: "cybertensor.config" = None,
+        config: "Config" = None,
         _mock: bool = False,
     ) -> None:
         r"""Initializes a cwtensor chain interface.
         Args:
-            config (:obj:`cybertensor.config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.cwtensor.config()
             network (default='local or ws://127.0.0.1:9946', type=str)
                 The cwtensor network flag. The likely choices are:
@@ -250,12 +253,96 @@ class cwtensor:
     def __repr__(self) -> str:
         return self.__str__()
 
+    # TODO check decorator and improve error handling
+    @retry(delay=3, tries=3, backoff=2, max_delay=8)
+    def make_call_with_retry(self, wait_for_finalization: bool,
+                             msg: dict,
+                             signer_wallet: LocalWallet,
+                             error,
+                             gas: Optional[int] = cybertensor.__default_gas__,
+                             funds: Optional[str] = None) -> Optional[bool]:
+        if not wait_for_finalization:
+            self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            return True
+        else:
+            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                tx.wait_to_complete()
+                if tx.response.is_successful():
+                    print(f'Gas used: {tx.response.gas_used}')
+                    return True
+                else:
+                    raise error(tx.response.logs)
+            except Exception as e:
+                raise error(e.__str__())
+
+    def _execute_contract(self, wait_for_finalization: bool,
+                          msg: dict,
+                          wallet: Wallet,
+                          error,
+                          logging_prefix: str,
+                          use_hotkey: bool = True,
+                          success_text: str = 'Finalized',
+                          exception_text: str = 'Failed',
+                          gas: Optional[int] = cybertensor.__default_gas__,
+                          funds: Optional[str] = None):
+        try:
+            _private_key = wallet.hotkey.private_key if use_hotkey else wallet.coldkey.private_key
+            signer_wallet = LocalWallet(
+                PrivateKey(_private_key), self.address_prefix
+            )
+            res = self.make_call_with_retry(
+                wait_for_finalization=wait_for_finalization,
+                msg=msg,
+                signer_wallet=signer_wallet,
+                error=error,
+                gas=gas,
+                funds=funds)
+            if res is True:
+                console.print(
+                    f":white_heavy_check_mark: [green]{success_text}[/green]"
+                )
+                cybertensor.logging.success(
+                        prefix=logging_prefix,
+                        sufix=f"<green>{success_text}</green>",
+                    )
+                return True
+        except Exception as e:
+            console.print(
+                f":cross_mark: [red]{exception_text}[/red]: error:{e}"
+            )
+            cybertensor.logging.warning(
+                prefix=logging_prefix,
+                sufix=f"[red]{exception_text}[/red]: error:{e}",
+            )
+
+        return False
+
+    @retry(delay=3, tries=3, backoff=2, max_delay=8)
+    def make_call_with_retry_2(self, wait_for_finalization: bool,
+                               msg: dict, signer_wallet: LocalWallet, gas: Optional[int] = cybertensor.__default_gas__,
+                               funds: Optional[str] = None) -> [bool, Optional[str]]:
+        if not wait_for_finalization:
+            self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            return True, None
+        else:
+            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                tx.wait_to_complete()
+                if tx.response.is_successful():
+                    print(f'Gas used: {tx.response.gas_used}')
+                    return True, None
+                else:
+                    return False, tx.response.code
+            except Exception as e:
+                return False, e.__str__()
+
     #####################
     #### Delegation #####
     #####################
     def nominate(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization: bool = True,
     ) -> bool:
         """Becomes a delegate for the hotkey."""
@@ -267,36 +354,23 @@ class cwtensor:
 
     def _do_nominate(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization: bool = True,
     ) -> bool:
         nominate_msg = {"become_delegate": {"hotkey": wallet.hotkey.address}}
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(nominate_msg, signer_wallet, gas)
-                return True
-            else:
-                tx = self.contract.execute(nominate_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True
-                    else:
-                        raise NominationError(tx.response.logs)
-                except Exception as e:
-                    raise NominationError(e.__str__())
-
-        return make_call_with_retry()
+        return self.make_call_with_retry(
+            wait_for_finalization=wait_for_finalization,
+            msg=nominate_msg,
+            signer_wallet=signer_wallet,
+            error=NominationError)
 
     def delegate(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -314,7 +388,7 @@ class cwtensor:
 
     def _do_delegation(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         delegate: str,
         amount: "Balance",
         wait_for_finalization: bool = True,
@@ -323,30 +397,18 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
         funds = amount.boot.__str__().__add__(self.token)
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(delegation_msg, signer_wallet, gas, funds)
-                return True
-            else:
-                tx = self.contract.execute(delegation_msg, signer_wallet, gas, funds)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True
-                    else:
-                        raise StakeError(tx.response.code)
-                except Exception as e:
-                    raise StakeError(e.__str__())
-
-        return make_call_with_retry()
+        return self.make_call_with_retry(
+            wait_for_finalization=wait_for_finalization,
+            msg=delegation_msg,
+            funds=funds,
+            signer_wallet=signer_wallet,
+            error=StakeError)
 
     def undelegate(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         delegate: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -364,7 +426,7 @@ class cwtensor:
 
     def _do_undelegation(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         delegate: str,
         amount: "Balance",
         wait_for_finalization: bool = True,
@@ -373,25 +435,12 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(undelegation_msg, signer_wallet, gas)
-                return True
-            else:
-                tx = self.contract.execute(undelegation_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True
-                    else:
-                        raise StakeError(tx.response.code)
-                except Exception as e:
-                    raise StakeError(e.__str__())
-
-        return make_call_with_retry()
+        return self.make_call_with_retry(
+            wait_for_finalization=wait_for_finalization,
+            msg=undelegation_msg,
+            signer_wallet=signer_wallet,
+            error=StakeError)
 
     #####################
     #### Set Weights ####
@@ -399,7 +448,7 @@ class cwtensor:
 
     def set_weights(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         netuid: int,
         uids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
@@ -420,13 +469,14 @@ class cwtensor:
 
     def _do_set_weights(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         uids: List[int],
         vals: List[int],
         netuid: int,
         version_key: int = cybertensor.__version_as_int__,
         wait_for_finalization: bool = True,
-    ) -> Tuple[bool, Optional[str]]:  # (success, error_message)
+    ) -> bool:
+
         set_weights_msg = {
             "set_weights": {
                 "netuid": netuid,
@@ -435,35 +485,21 @@ class cwtensor:
                 "version_key": version_key,
             }
         }
-        signer_wallet = LocalWallet(
-            PrivateKey(wallet.hotkey.private_key), self.address_prefix
+
+        return self._execute_contract(
+            wait_for_finalization=wait_for_finalization,
+            msg=set_weights_msg,
+            wallet=wallet,
+            error=NotSetWeightError,
+            logging_prefix='Set weights'
         )
-        gas = cybertensor.__default_gas__
-
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(set_weights_msg, signer_wallet, gas)
-                return True, None
-            else:
-                tx = self.contract.execute(set_weights_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
 
     ######################
     #### Registration ####
     ######################
     def register(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -496,14 +532,14 @@ class cwtensor:
     def _do_pow_register(
         self,
         netuid: int,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         pow_result: POWSolution,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         """Sends a (POW) register extrinsic to the chain.
         Args:
             netuid (int): the subnet to register on.
-            wallet (cybertensor.wallet): the wallet to register.
+            wallet (Wallet): the wallet to register.
             pow_result (POWSolution): the pow result to register.
             wait_for_finalization (bool): if true, waits for the extrinsic to be finalized.
         Returns:
@@ -524,30 +560,15 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        # TODO check decorator and improve error handling
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(register_msg, signer_wallet, gas)
-                return True, None
-            else:
-                tx = self.contract.execute(register_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
+        return self.make_call_with_retry_2(
+            wait_for_finalization=wait_for_finalization,
+            msg=register_msg,
+            signer_wallet=signer_wallet)
 
     def burned_register(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         netuid: int,
         wait_for_finalization: bool = True,
         prompt: bool = False,
@@ -565,7 +586,7 @@ class cwtensor:
         self,
         netuid: int,
         burn: int,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         burned_register_msg = {
@@ -574,35 +595,20 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
         funds = burn.__str__().__add__(self.token)
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(burned_register_msg, signer_wallet, gas, funds)
-                return True, None
-            else:
-                tx = self.contract.execute(
-                    burned_register_msg, signer_wallet, gas, funds
-                )
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
+        return self.make_call_with_retry_2(
+            wait_for_finalization=wait_for_finalization,
+            msg=burned_register_msg,
+            funds=funds,
+            signer_wallet=signer_wallet)
 
     ##################
     #### Transfer ####
     ##################
     def transfer(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         dest: str,
         amount: Union[Balance, float],
         wait_for_inclusion: bool = True,
@@ -629,7 +635,7 @@ class cwtensor:
 
     def _do_transfer(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         dest: Address,
         transfer_balance: Balance,
         wait_for_inclusion: bool = True,
@@ -637,7 +643,7 @@ class cwtensor:
     ) -> Tuple[bool, Optional[str], Optional[str]]:
         """Sends a transfer extrinsic to the chain.
         Args:
-            wallet (:obj:`cybertensor.wallet`): Wallet object.
+            wallet (:obj:`Wallet`): Wallet object.
             dest (:obj:`str`): Destination public key address.
             transfer_balance (:obj:`Balance`): Amount to transfer.
             wait_for_inclusion (:obj:`bool`): If true, waits for inclusion.
@@ -680,7 +686,7 @@ class cwtensor:
     #################
     def register_subnetwork(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization=True,
         prompt: bool = False,
     ) -> bool:
@@ -693,7 +699,7 @@ class cwtensor:
 
     def set_hyperparameter(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         netuid: int,
         parameter: str,
         value,
@@ -716,7 +722,7 @@ class cwtensor:
 
     def serve(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         ip: str,
         port: int,
         protocol: int,
@@ -749,36 +755,22 @@ class cwtensor:
 
     def _do_serve_axon(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         call_params: AxonServeCallParams,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(call_params, signer_wallet, gas)
-                return True, None
-            else:
-                tx = self.contract.execute(call_params, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
+        return self.make_call_with_retry_2(
+            wait_for_finalization=wait_for_finalization,
+            msg=call_params,
+            signer_wallet=signer_wallet)
 
     def serve_prometheus(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         port: int,
         netuid: int,
         wait_for_finalization: bool = True,
@@ -793,14 +785,14 @@ class cwtensor:
 
     def _do_serve_prometheus(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         call_params: PrometheusServeCallParams,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         """
         Sends a serve prometheus extrinsic to the chain.
         Args:
-            wallet (:obj:`cybertensor.wallet`): Wallet object.
+            wallet (:obj:`Wallet`): Wallet object.
             call_params (:obj:`PrometheusServeCallParams`): Prometheus serve call parameters.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization.
         Returns:
@@ -811,32 +803,18 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(call_params, signer_wallet, gas)
-                return True, None
-            else:
-                tx = self.contract.execute(call_params, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
+        return self.make_call_with_retry_2(
+            wait_for_finalization=wait_for_finalization,
+            msg=call_params,
+            signer_wallet=signer_wallet)
 
     #################
     #### Staking ####
     #################
     def add_stake(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -854,7 +832,7 @@ class cwtensor:
 
     def add_stake_multiple(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -872,14 +850,14 @@ class cwtensor:
 
     def _do_stake(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = True,
     ) -> bool:
         """Sends a stake extrinsic to the chain.
         Args:
-            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to stake to.
             amount (:obj:`Balance`): Amount to stake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -893,33 +871,21 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
         funds = amount.boot.__str__().__add__(self.token)
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(add_stake_msg, signer_wallet, gas, funds)
-                return True
-            else:
-                tx = self.contract.execute(add_stake_msg, signer_wallet, gas, funds)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True
-                    else:
-                        raise StakeError(tx.response.code)
-                except Exception as e:
-                    raise StakeError(e.__str__())
-
-        return make_call_with_retry()
+        return self.make_call_with_retry(
+            wait_for_finalization=wait_for_finalization,
+            msg=add_stake_msg,
+            signer_wallet=signer_wallet,
+            funds=funds,
+            error=StakeError)
 
     ###################
     #### Unstaking ####
     ###################
     def unstake_multiple(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkeys: List[str],
         amounts: List[Union[Balance, float]] = None,
         wait_for_finalization: bool = True,
@@ -937,7 +903,7 @@ class cwtensor:
 
     def unstake(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkey: Optional[str] = None,
         amount: Union[Balance, float] = None,
         wait_for_finalization: bool = True,
@@ -955,14 +921,14 @@ class cwtensor:
 
     def _do_unstake(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         hotkey: str,
         amount: Balance,
         wait_for_finalization: bool = False,
     ) -> bool:
         """Sends an unstake extrinsic to the chain.
         Args:
-            wallet (:obj:`cybertensor.wallet`): Wallet object that can sign the extrinsic.
+            wallet (:obj:`Wallet`): Wallet object that can sign the extrinsic.
             hotkey (:obj:`str`): Hotkey address to unstake from.
             amount (:obj:`Balance`): Amount to unstake.
             wait_for_finalization (:obj:`bool`): If true, waits for finalization before returning.
@@ -976,25 +942,12 @@ class cwtensor:
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), self.address_prefix
         )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(remove_stake_msg, signer_wallet, gas)
-                return True
-            else:
-                tx = self.contract.execute(remove_stake_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True
-                    else:
-                        raise StakeError(tx.response.code)
-                except Exception as e:
-                    raise StakeError(e.__str__())
-
-        return make_call_with_retry()
+        return self.make_call_with_retry(
+            wait_for_finalization=wait_for_finalization,
+            msg=remove_stake_msg,
+            signer_wallet=signer_wallet,
+            error=StakeError)
 
     ##############
     #### Root ####
@@ -1002,7 +955,7 @@ class cwtensor:
 
     def root_register(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization: bool = True,
         prompt: bool = False,
     ) -> bool:
@@ -1016,36 +969,24 @@ class cwtensor:
 
     def _do_root_register(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         wait_for_finalization: bool = True,
-    ) -> Tuple[bool, Optional[str]]:
+    ) -> bool:
+
         root_register_msg = {"root_register": {"hotkey": wallet.hotkey.address}}
-        signer_wallet = LocalWallet(
-            PrivateKey(wallet.coldkey.private_key), self.address_prefix
-        )
-        gas = cybertensor.__default_gas__
 
-        @retry(delay=2, tries=3, backoff=2, max_delay=4)
-        def make_call_with_retry():
-            if not wait_for_finalization:
-                self.contract.execute(root_register_msg, signer_wallet, gas)
-                return True, None
-            else:
-                tx = self.contract.execute(root_register_msg, signer_wallet, gas)
-                try:
-                    tx.wait_to_complete()
-                    if tx.response.is_successful():
-                        return True, None
-                    else:
-                        return False, tx.response.code
-                except Exception as e:
-                    return False, e.__str__()
-
-        return make_call_with_retry()
+        return self._execute_contract(
+            wait_for_finalization=wait_for_finalization,
+            msg=root_register_msg,
+            wallet=wallet,
+            error=RegistrationError,
+            use_hotkey=False,
+            logging_prefix='root register',
+            exception_text='Neuron was not registered in root')
 
     def root_set_weights(
         self,
-        wallet: "cybertensor.wallet",
+        wallet: "Wallet",
         netuids: Union[torch.LongTensor, torch.Tensor, list],
         weights: Union[torch.FloatTensor, torch.Tensor, list],
         version_key: int = 0,

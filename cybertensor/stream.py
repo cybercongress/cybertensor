@@ -6,7 +6,7 @@ from starlette.responses import Response
 from starlette.responses import StreamingResponse as _StreamingResponse
 from starlette.types import Send, Receive, Scope
 
-import cybertensor
+from cybertensor.synapse import Synapse
 
 
 class BTStreamingResponseModel(BaseModel):
@@ -30,7 +30,7 @@ class BTStreamingResponseModel(BaseModel):
     token_streamer: Callable[[Send], Awaitable[None]]
 
 
-class StreamingSynapse(cybertensor.Synapse, ABC):
+class StreamingSynapse(Synapse, ABC):
     """
     The StreamingSynapse class is designed to be subclassed for handling streaming responses in the Cybertensor network.
     It provides abstract methods that must be implemented by the subclass to deserialize, process streaming responses,

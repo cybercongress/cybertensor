@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -21,9 +21,11 @@ import argparse
 from rich.table import Table
 
 import cybertensor
-from .utils import check_netuid_set
+from cybertensor import __console__ as console
+from cybertensor.commands.utils import check_netuid_set
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
 
-console = cybertensor.__console__
 
 # TODO change tokens in table to boot and gigaboot
 class MetagraphCommand:
@@ -74,7 +76,6 @@ class MetagraphCommand:
     @staticmethod
     def run(cli):
         r"""Prints an entire metagraph."""
-        console = cybertensor.__console__
         cwtensor = cybertensor.cwtensor(config=cli.config)
         console.print(
             ":satellite: Syncing with chain: [white]{}[/white] ...".format(
@@ -84,10 +85,10 @@ class MetagraphCommand:
         metagraph: cybertensor.metagraph = cwtensor.metagraph(netuid=cli.config.netuid)
         metagraph.save()
         difficulty = cwtensor.difficulty(cli.config.netuid)
-        # subnet_emission = cybertensor.Balance.from_gboot(
+        # subnet_emission = Balance.from_gboot(
         #     cwtensor.get_emission_value_by_subnet(cli.config.netuid)
         # )
-        total_issuance = cybertensor.Balance.from_boot(cwtensor.total_issuance().boot)
+        total_issuance = Balance.from_boot(cwtensor.total_issuance().boot)
 
         TABLE_DATA = []
         total_stake = 0.0
@@ -137,7 +138,7 @@ class MetagraphCommand:
             metagraph.block.item(),
             sum(metagraph.active.tolist()),
             metagraph.n.item(),
-            cybertensor.Balance.from_gboot(total_stake),
+            Balance.from_gboot(total_stake),
             total_issuance,
             difficulty,
         )
@@ -233,7 +234,7 @@ class MetagraphCommand:
         console.print(table)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
     @staticmethod

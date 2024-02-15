@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2022 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -23,9 +23,10 @@ import sys
 from rich.prompt import Prompt
 
 import cybertensor
-from . import defaults
-
-console = cybertensor.__console__
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class TransferCommand:
@@ -56,7 +57,7 @@ class TransferCommand:
     @staticmethod
     def run(cli):
         r"""Transfer token of amount to destination."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
         cwtensor.transfer(
             wallet=wallet,
@@ -67,7 +68,7 @@ class TransferCommand:
         )
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -82,11 +83,11 @@ class TransferCommand:
 
         # Get current balance and print to user.
         if not config.no_prompt:
-            wallet = cybertensor.wallet(config=config)
+            wallet = Wallet(config=config)
             cwtensor = cybertensor.cwtensor(config=config)
-            with cybertensor.__console__.status(":satellite: Checking Balance..."):
+            with console.status(":satellite: Checking Balance..."):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
-                cybertensor.__console__.print(
+                console.print(
                     "Balance: [green]{}[/green]".format(account_balance)
                 )
 
@@ -99,12 +100,12 @@ class TransferCommand:
                     if config.amount <= 0:
                         raise ValueError("Zero or negative amount")
                 except ValueError:
-                    cybertensor.__console__.print(
+                    console.print(
                         f":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]"
                     )
                     sys.exit()
             else:
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
                         None
                     )
@@ -121,5 +122,5 @@ class TransferCommand:
             "--amount", dest="amount", type=float, required=False
         )
 
-        cybertensor.wallet.add_args(transfer_parser)
+        Wallet.add_args(transfer_parser)
         cybertensor.cwtensor.add_args(transfer_parser)

@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -74,6 +74,11 @@ class NotRegisteredError(ChainTransactionError):
 
 class NotDelegateError(StakeError):
     r"""Error raised when a hotkey you are trying to stake to is not a delegate."""
+    pass
+
+
+class NotSetWeightError(ChainTransactionError):
+    r"""Error raised when a hotkey you are trying to set weight is not set."""
     pass
 
 

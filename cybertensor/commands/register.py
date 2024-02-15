@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -22,11 +22,12 @@ import sys
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
-from cybertensor import Balance
 from cybertensor.commands import defaults
 from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
-
-console = cybertensor.__console__
+from cybertensor import __console__ as console
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
 
 class RegisterCommand:
@@ -63,12 +64,12 @@ class RegisterCommand:
     def run(cli):
         r"""Register neuron by recycling some GBOOT."""
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Subnet {cli.config.netuid} does not exist[/red]"
             )
             sys.exit(1)
@@ -79,7 +80,7 @@ class RegisterCommand:
 
         # Check balance is sufficient
         if balance < current_recycle:
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]"
             )
             sys.exit(1)
@@ -101,7 +102,7 @@ class RegisterCommand:
         )
 
     @classmethod
-    def check_config(cls, config: "cybertensor.config"):
+    def check_config(cls, config: "Config"):
         check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
 
         if not config.is_set("wallet.name") and not config.no_prompt:
@@ -124,7 +125,7 @@ class RegisterCommand:
             default=argparse.SUPPRESS,
         )
 
-        cybertensor.wallet.add_args(register_parser)
+        Wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)
 
 
@@ -165,12 +166,12 @@ class PowRegisterCommand:
     @staticmethod
     def run(cli):
         r"""Register neuron."""
-        wallet = cybertensor.wallet(config=cli.config)
+        wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-            cybertensor.__console__.print(
+            console.print(
                 f"[red]Subnet {cli.config.netuid} does not exist[/red]"
             )
             sys.exit(1)
@@ -279,11 +280,11 @@ class PowRegisterCommand:
             required=False,
         )
 
-        cybertensor.wallet.add_args(register_parser)
+        Wallet.add_args(register_parser)
         cybertensor.cwtensor.add_args(register_parser)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         # if (
         #     not config.is_set("cwtensor.network")
         #     and not config.no_prompt

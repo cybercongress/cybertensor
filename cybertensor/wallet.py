@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -24,6 +24,7 @@ from typing import Optional, Union, Tuple, Dict, overload
 from termcolor import colored
 
 import cybertensor
+from cybertensor.config import Config
 from cybertensor.keypair import Keypair
 from cybertensor.utils import is_valid_cybertensor_address_or_public_key
 
@@ -55,7 +56,7 @@ def display_mnemonic_msg(keypair: Keypair, key_type: str):
     )
 
 
-class wallet:
+class Wallet:
     """
     Cybertensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
     The coldkey is the user's primary key for holding stake in their wallet
@@ -65,16 +66,16 @@ class wallet:
     """
 
     @classmethod
-    def config(cls) -> "cybertensor.config":
+    def config(cls) -> "Config":
         """
         Get config from the argument parser.
 
         Returns:
-            cybertensor.config: Config object.
+            Config: Config object.
         """
         parser = argparse.ArgumentParser()
         cls.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -127,7 +128,7 @@ class wallet:
         name: str = None,
         hotkey: str = None,
         path: str = None,
-        config: "cybertensor.config" = None,
+        config: "Config" = None,
     ):
         r"""
         Initialize the cybertensor wallet object containing a hot and coldkey.
@@ -136,11 +137,11 @@ class wallet:
             name (str, optional): The name of the wallet to unlock for running cybertensor. Defaults to 'default'.
             hotkey (str, optional): The name of hotkey used to running the miner. Defaults to 'default'.
             path (str, optional): The path to your cybertensor wallets. Defaults to '~/.cybertensor/wallets/'.
-            config (cybertensor.config, optional): cybertensor.wallet.config(). Defaults to None.
+            config (Config, optional): Wallet.config(). Defaults to None.
         """
         # Fill config from passed args using command line defaults.
         if config is None:
-            config = wallet.config()
+            config = Wallet.config()
         self.config = copy.deepcopy(config)
         self.config.wallet.name = name or self.config.wallet.get(
             "name", cybertensor.defaults.wallet.name
@@ -180,7 +181,7 @@ class wallet:
 
     def create_if_non_existent(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -195,7 +196,7 @@ class wallet:
 
     def create(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -218,7 +219,7 @@ class wallet:
 
     def recreate(
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
-    ) -> "wallet":
+    ) -> "Wallet":
         """
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
@@ -420,7 +421,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -430,7 +431,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created coldkey.
         """
         self.create_new_coldkey(n_words, use_password, overwrite, suppress)
@@ -441,7 +442,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -451,7 +452,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created coldkey.
         """
         mnemonic = Keypair.generate_mnemonic(n_words)
@@ -468,7 +469,7 @@ class wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -478,7 +479,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created hotkey.
         """
         self.create_new_hotkey(n_words, use_password, overwrite, suppress)
@@ -489,7 +490,7 @@ class wallet:
         use_password: bool = False,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
             n_words: (int, optional):
@@ -499,7 +500,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created hotkey.
         """
         mnemonic = Keypair.generate_mnemonic(n_words)
@@ -515,7 +516,7 @@ class wallet:
         public_key: Optional[Union[str, bytes]] = None,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the coldkeypub from passed address or public_key and saves the file
            Requires either address or public_key to be passed.
         Args:
@@ -526,7 +527,7 @@ class wallet:
             overwrite (bool, optional) (default: False):
                 Will this operation overwrite the coldkeypub (if exists) under the same path <wallet path>/<wallet name>/coldkeypub
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 newly re-generated Wallet with coldkeypub.
 
         """
@@ -569,7 +570,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -579,7 +580,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -589,7 +590,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     def regenerate_coldkey(
@@ -598,7 +599,7 @@ class wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user's password and saves the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -612,7 +613,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created coldkey.
 
         Note: uses priority order: mnemonic > seed > json
@@ -660,7 +661,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -670,7 +671,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     @overload
@@ -680,7 +681,7 @@ class wallet:
         use_password: bool = True,
         overwrite: bool = False,
         suppress: bool = False,
-    ) -> "wallet":
+    ) -> "Wallet":
         ...
 
     def regenerate_hotkey(
@@ -689,7 +690,7 @@ class wallet:
         overwrite: bool = False,
         suppress: bool = False,
         **kwargs,
-    ) -> "wallet":
+    ) -> "Wallet":
         """Regenerates the hotkey from passed mnemonic, encrypts it with the user's password and save the file
         Args:
             mnemonic: (Union[list, str], optional):
@@ -703,7 +704,7 @@ class wallet:
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
         Returns:
-            wallet (cybertensor.wallet):
+            wallet (Wallet):
                 this object with newly created hotkey.
         """
         if len(kwargs) == 0:

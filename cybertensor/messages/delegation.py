@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -24,20 +24,22 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
+from cybertensor import __console__ as console
+from cybertensor.errors import *
 from cybertensor.utils.balance import Balance
-from ..errors import *
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 
 
 def nominate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     wait_for_finalization: bool = True,
 ) -> bool:
     r"""Becomes a delegate for the hotkey.
     Args:
-        wallet ( cybertensor.wallet ):
+        wallet ( Wallet ):
             The wallet to become a delegate for.
     Returns:
         success (bool):
@@ -54,7 +56,7 @@ def nominate_message(
         )
         return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Sending nominate call on [white]{cwtensor.network}[/white] ..."
     ):
         try:
@@ -64,7 +66,7 @@ def nominate_message(
             )
 
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     ":white_heavy_check_mark: [green]Finalized[/green]"
                 )
                 cybertensor.logging.success(
@@ -76,14 +78,14 @@ def nominate_message(
             return success
 
         except Exception as e:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{e}"
             )
             # cybertensor.logging.warning(
             #     prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
             # )
         except NominationError as e:
-            cybertensor.__console__.print(
+            console.print(
                 f":cross_mark: [red]Failed[/red]: error:{e}"
             )
             # cybertensor.logging.warning(
@@ -95,7 +97,7 @@ def nominate_message(
 
 def delegate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = False,
@@ -103,7 +105,7 @@ def delegate_message(
 ) -> bool:
     r"""Delegates the specified amount of stake to the passed delegate.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
@@ -138,24 +140,24 @@ def delegate_message(
         coldkey=wallet.coldkeypub.address, hotkey=delegate
     )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Stake it all.
-        staking_balance = cybertensor.Balance.from_gboot(my_prev_coldkey_balance.gboot)
-    elif not isinstance(amount, cybertensor.Balance):
-        staking_balance = cybertensor.Balance.from_gboot(amount)
+        staking_balance = Balance.from_gboot(my_prev_coldkey_balance.gboot)
+    elif not isinstance(amount, Balance):
+        staking_balance = Balance.from_gboot(amount)
     else:
         staking_balance = amount
 
     # Remove existential balance to keep key alive.
-    if staking_balance > cybertensor.Balance.from_boot(1000000):
-        staking_balance = staking_balance - cybertensor.Balance.from_boot(1000000)
+    if staking_balance > Balance.from_boot(1000000):
+        staking_balance = staking_balance - Balance.from_boot(1000000)
     else:
         staking_balance = staking_balance
 
     # Check enough balance to stake.
     if staking_balance > my_prev_coldkey_balance:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Not enough balance[/red]:[bold white]\n"
             f"  balance:{my_prev_coldkey_balance}\n"
             f"  amount: {staking_balance}\n"
@@ -174,7 +176,7 @@ def delegate_message(
             return False
 
     try:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Staking to: [bold white]{cwtensor.network}[/bold white] ..."
         ):
             staking_response: bool = cwtensor._do_delegation(
@@ -189,10 +191,10 @@ def delegate_message(
             if not wait_for_finalization:
                 return True
 
-            cybertensor.__console__.print(
+            console.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            with cybertensor.__console__.status(
+            with console.status(
                 f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
             ):
                 new_balance = cwtensor.get_balance(address=wallet.coldkey.address)
@@ -203,33 +205,33 @@ def delegate_message(
                     block=block,
                 )  # Get current stake
 
-                cybertensor.__console__.print(
+                console.print(
                     f"Balance:\n"
                     f"  [blue]{my_prev_coldkey_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
                 )
-                cybertensor.__console__.print(
+                console.print(
                     f"Stake:\n  [blue]{my_prev_delegated_stake}[/blue] :arrow_right: [green]{new_delegate_stake}[/green]"
                 )
                 return True
         else:
-            cybertensor.__console__.print(
+            console.print(
                 ":cross_mark: [red]Failed[/red]: Error unknown."
             )
             return False
 
     except NotRegisteredError as e:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]"
         )
         return False
     except StakeError as e:
-        cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+        console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
         return False
 
 
 def undelegate_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     delegate: Optional[str] = None,
     amount: Union[Balance, float] = None,
     wait_for_finalization: bool = True,
@@ -237,7 +239,7 @@ def undelegate_message(
 ) -> bool:
     r"""Un-delegates stake from the passed delegate.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         delegate (Optional[str]):
             address of the delegate.
@@ -272,20 +274,20 @@ def undelegate_message(
         coldkey=wallet.coldkeypub.address, hotkey=delegate
     )
 
-    # Convert to cybertensor.Balance
+    # Convert to Balance
     if amount is None:
         # Stake it all.
-        unstaking_balance = cybertensor.Balance.from_gboot(my_prev_delegated_stake.gboot)
+        unstaking_balance = Balance.from_gboot(my_prev_delegated_stake.gboot)
 
-    elif not isinstance(amount, cybertensor.Balance):
-        unstaking_balance = cybertensor.Balance.from_gboot(amount)
+    elif not isinstance(amount, Balance):
+        unstaking_balance = Balance.from_gboot(amount)
 
     else:
         unstaking_balance = amount
 
     # Check enough stake to unstake.
     if unstaking_balance > my_prev_delegated_stake:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Not enough delegated stake[/red]:[bold white]\n"
             f"  stake:{my_prev_delegated_stake}\n"
             f"  amount: {unstaking_balance}\n"
@@ -304,7 +306,7 @@ def undelegate_message(
             return False
 
     try:
-        with cybertensor.__console__.status(
+        with console.status(
             f":satellite: Unstaking from: [bold white]{cwtensor.network}[/bold white] ..."
         ):
             staking_response: bool = cwtensor._do_undelegation(
@@ -319,10 +321,10 @@ def undelegate_message(
             if not wait_for_finalization:
                 return True
 
-            cybertensor.__console__.print(
+            console.print(
                 ":white_heavy_check_mark: [green]Finalized[/green]"
             )
-            with cybertensor.__console__.status(
+            with console.status(
                 f":satellite: Checking Balance on: [white]{cwtensor.network}[/white] ..."
             ):
                 new_balance = cwtensor.get_balance(address=wallet.coldkey.address)
@@ -333,26 +335,26 @@ def undelegate_message(
                     block=block,
                 )  # Get current stake
 
-                cybertensor.__console__.print(
+                console.print(
                     f"Balance:\n"
                     f"  [blue]{my_prev_coldkey_balance}[/blue] :arrow_right: [green]{new_balance}[/green]"
                 )
-                cybertensor.__console__.print(
+                console.print(
                     f"Stake:\n"
                     f"  [blue]{my_prev_delegated_stake}[/blue] :arrow_right: [green]{new_delegate_stake}[/green]"
                 )
                 return True
         else:
-            cybertensor.__console__.print(
+            console.print(
                 ":cross_mark: [red]Failed[/red]: Error unknown."
             )
             return False
 
     except NotRegisteredError as e:
-        cybertensor.__console__.print(
+        console.print(
             f":cross_mark: [red]Hotkey: {wallet.hotkey_str} is not registered.[/red]"
         )
         return False
     except StakeError as e:
-        cybertensor.__console__.print(f":cross_mark: [red]Stake Error: {e}[/red]")
+        console.print(f":cross_mark: [red]Stake Error: {e}[/red]")
         return False

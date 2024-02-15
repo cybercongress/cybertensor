@@ -2,7 +2,7 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2022-2023 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies Inc
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -18,7 +18,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from pathlib import Path
 from typing import Optional, Union
 
 # Install and apply nest asyncio to allow the async functions
@@ -31,14 +30,13 @@ from rich.traceback import install
 nest_asyncio.apply()
 
 # Cybertensor code and protocol version.
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 version_split = __version__.split(".")
 __version_as_int__ = (
     (100 * int(version_split[0]))
     + (10 * int(version_split[1]))
     + (1 * int(version_split[2]))
 )
-__new_signature_version__ = 360
 
 # Rich console.
 __console__ = Console()
@@ -64,7 +62,7 @@ def turn_console_on():
     __console__ = Console()
 
 
-turn_console_off()
+turn_console_on()
 
 
 # Logging helpers.
@@ -170,37 +168,37 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     contract_address="pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9",
 )
 
-__contract_path__ = Path(__file__).home() / ".cybertensor/contract/cybernet.wasm"
-__contract_schema_path__ = Path(__file__).home() / ".cybertensor/contract/schema"
+__contract_path__ = None
+__contract_schema_path__ = "contract/schema"
 
-__default_gas__ = 1_000_000
+__default_gas__ = None
 __default_transfer_gas__ = 100_000
 
-from .errors import *
-from .config import *
-from .keyfile import *
-from .keypair import *
-from .wallet import *
-from .utils import *
-from .utils.balance import Balance as Balance
-from .chain_data import *
-from .cwtensor import cwtensor as cwtensor
-from .cli import cli as cli, COMMANDS as ALL_COMMANDS
-from .ctlogging import logging as logging
-from .metagraph import metagraph as metagraph
-from .threadpool import PriorityThreadPoolExecutor as PriorityThreadPoolExecutor
+from cybertensor.errors import *
+from cybertensor.keyfile import keyfile
+from cybertensor.keypair import Keypair
+from cybertensor.wallet import Wallet
+from cybertensor.utils import *
+from cybertensor.utils.balance import Balance
+from cybertensor.chain_data import AxonInfo, NeuronInfo, NeuronInfoLite, PrometheusInfo, StakeInfo, SubnetInfo, SubnetHyperparameters
+from cybertensor.cwtensor import cwtensor
+from cybertensor.cli import cli, COMMANDS as ALL_COMMANDS
+from cybertensor.ctlogging import logging
+from cybertensor.metagraph import metagraph
+from cybertensor.threadpool import PriorityThreadPoolExecutor
 
-from .synapse import *
-from .stream import *
-from .tensor import *
-from .axon import axon as axon
-from .dendrite import dendrite as dendrite
+from cybertensor.synapse import TerminalInfo, Synapse
+from cybertensor.stream import StreamingSynapse
+from cybertensor.tensor import tensor, Tensor
+from cybertensor.axon import axon
+from cybertensor.dendrite import dendrite
+from cybertensor.config import Config
 
 configs = [
     axon.config(),
-    cybertensor.config(),
+    Config(),
     PriorityThreadPoolExecutor.config(),
-    wallet.config(),
+    Wallet.config(),
     logging.config(),
 ]
-defaults = config.merge_all(configs)
+defaults = Config.merge_all(configs)

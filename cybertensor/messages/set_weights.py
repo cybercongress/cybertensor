@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -24,14 +24,16 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from cybertensor import __console__ as console
+from cybertensor.utils import weight_utils
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 
 
 def set_weights_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     uids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
@@ -41,7 +43,7 @@ def set_weights_message(
 ) -> bool:
     r"""Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
             netuid of the subnet to set weights for.
@@ -81,11 +83,10 @@ def set_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Setting weights on [white]{cwtensor.network}[/white] ..."
     ):
-        try:
-            success, error_message = cwtensor._do_set_weights(
+        return cwtensor._do_set_weights(
                 wallet=wallet,
                 netuid=netuid,
                 uids=weight_uids,
@@ -93,33 +94,3 @@ def set_weights_message(
                 version_key=version_key,
                 wait_for_finalization=wait_for_finalization,
             )
-
-            if not wait_for_finalization:
-                return True
-
-            if success is True:
-                cybertensor.__console__.print(
-                    ":white_heavy_check_mark: [green]Finalized[/green]"
-                )
-                cybertensor.logging.success(
-                    prefix="Set weights",
-                    sufix=f"<green>Finalized: </green>{success}",
-                )
-                return True
-            else:
-                cybertensor.__console__.print(
-                    f":cross_mark: [red]Failed[/red]: error:{error_message}",
-                )
-                cybertensor.logging.warning(
-                    prefix="Set weights",
-                    sufix=f"<red>Failed: </red>{error_message}",
-                )
-                return False
-
-        except Exception as e:
-            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(f":cross_mark: [red]Failed[/red]: error:{e}")
-            cybertensor.logging.warning(
-                prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
-            )
-            return False

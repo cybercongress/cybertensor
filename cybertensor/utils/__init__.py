@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2022 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies Inc
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -21,8 +21,14 @@ from typing import Dict, Optional
 
 import requests
 
-from .formatting import get_human_readable, millify
-from .wallet_utils import *
+import cybertensor
+from cybertensor import NetworkConfigCwTensor
+from cybertensor.utils.formatting import get_human_readable, millify
+from cybertensor.utils.wallet_utils import (
+    is_valid_cybertensor_address_or_public_key,
+    is_valid_address,
+    coin_from_str,
+)
 
 GIGA = 1e9
 U16_MAX = 65535
@@ -88,15 +94,14 @@ def get_explorer_root_url_by_network_from_map(
 
 
 def get_explorer_url_for_network(
-    network: str, tx_hash: str, network_map: Dict[str, str]
+    network_config: "NetworkConfigCwTensor", tx_hash: str
 ) -> Optional[str]:
     r"""
-    Returns the explorer url for the given block hash and network.
+    Returns the explorer url for the given tx hash and network config.
 
     Args:
-        network(str): The network to get the explorer url for.
+        network_config("NetworkConfigCwTensor"): The network config to get the explorer url for.
         tx_hash(str): The transaction hash to get the explorer url for.
-        network_map(Dict[str, str]): The network map to get the explorer url from.
 
     Returns:
         The explorer url for the given block hash and network.
@@ -104,10 +109,7 @@ def get_explorer_url_for_network(
     """
 
     explorer_url: Optional[str] = None
-    # Will be None if the network is not known. i.e. not in network_map
-    explorer_root_url: Optional[str] = get_explorer_root_url_by_network_from_map(
-        network, network_map
-    )
+    explorer_root_url = network_config.network_explorer
 
     if explorer_root_url is not None:
         # We are on a known network.

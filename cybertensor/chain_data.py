@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -22,8 +22,8 @@ from typing import List, Tuple, Dict, Optional, Any
 
 import cybertensor
 # from cybertensor import SubnetHyperparameters
-from .utils import networking as net, U16_MAX, U16_NORMALIZED_FLOAT, GIGA
-from .utils.balance import Balance
+from cybertensor.utils import networking as net, U16_MAX, U16_NORMALIZED_FLOAT, GIGA
+from cybertensor.utils.balance import Balance
 
 
 # Dataclasses for chain data.

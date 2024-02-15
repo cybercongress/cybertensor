@@ -17,8 +17,10 @@ from rich import console as rich_console
 from rich import status as rich_status
 
 import cybertensor
-from ._register_cuda import solve_cuda
-from .formatting import get_human_readable, millify
+from cybertensor import __console__ as console
+from cybertensor.utils._register_cuda import solve_cuda
+from cybertensor.utils.formatting import get_human_readable, millify
+from cybertensor.wallet import Wallet
 
 
 class CUDAException(Exception):
@@ -28,7 +30,7 @@ class CUDAException(Exception):
 
 
 def _hex_bytes_to_u8_list(hex_bytes: bytes):
-    hex_chunks = [int(hex_bytes[i : i + 2], 16) for i in range(0, len(hex_bytes), 2)]
+    hex_chunks = [int(hex_bytes[i: i + 2], 16) for i in range(0, len(hex_bytes), 2)]
     return hex_chunks
 
 
@@ -452,8 +454,8 @@ class RegistrationStatisticsLogger:
 
 
 def _solve_for_difficulty_fast(
-    cwtensor,
-    wallet: "cybertensor.wallet",
+    cwtensor: "cybertensor.cwtensor",
+    wallet: "Wallet",
     netuid: int,
     output_in_place: bool = True,
     num_processes: Optional[int] = None,
@@ -465,9 +467,9 @@ def _solve_for_difficulty_fast(
     """
     Solves the POW for registration using multiprocessing.
     Args:
-        cwtensor
+        cwtensor: cybertensor.cwtensor
             cwtensor to connect to for block information and to submit.
-        wallet:
+        wallet: Wallet
             wallet to use for registration.
         netuid: int
             The netuid of the subnet to register to.
@@ -578,7 +580,6 @@ def _solve_for_difficulty_fast(
 
     start_time_perpetual = time.time()
 
-    console = cybertensor.__console__
     logger = RegistrationStatisticsLogger(console, output_in_place)
     logger.start()
 
@@ -799,7 +800,7 @@ def _check_for_newest_block_and_update(
 
 def _solve_for_difficulty_fast_cuda(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuid: int,
     output_in_place: bool = True,
     update_interval: int = 50_000,
@@ -814,7 +815,7 @@ def _solve_for_difficulty_fast_cuda(
     Args:
         cwtensor: cybertensor.cwtensor
             The cwtensor node to grab blocks
-        wallet: cybertensor.wallet
+        wallet: Wallet
             The wallet to register
         netuid: int
             The netuid of the subnet to register to.
@@ -926,7 +927,6 @@ def _solve_for_difficulty_fast_cuda(
 
         start_time_perpetual = time.time()
 
-        console = cybertensor.__console__
         logger = RegistrationStatisticsLogger(console, output_in_place)
         logger.start()
 
@@ -1023,8 +1023,8 @@ def _terminate_workers_and_wait_for_exit(
 
 
 def create_pow(
-    cwtensor,
-    wallet,
+    cwtensor: "cybertensor.cwtensor",
+    wallet: Wallet,
     netuid: int,
     output_in_place: bool = True,
     cuda: bool = False,
@@ -1037,9 +1037,9 @@ def create_pow(
     """
     Creates a proof of work for the given cwtensor and wallet.
     Args:
-        cwtensor (:obj:`cybertensor.cwtensor.cwtensor`, `required`):
+        cwtensor (:obj:`cybertensor.cwtensor`, `required`):
             The cwtensor to create a proof of work for.
-        wallet (:obj:`cybertensor.wallet.wallet`, `required`):
+        wallet (:obj:`Wallet.wallet`, `required`):
             The wallet to create a proof of work for.
         netuid (:obj:`int`, `required`):
             The netuid for the subnet to create a proof of work for.

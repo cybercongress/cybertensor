@@ -2,7 +2,7 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2022 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies Inc
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -24,10 +24,12 @@ from typing import Union
 from cosmpy.aerial.client import Coin
 from cosmpy.crypto.address import Address
 
-import cybertensor
+from cybertensor import __chain_address_prefix__
 
 
-def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Address]) -> bool:
+def is_valid_cybertensor_address_or_public_key(
+    address: Union[str, bytes, Address]
+) -> bool:
     """
     Checks if the given address is a valid destination address.
 
@@ -37,9 +39,10 @@ def is_valid_cybertensor_address_or_public_key(address: Union[str, bytes, Addres
     Returns:
         True if the address is a valid destination address, False otherwise.
     """
-
-    # TODO
-    return True
+    if address is not None:
+        return is_valid_address(address)
+    # TODO  add public key validation
+    return False
 
 
 def is_valid_address(address: Union[str, Address]) -> bool:
@@ -54,7 +57,7 @@ def is_valid_address(address: Union[str, Address]) -> bool:
     """
     try:
         Address(address)
-        if address.startswith(cybertensor.__chain_address_prefix__):
+        if address.startswith(__chain_address_prefix__):
             return True
     except RuntimeError:
         pass

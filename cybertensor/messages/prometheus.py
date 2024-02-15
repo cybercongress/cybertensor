@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -20,13 +20,15 @@
 import json
 
 import cybertensor
-import cybertensor.utils.networking as net
+from cybertensor import __console__ as console
 from cybertensor.types import PrometheusServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
 
 
 def prometheus_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     port: int,
     netuid: int,
     ip: int = None,
@@ -36,7 +38,7 @@ def prometheus_message(
     Args:
         cwtensor (cybertensor.cwtensor):
             cybertensor cwtensor object.
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         ip (str):
             endpoint host port i.e. 192.122.31.4
@@ -57,7 +59,7 @@ def prometheus_message(
     if ip is None:
         try:
             external_ip = net.get_external_ip()
-            cybertensor.__console__.print(
+            console.print(
                 f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )
             cybertensor.logging.success(
@@ -77,7 +79,7 @@ def prometheus_message(
         "ip_type": net.ip_version(external_ip),
     }
 
-    with cybertensor.__console__.status(":satellite: Checking Prometheus..."):
+    with console.status(":satellite: Checking Prometheus..."):
         neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
             wallet.hotkey.address, netuid=netuid
         )
@@ -89,7 +91,7 @@ def prometheus_message(
         }
 
     if neuron_up_to_date:
-        cybertensor.__console__.print(
+        console.print(
             f":white_heavy_check_mark: [green]Prometheus already Served[/green]\n"
             f"[green not bold]- Status: [/green not bold] |"
             f"[green not bold] ip: [/green not bold][white not bold]{net.int_to_ip(neuron.prometheus_info.ip)}[/white not bold] |"
@@ -98,7 +100,7 @@ def prometheus_message(
             f"[green not bold] version: [/green not bold][white not bold]{neuron.prometheus_info.version}[/white not bold] |"
         )
 
-        cybertensor.__console__.print(
+        console.print(
             f":white_heavy_check_mark: [white]Prometheus already served.[/white] {external_ip}"
         )
         return True
@@ -106,7 +108,7 @@ def prometheus_message(
     # Add netuid, not in prometheus_info
     call_params["netuid"] = netuid
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Serving prometheus on: [white]{cwtensor.network}:{netuid}[/white] ..."
     ):
         success, err = cwtensor._do_serve_prometheus(
@@ -117,13 +119,13 @@ def prometheus_message(
 
         if wait_for_finalization:
             if success is True:
-                cybertensor.__console__.print(
+                console.print(
                     f":white_heavy_check_mark: [green]Served prometheus[/green]\n"
                     f"  [bold white]{json.dumps(call_params, indent=4, sort_keys=True)}[/bold white]"
                 )
                 return True
             else:
-                cybertensor.__console__.print(
+                console.print(
                     f":cross_mark: [green]Failed to serve prometheus[/green] error: {err}"
                 )
                 return False

@@ -1,0 +1,1453 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "activate"
+      ],
+      "properties": {
+        "activate": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "deactivate"
+      ],
+      "properties": {
+        "deactivate": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "block_step"
+      ],
+      "properties": {
+        "block_step": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "set_weights"
+      ],
+      "properties": {
+        "set_weights": {
+          "type": "object",
+          "required": [
+            "dests",
+            "netuid",
+            "version_key",
+            "weights"
+          ],
+          "properties": {
+            "dests": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "uint16",
+                "minimum": 0.0
+              }
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "version_key": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "uint16",
+                "minimum": 0.0
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "become_delegate"
+      ],
+      "properties": {
+        "become_delegate": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "add_stake"
+      ],
+      "properties": {
+        "add_stake": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "remove_stake"
+      ],
+      "properties": {
+        "remove_stake": {
+          "type": "object",
+          "required": [
+            "amount",
+            "hotkey"
+          ],
+          "properties": {
+            "amount": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "serve_axon"
+      ],
+      "properties": {
+        "serve_axon": {
+          "type": "object",
+          "required": [
+            "ip",
+            "ip_type",
+            "netuid",
+            "placeholder1",
+            "placeholder2",
+            "port",
+            "protocol",
+            "version"
+          ],
+          "properties": {
+            "ip": {
+              "type": "integer",
+              "format": "uint128",
+              "minimum": 0.0
+            },
+            "ip_type": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "placeholder1": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            },
+            "placeholder2": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            },
+            "port": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "protocol": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            },
+            "version": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "serve_prometheus"
+      ],
+      "properties": {
+        "serve_prometheus": {
+          "type": "object",
+          "required": [
+            "ip",
+            "ip_type",
+            "netuid",
+            "port",
+            "version"
+          ],
+          "properties": {
+            "ip": {
+              "type": "integer",
+              "format": "uint128",
+              "minimum": 0.0
+            },
+            "ip_type": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "port": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "version": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "register"
+      ],
+      "properties": {
+        "register": {
+          "type": "object",
+          "required": [
+            "block_number",
+            "coldkey",
+            "hotkey",
+            "netuid",
+            "nonce",
+            "work"
+          ],
+          "properties": {
+            "block_number": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "coldkey": {
+              "type": "string"
+            },
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "nonce": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "work": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "uint8",
+                "minimum": 0.0
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "root_register"
+      ],
+      "properties": {
+        "root_register": {
+          "type": "object",
+          "required": [
+            "hotkey"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "burned_register"
+      ],
+      "properties": {
+        "burned_register": {
+          "type": "object",
+          "required": [
+            "hotkey",
+            "netuid"
+          ],
+          "properties": {
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "register_network"
+      ],
+      "properties": {
+        "register_network": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "dissolve_network"
+      ],
+      "properties": {
+        "dissolve_network": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_register"
+      ],
+      "properties": {
+        "sudo_register": {
+          "type": "object",
+          "required": [
+            "coldkey",
+            "hotkey",
+            "netuid"
+          ],
+          "properties": {
+            "coldkey": {
+              "type": "string"
+            },
+            "hotkey": {
+              "type": "string"
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_default_take"
+      ],
+      "properties": {
+        "sudo_set_default_take": {
+          "type": "object",
+          "required": [
+            "default_take"
+          ],
+          "properties": {
+            "default_take": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_serving_rate_limit"
+      ],
+      "properties": {
+        "sudo_set_serving_rate_limit": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "serving_rate_limit"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "serving_rate_limit": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_tx_rate_limit"
+      ],
+      "properties": {
+        "sudo_set_tx_rate_limit": {
+          "type": "object",
+          "required": [
+            "tx_rate_limit"
+          ],
+          "properties": {
+            "tx_rate_limit": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_burn"
+      ],
+      "properties": {
+        "sudo_set_max_burn": {
+          "type": "object",
+          "required": [
+            "max_burn",
+            "netuid"
+          ],
+          "properties": {
+            "max_burn": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_min_burn"
+      ],
+      "properties": {
+        "sudo_set_min_burn": {
+          "type": "object",
+          "required": [
+            "min_burn",
+            "netuid"
+          ],
+          "properties": {
+            "min_burn": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_difficulty"
+      ],
+      "properties": {
+        "sudo_set_max_difficulty": {
+          "type": "object",
+          "required": [
+            "max_difficulty",
+            "netuid"
+          ],
+          "properties": {
+            "max_difficulty": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_min_difficulty"
+      ],
+      "properties": {
+        "sudo_set_min_difficulty": {
+          "type": "object",
+          "required": [
+            "min_difficulty",
+            "netuid"
+          ],
+          "properties": {
+            "min_difficulty": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_weights_set_rate_limit"
+      ],
+      "properties": {
+        "sudo_set_weights_set_rate_limit": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "weights_set_rate_limit"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "weights_set_rate_limit": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_weights_version_key"
+      ],
+      "properties": {
+        "sudo_set_weights_version_key": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "weights_version_key"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "weights_version_key": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_bonds_moving_average"
+      ],
+      "properties": {
+        "sudo_set_bonds_moving_average": {
+          "type": "object",
+          "required": [
+            "bonds_moving_average",
+            "netuid"
+          ],
+          "properties": {
+            "bonds_moving_average": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_allowed_validators"
+      ],
+      "properties": {
+        "sudo_set_max_allowed_validators": {
+          "type": "object",
+          "required": [
+            "max_allowed_validators",
+            "netuid"
+          ],
+          "properties": {
+            "max_allowed_validators": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_difficulty"
+      ],
+      "properties": {
+        "sudo_set_difficulty": {
+          "type": "object",
+          "required": [
+            "difficulty",
+            "netuid"
+          ],
+          "properties": {
+            "difficulty": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_adjustment_interval"
+      ],
+      "properties": {
+        "sudo_set_adjustment_interval": {
+          "type": "object",
+          "required": [
+            "adjustment_interval",
+            "netuid"
+          ],
+          "properties": {
+            "adjustment_interval": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_target_registrations_per_interval"
+      ],
+      "properties": {
+        "sudo_set_target_registrations_per_interval": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "target_registrations_per_interval"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "target_registrations_per_interval": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_activity_cutoff"
+      ],
+      "properties": {
+        "sudo_set_activity_cutoff": {
+          "type": "object",
+          "required": [
+            "activity_cutoff",
+            "netuid"
+          ],
+          "properties": {
+            "activity_cutoff": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_rho"
+      ],
+      "properties": {
+        "sudo_set_rho": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "rho"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "rho": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_kappa"
+      ],
+      "properties": {
+        "sudo_set_kappa": {
+          "type": "object",
+          "required": [
+            "kappa",
+            "netuid"
+          ],
+          "properties": {
+            "kappa": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_allowed_uids"
+      ],
+      "properties": {
+        "sudo_set_max_allowed_uids": {
+          "type": "object",
+          "required": [
+            "max_allowed_uids",
+            "netuid"
+          ],
+          "properties": {
+            "max_allowed_uids": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_min_allowed_weights"
+      ],
+      "properties": {
+        "sudo_set_min_allowed_weights": {
+          "type": "object",
+          "required": [
+            "min_allowed_weights",
+            "netuid"
+          ],
+          "properties": {
+            "min_allowed_weights": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_validator_prune_len"
+      ],
+      "properties": {
+        "sudo_set_validator_prune_len": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "validator_prune_len"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "validator_prune_len": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_immunity_period"
+      ],
+      "properties": {
+        "sudo_set_immunity_period": {
+          "type": "object",
+          "required": [
+            "immunity_period",
+            "netuid"
+          ],
+          "properties": {
+            "immunity_period": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_weight_limit"
+      ],
+      "properties": {
+        "sudo_set_max_weight_limit": {
+          "type": "object",
+          "required": [
+            "max_weight_limit",
+            "netuid"
+          ],
+          "properties": {
+            "max_weight_limit": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_max_registrations_per_block"
+      ],
+      "properties": {
+        "sudo_set_max_registrations_per_block": {
+          "type": "object",
+          "required": [
+            "max_registrations_per_block",
+            "netuid"
+          ],
+          "properties": {
+            "max_registrations_per_block": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_total_issuance"
+      ],
+      "properties": {
+        "sudo_set_total_issuance": {
+          "type": "object",
+          "required": [
+            "total_issuance"
+          ],
+          "properties": {
+            "total_issuance": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_tempo"
+      ],
+      "properties": {
+        "sudo_set_tempo": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "tempo"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "tempo": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_rao_recycled"
+      ],
+      "properties": {
+        "sudo_set_rao_recycled": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "rao_recycled"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "rao_recycled": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_registration_allowed"
+      ],
+      "properties": {
+        "sudo_set_registration_allowed": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "registration_allowed"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "registration_allowed": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_adjustment_alpha"
+      ],
+      "properties": {
+        "sudo_set_adjustment_alpha": {
+          "type": "object",
+          "required": [
+            "adjustment_alpha",
+            "netuid"
+          ],
+          "properties": {
+            "adjustment_alpha": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_subnet_owner_cut"
+      ],
+      "properties": {
+        "sudo_set_subnet_owner_cut": {
+          "type": "object",
+          "required": [
+            "cut"
+          ],
+          "properties": {
+            "cut": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_network_rate_limit"
+      ],
+      "properties": {
+        "sudo_set_network_rate_limit": {
+          "type": "object",
+          "required": [
+            "rate_limit"
+          ],
+          "properties": {
+            "rate_limit": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_network_immunity_period"
+      ],
+      "properties": {
+        "sudo_set_network_immunity_period": {
+          "type": "object",
+          "required": [
+            "immunity_period"
+          ],
+          "properties": {
+            "immunity_period": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_network_min_lock_cost"
+      ],
+      "properties": {
+        "sudo_set_network_min_lock_cost": {
+          "type": "object",
+          "required": [
+            "lock_cost"
+          ],
+          "properties": {
+            "lock_cost": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_subnet_limit"
+      ],
+      "properties": {
+        "sudo_set_subnet_limit": {
+          "type": "object",
+          "required": [
+            "max_subnets"
+          ],
+          "properties": {
+            "max_subnets": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_lock_reduction_interval"
+      ],
+      "properties": {
+        "sudo_set_lock_reduction_interval": {
+          "type": "object",
+          "required": [
+            "interval"
+          ],
+          "properties": {
+            "interval": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_validator_permit_for_uid"
+      ],
+      "properties": {
+        "sudo_set_validator_permit_for_uid": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "permit",
+            "uid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "permit": {
+              "type": "boolean"
+            },
+            "uid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_block_emission"
+      ],
+      "properties": {
+        "sudo_set_block_emission": {
+          "type": "object",
+          "required": [
+            "emission"
+          ],
+          "properties": {
+            "emission": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "sudo_set_subnet_metadata"
+      ],
+      "properties": {
+        "sudo_set_subnet_metadata": {
+          "type": "object",
+          "required": [
+            "netuid",
+            "particle"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "particle": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

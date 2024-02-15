@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -23,8 +23,8 @@ from rich import print
 from rich.tree import Tree
 
 import cybertensor
-
-console = cybertensor.__console__
+from cybertensor.config import Config
+from cybertensor.wallet import Wallet
 
 
 class ListCommand:
@@ -64,7 +64,7 @@ class ListCommand:
 
         root = Tree("Wallets")
         for w_name in wallets:
-            wallet_for_name = cybertensor.wallet(path=cli.config.wallet.path, name=w_name)
+            wallet_for_name = Wallet(path=cli.config.wallet.path, name=w_name)
             try:
                 if (
                     wallet_for_name.coldkeypub_file.exists_on_device()
@@ -84,7 +84,7 @@ class ListCommand:
                 hotkeys = next(os.walk(os.path.expanduser(hotkeys_path)))
                 if len(hotkeys) > 1:
                     for h_name in hotkeys[2]:
-                        hotkey_for_name = cybertensor.wallet(
+                        hotkey_for_name = Wallet(
                             path=cli.config.wallet.path, name=w_name, hotkey=h_name
                         )
                         try:
@@ -108,11 +108,11 @@ class ListCommand:
         print(root)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         pass
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         list_parser = parser.add_parser("list", help="""List wallets""")
-        cybertensor.wallet.add_args(list_parser)
+        Wallet.add_args(list_parser)
         cybertensor.cwtensor.add_args(list_parser)

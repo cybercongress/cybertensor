@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -230,7 +230,7 @@ def process_weights_for_netuid(
     if not isinstance(weights, torch.FloatTensor):
         weights = weights.type(torch.float32)
 
-    # Network configuration parameters from an cwtensor.
+    # Network configuration parameters from a cwtensor.
     # These parameters determine the range of acceptable weights for each neuron.
     quantile = exclude_quantile / U16_MAX
     min_allowed_weights = cwtensor.min_allowed_weights(netuid=netuid)
@@ -259,7 +259,7 @@ def process_weights_for_netuid(
         )  # creating minimum even non-zero weights
         weights[non_zero_weight_idx] += non_zero_weights
         cybertensor.logging.debug("final_weights", weights)
-        normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+        normalized_weights = normalize_max_weight(
             x=weights, limit=max_weight_limit
         )
         return torch.tensor(list(range(len(normalized_weights)))), normalized_weights
@@ -283,7 +283,7 @@ def process_weights_for_netuid(
     cybertensor.logging.debug("non_zero_weights", non_zero_weights)
 
     # Normalize weights and return.
-    normalized_weights = cybertensor.utils.weight_utils.normalize_max_weight(
+    normalized_weights = normalize_max_weight(
         x=non_zero_weights, limit=max_weight_limit
     )
     cybertensor.logging.debug("final_weights", normalized_weights)

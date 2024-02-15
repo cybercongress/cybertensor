@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -23,11 +23,12 @@ from rich.prompt import Confirm, Prompt
 from tqdm import tqdm
 
 import cybertensor
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import get_hotkey_wallets_for_wallet
+from cybertensor.config import Config
 from cybertensor.utils.balance import Balance
-from . import defaults
-from .utils import get_hotkey_wallets_for_wallet
-
-console = cybertensor.__console__
+from cybertensor.wallet import Wallet
 
 
 class UnStakeCommand:
@@ -58,7 +59,7 @@ class UnStakeCommand:
     """
 
     @classmethod
-    def check_config(cls, config: "cybertensor.config"):
+    def check_config(cls, config: "Config"):
         if not config.is_set("wallet.name") and not config.no_prompt:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
@@ -148,14 +149,14 @@ class UnStakeCommand:
             default=False,
             help="""To specify all hotkeys. Specifying hotkeys will exclude them from this all.""",
         )
-        cybertensor.wallet.add_args(unstake_parser)
+        Wallet.add_args(unstake_parser)
         cybertensor.cwtensor.add_args(unstake_parser)
 
     @staticmethod
     def run(cli):
         r"""Unstake token of amount from hotkey(s)."""
         config = cli.config.copy()
-        wallet = cybertensor.wallet(config=config)
+        wallet = Wallet(config=config)
         cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get the hotkey_names (if any) and the hotkeys.
@@ -165,7 +166,7 @@ class UnStakeCommand:
             hotkeys_to_unstake_from = [(None, cli.config.get("hotkey_address"))]
         elif cli.config.get("all_hotkeys"):
             # Stake to all hotkeys.
-            all_hotkeys: List[cybertensor.wallet] = get_hotkey_wallets_for_wallet(
+            all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
                 wallet=wallet
             )
             # Get the hotkeys to exclude. (d)efault to no exclusions.
@@ -186,7 +187,7 @@ class UnStakeCommand:
                 else:
                     # If the hotkey is not a valid address, we assume it is a hotkey name.
                     #  We then get the hotkey from the wallet and add it to the list.
-                    wallet_ = cybertensor.wallet(
+                    wallet_ = Wallet(
                         config=cli.config, hotkey=hotkey_or_hotkey_name
                     )
                     hotkeys_to_unstake_from.append(
@@ -200,7 +201,7 @@ class UnStakeCommand:
                 hotkeys_to_unstake_from = [(None, hotkey_or_name)]
             else:
                 # Hotkey is not a valid address, so we assume it is a hotkey name.
-                wallet_ = cybertensor.wallet(
+                wallet_ = Wallet(
                     config=cli.config, hotkey=hotkey_or_name
                 )
                 hotkeys_to_unstake_from = [
@@ -211,7 +212,7 @@ class UnStakeCommand:
             #  so we stake to that single hotkey.
             assert cli.config.wallet.hotkey is not None
             hotkeys_to_unstake_from = [
-                (None, cybertensor.wallet(config=cli.config).hotkey.address)
+                (None, Wallet(config=cli.config).hotkey.address)
             ]
 
         final_hotkeys: List[Tuple[str, str]] = []
@@ -247,7 +248,7 @@ class UnStakeCommand:
 
         if len(final_hotkeys) == 0:
             # No hotkeys to unstake from.
-            cybertensor.__console__.print(
+            console.print(
                 "Not enough stake to unstake from any hotkeys or max_stake is more than current stake."
             )
             return None

@@ -1,7 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
 # Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -25,20 +25,22 @@ from loguru import logger
 from rich.prompt import Confirm
 
 import cybertensor
-import cybertensor.utils.weight_utils as weight_utils
+from cybertensor import __console__ as console
+from cybertensor.utils.weight_utils import normalize_max_weight, convert_weights_and_uids_for_emit
+from cybertensor.wallet import Wallet
 
 logger = logger.opt(colors=True)
 
 
 def root_register_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
     r"""Registers the wallet to root network.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
             If set, waits for the extrinsic to be finalized on the chain before returning true,
@@ -57,7 +59,7 @@ def root_register_message(
         netuid=0, hotkey=wallet.hotkey.address
     )
     if is_registered:
-        cybertensor.__console__.print(
+        console.print(
             ":white_heavy_check_mark: [green]Already registered on root network.[/green]"
         )
         return True
@@ -67,38 +69,35 @@ def root_register_message(
         if not Confirm.ask("Register to root network?"):
             return False
 
-    with cybertensor.__console__.status(":satellite: Registering to root network..."):
-        success, err_msg = cwtensor._do_root_register(
+    with console.status(":satellite: Registering to root network..."):
+        success = cwtensor._do_root_register(
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
-
-        if success != True or success is False:
-            cybertensor.__console__.print(
-                f":cross_mark: [red]Failed[/red]: error:{err_msg}"
-            )
-            time.sleep(0.5)
+        time.sleep(0.5)
 
         # Successful registration, final check for neuron and pubkey
-        else:
+        if success is True:
             is_registered = cwtensor.is_hotkey_registered(
                 netuid=0, hotkey=wallet.hotkey.address
             )
             if is_registered:
-                cybertensor.__console__.print(
-                    ":white_heavy_check_mark: [green]Registered[/green]"
+                console.print(
+                    ":white_heavy_check_mark: [green]Registered in root[/green]"
                 )
                 return True
             else:
                 # neuron not found, try again
-                cybertensor.__console__.print(
+                console.print(
                     ":cross_mark: [red]Unknown error. Neuron not found.[/red]"
                 )
+
+        return False
 
 
 def set_root_weights_message(
     cwtensor: "cybertensor.cwtensor",
-    wallet: "cybertensor.wallet",
+    wallet: "Wallet",
     netuids: Union[torch.LongTensor, list],
     weights: Union[torch.FloatTensor, list],
     version_key: int = 0,
@@ -107,7 +106,7 @@ def set_root_weights_message(
 ) -> bool:
     r"""Sets the given weights and values on chain for wallet hotkey account.
     Args:
-        wallet (cybertensor.wallet):
+        wallet (Wallet):
             cybertensor wallet object.
         netuids (List[int]):
             netuid of the subnet to set weights for.
@@ -146,12 +145,8 @@ def set_root_weights_message(
         )
 
     # Normalize the weights to max value.
-    formatted_weights = cybertensor.utils.weight_utils.normalize_max_weight(
-        x=weights, limit=max_weight_limit
-    )
-    cybertensor.__console__.print(
-        f"\nNormalized weights: \n\t{weights} -> {formatted_weights}\n"
-    )
+    formatted_weights = normalize_max_weight(x=weights, limit=max_weight_limit)
+    console.print(f"\nNormalized weights: \n\t{weights} -> {formatted_weights}\n")
 
     # Ask before moving on.
     if prompt:
@@ -162,52 +157,17 @@ def set_root_weights_message(
         ):
             return False
 
-    with cybertensor.__console__.status(
+    with console.status(
         f":satellite: Setting root weights on [white]{cwtensor.network}[/white] ..."
     ):
-        try:
-            weight_uids, weight_vals = weight_utils.convert_weights_and_uids_for_emit(
-                netuids, weights
-            )
-            success, error_message = cwtensor._do_set_weights(
-                wallet=wallet,
-                netuid=0,
-                uids=weight_uids,
-                vals=weight_vals,
-                version_key=version_key,
-                wait_for_finalization=wait_for_finalization,
-            )
-
-            cybertensor.__console__.print(success, error_message)
-
-            if not wait_for_finalization:
-                return True
-
-            if success is True:
-                cybertensor.__console__.print(
-                    ":white_heavy_check_mark: [green]Finalized[/green]"
-                )
-                cybertensor.logging.success(
-                    prefix="Set weights",
-                    sufix="<green>Finalized: </green>" + str(success),
-                )
-                return True
-            else:
-                cybertensor.__console__.print(
-                    f":cross_mark: [red]Failed[/red]: error:{error_message}"
-                )
-                cybertensor.logging.warning(
-                    prefix="Set weights",
-                    sufix=f"<red>Failed: </red>{error_message}",
-                )
-                return False
-
-        except Exception as e:
-            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
-            cybertensor.__console__.print(
-                f":cross_mark: [red]Failed[/red]: error:{e}"
-            )
-            cybertensor.logging.warning(
-                prefix="Set weights", sufix=f"<red>Failed: </red>{e}"
-            )
-            return False
+        weight_uids, weight_vals = convert_weights_and_uids_for_emit(
+            netuids, weights
+        )
+        return cwtensor._do_set_weights(
+            wallet=wallet,
+            netuid=0,
+            uids=weight_uids,
+            vals=weight_vals,
+            version_key=version_key,
+            wait_for_finalization=wait_for_finalization,
+        )

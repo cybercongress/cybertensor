@@ -1,13 +1,12 @@
 import binascii
 import hashlib
+import io
 import math
+from contextlib import redirect_stdout
 from typing import Tuple
 
 import numpy as np
 from Crypto.Hash import keccak
-
-from contextlib import redirect_stdout
-import io
 
 
 def solve_cuda(
@@ -51,7 +50,7 @@ def solve_cuda(
 
     upper_bytes = upper.to_bytes(32, byteorder="little", signed=False)
 
-    def _hex_bytes_to_u8_list(hex_bytes: bytes):
+    def _hex_bytes_to_u8_list(hex_bytes: bytes) -> list[int]:
         hex_chunks = [
             int(hex_bytes[i : i + 2], 16) for i in range(0, len(hex_bytes), 2)
         ]
@@ -65,7 +64,7 @@ def solve_cuda(
         seal = kec.update(seal_sh256).digest()
         return seal
 
-    def _seal_meets_difficulty(seal: bytes, difficulty: int):
+    def _seal_meets_difficulty(seal: bytes, difficulty: int) -> bool:
         seal_number = int.from_bytes(seal, "big")
         product = seal_number * difficulty
         limit = int(math.pow(2, 256)) - 1
@@ -96,7 +95,7 @@ def solve_cuda(
     return solution, seal
 
 
-def reset_cuda():
+def reset_cuda() -> None:
     """
     Resets the CUDA environment.
     """

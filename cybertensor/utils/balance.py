@@ -2,7 +2,7 @@
 # Copyright © 2021-2022 Yuma Rao
 # Copyright © 2022 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies Inc
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -22,7 +22,7 @@ from typing import Union
 
 from cosmpy.aerial.client import Coin
 
-import cybertensor
+from cybertensor import __giga_boot_symbol__, __boot_symbol__
 
 
 class Balance:
@@ -38,8 +38,8 @@ class Balance:
         gboot: A float property that gives the balance in gboot units.
     """
 
-    unit: str = cybertensor.__giga_boot_symbol__  # This is the gboot unit
-    boot_unit: str = cybertensor.__boot_symbol__  # This is the boot unit
+    unit: str = __giga_boot_symbol__  # This is the gboot unit
+    boot_unit: str = __boot_symbol__  # This is the boot unit
     boot: int
     gboot: float
 

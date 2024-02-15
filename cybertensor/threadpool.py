@@ -19,7 +19,8 @@ from typing import Callable
 
 from loguru import logger
 
-import cybertensor
+from cybertensor import __blocktime__
+from cybertensor.config import Config
 
 # Workers are created as daemon threads. This is done to allow the interpreter
 # to exit when there are still idle threads in a ThreadPoolExecutor's thread
@@ -51,7 +52,7 @@ class _WorkItem(object):
         """Run the given work item"""
         # Checks if future is canceled or if work item is stale
         if (not self.future.set_running_or_notify_cancel()) or (
-            time.time() - self.start_time > cybertensor.__blocktime__
+            time.time() - self.start_time > __blocktime__
         ):
             return
 
@@ -193,13 +194,13 @@ class PriorityThreadPoolExecutor(_base.Executor):
             pass
 
     @classmethod
-    def config(cls) -> "cybertensor.config":
+    def config(cls) -> "Config":
         """Get config from the argument parser
-        Return: cybertensor.config object
+        Return: Config object
         """
         parser = argparse.ArgumentParser()
         PriorityThreadPoolExecutor.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @property
     def is_empty(self):

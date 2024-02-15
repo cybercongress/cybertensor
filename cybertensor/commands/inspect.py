@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -25,23 +25,25 @@ from rich.table import Table
 from tqdm import tqdm
 
 import cybertensor
-from . import defaults
-from .utils import get_delegates_details, DelegatesDetails
+from cybertensor import __console__ as console
+from cybertensor.commands import defaults
+from cybertensor.commands.utils import get_delegates_details, DelegatesDetails
+from cybertensor.config import Config
+from cybertensor.utils.balance import Balance
+from cybertensor.wallet import Wallet
 
-console = cybertensor.__console__
 
-
-def _get_coldkey_wallets_for_path(path: str) -> List["cybertensor.wallet"]:
+def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     try:
         wallet_names = next(os.walk(os.path.expanduser(path)))[1]
-        return [cybertensor.wallet(path=path, name=name) for name in wallet_names]
+        return [Wallet(path=path, name=name) for name in wallet_names]
     except StopIteration:
         # No wallet files found.
         wallets = []
     return wallets
 
 
-def _get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
+def _get_hotkey_wallets_for_wallet(wallet) -> List["Wallet"]:
     hotkey_wallets = []
     hotkeys_path = wallet.path + "/" + wallet.name + "/hotkeys"
     try:
@@ -50,7 +52,7 @@ def _get_hotkey_wallets_for_wallet(wallet) -> List["cybertensor.wallet"]:
         hotkey_files = []
     for hotkey_file_name in hotkey_files:
         try:
-            hotkey_for_name = cybertensor.wallet(
+            hotkey_for_name = Wallet(
                 path=wallet.path, name=wallet.name, hotkey=hotkey_file_name
             )
             if (
@@ -110,7 +112,7 @@ class InspectCommand:
         if cli.config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
-            wallets = [cybertensor.wallet(config=cli.config)]
+            wallets = [Wallet(config=cli.config)]
         cwtensor = cybertensor.cwtensor(config=cli.config)
 
         netuids = cwtensor.get_all_subnet_netuids()
@@ -119,7 +121,7 @@ class InspectCommand:
             Dict[str, DelegatesDetails]
         ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
         if registered_delegate_info is None:
-            cybertensor.__console__.print(
+            console.print(
                 ":warning:[yellow]Could not get delegate info from chain.[/yellow]"
             )
             registered_delegate_info = {}
@@ -159,7 +161,7 @@ class InspectCommand:
         )
         for wallet in tqdm(wallets):
             delegates: List[
-                Tuple[cybertensor.DelegateInfo, cybertensor.Balance]
+                Tuple[cybertensor.DelegateInfo, Balance]
             ] = cwtensor.get_delegated(delegatee=wallet.coldkeypub.address)
             if not wallet.coldkeypub_file.exists_on_device():
                 continue
@@ -211,13 +213,13 @@ class InspectCommand:
                             str(netuid),
                             f"{hotkey_name}{neuron.hotkey}",
                             str(neuron.stake),
-                            str(cybertensor.Balance.from_boot(neuron.emission)),
+                            str(Balance.from_boot(neuron.emission)),
                         )
 
-        cybertensor.__console__.print(table)
+        console.print(table)
 
     @staticmethod
-    def check_config(config: "cybertensor.config") -> None:
+    def check_config(config: "Config") -> None:
         if (
             not config.get("all", d=None)
             and not config.is_set("wallet.name")
@@ -238,5 +240,5 @@ class InspectCommand:
             default=False,
         )
 
-        cybertensor.wallet.add_args(inspect_parser)
+        Wallet.add_args(inspect_parser)
         cybertensor.cwtensor.add_args(inspect_parser)

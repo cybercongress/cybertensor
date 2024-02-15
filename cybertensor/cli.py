@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -21,11 +21,10 @@ import sys
 from typing import List, Optional
 
 import cybertensor
-from .commands import *
-from .commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
-
-# Create a console instance for CLI display.
-console = cybertensor.__console__
+from cybertensor.commands import *
+from cybertensor.commands.network import SubnetSetWeightsCommand, SubnetGetWeightsCommand
+from cybertensor.config import Config
+from cybertensor import __console__ as console
 
 ALIAS_TO_COMMAND = {
     "subnets": "subnets",
@@ -139,14 +138,14 @@ class cli:
 
     def __init__(
         self,
-        config: Optional["cybertensor.config"] = None,
+        config: Optional["Config"] = None,
         args: Optional[List[str]] = None,
     ):
         """
         Initializes a cybertensor.CLI object.
 
         Args:
-            config (cybertensor.config, optional): The configuration settings for the CLI.
+            config (Config, optional): The configuration settings for the CLI.
             args (List[str], optional): List of command line arguments.
         """
         # Turns on console for cli.
@@ -214,7 +213,7 @@ class cli:
         return parser
 
     @staticmethod
-    def create_config(args: List[str]) -> "cybertensor.config":
+    def create_config(args: List[str]) -> "Config":
         """
         From the argument parser, add config to cybertensor.executor and local config
 
@@ -222,7 +221,7 @@ class cli:
             args (List[str]): List of command line arguments.
 
         Returns:
-            cybertensor.config: The configuration object for Cybertensor CLI.
+            Config: The configuration object for Cybertensor CLI.
         """
         parser = cli.__create_parser__()
 
@@ -231,15 +230,15 @@ class cli:
             parser.print_help()
             sys.exit()
 
-        return cybertensor.config(parser, args=args)
+        return Config(parser, args=args)
 
     @staticmethod
-    def check_config(config: "cybertensor.config"):
+    def check_config(config: "Config"):
         """
         Checks if the essential configuration exists under different command
 
         Args:
-            config (cybertensor.config): The configuration settings for the CLI.
+            config (Config): The configuration settings for the CLI.
         """
         # Check if command exists, if so, run the corresponding check_config.
         # If command doesn't exist, inform user and exit the program.

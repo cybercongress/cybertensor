@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2021 Yuma Rao
-# Copyright © 2023 cyber~Congress
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -25,7 +25,8 @@ import re
 import torch
 from loguru import logger
 
-import cybertensor
+from cybertensor.config import Config
+
 
 logger = logger.opt(colors=True)
 # Remove default sink.
@@ -51,7 +52,7 @@ class logging:
 
     def __new__(
         cls,
-        config: "cybertensor.config" = None,
+        config: "Config" = None,
         debug: bool = None,
         trace: bool = None,
         record_log: bool = None,
@@ -59,7 +60,7 @@ class logging:
     ):
         r"""Instantiate cybertensor logging system backend.
         Args:
-            config (:obj:`cybertensor.config`, `optional`):
+            config (:obj:`Config`, `optional`):
                 cybertensor.logging.config()
             debug (:obj:`bool`, `optional`):
                 Turn on debug.
@@ -100,7 +101,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=0,
+            level=40,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
@@ -129,11 +130,11 @@ class logging:
     @classmethod
     def config(cls):
         """Get config from the argument parser
-        Return: cybertensor.config object
+        Return: Config object
         """
         parser = argparse.ArgumentParser()
         logging.add_args(parser)
-        return cybertensor.config(parser, args=[])
+        return Config(parser, args=[])
 
     @classmethod
     def help(cls):
@@ -183,7 +184,7 @@ class logging:
             pass
 
     @classmethod
-    def check_config(cls, config: "cybertensor.config"):
+    def check_config(cls, config: "Config"):
         """Check config"""
         assert config.logging
 

@@ -5,7 +5,7 @@ backoff
 black==23.7.0
 cryptography==41.0.3
 ddt==1.6.0
-grpcio==1.60.0
+grpcio
 fuzzywuzzy>=0.18.0
 fastapi==0.99.1
 loguru==0.7.0
@@ -26,6 +26,7 @@ pytest
 retry
 requests
 rich
+setuptools<=65.6.3
 termcolor
 torch>=1.13.1
 tqdm
