@@ -148,7 +148,7 @@ class OverviewCommand:
 
         all_wallet_names = set([wallet.name for wallet in all_hotkeys])
         all_coldkey_wallets = [
-            Wallet(name=wallet_name) for wallet_name in all_wallet_names
+            Wallet(name=wallet_name, path=cli.config.wallet.path) for wallet_name in all_wallet_names
         ]
 
         hotkey_coldkey_to_hotkey_wallet = {}
