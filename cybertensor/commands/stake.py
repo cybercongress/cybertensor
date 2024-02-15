@@ -280,10 +280,10 @@ from rich.prompt import Prompt
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
 
-from .utils import DelegatesDetails
-from . import defaults
-from ..wallet import Wallet
-from .. import __console__ as console
+from cybertensor.commands.utils import DelegatesDetails
+from cybertensor.commands import defaults
+from cybertensor.wallet import Wallet
+from cybertensor import __console__ as console
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
