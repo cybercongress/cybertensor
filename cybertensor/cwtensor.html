@@ -791,9 +791,20 @@ class cwtensor:
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {&#34;serve_axon&#34;: {
+            &#34;netuid&#34;: call_params[&#39;netuid&#39;],
+            &#34;version&#34;: call_params[&#39;version&#39;],
+            &#34;ip&#34;: str(call_params[&#39;ip&#39;]),
+            &#34;port&#34;: call_params[&#39;port&#39;],
+            &#34;ip_type&#34;: call_params[&#39;ip_type&#39;],
+            &#34;protocol&#34;: call_params[&#39;protocol&#39;],
+            &#34;placeholder1&#34;: call_params[&#39;placeholder1&#39;],
+            &#34;placeholder2&#34;: call_params[&#39;placeholder2&#39;],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     def serve_prometheus(
@@ -832,9 +843,17 @@ class cwtensor:
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {&#34;serve_prometheus&#34;: {
+            &#34;netuid&#34;: call_params[&#39;netuid&#39;],
+            &#34;version&#34;: call_params[&#39;version&#39;],
+            &#34;ip&#34;: str(call_params[&#39;ip&#39;]),
+            &#34;port&#34;: call_params[&#39;port&#39;],
+            &#34;ip_type&#34;: call_params[&#39;ip_type&#39;],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     #################
@@ -1084,6 +1103,23 @@ class cwtensor:
 
         return U16_NORMALIZED_FLOAT(max_weight_limit)
 
+    &#34;&#34;&#34; Returns network SubnetworkN hyper parameter &#34;&#34;&#34;
+
+    def subnetwork_n(self, netuid: int, block: Optional[int] = None) -&gt; Optional[int]:
+        # TODO replace with direct query
+        # subnetwork_n = self.contract.query({&#34;get_subnetwork_n&#34;: {&#34;netuid&#34;: netuid}})
+        # if subnetwork_n is None:
+        #     return None
+        #
+        # return subnetwork_n
+
+        subnet_info = self.get_subnet_info(netuid)
+        if subnet_info is None:
+            return None
+
+        return subnet_info.subnetwork_n
+
+
     &#34;&#34;&#34; Returns network Tempo hyper parameter &#34;&#34;&#34;
 
     def tempo(self, netuid: int, block: Optional[int] = None) -&gt; Optional[int]:
@@ -1257,6 +1293,14 @@ class cwtensor:
             return []
 
         return SubnetInfo.list_from_list_any(result)
+
+    def get_subnet_info(self, netuid: int, block: Optional[int] = None) -&gt; Optional[SubnetInfo]:
+        result = self.contract.query({&#34;get_subnet_info&#34;: {&#34;netuid&#34;: netuid}})
+
+        if result is None:
+            return None
+
+        return SubnetInfo.fix_decoded_values(result)
 
     def get_subnet_hyperparameters(
         self, netuid: int, block: Optional[int] = None
@@ -2311,9 +2355,20 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {&#34;serve_axon&#34;: {
+            &#34;netuid&#34;: call_params[&#39;netuid&#39;],
+            &#34;version&#34;: call_params[&#39;version&#39;],
+            &#34;ip&#34;: str(call_params[&#39;ip&#39;]),
+            &#34;port&#34;: call_params[&#39;port&#39;],
+            &#34;ip_type&#34;: call_params[&#39;ip_type&#39;],
+            &#34;protocol&#34;: call_params[&#39;protocol&#39;],
+            &#34;placeholder1&#34;: call_params[&#39;placeholder1&#39;],
+            &#34;placeholder2&#34;: call_params[&#39;placeholder2&#39;],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     def serve_prometheus(
@@ -2352,9 +2407,17 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {&#34;serve_prometheus&#34;: {
+            &#34;netuid&#34;: call_params[&#39;netuid&#39;],
+            &#34;version&#34;: call_params[&#39;version&#39;],
+            &#34;ip&#34;: str(call_params[&#39;ip&#39;]),
+            &#34;port&#34;: call_params[&#39;port&#39;],
+            &#34;ip_type&#34;: call_params[&#39;ip_type&#39;],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     #################
@@ -2604,6 +2667,23 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
 
         return U16_NORMALIZED_FLOAT(max_weight_limit)
 
+    &#34;&#34;&#34; Returns network SubnetworkN hyper parameter &#34;&#34;&#34;
+
+    def subnetwork_n(self, netuid: int, block: Optional[int] = None) -&gt; Optional[int]:
+        # TODO replace with direct query
+        # subnetwork_n = self.contract.query({&#34;get_subnetwork_n&#34;: {&#34;netuid&#34;: netuid}})
+        # if subnetwork_n is None:
+        #     return None
+        #
+        # return subnetwork_n
+
+        subnet_info = self.get_subnet_info(netuid)
+        if subnet_info is None:
+            return None
+
+        return subnet_info.subnetwork_n
+
+
     &#34;&#34;&#34; Returns network Tempo hyper parameter &#34;&#34;&#34;
 
     def tempo(self, netuid: int, block: Optional[int] = None) -&gt; Optional[int]:
@@ -2777,6 +2857,14 @@ or cwtensor endpoint flag. If set, overrides the network argument.</p></div>
             return []
 
         return SubnetInfo.list_from_list_any(result)
+
+    def get_subnet_info(self, netuid: int, block: Optional[int] = None) -&gt; Optional[SubnetInfo]:
+        result = self.contract.query({&#34;get_subnet_info&#34;: {&#34;netuid&#34;: netuid}})
+
+        if result is None:
+            return None
+
+        return SubnetInfo.fix_decoded_values(result)
 
     def get_subnet_hyperparameters(
         self, netuid: int, block: Optional[int] = None
@@ -3995,6 +4083,24 @@ account balance</p></div>
     return SubnetHyperparameters.from_list_any(result)</code></pre>
 </details>
 </dd>
+<dt id="cybertensor.cwtensor.cwtensor.get_subnet_info"><code class="name flex">
+<span>def <span class="ident">get_subnet_info</span></span>(<span>self, netuid: int, block: Optional[int] = None) ‑> Optional[<a title="cybertensor.chain_data.SubnetInfo" href="chain_data.html#cybertensor.chain_data.SubnetInfo">SubnetInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_subnet_info(self, netuid: int, block: Optional[int] = None) -&gt; Optional[SubnetInfo]:
+    result = self.contract.query({&#34;get_subnet_info&#34;: {&#34;netuid&#34;: netuid}})
+
+    if result is None:
+        return None
+
+    return SubnetInfo.fix_decoded_values(result)</code></pre>
+</details>
+</dd>
 <dt id="cybertensor.cwtensor.cwtensor.get_subnet_owner"><code class="name flex">
 <span>def <span class="ident">get_subnet_owner</span></span>(<span>self, netuid: int, block: Optional[int] = None) ‑> Optional[str]</span>
 </code></dt>
@@ -4747,6 +4853,30 @@ List of neuron lite metadata objects.</p></div>
     return self.contract.query({&#34;get_subnet_exist&#34;: {&#34;netuid&#34;: netuid}})</code></pre>
 </details>
 </dd>
+<dt id="cybertensor.cwtensor.cwtensor.subnetwork_n"><code class="name flex">
+<span>def <span class="ident">subnetwork_n</span></span>(<span>self, netuid: int, block: Optional[int] = None) ‑> Optional[int]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subnetwork_n(self, netuid: int, block: Optional[int] = None) -&gt; Optional[int]:
+    # TODO replace with direct query
+    # subnetwork_n = self.contract.query({&#34;get_subnetwork_n&#34;: {&#34;netuid&#34;: netuid}})
+    # if subnetwork_n is None:
+    #     return None
+    #
+    # return subnetwork_n
+
+    subnet_info = self.get_subnet_info(netuid)
+    if subnet_info is None:
+        return None
+
+    return subnet_info.subnetwork_n</code></pre>
+</details>
+</dd>
 <dt id="cybertensor.cwtensor.cwtensor.tempo"><code class="name flex">
 <span>def <span class="ident">tempo</span></span>(<span>self, netuid: int, block: Optional[int] = None) ‑> Optional[int]</span>
 </code></dt>
@@ -5002,6 +5132,7 @@ List of neuron lite metadata objects.</p></div>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkeys" href="#cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkeys">get_stake_info_for_coldkeys</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_burn_cost" href="#cybertensor.cwtensor.cwtensor.get_subnet_burn_cost">get_subnet_burn_cost</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_hyperparameters" href="#cybertensor.cwtensor.cwtensor.get_subnet_hyperparameters">get_subnet_hyperparameters</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_info" href="#cybertensor.cwtensor.cwtensor.get_subnet_info">get_subnet_info</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_owner" href="#cybertensor.cwtensor.cwtensor.get_subnet_owner">get_subnet_owner</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_subnets" href="#cybertensor.cwtensor.cwtensor.get_subnets">get_subnets</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.get_total_stake_for_coldkey" href="#cybertensor.cwtensor.cwtensor.get_total_stake_for_coldkey">get_total_stake_for_coldkey</a></code></li>
@@ -5034,6 +5165,7 @@ List of neuron lite metadata objects.</p></div>
 <li><code><a title="cybertensor.cwtensor.cwtensor.set_weights" href="#cybertensor.cwtensor.cwtensor.set_weights">set_weights</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.setup_config" href="#cybertensor.cwtensor.cwtensor.setup_config">setup_config</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.subnet_exists" href="#cybertensor.cwtensor.cwtensor.subnet_exists">subnet_exists</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.subnetwork_n" href="#cybertensor.cwtensor.cwtensor.subnetwork_n">subnetwork_n</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.tempo" href="#cybertensor.cwtensor.cwtensor.tempo">tempo</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.total_issuance" href="#cybertensor.cwtensor.cwtensor.total_issuance">total_issuance</a></code></li>
 <li><code><a title="cybertensor.cwtensor.cwtensor.total_stake" href="#cybertensor.cwtensor.cwtensor.total_stake">total_stake</a></code></li>
