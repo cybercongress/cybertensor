@@ -100,8 +100,7 @@ class cwtensor:
     def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         prefix_str = "" if prefix is None else prefix + "."
         try:
-            default_network = os.getenv("CT_CYBER_NETWORK") or "space-pussy"
-            # default_contract_address = os.getenv("CT_CONTRACT_ADDRESS") or "bostrom1"
+            default_network = os.getenv("CT_CYBER_NETWORK") or cybertensor.__default_network__
 
             parser.add_argument(
                 "--" + prefix_str + "cwtensor.network",
@@ -113,14 +112,6 @@ class cwtensor:
                                         -- space-pussy (space-pussy network)
                                     """,
             )
-
-            # parser.add_argument(
-            #     "--" + prefix_str + "cwtensor.address",
-            #     default=default_contract_address,
-            #     type=str,
-            #     help="""The cwtensor contract flag.
-            #                         """,
-            # )
 
         except argparse.ArgumentError:
             # re-parsing arguments.
