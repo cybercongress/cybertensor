@@ -212,3 +212,5 @@ replicate.yaml
 
 # Notebooks
 *.ipynb
+
+temp/

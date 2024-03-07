@@ -754,9 +754,20 @@ class cwtensor:
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {"serve_axon": {
+            "netuid": call_params['netuid'],
+            "version": call_params['version'],
+            "ip": str(call_params['ip']),
+            "port": call_params['port'],
+            "ip_type": call_params['ip_type'],
+            "protocol": call_params['protocol'],
+            "placeholder1": call_params['placeholder1'],
+            "placeholder2": call_params['placeholder2'],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     def serve_prometheus(
@@ -795,9 +806,17 @@ class cwtensor:
             PrivateKey(wallet.hotkey.private_key), self.address_prefix
         )
 
+        msg = {"serve_prometheus": {
+            "netuid": call_params['netuid'],
+            "version": call_params['version'],
+            "ip": str(call_params['ip']),
+            "port": call_params['port'],
+            "ip_type": call_params['ip_type'],
+        }}
+
         return self.make_call_with_retry_2(
             wait_for_finalization=wait_for_finalization,
-            msg=call_params,
+            msg=msg,
             signer_wallet=signer_wallet)
 
     #################
@@ -1047,6 +1066,23 @@ class cwtensor:
 
         return U16_NORMALIZED_FLOAT(max_weight_limit)
 
+    """ Returns network SubnetworkN hyper parameter """
+
+    def subnetwork_n(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
+        # TODO replace with direct query
+        # subnetwork_n = self.contract.query({"get_subnetwork_n": {"netuid": netuid}})
+        # if subnetwork_n is None:
+        #     return None
+        #
+        # return subnetwork_n
+
+        subnet_info = self.get_subnet_info(netuid)
+        if subnet_info is None:
+            return None
+
+        return subnet_info.subnetwork_n
+
+
     """ Returns network Tempo hyper parameter """
 
     def tempo(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
@@ -1220,6 +1256,14 @@ class cwtensor:
             return []
 
         return SubnetInfo.list_from_list_any(result)
+
+    def get_subnet_info(self, netuid: int, block: Optional[int] = None) -> Optional[SubnetInfo]:
+        result = self.contract.query({"get_subnet_info": {"netuid": netuid}})
+
+        if result is None:
+            return None
+
+        return SubnetInfo.fix_decoded_values(result)
 
     def get_subnet_hyperparameters(
         self, netuid: int, block: Optional[int] = None

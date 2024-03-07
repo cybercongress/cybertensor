@@ -21,19 +21,20 @@
 
 import os
 import cybertensor
+from cybertensor.wallet import Wallet
 from typing import Optional
 from Crypto.Hash import keccak
 
 from .keyfile_mock import MockKeyfile
 
 
-class MockWallet(cybertensor.Wallet):
+class MockWallet(Wallet):
     """
-    Mocked Version of the cybertensor wallet class, meant to be used for testing
+    Mocked Version of the bittensor wallet class, meant to be used for testing
     """
 
     def __init__(self, **kwargs):
-        r"""Init cybertensor wallet object containing a hot and coldkey.
+        r"""Init bittensor wallet object containing a hot and coldkey.
         Args:
             _mock (required=True, default=False):
                 If true creates a mock wallet with random keys.
@@ -79,17 +80,21 @@ class MockWallet(cybertensor.Wallet):
 
 
 def get_mock_wallet(
-    coldkey: "cybertensor.Keypair" = None, hotkey: "cybertensor.Keypair" = None
+    coldkey: "cybertensor.Keypair" = None,
+    hotkey: "cybertensor.Keypair" = None,
+    prefix: Optional[str] = None,
 ):
     wallet = MockWallet(name="mock_wallet", hotkey="mock", path="/tmp/mock_wallet")
 
     if not coldkey:
         coldkey = cybertensor.Keypair.create_from_mnemonic(
-            cybertensor.Keypair.generate_mnemonic()
+            cybertensor.Keypair.generate_mnemonic(),
+            prefix=prefix
         )
     if not hotkey:
         hotkey = cybertensor.Keypair.create_from_mnemonic(
-            cybertensor.Keypair.generate_mnemonic()
+            cybertensor.Keypair.generate_mnemonic(),
+            prefix=prefix
         )
 
     wallet.set_coldkey(coldkey, encrypt=False, overwrite=True)
@@ -99,7 +104,7 @@ def get_mock_wallet(
     return wallet
 
 
-def get_mock_keypair(uid: int, test_name: Optional[str] = None) -> cybertensor.Keypair:
+def get_mock_keypair(uid: int, test_name: Optional[str] = None, prefix: Optional[str] = None) -> cybertensor.Keypair:
     """
     Returns a mock keypair from a uid and optional test_name.
     If test_name is not provided, the uid is the only seed.
@@ -114,9 +119,9 @@ def get_mock_keypair(uid: int, test_name: Optional[str] = None) -> cybertensor.K
         )
         uid = uid + hashed_test_name_as_int
 
-    return cybertensor.Keypair.create_from_seed(
-        seed_hex=int.to_bytes(uid, 32, "big", signed=False),
-        ss58_format=cybertensor.__ss58_format__,
+    return cybertensor.Keypair.create_from_private_key(
+        private_key=int.to_bytes(uid, 32, "big", signed=False),
+        prefix=prefix,
     )
 
 
