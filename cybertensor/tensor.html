@@ -69,7 +69,7 @@ TORCH_DTYPES = {
 
 def cast_dtype(raw: Union[None, torch.dtype, str]) -&gt; str:
     &#34;&#34;&#34;
-    Casts the raw value to a string representing the torch data type.
+    Casts the raw value to a string representing the `torch data type &lt;https://pytorch.org/docs/stable/tensor_attributes.html&gt;`_.
 
     Args:
         raw (Union[None, torch.dtype, str]): The raw value to cast.
@@ -139,7 +139,7 @@ class Tensor(pydantic.BaseModel):
     &#34;&#34;&#34;
     Represents a Tensor object.
 
-    Attributes:
+    Args:
         buffer (Optional[str]): Tensor buffer data.
         dtype (str): Tensor data type.
         shape (List[int]): Tensor shape.
@@ -240,7 +240,7 @@ class Tensor(pydantic.BaseModel):
 <span>def <span class="ident">cast_dtype</span></span>(<span>raw: Union[ForwardRef(None), torch.dtype, str]) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Casts the raw value to a string representing the torch data type.</p>
+<div class="desc"><p>Casts the raw value to a string representing the <code>torch data type &lt;https://pytorch.org/docs/stable/tensor_attributes.html&gt;</code>_.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>raw</code></strong> :&ensp;<code>Union[None, torch.dtype, str]</code></dt>
@@ -262,7 +262,7 @@ class Tensor(pydantic.BaseModel):
 </summary>
 <pre><code class="python">def cast_dtype(raw: Union[None, torch.dtype, str]) -&gt; str:
     &#34;&#34;&#34;
-    Casts the raw value to a string representing the torch data type.
+    Casts the raw value to a string representing the `torch data type &lt;https://pytorch.org/docs/stable/tensor_attributes.html&gt;`_.
 
     Args:
         raw (Union[None, torch.dtype, str]): The raw value to cast.
@@ -354,7 +354,7 @@ class Tensor(pydantic.BaseModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Represents a Tensor object.</p>
-<h2 id="attributes">Attributes</h2>
+<h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>buffer</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Tensor buffer data.</dd>
@@ -373,7 +373,7 @@ class Tensor(pydantic.BaseModel):
     &#34;&#34;&#34;
     Represents a Tensor object.
 
-    Attributes:
+    Args:
         buffer (Optional[str]): Tensor buffer data.
         dtype (str): Tensor data type.
         shape (List[int]): Tensor shape.

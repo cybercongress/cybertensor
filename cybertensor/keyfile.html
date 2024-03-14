@@ -129,7 +129,7 @@ def validate_password(password: str) -&gt; bool:
     Args:
         password (str): The password to verify.
     Returns:
-        valid (bool): True if the password meets validity requirements.
+        valid (bool): ``True`` if the password meets validity requirements.
     &#34;&#34;&#34;
     policy = PasswordPolicy.from_names(strength=0.20, entropybits=10, length=6)
     if not password:
@@ -169,7 +169,7 @@ def keyfile_data_is_encrypted_nacl(keyfile_data: bytes) -&gt; bool:
             Bytes to validate
     Returns:
         is_nacl (bool):
-            True if data is ansible encrypted.
+            ``True`` if data is ansible encrypted.
     &#34;&#34;&#34;
     return keyfile_data[: len(&#34;$NACL&#34;)] == b&#34;$NACL&#34;
 
@@ -179,7 +179,7 @@ def keyfile_data_is_encrypted_ansible(keyfile_data: bytes) -&gt; bool:
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_ansible (bool): True if the data is ansible encrypted.
+        is_ansible (bool): ``True`` if the data is ansible encrypted.
     &#34;&#34;&#34;
     return keyfile_data[:14] == b&#34;$ANSIBLE_VAULT&#34;
 
@@ -189,17 +189,17 @@ def keyfile_data_is_encrypted_legacy(keyfile_data: bytes) -&gt; bool:
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_legacy (bool): True if the data is legacy encrypted.
+        is_legacy (bool): ``True`` if the data is legacy encrypted.
     &#34;&#34;&#34;
     return keyfile_data[:6] == b&#34;gAAAAA&#34;
 
 
 def keyfile_data_is_encrypted(keyfile_data: bytes) -&gt; bool:
-    &#34;&#34;&#34;Returns true if the keyfile data is encrypted.
+    &#34;&#34;&#34;Returns ``True`` if the keyfile data is encrypted.
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_encrypted (bool): True if the data is encrypted.
+        is_encrypted (bool): ``True`` if the data is encrypted.
     &#34;&#34;&#34;
     return (
         keyfile_data_is_encrypted_nacl(keyfile_data)
@@ -209,13 +209,13 @@ def keyfile_data_is_encrypted(keyfile_data: bytes) -&gt; bool:
 
 
 def keyfile_data_encryption_method(keyfile_data: bytes) -&gt; bool:
-    &#34;&#34;&#34;Returns true if the keyfile data is encrypted.
+    &#34;&#34;&#34;Returns ``True`` if the keyfile data is encrypted.
     Args:
         keyfile_data ( bytes, required ):
             Bytes to validate
     Returns:
         encryption_method (bool):
-            True if data is encrypted.
+            ``True`` if data is encrypted.
     &#34;&#34;&#34;
 
     if keyfile_data_is_encrypted_nacl(keyfile_data):
@@ -239,7 +239,7 @@ def encrypt_keyfile_data(keyfile_data: bytes, password: str = None) -&gt; bytes:
     &#34;&#34;&#34;Encrypts the passed keyfile data using ansible vault.
     Args:
         keyfile_data (bytes): The bytes to encrypt.
-        password (str, optional): The password used to encrypt the data. If None, asks for user input.
+        password (str, optional): The password used to encrypt the data. If ``None``, asks for user input.
     Returns:
         encrypted_data (bytes): The encrypted data.
     &#34;&#34;&#34;
@@ -280,7 +280,7 @@ def decrypt_keyfile_data(
     &#34;&#34;&#34;Decrypts the passed keyfile data using ansible vault.
     Args:
         keyfile_data (bytes): The bytes to decrypt.
-        password (str, optional): The password used to decrypt the data. If None, asks for user input.
+        password (str, optional): The password used to decrypt the data. If ``None``, asks for user input.
         coldkey_name (str, optional): The name of the cold key. If provided, retrieves the password from environment variables.
     Returns:
         decrypted_data (bytes): The decrypted data.
@@ -407,9 +407,9 @@ class keyfile:
         &#34;&#34;&#34;Writes the keypair to the file and optionally encrypts data.
         Args:
             keypair (Keypair): The keypair to store under the path.
-            encrypt (bool, optional): If True, encrypts the file under the path. Default is True.
-            overwrite (bool, optional): If True, forces overwrite of the current file. Default is False.
-            password (str, optional): The password used to encrypt the file. If None, asks for user input.
+            encrypt (bool, optional): If ``True``, encrypts the file under the path. Default is True.
+            overwrite (bool, optional): If ``True``, forces overwrite of the current file. Default is ``False``.
+            password (str, optional): The password used to encrypt the file. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, or if the password is incorrect.
         &#34;&#34;&#34;
@@ -422,7 +422,7 @@ class keyfile:
     def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
         &#34;&#34;&#34;Returns the keypair from the path, decrypts data if the file is encrypted.
         Args:
-            password (str, optional): The password used to decrypt the file. If None, asks for user input.
+            password (str, optional): The password used to decrypt the file. If ``None``, asks for user input.
         Returns:
             keypair (Keypair): The keypair stored under the path.
         Raises:
@@ -596,7 +596,7 @@ class keyfile:
     def encrypt(self, password: str = None):
         &#34;&#34;&#34;Encrypts the file under the path.
         Args:
-            password (str, optional): The password for encryption. If None, asks for user input.
+            password (str, optional): The password for encryption. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, or writable.
         &#34;&#34;&#34;
@@ -622,7 +622,7 @@ class keyfile:
     def decrypt(self, password: str = None):
         &#34;&#34;&#34;Decrypts the file under the path.
         Args:
-            password (str, optional): The password for decryption. If None, asks for user input.
+            password (str, optional): The password for decryption. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
         &#34;&#34;&#34;
@@ -670,7 +670,8 @@ class keyfile:
         &#34;&#34;&#34;Writes the keyfile data to the file.
         Args:
             keyfile_data (bytes): The byte data to store under the path.
-            overwrite (bool, optional): If True, overwrites the data without asking for permission from the user. Default is False.
+            overwrite (bool, optional): If ``True``, overwrites the data without asking for permission from the user. 
+                Default is ``False``.
         Raises:
             KeyFileError: Raised if the file is not writable or the user responds No to the overwrite prompt.
         &#34;&#34;&#34;
@@ -745,13 +746,13 @@ class Mockkeyfile:
 
     def set_keypair(self, keypair, encrypt=True, overwrite=False, password=None):
         &#34;&#34;&#34;
-        Sets the mock keypair in the keyfile. The `encrypt` and `overwrite` parameters are ignored.
+        Sets the mock keypair in the keyfile. The ``encrypt`` and ``overwrite`` parameters are ignored.
 
         Args:
             keypair (Keypair): The mock keypair to be set.
-            encrypt (bool, optional): Ignored in this context. Defaults to True.
-            overwrite (bool, optional): Ignored in this context. Defaults to False.
-            password (str, optional): Ignored in this context. Defaults to None.
+            encrypt (bool, optional): Ignored in this context. Defaults to ``True``.
+            overwrite (bool, optional): Ignored in this context. Defaults to ``False``.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
         &#34;&#34;&#34;
         self._mock_keypair = keypair
         self._mock_data = None  # You may need to serialize the keypair here
@@ -761,7 +762,7 @@ class Mockkeyfile:
         Returns the mock keypair stored in the keyfile. The `password` parameter is ignored.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
 
         Returns:
             Keypair: The mock keypair stored in the keyfile.
@@ -819,7 +820,7 @@ class Mockkeyfile:
         Raises a ValueError since encryption is not supported for the mock keyfile.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
 
         Raises:
             ValueError: Always raises this exception for Mockkeyfile.
@@ -831,7 +832,7 @@ class Mockkeyfile:
         Returns without doing anything since the mock keyfile is not encrypted.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
         &#34;&#34;&#34;
         pass
 
@@ -879,7 +880,7 @@ class Mockkeyfile:
 <dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
 <dd>The bytes to decrypt.</dd>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password used to decrypt the data. If None, asks for user input.</dd>
+<dd>The password used to decrypt the data. If <code>None</code>, asks for user input.</dd>
 <dt><strong><code>coldkey_name</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>The name of the cold key. If provided, retrieves the password from environment variables.</dd>
 </dl>
@@ -900,7 +901,7 @@ class Mockkeyfile:
     &#34;&#34;&#34;Decrypts the passed keyfile data using ansible vault.
     Args:
         keyfile_data (bytes): The bytes to decrypt.
-        password (str, optional): The password used to decrypt the data. If None, asks for user input.
+        password (str, optional): The password used to decrypt the data. If ``None``, asks for user input.
         coldkey_name (str, optional): The name of the cold key. If provided, retrieves the password from environment variables.
     Returns:
         decrypted_data (bytes): The decrypted data.
@@ -1032,7 +1033,7 @@ class Mockkeyfile:
 <dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
 <dd>The bytes to encrypt.</dd>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password used to encrypt the data. If None, asks for user input.</dd>
+<dd>The password used to encrypt the data. If <code>None</code>, asks for user input.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>encrypted_data (bytes): The encrypted data.</p></div>
@@ -1044,7 +1045,7 @@ class Mockkeyfile:
     &#34;&#34;&#34;Encrypts the passed keyfile data using ansible vault.
     Args:
         keyfile_data (bytes): The bytes to encrypt.
-        password (str, optional): The password used to encrypt the data. If None, asks for user input.
+        password (str, optional): The password used to encrypt the data. If ``None``, asks for user input.
     Returns:
         encrypted_data (bytes): The encrypted data.
     &#34;&#34;&#34;
@@ -1099,25 +1100,25 @@ class Mockkeyfile:
 <span>def <span class="ident">keyfile_data_encryption_method</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns true if the keyfile data is encrypted.</p>
+<div class="desc"><p>Returns <code>True</code> if the keyfile data is encrypted.</p>
 <h2 id="args">Args</h2>
 <p>keyfile_data ( bytes, required ):
 Bytes to validate</p>
 <h2 id="returns">Returns</h2>
 <p>encryption_method (bool):
-True if data is encrypted.</p></div>
+<code>True</code> if data is encrypted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def keyfile_data_encryption_method(keyfile_data: bytes) -&gt; bool:
-    &#34;&#34;&#34;Returns true if the keyfile data is encrypted.
+    &#34;&#34;&#34;Returns ``True`` if the keyfile data is encrypted.
     Args:
         keyfile_data ( bytes, required ):
             Bytes to validate
     Returns:
         encryption_method (bool):
-            True if data is encrypted.
+            ``True`` if data is encrypted.
     &#34;&#34;&#34;
 
     if keyfile_data_is_encrypted_nacl(keyfile_data):
@@ -1132,24 +1133,24 @@ True if data is encrypted.</p></div>
 <span>def <span class="ident">keyfile_data_is_encrypted</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns true if the keyfile data is encrypted.</p>
+<div class="desc"><p>Returns <code>True</code> if the keyfile data is encrypted.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
 <dd>The bytes to validate.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>is_encrypted (bool): True if the data is encrypted.</p></div>
+<p>is_encrypted (bool): <code>True</code> if the data is encrypted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def keyfile_data_is_encrypted(keyfile_data: bytes) -&gt; bool:
-    &#34;&#34;&#34;Returns true if the keyfile data is encrypted.
+    &#34;&#34;&#34;Returns ``True`` if the keyfile data is encrypted.
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_encrypted (bool): True if the data is encrypted.
+        is_encrypted (bool): ``True`` if the data is encrypted.
     &#34;&#34;&#34;
     return (
         keyfile_data_is_encrypted_nacl(keyfile_data)
@@ -1169,7 +1170,7 @@ True if data is encrypted.</p></div>
 <dd>The bytes to validate.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>is_ansible (bool): True if the data is ansible encrypted.</p></div>
+<p>is_ansible (bool): <code>True</code> if the data is ansible encrypted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1179,7 +1180,7 @@ True if data is encrypted.</p></div>
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_ansible (bool): True if the data is ansible encrypted.
+        is_ansible (bool): ``True`` if the data is ansible encrypted.
     &#34;&#34;&#34;
     return keyfile_data[:14] == b&#34;$ANSIBLE_VAULT&#34;</code></pre>
 </details>
@@ -1195,7 +1196,7 @@ True if data is encrypted.</p></div>
 <dd>The bytes to validate.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>is_legacy (bool): True if the data is legacy encrypted.</p></div>
+<p>is_legacy (bool): <code>True</code> if the data is legacy encrypted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1205,7 +1206,7 @@ True if data is encrypted.</p></div>
     Args:
         keyfile_data (bytes): The bytes to validate.
     Returns:
-        is_legacy (bool): True if the data is legacy encrypted.
+        is_legacy (bool): ``True`` if the data is legacy encrypted.
     &#34;&#34;&#34;
     return keyfile_data[:6] == b&#34;gAAAAA&#34;</code></pre>
 </details>
@@ -1220,7 +1221,7 @@ True if data is encrypted.</p></div>
 Bytes to validate</p>
 <h2 id="returns">Returns</h2>
 <p>is_nacl (bool):
-True if data is ansible encrypted.</p></div>
+<code>True</code> if data is ansible encrypted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1232,7 +1233,7 @@ True if data is ansible encrypted.</p></div>
             Bytes to validate
     Returns:
         is_nacl (bool):
-            True if data is ansible encrypted.
+            ``True`` if data is ansible encrypted.
     &#34;&#34;&#34;
     return keyfile_data[: len(&#34;$NACL&#34;)] == b&#34;$NACL&#34;</code></pre>
 </details>
@@ -1298,7 +1299,7 @@ True if data is ansible encrypted.</p></div>
 <dd>The password to verify.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>valid (bool): True if the password meets validity requirements.</p></div>
+<p>valid (bool): <code>True</code> if the password meets validity requirements.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1308,7 +1309,7 @@ True if data is ansible encrypted.</p></div>
     Args:
         password (str): The password to verify.
     Returns:
-        valid (bool): True if the password meets validity requirements.
+        valid (bool): ``True`` if the password meets validity requirements.
     &#34;&#34;&#34;
     policy = PasswordPolicy.from_names(strength=0.20, entropybits=10, length=6)
     if not password:
@@ -1411,13 +1412,13 @@ The keypair stored in the Mockkeyfile is treated as non-encrypted and the data i
 
     def set_keypair(self, keypair, encrypt=True, overwrite=False, password=None):
         &#34;&#34;&#34;
-        Sets the mock keypair in the keyfile. The `encrypt` and `overwrite` parameters are ignored.
+        Sets the mock keypair in the keyfile. The ``encrypt`` and ``overwrite`` parameters are ignored.
 
         Args:
             keypair (Keypair): The mock keypair to be set.
-            encrypt (bool, optional): Ignored in this context. Defaults to True.
-            overwrite (bool, optional): Ignored in this context. Defaults to False.
-            password (str, optional): Ignored in this context. Defaults to None.
+            encrypt (bool, optional): Ignored in this context. Defaults to ``True``.
+            overwrite (bool, optional): Ignored in this context. Defaults to ``False``.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
         &#34;&#34;&#34;
         self._mock_keypair = keypair
         self._mock_data = None  # You may need to serialize the keypair here
@@ -1427,7 +1428,7 @@ The keypair stored in the Mockkeyfile is treated as non-encrypted and the data i
         Returns the mock keypair stored in the keyfile. The `password` parameter is ignored.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
 
         Returns:
             Keypair: The mock keypair stored in the keyfile.
@@ -1485,7 +1486,7 @@ The keypair stored in the Mockkeyfile is treated as non-encrypted and the data i
         Raises a ValueError since encryption is not supported for the mock keyfile.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
 
         Raises:
             ValueError: Always raises this exception for Mockkeyfile.
@@ -1497,7 +1498,7 @@ The keypair stored in the Mockkeyfile is treated as non-encrypted and the data i
         Returns without doing anything since the mock keyfile is not encrypted.
 
         Args:
-            password (str, optional): Ignored in this context. Defaults to None.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
         &#34;&#34;&#34;
         pass
 
@@ -1576,7 +1577,7 @@ def keypair(self):
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Ignored in this context. Defaults to None.</dd>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1587,7 +1588,7 @@ def keypair(self):
     Returns without doing anything since the mock keyfile is not encrypted.
 
     Args:
-        password (str, optional): Ignored in this context. Defaults to None.
+        password (str, optional): Ignored in this context. Defaults to ``None``.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -1600,7 +1601,7 @@ def keypair(self):
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Ignored in this context. Defaults to None.</dd>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -1616,7 +1617,7 @@ def keypair(self):
     Raises a ValueError since encryption is not supported for the mock keyfile.
 
     Args:
-        password (str, optional): Ignored in this context. Defaults to None.
+        password (str, optional): Ignored in this context. Defaults to ``None``.
 
     Raises:
         ValueError: Always raises this exception for Mockkeyfile.
@@ -1658,7 +1659,7 @@ it is not created on the actual file system).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Ignored in this context. Defaults to None.</dd>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1674,7 +1675,7 @@ it is not created on the actual file system).</p>
     Returns the mock keypair stored in the keyfile. The `password` parameter is ignored.
 
     Args:
-        password (str, optional): Ignored in this context. Defaults to None.
+        password (str, optional): Ignored in this context. Defaults to ``None``.
 
     Returns:
         Keypair: The mock keypair stored in the keyfile.
@@ -1786,11 +1787,11 @@ since no actual filesystem operations are needed.</p></div>
 <dt><strong><code>keypair</code></strong> :&ensp;<code>Keypair</code></dt>
 <dd>The mock keypair to be set.</dd>
 <dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Ignored in this context. Defaults to True.</dd>
+<dd>Ignored in this context. Defaults to <code>True</code>.</dd>
 <dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Ignored in this context. Defaults to False.</dd>
+<dd>Ignored in this context. Defaults to <code>False</code>.</dd>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Ignored in this context. Defaults to None.</dd>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1798,13 +1799,13 @@ since no actual filesystem operations are needed.</p></div>
 </summary>
 <pre><code class="python">def set_keypair(self, keypair, encrypt=True, overwrite=False, password=None):
     &#34;&#34;&#34;
-    Sets the mock keypair in the keyfile. The `encrypt` and `overwrite` parameters are ignored.
+    Sets the mock keypair in the keyfile. The ``encrypt`` and ``overwrite`` parameters are ignored.
 
     Args:
         keypair (Keypair): The mock keypair to be set.
-        encrypt (bool, optional): Ignored in this context. Defaults to True.
-        overwrite (bool, optional): Ignored in this context. Defaults to False.
-        password (str, optional): Ignored in this context. Defaults to None.
+        encrypt (bool, optional): Ignored in this context. Defaults to ``True``.
+        overwrite (bool, optional): Ignored in this context. Defaults to ``False``.
+        password (str, optional): Ignored in this context. Defaults to ``None``.
     &#34;&#34;&#34;
     self._mock_keypair = keypair
     self._mock_data = None  # You may need to serialize the keypair here</code></pre>
@@ -1883,9 +1884,9 @@ since no actual filesystem operations are needed.</p></div>
         &#34;&#34;&#34;Writes the keypair to the file and optionally encrypts data.
         Args:
             keypair (Keypair): The keypair to store under the path.
-            encrypt (bool, optional): If True, encrypts the file under the path. Default is True.
-            overwrite (bool, optional): If True, forces overwrite of the current file. Default is False.
-            password (str, optional): The password used to encrypt the file. If None, asks for user input.
+            encrypt (bool, optional): If ``True``, encrypts the file under the path. Default is True.
+            overwrite (bool, optional): If ``True``, forces overwrite of the current file. Default is ``False``.
+            password (str, optional): The password used to encrypt the file. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, or if the password is incorrect.
         &#34;&#34;&#34;
@@ -1898,7 +1899,7 @@ since no actual filesystem operations are needed.</p></div>
     def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
         &#34;&#34;&#34;Returns the keypair from the path, decrypts data if the file is encrypted.
         Args:
-            password (str, optional): The password used to decrypt the file. If None, asks for user input.
+            password (str, optional): The password used to decrypt the file. If ``None``, asks for user input.
         Returns:
             keypair (Keypair): The keypair stored under the path.
         Raises:
@@ -2072,7 +2073,7 @@ since no actual filesystem operations are needed.</p></div>
     def encrypt(self, password: str = None):
         &#34;&#34;&#34;Encrypts the file under the path.
         Args:
-            password (str, optional): The password for encryption. If None, asks for user input.
+            password (str, optional): The password for encryption. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, or writable.
         &#34;&#34;&#34;
@@ -2098,7 +2099,7 @@ since no actual filesystem operations are needed.</p></div>
     def decrypt(self, password: str = None):
         &#34;&#34;&#34;Decrypts the file under the path.
         Args:
-            password (str, optional): The password for decryption. If None, asks for user input.
+            password (str, optional): The password for decryption. If ``None``, asks for user input.
         Raises:
             KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
         &#34;&#34;&#34;
@@ -2146,7 +2147,8 @@ since no actual filesystem operations are needed.</p></div>
         &#34;&#34;&#34;Writes the keyfile data to the file.
         Args:
             keyfile_data (bytes): The byte data to store under the path.
-            overwrite (bool, optional): If True, overwrites the data without asking for permission from the user. Default is False.
+            overwrite (bool, optional): If ``True``, overwrites the data without asking for permission from the user. 
+                Default is ``False``.
         Raises:
             KeyFileError: Raised if the file is not writable or the user responds No to the overwrite prompt.
         &#34;&#34;&#34;
@@ -2376,7 +2378,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password for decryption. If None, asks for user input.</dd>
+<dd>The password for decryption. If <code>None</code>, asks for user input.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -2390,7 +2392,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <pre><code class="python">def decrypt(self, password: str = None):
     &#34;&#34;&#34;Decrypts the file under the path.
     Args:
-        password (str, optional): The password for decryption. If None, asks for user input.
+        password (str, optional): The password for decryption. If ``None``, asks for user input.
     Raises:
         KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
     &#34;&#34;&#34;
@@ -2424,7 +2426,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password for encryption. If None, asks for user input.</dd>
+<dd>The password for encryption. If <code>None</code>, asks for user input.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -2438,7 +2440,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <pre><code class="python">def encrypt(self, password: str = None):
     &#34;&#34;&#34;Encrypts the file under the path.
     Args:
-        password (str, optional): The password for encryption. If None, asks for user input.
+        password (str, optional): The password for encryption. If ``None``, asks for user input.
     Raises:
         KeyFileError: Raised if the file does not exist, is not readable, or writable.
     &#34;&#34;&#34;
@@ -2491,7 +2493,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password used to decrypt the file. If None, asks for user input.</dd>
+<dd>The password used to decrypt the file. If <code>None</code>, asks for user input.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>keypair (Keypair): The keypair stored under the path.</p>
@@ -2507,7 +2509,7 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <pre><code class="python">def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
     &#34;&#34;&#34;Returns the keypair from the path, decrypts data if the file is encrypted.
     Args:
-        password (str, optional): The password used to decrypt the file. If None, asks for user input.
+        password (str, optional): The password used to decrypt the file. If ``None``, asks for user input.
     Returns:
         keypair (Keypair): The keypair stored under the path.
     Raises:
@@ -2616,11 +2618,11 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
 <dt><strong><code>keypair</code></strong> :&ensp;<code>Keypair</code></dt>
 <dd>The keypair to store under the path.</dd>
 <dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>If True, encrypts the file under the path. Default is True.</dd>
+<dd>If <code>True</code>, encrypts the file under the path. Default is True.</dd>
 <dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>If True, forces overwrite of the current file. Default is False.</dd>
+<dd>If <code>True</code>, forces overwrite of the current file. Default is <code>False</code>.</dd>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password used to encrypt the file. If None, asks for user input.</dd>
+<dd>The password used to encrypt the file. If <code>None</code>, asks for user input.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -2641,9 +2643,9 @@ return True if the keyfile is the most updated with nacl, else False.</p></div>
     &#34;&#34;&#34;Writes the keypair to the file and optionally encrypts data.
     Args:
         keypair (Keypair): The keypair to store under the path.
-        encrypt (bool, optional): If True, encrypts the file under the path. Default is True.
-        overwrite (bool, optional): If True, forces overwrite of the current file. Default is False.
-        password (str, optional): The password used to encrypt the file. If None, asks for user input.
+        encrypt (bool, optional): If ``True``, encrypts the file under the path. Default is True.
+        overwrite (bool, optional): If ``True``, forces overwrite of the current file. Default is ``False``.
+        password (str, optional): The password used to encrypt the file. If ``None``, asks for user input.
     Raises:
         KeyFileError: Raised if the file does not exist, is not readable, writable, or if the password is incorrect.
     &#34;&#34;&#34;

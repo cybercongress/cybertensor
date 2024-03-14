@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>cybertensor.threadpool API documentation</title>
-<meta name="description" content="Implements ThreadPoolExecutor." />
+<meta name="description" content="Implements `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,7 +22,7 @@
 <h1 class="title">Module <code>cybertensor.threadpool</code></h1>
 </header>
 <section id="section-intro">
-<p>Implements ThreadPoolExecutor.</p>
+<p>Implements <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -30,7 +30,7 @@
 <pre><code class="python"># Copyright 2009 Brian Quinlan. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-&#34;&#34;&#34;Implements ThreadPoolExecutor.&#34;&#34;&#34;
+&#34;&#34;&#34;Implements `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_.&#34;&#34;&#34;
 
 __author__ = &#34;Brian Quinlan (brian@sweetapp.com)&#34;
 
@@ -142,7 +142,7 @@ def _worker(executor_reference, work_queue, initializer, initargs):
 
 class BrokenThreadPool(_base.BrokenExecutor):
     &#34;&#34;&#34;
-    Raised when a worker thread in a ThreadPoolExecutor failed initializing.
+    Raised when a worker thread in a `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ failed initializing.
     &#34;&#34;&#34;
 
 
@@ -160,7 +160,8 @@ class PriorityThreadPoolExecutor(_base.Executor):
         initializer=None,
         initargs=(),
     ):
-        &#34;&#34;&#34;Initializes a new ThreadPoolExecutor instance.
+        &#34;&#34;&#34;
+        Initializes a new `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ instance.
         Args:
             max_workers: The maximum number of threads that can be used to
                 execute the given calls.
@@ -224,7 +225,9 @@ class PriorityThreadPoolExecutor(_base.Executor):
 
     @classmethod
     def config(cls) -&gt; &#34;Config&#34;:
-        &#34;&#34;&#34;Get config from the argument parser
+        &#34;&#34;&#34;
+        Get config from the argument parser
+
         Return: Config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
@@ -305,7 +308,7 @@ class PriorityThreadPoolExecutor(_base.Executor):
                 if work_item is not None:
                     work_item.future.set_exception(BrokenThreadPool(self._broken))
 
-    def shutdown(self, wait=True):
+    def shutdown(self, wait: bool = True):
         with self._shutdown_lock:
             self._shutdown = True
             self._work_queue.put(NULL_ENTRY)
@@ -334,14 +337,14 @@ class PriorityThreadPoolExecutor(_base.Executor):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Raised when a worker thread in a ThreadPoolExecutor failed initializing.</p></div>
+<div class="desc"><p>Raised when a worker thread in a <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_ failed initializing.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class BrokenThreadPool(_base.BrokenExecutor):
     &#34;&#34;&#34;
-    Raised when a worker thread in a ThreadPoolExecutor failed initializing.
+    Raised when a worker thread in a `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ failed initializing.
     &#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -358,7 +361,7 @@ class PriorityThreadPoolExecutor(_base.Executor):
 </code></dt>
 <dd>
 <div class="desc"><p>Base threadpool executor with a priority queue</p>
-<p>Initializes a new ThreadPoolExecutor instance.</p>
+<p>Initializes a new <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_ instance.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>max_workers</code></strong></dt>
@@ -389,7 +392,8 @@ execute the given calls.</dd>
         initializer=None,
         initargs=(),
     ):
-        &#34;&#34;&#34;Initializes a new ThreadPoolExecutor instance.
+        &#34;&#34;&#34;
+        Initializes a new `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ instance.
         Args:
             max_workers: The maximum number of threads that can be used to
                 execute the given calls.
@@ -453,7 +457,9 @@ execute the given calls.</dd>
 
     @classmethod
     def config(cls) -&gt; &#34;Config&#34;:
-        &#34;&#34;&#34;Get config from the argument parser
+        &#34;&#34;&#34;
+        Get config from the argument parser
+
         Return: Config object
         &#34;&#34;&#34;
         parser = argparse.ArgumentParser()
@@ -534,7 +540,7 @@ execute the given calls.</dd>
                 if work_item is not None:
                     work_item.future.set_exception(BrokenThreadPool(self._broken))
 
-    def shutdown(self, wait=True):
+    def shutdown(self, wait: bool = True):
         with self._shutdown_lock:
             self._shutdown = True
             self._work_queue.put(NULL_ENTRY)
@@ -599,15 +605,17 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
 <span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get config from the argument parser
-Return: Config object</p></div>
+<div class="desc"><p>Get config from the argument parser</p>
+<p>Return: Config object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def config(cls) -&gt; &#34;Config&#34;:
-    &#34;&#34;&#34;Get config from the argument parser
+    &#34;&#34;&#34;
+    Get config from the argument parser
+
     Return: Config object
     &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
@@ -634,7 +642,7 @@ def is_empty(self):
 <h3>Methods</h3>
 <dl>
 <dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.shutdown"><code class="name flex">
-<span>def <span class="ident">shutdown</span></span>(<span>self, wait=True)</span>
+<span>def <span class="ident">shutdown</span></span>(<span>self, wait: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Clean-up the resources associated with the Executor.</p>
@@ -655,7 +663,7 @@ cancelled.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def shutdown(self, wait=True):
+<pre><code class="python">def shutdown(self, wait: bool = True):
     with self._shutdown_lock:
         self._shutdown = True
         self._work_queue.put(NULL_ENTRY)

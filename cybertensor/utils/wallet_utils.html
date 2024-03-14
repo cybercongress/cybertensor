@@ -47,7 +47,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 import re
-from typing import Union
+from typing import Union, Optional
 
 from cosmpy.aerial.client import Coin
 from cosmpy.crypto.address import Address
@@ -116,7 +116,68 @@ def coin_from_str(string: str) -&gt; Coin:
     if match is None:
         raise ValueError(f&#34;failed to parse Coin: {string}&#34;)
     else:
-        return Coin(match.group(3), match.group(1))</code></pre>
+        return Coin(match.group(3), match.group(1))
+
+
+def create_identity_dict(
+    display: str = &#34;&#34;,
+    legal: str = &#34;&#34;,
+    web: str = &#34;&#34;,
+    riot: str = &#34;&#34;,
+    email: str = &#34;&#34;,
+    pgp_fingerprint: Optional[str] = None,
+    image: str = &#34;&#34;,
+    info: str = &#34;&#34;,
+    twitter: str = &#34;&#34;,
+) -&gt; dict:
+    &#34;&#34;&#34;
+    Creates a dictionary with structure for identity extrinsic. Must fit within 64 bits.
+    Args:
+        display (str): String to be converted and stored under &#39;display&#39;.
+        legal (str): String to be converted and stored under &#39;legal&#39;.
+        web (str): String to be converted and stored under &#39;web&#39;.
+        riot (str): String to be converted and stored under &#39;riot&#39;.
+        email (str): String to be converted and stored under &#39;email&#39;.
+        pgp_fingerprint (str): String to be converted and stored under &#39;pgp_fingerprint&#39;.
+        image (str): String to be converted and stored under &#39;image&#39;.
+        info (str): String to be converted and stored under &#39;info&#39;.
+        twitter (str): String to be converted and stored under &#39;twitter&#39;.
+    Returns:
+        dict: A dictionary with the specified structure and byte string conversions.
+    Raises:
+        ValueError: If pgp_fingerprint is not exactly 20 bytes long when encoded.
+    &#34;&#34;&#34;
+    if pgp_fingerprint and len(pgp_fingerprint.encode()) != 20:
+        raise ValueError(&#34;pgp_fingerprint must be exactly 20 bytes long when encoded&#34;)
+
+    return {
+        &#34;info&#34;: {
+            &#34;additional&#34;: [[]],
+            &#34;display&#34;: {f&#34;Raw{len(display.encode())}&#34;: display.encode()},
+            &#34;legal&#34;: {f&#34;Raw{len(legal.encode())}&#34;: legal.encode()},
+            &#34;web&#34;: {f&#34;Raw{len(web.encode())}&#34;: web.encode()},
+            &#34;riot&#34;: {f&#34;Raw{len(riot.encode())}&#34;: riot.encode()},
+            &#34;email&#34;: {f&#34;Raw{len(email.encode())}&#34;: email.encode()},
+            &#34;pgp_fingerprint&#34;: pgp_fingerprint.encode() if pgp_fingerprint else None,
+            &#34;image&#34;: {f&#34;Raw{len(image.encode())}&#34;: image.encode()},
+            &#34;info&#34;: {f&#34;Raw{len(info.encode())}&#34;: info.encode()},
+            &#34;twitter&#34;: {f&#34;Raw{len(twitter.encode())}&#34;: twitter.encode()},
+        }
+    }
+
+
+def decode_hex_identity_dict(info_dictionary):
+    for key, value in info_dictionary.items():
+        if isinstance(value, dict):
+            item = list(value.values())[0]
+            if isinstance(item, str) and item.startswith(&#34;0x&#34;):
+                try:
+                    info_dictionary[key] = bytes.fromhex(item[2:]).decode()
+                except UnicodeDecodeError:
+                    print(f&#34;Could not decode: {key}: {item}&#34;)
+            else:
+                info_dictionary[key] = item
+    return info_dictionary</code></pre>
 </details>
 </section>
 <section>
@@ -182,6 +243,116 @@ def coin_from_str(string: str) -&gt; Coin:
         raise ValueError(f&#34;failed to parse Coin: {string}&#34;)
     else:
         return Coin(match.group(3), match.group(1))</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.wallet_utils.create_identity_dict"><code class="name flex">
+<span>def <span class="ident">create_identity_dict</span></span>(<span>display: str = '', legal: str = '', web: str = '', riot: str = '', email: str = '', pgp_fingerprint: Optional[str] = None, image: str = '', info: str = '', twitter: str = '') ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a dictionary with structure for identity extrinsic. Must fit within 64 bits.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>display</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'display'.</dd>
+<dt><strong><code>legal</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'legal'.</dd>
+<dt><strong><code>web</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'web'.</dd>
+<dt><strong><code>riot</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'riot'.</dd>
+<dt><strong><code>email</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'email'.</dd>
+<dt><strong><code>pgp_fingerprint</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'pgp_fingerprint'.</dd>
+<dt><strong><code>image</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'image'.</dd>
+<dt><strong><code>info</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'info'.</dd>
+<dt><strong><code>twitter</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to be converted and stored under 'twitter'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>A dictionary with the specified structure and byte string conversions.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If pgp_fingerprint is not exactly 20 bytes long when encoded.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_identity_dict(
+    display: str = &#34;&#34;,
+    legal: str = &#34;&#34;,
+    web: str = &#34;&#34;,
+    riot: str = &#34;&#34;,
+    email: str = &#34;&#34;,
+    pgp_fingerprint: Optional[str] = None,
+    image: str = &#34;&#34;,
+    info: str = &#34;&#34;,
+    twitter: str = &#34;&#34;,
+) -&gt; dict:
+    &#34;&#34;&#34;
+    Creates a dictionary with structure for identity extrinsic. Must fit within 64 bits.
+    Args:
+        display (str): String to be converted and stored under &#39;display&#39;.
+        legal (str): String to be converted and stored under &#39;legal&#39;.
+        web (str): String to be converted and stored under &#39;web&#39;.
+        riot (str): String to be converted and stored under &#39;riot&#39;.
+        email (str): String to be converted and stored under &#39;email&#39;.
+        pgp_fingerprint (str): String to be converted and stored under &#39;pgp_fingerprint&#39;.
+        image (str): String to be converted and stored under &#39;image&#39;.
+        info (str): String to be converted and stored under &#39;info&#39;.
+        twitter (str): String to be converted and stored under &#39;twitter&#39;.
+    Returns:
+        dict: A dictionary with the specified structure and byte string conversions.
+    Raises:
+        ValueError: If pgp_fingerprint is not exactly 20 bytes long when encoded.
+    &#34;&#34;&#34;
+    if pgp_fingerprint and len(pgp_fingerprint.encode()) != 20:
+        raise ValueError(&#34;pgp_fingerprint must be exactly 20 bytes long when encoded&#34;)
+
+    return {
+        &#34;info&#34;: {
+            &#34;additional&#34;: [[]],
+            &#34;display&#34;: {f&#34;Raw{len(display.encode())}&#34;: display.encode()},
+            &#34;legal&#34;: {f&#34;Raw{len(legal.encode())}&#34;: legal.encode()},
+            &#34;web&#34;: {f&#34;Raw{len(web.encode())}&#34;: web.encode()},
+            &#34;riot&#34;: {f&#34;Raw{len(riot.encode())}&#34;: riot.encode()},
+            &#34;email&#34;: {f&#34;Raw{len(email.encode())}&#34;: email.encode()},
+            &#34;pgp_fingerprint&#34;: pgp_fingerprint.encode() if pgp_fingerprint else None,
+            &#34;image&#34;: {f&#34;Raw{len(image.encode())}&#34;: image.encode()},
+            &#34;info&#34;: {f&#34;Raw{len(info.encode())}&#34;: info.encode()},
+            &#34;twitter&#34;: {f&#34;Raw{len(twitter.encode())}&#34;: twitter.encode()},
+        }
+    }</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.utils.wallet_utils.decode_hex_identity_dict"><code class="name flex">
+<span>def <span class="ident">decode_hex_identity_dict</span></span>(<span>info_dictionary)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decode_hex_identity_dict(info_dictionary):
+    for key, value in info_dictionary.items():
+        if isinstance(value, dict):
+            item = list(value.values())[0]
+            if isinstance(item, str) and item.startswith(&#34;0x&#34;):
+                try:
+                    info_dictionary[key] = bytes.fromhex(item[2:]).decode()
+                except UnicodeDecodeError:
+                    print(f&#34;Could not decode: {key}: {item}&#34;)
+            else:
+                info_dictionary[key] = item
+    return info_dictionary</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.utils.wallet_utils.is_valid_address"><code class="name flex">
@@ -266,6 +437,8 @@ def coin_from_str(string: str) -&gt; Coin:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="cybertensor.utils.wallet_utils.coin_from_str" href="#cybertensor.utils.wallet_utils.coin_from_str">coin_from_str</a></code></li>
+<li><code><a title="cybertensor.utils.wallet_utils.create_identity_dict" href="#cybertensor.utils.wallet_utils.create_identity_dict">create_identity_dict</a></code></li>
+<li><code><a title="cybertensor.utils.wallet_utils.decode_hex_identity_dict" href="#cybertensor.utils.wallet_utils.decode_hex_identity_dict">decode_hex_identity_dict</a></code></li>
 <li><code><a title="cybertensor.utils.wallet_utils.is_valid_address" href="#cybertensor.utils.wallet_utils.is_valid_address">is_valid_address</a></code></li>
 <li><code><a title="cybertensor.utils.wallet_utils.is_valid_cybertensor_address_or_public_key" href="#cybertensor.utils.wallet_utils.is_valid_cybertensor_address_or_public_key">is_valid_cybertensor_address_or_public_key</a></code></li>
 </ul>

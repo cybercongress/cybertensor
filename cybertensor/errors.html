@@ -47,61 +47,79 @@
 
 class ChainError(BaseException):
     r&#34;&#34;&#34;Base error for any chain related errors.&#34;&#34;&#34;
+
     pass
 
 
 class ChainConnectionError(ChainError):
     r&#34;&#34;&#34;Error for any chain connection related errors.&#34;&#34;&#34;
+
     pass
 
 
 class ChainTransactionError(ChainError):
     r&#34;&#34;&#34;Error for any chain transaction related errors.&#34;&#34;&#34;
+
     pass
 
 
 class ChainQueryError(ChainError):
     r&#34;&#34;&#34;Error for any chain query related errors.&#34;&#34;&#34;
-    pass
 
-
-class StakeError(ChainTransactionError):
-    r&#34;&#34;&#34;Error raised when a stake transaction fails.&#34;&#34;&#34;
-    pass
-
-
-class UnstakeError(ChainTransactionError):
-    r&#34;&#34;&#34;Error raised when an unstake transaction fails.&#34;&#34;&#34;
     pass
 
 
 class IdentityError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when an identity transaction fails.&#34;&#34;&#34;
+
+    pass
+
+
+class StakeError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a stake transaction fails.&#34;&#34;&#34;
+
+    pass
+
+
+class UnstakeError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when an unstake transaction fails.&#34;&#34;&#34;
+
+    pass
+
+
+class IdentityError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when an identity transaction fails.&#34;&#34;&#34;
+
     pass
 
 
 class NominationError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a nomination transaction fails.&#34;&#34;&#34;
+
     pass
 
 
 class TransferError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a transfer transaction fails.&#34;&#34;&#34;
+
     pass
 
 
 class RegistrationError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a neuron registration transaction fails.&#34;&#34;&#34;
+
     pass
 
 
 class NotRegisteredError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a neuron is not registered, and the transaction requires it to be.&#34;&#34;&#34;
+
     pass
 
 
 class NotDelegateError(StakeError):
     r&#34;&#34;&#34;Error raised when a hotkey you are trying to stake to is not a delegate.&#34;&#34;&#34;
+
     pass
 
 
@@ -112,7 +130,72 @@ class NotSetWeightError(ChainTransactionError):
 
 class KeyFileError(Exception):
     r&#34;&#34;&#34;Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid.&#34;&#34;&#34;
-    pass</code></pre>
+    pass
+
+
+class MetadataError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when metadata commitment transaction fails.&#34;&#34;&#34;
+
+    pass
+
+
+class InvalidRequestNameError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is invalid. Ususally indicates a broken URL.&#34;&#34;&#34;
+
+    pass
+
+
+class UnknownSynapseError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is not found in the Axon&#39;s forward_fns dictionary.&#34;&#34;&#34;
+
+    pass
+
+
+class SynapseParsingError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request headers are unable to be parsed into the synapse type.&#34;&#34;&#34;
+
+    pass
+
+
+class NotVerifiedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is not verified.&#34;&#34;&#34;
+
+    pass
+
+
+class BlacklistedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is blacklisted.&#34;&#34;&#34;
+
+    pass
+
+
+class PriorityException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request priority is not met.&#34;&#34;&#34;
+
+    pass
+
+class PostProcessException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the response headers cannot be updated.&#34;&#34;&#34;
+
+    pass
+
+
+class RunException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function cannot be executed. Indicates a server error.&#34;&#34;&#34;
+
+    pass
+
+
+class InternalServerError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function fails on the server. Indicates a server error.&#34;&#34;&#34;
+
+    pass
+
+
+class SynapseDendriteNoneException(Exception):
+    def __init__(self, message=&#34;Synapse Dendrite is None&#34;):
+        self.message = message
+        super().__init__(self.message)</code></pre>
 </details>
 </section>
 <section>
@@ -124,6 +207,27 @@ class KeyFileError(Exception):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="cybertensor.errors.BlacklistedException"><code class="flex name class">
+<span>class <span class="ident">BlacklistedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request is blacklisted.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BlacklistedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is blacklisted.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="cybertensor.errors.ChainConnectionError"><code class="flex name class">
 <span>class <span class="ident">ChainConnectionError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -136,6 +240,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class ChainConnectionError(ChainError):
     r&#34;&#34;&#34;Error for any chain connection related errors.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -156,6 +261,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class ChainError(BaseException):
     r&#34;&#34;&#34;Base error for any chain related errors.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -181,6 +287,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class ChainQueryError(ChainError):
     r&#34;&#34;&#34;Error for any chain query related errors.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -201,6 +308,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class ChainTransactionError(ChainError):
     r&#34;&#34;&#34;Error for any chain transaction related errors.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -211,6 +319,7 @@ class KeyFileError(Exception):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="cybertensor.errors.IdentityError" href="#cybertensor.errors.IdentityError">IdentityError</a></li>
+<li><a title="cybertensor.errors.MetadataError" href="#cybertensor.errors.MetadataError">MetadataError</a></li>
 <li><a title="cybertensor.errors.NominationError" href="#cybertensor.errors.NominationError">NominationError</a></li>
 <li><a title="cybertensor.errors.NotRegisteredError" href="#cybertensor.errors.NotRegisteredError">NotRegisteredError</a></li>
 <li><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></li>
@@ -232,12 +341,55 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class IdentityError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when an identity transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
 <li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.InternalServerError"><code class="flex name class">
+<span>class <span class="ident">InternalServerError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the requested function fails on the server. Indicates a server error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InternalServerError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function fails on the server. Indicates a server error.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.InvalidRequestNameError"><code class="flex name class">
+<span>class <span class="ident">InvalidRequestNameError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request name is invalid. Ususally indicates a broken URL.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InvalidRequestNameError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is invalid. Ususally indicates a broken URL.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
@@ -261,6 +413,28 @@ class KeyFileError(Exception):
 <li>builtins.BaseException</li>
 </ul>
 </dd>
+<dt id="cybertensor.errors.MetadataError"><code class="flex name class">
+<span>class <span class="ident">MetadataError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when metadata commitment transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MetadataError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when metadata commitment transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="cybertensor.errors.NominationError"><code class="flex name class">
 <span>class <span class="ident">NominationError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -273,6 +447,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class NominationError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a nomination transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -294,6 +469,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class NotDelegateError(StakeError):
     r&#34;&#34;&#34;Error raised when a hotkey you are trying to stake to is not a delegate.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -316,6 +492,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class NotRegisteredError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a neuron is not registered, and the transaction requires it to be.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -346,6 +523,69 @@ class KeyFileError(Exception):
 <li>builtins.BaseException</li>
 </ul>
 </dd>
+<dt id="cybertensor.errors.NotVerifiedException"><code class="flex name class">
+<span>class <span class="ident">NotVerifiedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request is not verified.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotVerifiedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is not verified.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.PostProcessException"><code class="flex name class">
+<span>class <span class="ident">PostProcessException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the response headers cannot be updated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PostProcessException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the response headers cannot be updated.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.PriorityException"><code class="flex name class">
+<span>class <span class="ident">PriorityException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request priority is not met.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PriorityException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request priority is not met.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="cybertensor.errors.RegistrationError"><code class="flex name class">
 <span>class <span class="ident">RegistrationError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -358,12 +598,34 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class RegistrationError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a neuron registration transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
 <li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.RunException"><code class="flex name class">
+<span>class <span class="ident">RunException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the requested function cannot be executed. Indicates a server error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function cannot be executed. Indicates a server error.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
@@ -379,6 +641,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class StakeError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a stake transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -390,6 +653,48 @@ class KeyFileError(Exception):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="cybertensor.errors.NotDelegateError" href="#cybertensor.errors.NotDelegateError">NotDelegateError</a></li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.SynapseDendriteNoneException"><code class="flex name class">
+<span>class <span class="ident">SynapseDendriteNoneException</span></span>
+<span>(</span><span>message='Synapse Dendrite is None')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SynapseDendriteNoneException(Exception):
+    def __init__(self, message=&#34;Synapse Dendrite is None&#34;):
+        self.message = message
+        super().__init__(self.message)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.SynapseParsingError"><code class="flex name class">
+<span>class <span class="ident">SynapseParsingError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request headers are unable to be parsed into the synapse type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SynapseParsingError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request headers are unable to be parsed into the synapse type.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
 </ul>
 </dd>
 <dt id="cybertensor.errors.TransferError"><code class="flex name class">
@@ -404,12 +709,34 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class TransferError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when a transfer transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
 <li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.UnknownSynapseError"><code class="flex name class">
+<span>class <span class="ident">UnknownSynapseError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request name is not found in the Axon's forward_fns dictionary.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnknownSynapseError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is not found in the Axon&#39;s forward_fns dictionary.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
 </dd>
@@ -425,6 +752,7 @@ class KeyFileError(Exception):
 </summary>
 <pre><code class="python">class UnstakeError(ChainTransactionError):
     r&#34;&#34;&#34;Error raised when an unstake transaction fails.&#34;&#34;&#34;
+
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -451,6 +779,9 @@ class KeyFileError(Exception):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="cybertensor.errors.BlacklistedException" href="#cybertensor.errors.BlacklistedException">BlacklistedException</a></code></h4>
+</li>
+<li>
 <h4><code><a title="cybertensor.errors.ChainConnectionError" href="#cybertensor.errors.ChainConnectionError">ChainConnectionError</a></code></h4>
 </li>
 <li>
@@ -466,7 +797,16 @@ class KeyFileError(Exception):
 <h4><code><a title="cybertensor.errors.IdentityError" href="#cybertensor.errors.IdentityError">IdentityError</a></code></h4>
 </li>
 <li>
+<h4><code><a title="cybertensor.errors.InternalServerError" href="#cybertensor.errors.InternalServerError">InternalServerError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.InvalidRequestNameError" href="#cybertensor.errors.InvalidRequestNameError">InvalidRequestNameError</a></code></h4>
+</li>
+<li>
 <h4><code><a title="cybertensor.errors.KeyFileError" href="#cybertensor.errors.KeyFileError">KeyFileError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.MetadataError" href="#cybertensor.errors.MetadataError">MetadataError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="cybertensor.errors.NominationError" href="#cybertensor.errors.NominationError">NominationError</a></code></h4>
@@ -481,13 +821,34 @@ class KeyFileError(Exception):
 <h4><code><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></code></h4>
 </li>
 <li>
+<h4><code><a title="cybertensor.errors.NotVerifiedException" href="#cybertensor.errors.NotVerifiedException">NotVerifiedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.PostProcessException" href="#cybertensor.errors.PostProcessException">PostProcessException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.PriorityException" href="#cybertensor.errors.PriorityException">PriorityException</a></code></h4>
+</li>
+<li>
 <h4><code><a title="cybertensor.errors.RegistrationError" href="#cybertensor.errors.RegistrationError">RegistrationError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.RunException" href="#cybertensor.errors.RunException">RunException</a></code></h4>
 </li>
 <li>
 <h4><code><a title="cybertensor.errors.StakeError" href="#cybertensor.errors.StakeError">StakeError</a></code></h4>
 </li>
 <li>
+<h4><code><a title="cybertensor.errors.SynapseDendriteNoneException" href="#cybertensor.errors.SynapseDendriteNoneException">SynapseDendriteNoneException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.SynapseParsingError" href="#cybertensor.errors.SynapseParsingError">SynapseParsingError</a></code></h4>
+</li>
+<li>
 <h4><code><a title="cybertensor.errors.TransferError" href="#cybertensor.errors.TransferError">TransferError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.UnknownSynapseError" href="#cybertensor.errors.UnknownSynapseError">UnknownSynapseError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="cybertensor.errors.UnstakeError" href="#cybertensor.errors.UnstakeError">UnstakeError</a></code></h4>

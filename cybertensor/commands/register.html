@@ -46,15 +46,15 @@
 
 import argparse
 import sys
+from copy import deepcopy
 
 from rich.prompt import Prompt, Confirm
 
 import cybertensor
+from cybertensor import __console__ as console
 from cybertensor.commands import defaults
 from cybertensor.commands.utils import check_netuid_set, check_for_cuda_reg_config
-from cybertensor import __console__ as console
 from cybertensor.config import Config
-from cybertensor.utils.balance import Balance
 from cybertensor.wallet import Wallet
 
 
@@ -89,11 +89,20 @@ class RegisterCommand:
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;):
         r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
-        config = cli.config.copy()
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
@@ -103,7 +112,7 @@ class RegisterCommand:
             sys.exit(1)
 
         # Check current recycle amount
-        current_recycle = Balance(cwtensor.burn(netuid=cli.config.netuid))
+        current_recycle = cwtensor.recycle(netuid=cli.config.netuid)
         balance = cwtensor.get_balance(wallet.coldkeypub.address)
 
         # Check balance is sufficient
@@ -131,7 +140,7 @@ class RegisterCommand:
 
     @classmethod
     def check_config(cls, config: &#34;Config&#34;):
-        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -176,7 +185,7 @@ class PowRegisterCommand:
     - --pow_register.cuda.use_cuda (bool): Enables the use of CUDA for GPU-accelerated PoW calculations. Requires a CUDA-compatible GPU.
     - --pow_register.cuda.no_cuda (bool): Disables the use of CUDA, defaulting to CPU-based calculations.
     - --pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
-    - --pow_register.cuda.TPB (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
+    - --pow_register.cuda.tpb (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
 
     The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.
 
@@ -192,10 +201,20 @@ class PowRegisterCommand:
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            PowRegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
@@ -208,7 +227,7 @@ class PowRegisterCommand:
             wallet=wallet,
             netuid=cli.config.netuid,
             prompt=not cli.config.no_prompt,
-            TPB=cli.config.pow_register.cuda.get(&#34;TPB&#34;, None),
+            tpb=cli.config.pow_register.cuda.get(&#34;tpb&#34;, None),
             update_interval=cli.config.pow_register.get(&#34;update_interval&#34;, None),
             num_processes=cli.config.pow_register.get(&#34;num_processes&#34;, None),
             cuda=cli.config.pow_register.cuda.get(
@@ -300,10 +319,10 @@ class PowRegisterCommand:
             required=False,
         )
         register_parser.add_argument(
-            &#34;--pow_register.cuda.TPB&#34;,
-            &#34;--cuda.TPB&#34;,
+            &#34;--pow_register.cuda.tpb&#34;,
+            &#34;--cuda.tpb&#34;,
             type=int,
-            default=defaults.pow_register.cuda.TPB,
+            default=defaults.pow_register.cuda.tpb,
             help=&#34;&#34;&#34;Set the number of Threads Per Block for CUDA.&#34;&#34;&#34;,
             required=False,
         )
@@ -328,7 +347,7 @@ class PowRegisterCommand:
         #     config.cwtensor.network_config = network_config
         #     config.cwtensor.contract_address = contract_address
 
-        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))  # , log_verbose=False)
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -339,7 +358,85 @@ class PowRegisterCommand:
             config.wallet.hotkey = str(hotkey)
 
         if not config.no_prompt:
-            check_for_cuda_reg_config(config)</code></pre>
+            check_for_cuda_reg_config(config)
+
+
+class SwapHotkeyCommand:
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        try:
+            cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            SwapHotkeyCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        wallet = cybertensor.wallet(config=cli.config)
+
+        # This creates an unnecessary amount of extra data, but simplifies implementation.
+        new_config = deepcopy(cli.config)
+        new_config.wallet.hotkey = new_config.wallet.hotkey_b
+        new_wallet = cybertensor.wallet(config=new_config)
+
+        cwtensor.swap_hotkey(
+            wallet=wallet,
+            new_wallet=new_wallet,
+            wait_for_finalization=False,
+            prompt=False,
+        )
+        
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        swap_hotkey_parser = parser.add_parser(
+            &#34;swap_hotkey&#34;, help=&#34;&#34;&#34;Swap your associated hotkey.&#34;&#34;&#34;
+        )
+
+        swap_hotkey_parser.add_argument(
+            &#34;--wallet.hotkey_b&#34;,
+            type=str,
+            default=defaults.wallet.hotkey,
+            help=&#34;&#34;&#34;Name of the new hotkey&#34;&#34;&#34;,
+            required=False,
+        )
+
+        cybertensor.wallet.add_args(swap_hotkey_parser)
+        cybertensor.cwtensor.add_args(swap_hotkey_parser)
+
+    @staticmethod
+    def check_config(config: &#34;cybertensor.config&#34;):
+        if (
+            not config.is_set(&#34;cwtensor.network&#34;)
+            and not config.is_set(&#34;cwtensor.chain_endpoint&#34;)
+            and not config.no_prompt
+        ):
+            config.cwtensor.network = Prompt.ask(
+                &#34;Enter cwtensor network&#34;,
+                choices=cybertensor.__networks__,
+                default=defaults.cwtensor.network,
+            )
+            _, endpoint = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+                config.cwtensor.network
+            )
+            config.cwtensor.chain_endpoint = endpoint
+
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter old hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.is_set(&#34;wallet.hotkey_b&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter new hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey_b = str(hotkey)</code></pre>
 </details>
 </section>
 <section>
@@ -370,7 +467,7 @@ Affects the frequency of update checks.
 - &ndash;pow_register.cuda.use_cuda (bool): Enables the use of CUDA for GPU-accelerated PoW calculations. Requires a CUDA-compatible GPU.
 - &ndash;pow_register.cuda.no_cuda (bool): Disables the use of CUDA, defaulting to CPU-based calculations.
 - &ndash;pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
-- &ndash;pow_register.cuda.TPB (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.</p>
+- &ndash;pow_register.cuda.tpb (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.</p>
 <p>The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.</p>
 <p>Example usage:</p>
 <pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
@@ -403,7 +500,7 @@ particularly when opting for CUDA-based GPU acceleration.</p>
     - --pow_register.cuda.use_cuda (bool): Enables the use of CUDA for GPU-accelerated PoW calculations. Requires a CUDA-compatible GPU.
     - --pow_register.cuda.no_cuda (bool): Disables the use of CUDA, defaulting to CPU-based calculations.
     - --pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
-    - --pow_register.cuda.TPB (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
+    - --pow_register.cuda.tpb (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
 
     The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.
 
@@ -419,10 +516,20 @@ particularly when opting for CUDA-based GPU acceleration.</p>
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            PowRegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
@@ -435,7 +542,7 @@ particularly when opting for CUDA-based GPU acceleration.</p>
             wallet=wallet,
             netuid=cli.config.netuid,
             prompt=not cli.config.no_prompt,
-            TPB=cli.config.pow_register.cuda.get(&#34;TPB&#34;, None),
+            tpb=cli.config.pow_register.cuda.get(&#34;tpb&#34;, None),
             update_interval=cli.config.pow_register.get(&#34;update_interval&#34;, None),
             num_processes=cli.config.pow_register.get(&#34;num_processes&#34;, None),
             cuda=cli.config.pow_register.cuda.get(
@@ -527,10 +634,10 @@ particularly when opting for CUDA-based GPU acceleration.</p>
             required=False,
         )
         register_parser.add_argument(
-            &#34;--pow_register.cuda.TPB&#34;,
-            &#34;--cuda.TPB&#34;,
+            &#34;--pow_register.cuda.tpb&#34;,
+            &#34;--cuda.tpb&#34;,
             type=int,
-            default=defaults.pow_register.cuda.TPB,
+            default=defaults.pow_register.cuda.tpb,
             help=&#34;&#34;&#34;Set the number of Threads Per Block for CUDA.&#34;&#34;&#34;,
             required=False,
         )
@@ -555,7 +662,7 @@ particularly when opting for CUDA-based GPU acceleration.</p>
         #     config.cwtensor.network_config = network_config
         #     config.cwtensor.contract_address = contract_address
 
-        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))  # , log_verbose=False)
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -656,10 +763,10 @@ def add_args(parser: argparse.ArgumentParser):
         required=False,
     )
     register_parser.add_argument(
-        &#34;--pow_register.cuda.TPB&#34;,
-        &#34;--cuda.TPB&#34;,
+        &#34;--pow_register.cuda.tpb&#34;,
+        &#34;--cuda.tpb&#34;,
         type=int,
-        default=defaults.pow_register.cuda.TPB,
+        default=defaults.pow_register.cuda.tpb,
         help=&#34;&#34;&#34;Set the number of Threads Per Block for CUDA.&#34;&#34;&#34;,
         required=False,
     )
@@ -694,7 +801,7 @@ def check_config(config: &#34;Config&#34;):
     #     config.cwtensor.network_config = network_config
     #     config.cwtensor.contract_address = contract_address
 
-    check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+    check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))  # , log_verbose=False)
 
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -709,7 +816,7 @@ def check_config(config: &#34;Config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.commands.register.PowRegisterCommand.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>cli)</span>
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Register neuron.</p></div>
@@ -718,36 +825,15 @@ def check_config(config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def run(cli):
+def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
     r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
-    wallet = Wallet(config=cli.config)
-    cwtensor = cybertensor.cwtensor(config=cli.config)
-
-    # Verify subnet exists
-    if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-        console.print(
-            f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
-        )
-        sys.exit(1)
-
-    cwtensor.register(
-        wallet=wallet,
-        netuid=cli.config.netuid,
-        prompt=not cli.config.no_prompt,
-        TPB=cli.config.pow_register.cuda.get(&#34;TPB&#34;, None),
-        update_interval=cli.config.pow_register.get(&#34;update_interval&#34;, None),
-        num_processes=cli.config.pow_register.get(&#34;num_processes&#34;, None),
-        cuda=cli.config.pow_register.cuda.get(
-            &#34;use_cuda&#34;, defaults.pow_register.cuda.use_cuda
-        ),
-        dev_id=cli.config.pow_register.cuda.get(&#34;dev_id&#34;, None),
-        output_in_place=cli.config.pow_register.get(
-            &#34;output_in_place&#34;, defaults.pow_register.output_in_place
-        ),
-        log_verbose=cli.config.pow_register.get(
-            &#34;verbose&#34;, defaults.pow_register.verbose
-        ),
-    )</code></pre>
+    try:
+        cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+        PowRegisterCommand._run(cli, cwtensor)
+    finally:
+        if &#34;cwtensor&#34; in locals():
+            cwtensor.close()
+            cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -812,11 +898,20 @@ an understanding of the registration costs. Users should ensure their wallet is 
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;):
         r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
-        config = cli.config.copy()
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=config)
 
         # Verify subnet exists
         if not cwtensor.subnet_exists(netuid=cli.config.netuid):
@@ -826,7 +921,7 @@ an understanding of the registration costs. Users should ensure their wallet is 
             sys.exit(1)
 
         # Check current recycle amount
-        current_recycle = Balance(cwtensor.burn(netuid=cli.config.netuid))
+        current_recycle = cwtensor.recycle(netuid=cli.config.netuid)
         balance = cwtensor.get_balance(wallet.coldkeypub.address)
 
         # Check balance is sufficient
@@ -854,7 +949,7 @@ an understanding of the registration costs. Users should ensure their wallet is 
 
     @classmethod
     def check_config(cls, config: &#34;Config&#34;):
-        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
 
         if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -917,7 +1012,7 @@ def add_args(cls, parser: argparse.ArgumentParser):
 </summary>
 <pre><code class="python">@classmethod
 def check_config(cls, config: &#34;Config&#34;):
-    check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+    check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
 
     if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
@@ -929,7 +1024,7 @@ def check_config(cls, config: &#34;Config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.commands.register.RegisterCommand.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>cli)</span>
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Register neuron by recycling some GBOOT.</p></div>
@@ -938,45 +1033,194 @@ def check_config(cls, config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def run(cli):
+def run(cli: &#34;cybertensor.cli&#34;):
     r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
-    config = cli.config.copy()
-    wallet = Wallet(config=cli.config)
-    cwtensor = cybertensor.cwtensor(config=config)
-
-    # Verify subnet exists
-    if not cwtensor.subnet_exists(netuid=cli.config.netuid):
-        console.print(
-            f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
-        )
-        sys.exit(1)
-
-    # Check current recycle amount
-    current_recycle = Balance(cwtensor.burn(netuid=cli.config.netuid))
-    balance = cwtensor.get_balance(wallet.coldkeypub.address)
-
-    # Check balance is sufficient
-    if balance &lt; current_recycle:
-        console.print(
-            f&#34;[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]&#34;
-        )
-        sys.exit(1)
-
-    if not cli.config.no_prompt:
-        if (
-            Confirm.ask(
-                f&#34;Your balance is: [bold green]{balance}[/bold green]\n&#34;
-                f&#34;The cost to register by recycle is [bold red]{current_recycle}[/bold red]\n&#34;
-                f&#34;Do you want to continue?&#34;,
-                default=False,
+    try:
+        cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+        RegisterCommand._run(cli, cwtensor)
+    finally:
+        if &#34;cwtensor&#34; in locals():
+            cwtensor.close()
+            cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand"><code class="flex name class">
+<span>class <span class="ident">SwapHotkeyCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SwapHotkeyCommand:
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        try:
+            cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
             )
-            is False
-        ):
-            sys.exit(1)
+            SwapHotkeyCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
 
-    cwtensor.burned_register(
-        wallet=wallet, netuid=cli.config.netuid, prompt=not cli.config.no_prompt
-    )</code></pre>
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        wallet = cybertensor.wallet(config=cli.config)
+
+        # This creates an unnecessary amount of extra data, but simplifies implementation.
+        new_config = deepcopy(cli.config)
+        new_config.wallet.hotkey = new_config.wallet.hotkey_b
+        new_wallet = cybertensor.wallet(config=new_config)
+
+        cwtensor.swap_hotkey(
+            wallet=wallet,
+            new_wallet=new_wallet,
+            wait_for_finalization=False,
+            prompt=False,
+        )
+        
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        swap_hotkey_parser = parser.add_parser(
+            &#34;swap_hotkey&#34;, help=&#34;&#34;&#34;Swap your associated hotkey.&#34;&#34;&#34;
+        )
+
+        swap_hotkey_parser.add_argument(
+            &#34;--wallet.hotkey_b&#34;,
+            type=str,
+            default=defaults.wallet.hotkey,
+            help=&#34;&#34;&#34;Name of the new hotkey&#34;&#34;&#34;,
+            required=False,
+        )
+
+        cybertensor.wallet.add_args(swap_hotkey_parser)
+        cybertensor.cwtensor.add_args(swap_hotkey_parser)
+
+    @staticmethod
+    def check_config(config: &#34;cybertensor.config&#34;):
+        if (
+            not config.is_set(&#34;cwtensor.network&#34;)
+            and not config.is_set(&#34;cwtensor.chain_endpoint&#34;)
+            and not config.no_prompt
+        ):
+            config.cwtensor.network = Prompt.ask(
+                &#34;Enter cwtensor network&#34;,
+                choices=cybertensor.__networks__,
+                default=defaults.cwtensor.network,
+            )
+            _, endpoint = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+                config.cwtensor.network
+            )
+            config.cwtensor.chain_endpoint = endpoint
+
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter old hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.is_set(&#34;wallet.hotkey_b&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter new hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey_b = str(hotkey)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def add_args(parser: argparse.ArgumentParser):
+    swap_hotkey_parser = parser.add_parser(
+        &#34;swap_hotkey&#34;, help=&#34;&#34;&#34;Swap your associated hotkey.&#34;&#34;&#34;
+    )
+
+    swap_hotkey_parser.add_argument(
+        &#34;--wallet.hotkey_b&#34;,
+        type=str,
+        default=defaults.wallet.hotkey,
+        help=&#34;&#34;&#34;Name of the new hotkey&#34;&#34;&#34;,
+        required=False,
+    )
+
+    cybertensor.wallet.add_args(swap_hotkey_parser)
+    cybertensor.cwtensor.add_args(swap_hotkey_parser)</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def check_config(config: &#34;cybertensor.config&#34;):
+    if (
+        not config.is_set(&#34;cwtensor.network&#34;)
+        and not config.is_set(&#34;cwtensor.chain_endpoint&#34;)
+        and not config.no_prompt
+    ):
+        config.cwtensor.network = Prompt.ask(
+            &#34;Enter cwtensor network&#34;,
+            choices=cybertensor.__networks__,
+            default=defaults.cwtensor.network,
+        )
+        _, endpoint = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+            config.cwtensor.network
+        )
+        config.cwtensor.chain_endpoint = endpoint
+
+    if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+        wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+        config.wallet.name = str(wallet_name)
+
+    if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+        hotkey = Prompt.ask(&#34;Enter old hotkey name&#34;, default=defaults.wallet.hotkey)
+        config.wallet.hotkey = str(hotkey)
+
+    if not config.is_set(&#34;wallet.hotkey_b&#34;) and not config.no_prompt:
+        hotkey = Prompt.ask(&#34;Enter new hotkey name&#34;, default=defaults.wallet.hotkey)
+        config.wallet.hotkey_b = str(hotkey)</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Swap your hotkey for all registered axons on the network.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def run(cli: &#34;cybertensor.cli&#34;):
+    r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+    try:
+        cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+            config=cli.config, log_verbose=False
+        )
+        SwapHotkeyCommand._run(cli, cwtensor)
+    finally:
+        if &#34;cwtensor&#34; in locals():
+            cwtensor.close()
+            cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1011,6 +1255,14 @@ def run(cli):
 <li><code><a title="cybertensor.commands.register.RegisterCommand.add_args" href="#cybertensor.commands.register.RegisterCommand.add_args">add_args</a></code></li>
 <li><code><a title="cybertensor.commands.register.RegisterCommand.check_config" href="#cybertensor.commands.register.RegisterCommand.check_config">check_config</a></code></li>
 <li><code><a title="cybertensor.commands.register.RegisterCommand.run" href="#cybertensor.commands.register.RegisterCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.register.SwapHotkeyCommand" href="#cybertensor.commands.register.SwapHotkeyCommand">SwapHotkeyCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.add_args" href="#cybertensor.commands.register.SwapHotkeyCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.check_config" href="#cybertensor.commands.register.SwapHotkeyCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.run" href="#cybertensor.commands.register.SwapHotkeyCommand.run">run</a></code></li>
 </ul>
 </li>
 </ul>

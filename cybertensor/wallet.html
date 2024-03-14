@@ -86,11 +86,47 @@ def display_mnemonic_msg(keypair: Keypair, key_type: str):
 
 class Wallet:
     &#34;&#34;&#34;
-    Cybertensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
-    The coldkey is the user&#39;s primary key for holding stake in their wallet
-    and is the only way that users can access GBOOT. Coldkeys can hold tokens and should be encrypted on your device.
-    The coldkey must be used to stake and unstake funds from a running node. The hotkey, on the other hand, is only used
-    for subscribing and setting weights from running code. Hotkeys are linked to coldkeys through the metagraph.
+    The wallet class in the cybertensor framework handles wallet functionality, crucial for participating in 
+    the cybertensor network.
+    It manages two types of keys: coldkey and hotkey, each serving different purposes in network operations. 
+    Each wallet contains a coldkey and a hotkey.
+    The coldkey is the user&#39;s primary key for holding stake in their wallet and is the only way that users
+    can access Tao. Coldkeys can hold tokens and should be encrypted on your device.
+    The coldkey is the primary key used for securing the wallet&#39;s stake in the cybertensor network (Tao) and
+    is critical for financial transactions like staking and unstaking tokens. It&#39;s recommended to keep the
+    coldkey encrypted and secure, as it holds the actual tokens.
+    The hotkey, in contrast, is used for operational tasks like subscribing to and setting weights in the
+    network. It&#39;s linked to the coldkey through the metagraph and does not directly hold tokens, thereby
+    offering a safer way to interact with the network during regular operations.
+    Args:
+        name (str): The name of the wallet, used to identify it among possibly multiple wallets.
+        path (str): File system path where wallet keys are stored.
+        hotkey (str): String identifier for the hotkey.
+        _hotkey, _coldkey, _coldkeypub (cybertensor.Keypair): Internal representations of the hotkey and coldkey.
+    Methods:
+        create_if_non_existent, create, recreate: Methods to handle the creation of wallet keys.
+        get_coldkey, get_hotkey, get_coldkeypub: Methods to retrieve specific keys.
+        set_coldkey, set_hotkey, set_coldkeypub: Methods to set or update keys.
+        hotkey_file, coldkey_file, coldkeypub_file: Properties that return respective key file objects.
+        regenerate_coldkey, regenerate_hotkey, regenerate_coldkeypub: Methods to regenerate keys from different sources.
+        config, help, add_args: Utility methods for configuration and assistance.
+    The wallet class is a fundamental component for users to interact securely with the cybertensor network,
+    facilitating both operational tasks and transactions involving value transfer across the network.
+
+    Example Usage::
+        # Create a new wallet with default coldkey and hotkey names
+        my_wallet = Wallet()
+        # Access hotkey and coldkey
+        hotkey = my_wallet.get_hotkey()
+        coldkey = my_wallet.get_coldkey()
+        # Set a new coldkey
+        my_wallet.new_coldkey(n_words=24) # number of seed words to use
+        # Update wallet hotkey
+        my_wallet.set_hotkey(new_hotkey)
+        # Print wallet details
+        print(my_wallet)
+        # Access coldkey property, must use password to unlock
+        my_wallet.coldkey
     &#34;&#34;&#34;
 
     @classmethod
@@ -130,6 +166,13 @@ class Wallet:
             default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
             default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
             parser.add_argument(
+                &#34;--no_prompt&#34;,
+                dest=&#34;no_prompt&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+                default=False,
+            )
+            parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
                 required=False,
                 default=default_name,
@@ -162,10 +205,10 @@ class Wallet:
         Initialize the cybertensor wallet object containing a hot and coldkey.
 
         Args:
-            name (str, optional): The name of the wallet to unlock for running cybertensor. Defaults to &#39;default&#39;.
-            hotkey (str, optional): The name of hotkey used to running the miner. Defaults to &#39;default&#39;.
-            path (str, optional): The path to your cybertensor wallets. Defaults to &#39;~/.cybertensor/wallets/&#39;.
-            config (Config, optional): Wallet.config(). Defaults to None.
+            name (str, optional): The name of the wallet to unlock for running cybertensor. Defaults to ``default``.
+            hotkey (str, optional): The name of hotkey used to running the miner. Defaults to ``default``.
+            path (str, optional): The path to your cybertensor wallets. Defaults to ``~/.cybertensor/wallets/``.
+            config (Config, optional): Wallet.config(). Defaults to ``None``.
         &#34;&#34;&#34;
         # Fill config from passed args using command line defaults.
         if config is None:
@@ -211,14 +254,14 @@ class Wallet:
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
     ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
-        Checks for existing coldkeypub and hotkeys and creates them if non-existent.
+        Checks for existing coldkeypub and hotkeys, and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         return self.create(coldkey_use_password, hotkey_use_password)
 
@@ -229,11 +272,11 @@ class Wallet:
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         # ---- Setup Wallet. ----
         if (
@@ -252,11 +295,11 @@ class Wallet:
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         # ---- Setup Wallet. ----
         self.create_new_coldkey(n_words=12, use_password=coldkey_use_password)
@@ -310,8 +353,8 @@ class Wallet:
 
         Args:
             keypair (cybertensor.Keypair): The hotkey keypair.
-            encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to False.
-            overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to ``False``.
+            overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The hotkey file.
@@ -330,8 +373,8 @@ class Wallet:
 
         Args:
             keypair (cybertensor.Keypair): The coldkeypub keypair.
-            encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to False.
-            overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to ``False``.
+            overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The coldkeypub file.
@@ -354,8 +397,8 @@ class Wallet:
 
         Args:
             keypair (cybertensor.Keypair): The coldkey keypair.
-            encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to True.
-            overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to ``True``.
+            overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The coldkey file.
@@ -370,7 +413,7 @@ class Wallet:
         Gets the coldkey from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the coldkey. Defaults to None.
+            password (str, optional): The password to decrypt the coldkey. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The coldkey keypair.
@@ -382,7 +425,7 @@ class Wallet:
         Gets the hotkey from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the hotkey. Defaults to None.
+            password (str, optional): The password to decrypt the hotkey. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The hotkey keypair.
@@ -394,7 +437,7 @@ class Wallet:
         Gets the coldkeypub from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the coldkeypub. Defaults to None.
+            password (str, optional): The password to decrypt the coldkeypub. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The coldkeypub keypair.
@@ -457,7 +500,7 @@ class Wallet:
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -478,7 +521,7 @@ class Wallet:
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -505,7 +548,7 @@ class Wallet:
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+                Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
         Returns:
             wallet (Wallet):
                 this object with newly created hotkey.
@@ -526,7 +569,7 @@ class Wallet:
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+                Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
         Returns:
             wallet (Wallet):
                 this object with newly created hotkey.
@@ -545,7 +588,7 @@ class Wallet:
         overwrite: bool = False,
         suppress: bool = False,
     ) -&gt; &#34;Wallet&#34;:
-        &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
+        &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file.
            Requires either address or public_key to be passed.
         Args:
             address: (str, optional):
@@ -553,7 +596,7 @@ class Wallet:
             public_key: (str | bytes, optional):
                 Public key as hex string or bytes.
             overwrite (bool, optional) (default: False):
-                Will this operation overwrite the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
+                Determines if this operation overwrites the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
         Returns:
             wallet (Wallet):
                 newly re-generated Wallet with coldkeypub.
@@ -639,7 +682,7 @@ class Wallet:
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -831,22 +874,62 @@ class Wallet:
 <span>(</span><span>name: str = None, hotkey: str = None, path: str = None, config: Config = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Cybertensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
-The coldkey is the user's primary key for holding stake in their wallet
-and is the only way that users can access GBOOT. Coldkeys can hold tokens and should be encrypted on your device.
-The coldkey must be used to stake and unstake funds from a running node. The hotkey, on the other hand, is only used
-for subscribing and setting weights from running code. Hotkeys are linked to coldkeys through the metagraph.</p>
-<p>Initialize the cybertensor wallet object containing a hot and coldkey.</p>
+<div class="desc"><p>The wallet class in the cybertensor framework handles wallet functionality, crucial for participating in
+the cybertensor network.
+It manages two types of keys: coldkey and hotkey, each serving different purposes in network operations.
+Each wallet contains a coldkey and a hotkey.
+The coldkey is the user's primary key for holding stake in their wallet and is the only way that users
+can access Tao. Coldkeys can hold tokens and should be encrypted on your device.
+The coldkey is the primary key used for securing the wallet's stake in the cybertensor network (Tao) and
+is critical for financial transactions like staking and unstaking tokens. It's recommended to keep the
+coldkey encrypted and secure, as it holds the actual tokens.
+The hotkey, in contrast, is used for operational tasks like subscribing to and setting weights in the
+network. It's linked to the coldkey through the metagraph and does not directly hold tokens, thereby
+offering a safer way to interact with the network during regular operations.</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the wallet, used to identify it among possibly multiple wallets.</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>File system path where wallet keys are stored.</dd>
+<dt><strong><code>hotkey</code></strong> :&ensp;<code>str</code></dt>
+<dd>String identifier for the hotkey.</dd>
+</dl>
+<p>_hotkey, _coldkey, _coldkeypub (cybertensor.Keypair): Internal representations of the hotkey and coldkey.</p>
+<h2 id="methods">Methods</h2>
+<p>create_if_non_existent, create, recreate: Methods to handle the creation of wallet keys.
+get_coldkey, get_hotkey, get_coldkeypub: Methods to retrieve specific keys.
+set_coldkey, set_hotkey, set_coldkeypub: Methods to set or update keys.
+hotkey_file, coldkey_file, coldkeypub_file: Properties that return respective key file objects.
+regenerate_coldkey, regenerate_hotkey, regenerate_coldkeypub: Methods to regenerate keys from different sources.
+config, help, add_args: Utility methods for configuration and assistance.
+The wallet class is a fundamental component for users to interact securely with the cybertensor network,
+facilitating both operational tasks and transactions involving value transfer across the network.</p>
+<p>Example Usage::
+# Create a new wallet with default coldkey and hotkey names
+my_wallet = Wallet()
+# Access hotkey and coldkey
+hotkey = my_wallet.get_hotkey()
+coldkey = my_wallet.get_coldkey()
+# Set a new coldkey
+my_wallet.new_coldkey(n_words=24) # number of seed words to use
+# Update wallet hotkey
+my_wallet.set_hotkey(new_hotkey)
+# Print wallet details
+print(my_wallet)
+# Access coldkey property, must use password to unlock
+my_wallet.coldkey</p>
+<p>Initialize the cybertensor wallet object containing a hot and coldkey.</p>
+<h2 id="args_1">Args</h2>
+<dl>
 <dt><strong><code>name</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The name of the wallet to unlock for running cybertensor. Defaults to 'default'.</dd>
+<dd>The name of the wallet to unlock for running cybertensor. Defaults to <code>default</code>.</dd>
 <dt><strong><code>hotkey</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The name of hotkey used to running the miner. Defaults to 'default'.</dd>
+<dd>The name of hotkey used to running the miner. Defaults to <code>default</code>.</dd>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The path to your cybertensor wallets. Defaults to '~/.cybertensor/wallets/'.</dd>
+<dd>The path to your cybertensor wallets. Defaults to <code>~/.cybertensor/wallets/</code>.</dd>
 <dt><strong><code>config</code></strong> :&ensp;<code>Config</code>, optional</dt>
-<dd>Wallet.config(). Defaults to None.</dd>
+<dd>Wallet.config(). Defaults to <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -854,11 +937,47 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 </summary>
 <pre><code class="python">class Wallet:
     &#34;&#34;&#34;
-    Cybertensor wallet maintenance class. Each wallet contains a coldkey and a hotkey.
-    The coldkey is the user&#39;s primary key for holding stake in their wallet
-    and is the only way that users can access GBOOT. Coldkeys can hold tokens and should be encrypted on your device.
-    The coldkey must be used to stake and unstake funds from a running node. The hotkey, on the other hand, is only used
-    for subscribing and setting weights from running code. Hotkeys are linked to coldkeys through the metagraph.
+    The wallet class in the cybertensor framework handles wallet functionality, crucial for participating in 
+    the cybertensor network.
+    It manages two types of keys: coldkey and hotkey, each serving different purposes in network operations. 
+    Each wallet contains a coldkey and a hotkey.
+    The coldkey is the user&#39;s primary key for holding stake in their wallet and is the only way that users
+    can access Tao. Coldkeys can hold tokens and should be encrypted on your device.
+    The coldkey is the primary key used for securing the wallet&#39;s stake in the cybertensor network (Tao) and
+    is critical for financial transactions like staking and unstaking tokens. It&#39;s recommended to keep the
+    coldkey encrypted and secure, as it holds the actual tokens.
+    The hotkey, in contrast, is used for operational tasks like subscribing to and setting weights in the
+    network. It&#39;s linked to the coldkey through the metagraph and does not directly hold tokens, thereby
+    offering a safer way to interact with the network during regular operations.
+    Args:
+        name (str): The name of the wallet, used to identify it among possibly multiple wallets.
+        path (str): File system path where wallet keys are stored.
+        hotkey (str): String identifier for the hotkey.
+        _hotkey, _coldkey, _coldkeypub (cybertensor.Keypair): Internal representations of the hotkey and coldkey.
+    Methods:
+        create_if_non_existent, create, recreate: Methods to handle the creation of wallet keys.
+        get_coldkey, get_hotkey, get_coldkeypub: Methods to retrieve specific keys.
+        set_coldkey, set_hotkey, set_coldkeypub: Methods to set or update keys.
+        hotkey_file, coldkey_file, coldkeypub_file: Properties that return respective key file objects.
+        regenerate_coldkey, regenerate_hotkey, regenerate_coldkeypub: Methods to regenerate keys from different sources.
+        config, help, add_args: Utility methods for configuration and assistance.
+    The wallet class is a fundamental component for users to interact securely with the cybertensor network,
+    facilitating both operational tasks and transactions involving value transfer across the network.
+
+    Example Usage::
+        # Create a new wallet with default coldkey and hotkey names
+        my_wallet = Wallet()
+        # Access hotkey and coldkey
+        hotkey = my_wallet.get_hotkey()
+        coldkey = my_wallet.get_coldkey()
+        # Set a new coldkey
+        my_wallet.new_coldkey(n_words=24) # number of seed words to use
+        # Update wallet hotkey
+        my_wallet.set_hotkey(new_hotkey)
+        # Print wallet details
+        print(my_wallet)
+        # Access coldkey property, must use password to unlock
+        my_wallet.coldkey
     &#34;&#34;&#34;
 
     @classmethod
@@ -898,6 +1017,13 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
             default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
             parser.add_argument(
+                &#34;--no_prompt&#34;,
+                dest=&#34;no_prompt&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+                default=False,
+            )
+            parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
                 required=False,
                 default=default_name,
@@ -930,10 +1056,10 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Initialize the cybertensor wallet object containing a hot and coldkey.
 
         Args:
-            name (str, optional): The name of the wallet to unlock for running cybertensor. Defaults to &#39;default&#39;.
-            hotkey (str, optional): The name of hotkey used to running the miner. Defaults to &#39;default&#39;.
-            path (str, optional): The path to your cybertensor wallets. Defaults to &#39;~/.cybertensor/wallets/&#39;.
-            config (Config, optional): Wallet.config(). Defaults to None.
+            name (str, optional): The name of the wallet to unlock for running cybertensor. Defaults to ``default``.
+            hotkey (str, optional): The name of hotkey used to running the miner. Defaults to ``default``.
+            path (str, optional): The path to your cybertensor wallets. Defaults to ``~/.cybertensor/wallets/``.
+            config (Config, optional): Wallet.config(). Defaults to ``None``.
         &#34;&#34;&#34;
         # Fill config from passed args using command line defaults.
         if config is None:
@@ -979,14 +1105,14 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
     ) -&gt; &#34;Wallet&#34;:
         &#34;&#34;&#34;
-        Checks for existing coldkeypub and hotkeys and creates them if non-existent.
+        Checks for existing coldkeypub and hotkeys, and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         return self.create(coldkey_use_password, hotkey_use_password)
 
@@ -997,11 +1123,11 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         # ---- Setup Wallet. ----
         if (
@@ -1020,11 +1146,11 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
         Args:
-            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+            coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+            hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
         Returns:
-            wallet: The Wallet object.
+            Wallet: The Wallet object.
         &#34;&#34;&#34;
         # ---- Setup Wallet. ----
         self.create_new_coldkey(n_words=12, use_password=coldkey_use_password)
@@ -1078,8 +1204,8 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
         Args:
             keypair (cybertensor.Keypair): The hotkey keypair.
-            encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to False.
-            overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to ``False``.
+            overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The hotkey file.
@@ -1098,8 +1224,8 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
         Args:
             keypair (cybertensor.Keypair): The coldkeypub keypair.
-            encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to False.
-            overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to ``False``.
+            overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The coldkeypub file.
@@ -1122,8 +1248,8 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
 
         Args:
             keypair (cybertensor.Keypair): The coldkey keypair.
-            encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to True.
-            overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to False.
+            encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to ``True``.
+            overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to ``False``.
 
         Returns:
             cybertensor.keyfile: The coldkey file.
@@ -1138,7 +1264,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Gets the coldkey from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the coldkey. Defaults to None.
+            password (str, optional): The password to decrypt the coldkey. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The coldkey keypair.
@@ -1150,7 +1276,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Gets the hotkey from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the hotkey. Defaults to None.
+            password (str, optional): The password to decrypt the hotkey. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The hotkey keypair.
@@ -1162,7 +1288,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         Gets the coldkeypub from the wallet.
 
         Args:
-            password (str, optional): The password to decrypt the coldkeypub. Defaults to None.
+            password (str, optional): The password to decrypt the coldkeypub. Defaults to ``None``.
 
         Returns:
             cybertensor.Keypair: The coldkeypub keypair.
@@ -1225,7 +1351,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -1246,7 +1372,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -1273,7 +1399,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+                Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
         Returns:
             wallet (Wallet):
                 this object with newly created hotkey.
@@ -1294,7 +1420,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+                Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
         Returns:
             wallet (Wallet):
                 this object with newly created hotkey.
@@ -1313,7 +1439,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
         overwrite: bool = False,
         suppress: bool = False,
     ) -&gt; &#34;Wallet&#34;:
-        &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
+        &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file.
            Requires either address or public_key to be passed.
         Args:
             address: (str, optional):
@@ -1321,7 +1447,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             public_key: (str | bytes, optional):
                 Public key as hex string or bytes.
             overwrite (bool, optional) (default: False):
-                Will this operation overwrite the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
+                Determines if this operation overwrites the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
         Returns:
             wallet (Wallet):
                 newly re-generated Wallet with coldkeypub.
@@ -1407,7 +1533,7 @@ for subscribing and setting weights from running code. Hotkeys are linked to col
             use_password (bool, optional):
                 Is the created key password protected.
             overwrite (bool, optional):
-                Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+                Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
         Returns:
             wallet (Wallet):
                 this object with newly created coldkey.
@@ -1574,6 +1700,13 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         default_name = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
         default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
         default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
+        parser.add_argument(
+            &#34;--no_prompt&#34;,
+            dest=&#34;no_prompt&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+            default=False,
+        )
         parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
             required=False,
@@ -1829,13 +1962,13 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>coldkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for coldkey. Defaults to True.</dd>
+<dd>Whether to use a password for coldkey. Defaults to <code>True</code>.</dd>
 <dt><strong><code>hotkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for hotkey. Defaults to False.</dd>
+<dd>Whether to use a password for hotkey. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>wallet</code></dt>
+<dt><code><a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></code></dt>
 <dd>The Wallet object.</dd>
 </dl></div>
 <details class="source">
@@ -1849,11 +1982,11 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
     Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
     Args:
-        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
     Returns:
-        wallet: The Wallet object.
+        Wallet: The Wallet object.
     &#34;&#34;&#34;
     # ---- Setup Wallet. ----
     if (
@@ -1870,17 +2003,17 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
 <span>def <span class="ident">create_if_non_existent</span></span>(<span>self, coldkey_use_password: bool = True, hotkey_use_password: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Checks for existing coldkeypub and hotkeys and creates them if non-existent.</p>
+<div class="desc"><p>Checks for existing coldkeypub and hotkeys, and creates them if non-existent.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>coldkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for coldkey. Defaults to True.</dd>
+<dd>Whether to use a password for coldkey. Defaults to <code>True</code>.</dd>
 <dt><strong><code>hotkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for hotkey. Defaults to False.</dd>
+<dd>Whether to use a password for hotkey. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>wallet</code></dt>
+<dt><code><a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></code></dt>
 <dd>The Wallet object.</dd>
 </dl></div>
 <details class="source">
@@ -1891,14 +2024,14 @@ def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
     self, coldkey_use_password: bool = True, hotkey_use_password: bool = False
 ) -&gt; &#34;Wallet&#34;:
     &#34;&#34;&#34;
-    Checks for existing coldkeypub and hotkeys and creates them if non-existent.
+    Checks for existing coldkeypub and hotkeys, and creates them if non-existent.
 
     Args:
-        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
     Returns:
-        wallet: The Wallet object.
+        Wallet: The Wallet object.
     &#34;&#34;&#34;
     return self.create(coldkey_use_password, hotkey_use_password)</code></pre>
 </details>
@@ -1917,7 +2050,7 @@ Number of mnemonic words to use.</dd>
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
+Determines if this operation overwrites the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created coldkey.</p></div>
@@ -1939,7 +2072,7 @@ this object with newly created coldkey.</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+            Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
     Returns:
         wallet (Wallet):
             this object with newly created coldkey.
@@ -1967,7 +2100,7 @@ Number of mnemonic words to use.</dd>
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey></p>
+Determines if this operation overwrites the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey></p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created hotkey.</p></div>
@@ -1989,7 +2122,7 @@ this object with newly created hotkey.</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+            Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
     Returns:
         wallet (Wallet):
             this object with newly created hotkey.
@@ -2010,7 +2143,7 @@ this object with newly created hotkey.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password to decrypt the coldkey. Defaults to None.</dd>
+<dd>The password to decrypt the coldkey. Defaults to <code>None</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2026,7 +2159,7 @@ this object with newly created hotkey.</p></div>
     Gets the coldkey from the wallet.
 
     Args:
-        password (str, optional): The password to decrypt the coldkey. Defaults to None.
+        password (str, optional): The password to decrypt the coldkey. Defaults to ``None``.
 
     Returns:
         cybertensor.Keypair: The coldkey keypair.
@@ -2042,7 +2175,7 @@ this object with newly created hotkey.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password to decrypt the coldkeypub. Defaults to None.</dd>
+<dd>The password to decrypt the coldkeypub. Defaults to <code>None</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2058,7 +2191,7 @@ this object with newly created hotkey.</p></div>
     Gets the coldkeypub from the wallet.
 
     Args:
-        password (str, optional): The password to decrypt the coldkeypub. Defaults to None.
+        password (str, optional): The password to decrypt the coldkeypub. Defaults to ``None``.
 
     Returns:
         cybertensor.Keypair: The coldkeypub keypair.
@@ -2074,7 +2207,7 @@ this object with newly created hotkey.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The password to decrypt the hotkey. Defaults to None.</dd>
+<dd>The password to decrypt the hotkey. Defaults to <code>None</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2090,7 +2223,7 @@ this object with newly created hotkey.</p></div>
     Gets the hotkey from the wallet.
 
     Args:
-        password (str, optional): The password to decrypt the hotkey. Defaults to None.
+        password (str, optional): The password to decrypt the hotkey. Defaults to ``None``.
 
     Returns:
         cybertensor.Keypair: The hotkey keypair.
@@ -2112,7 +2245,7 @@ Number of mnemonic words to use.</dd>
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
+Determines if this operation overwrites the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created coldkey.</p></div>
@@ -2134,7 +2267,7 @@ this object with newly created coldkey.</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+            Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
     Returns:
         wallet (Wallet):
             this object with newly created coldkey.
@@ -2156,7 +2289,7 @@ Number of mnemonic words to use.</dd>
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey></p>
+Determines if this operation overwrites the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey></p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created hotkey.</p></div>
@@ -2178,7 +2311,7 @@ this object with newly created hotkey.</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
+            Determines if this operation overwrites the hotkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/hotkeys/&lt;hotkey&gt;
     Returns:
         wallet (Wallet):
             this object with newly created hotkey.
@@ -2194,13 +2327,13 @@ this object with newly created hotkey.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>coldkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for coldkey. Defaults to True.</dd>
+<dd>Whether to use a password for coldkey. Defaults to <code>True</code>.</dd>
 <dt><strong><code>hotkey_use_password</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to use a password for hotkey. Defaults to False.</dd>
+<dd>Whether to use a password for hotkey. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>wallet</code></dt>
+<dt><code><a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></code></dt>
 <dd>The Wallet object.</dd>
 </dl></div>
 <details class="source">
@@ -2214,11 +2347,11 @@ this object with newly created hotkey.</p></div>
     Checks for existing coldkeypub and hotkeys and creates them if non-existent.
 
     Args:
-        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to True.
-        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to False.
+        coldkey_use_password (bool, optional): Whether to use a password for coldkey. Defaults to ``True``.
+        hotkey_use_password (bool, optional): Whether to use a password for hotkey. Defaults to ``False``.
 
     Returns:
-        wallet: The Wallet object.
+        Wallet: The Wallet object.
     &#34;&#34;&#34;
     # ---- Setup Wallet. ----
     self.create_new_coldkey(n_words=12, use_password=coldkey_use_password)
@@ -2246,7 +2379,7 @@ Restore from encrypted JSON backup as (json_data: Union[str, Dict], passphrase: 
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
+Determines if this operation overwrites the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created coldkey.
@@ -2273,7 +2406,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+            Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
     Returns:
         wallet (Wallet):
             this object with newly created coldkey.
@@ -2318,7 +2451,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
 <span>def <span class="ident">regen_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file
+<div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file.
 Requires either address or public_key to be passed.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -2330,7 +2463,7 @@ Address as string.</dd>
 Public key as hex string or bytes.</dd>
 </dl>
 <p>overwrite (bool, optional) (default: False):
-Will this operation overwrite the coldkeypub (if exists) under the same path <wallet path>/<wallet name>/coldkeypub</p>
+Determines if this operation overwrites the coldkeypub (if exists) under the same path <wallet path>/<wallet name>/coldkeypub</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 newly re-generated Wallet with coldkeypub.</p></div>
@@ -2345,7 +2478,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
     overwrite: bool = False,
     suppress: bool = False,
 ) -&gt; &#34;Wallet&#34;:
-    &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
+    &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file.
        Requires either address or public_key to be passed.
     Args:
         address: (str, optional):
@@ -2353,7 +2486,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
         public_key: (str | bytes, optional):
             Public key as hex string or bytes.
         overwrite (bool, optional) (default: False):
-            Will this operation overwrite the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
+            Determines if this operation overwrites the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
     Returns:
         wallet (Wallet):
             newly re-generated Wallet with coldkeypub.
@@ -2493,7 +2626,7 @@ Restore from encrypted JSON backup as (json_data: Union[str, Dict], passphrase: 
 <p>use_password (bool, optional):
 Is the created key password protected.
 overwrite (bool, optional):
-Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
+Determines if this operation overwrites the coldkey under the same path <wallet path>/<wallet name>/coldkey</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 this object with newly created coldkey.
@@ -2520,7 +2653,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
         use_password (bool, optional):
             Is the created key password protected.
         overwrite (bool, optional):
-            Will this operation overwrite the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
+            Determines if this operation overwrites the coldkey under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkey
     Returns:
         wallet (Wallet):
             this object with newly created coldkey.
@@ -2565,7 +2698,7 @@ Note: uses priority order: mnemonic &gt; seed &gt; json</p></div>
 <span>def <span class="ident">regenerate_coldkeypub</span></span>(<span>self, address: Optional[str] = None, public_key: Union[bytes, str, ForwardRef(None)] = None, overwrite: bool = False, suppress: bool = False) ‑> <a title="cybertensor.wallet.Wallet" href="#cybertensor.wallet.Wallet">Wallet</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file
+<div class="desc"><p>Regenerates the coldkeypub from passed address or public_key and saves the file.
 Requires either address or public_key to be passed.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -2577,7 +2710,7 @@ Address as string.</dd>
 Public key as hex string or bytes.</dd>
 </dl>
 <p>overwrite (bool, optional) (default: False):
-Will this operation overwrite the coldkeypub (if exists) under the same path <wallet path>/<wallet name>/coldkeypub</p>
+Determines if this operation overwrites the coldkeypub (if exists) under the same path <wallet path>/<wallet name>/coldkeypub</p>
 <h2 id="returns">Returns</h2>
 <p>wallet (Wallet):
 newly re-generated Wallet with coldkeypub.</p></div>
@@ -2592,7 +2725,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
     overwrite: bool = False,
     suppress: bool = False,
 ) -&gt; &#34;Wallet&#34;:
-    &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file
+    &#34;&#34;&#34;Regenerates the coldkeypub from passed address or public_key and saves the file.
        Requires either address or public_key to be passed.
     Args:
         address: (str, optional):
@@ -2600,7 +2733,7 @@ newly re-generated Wallet with coldkeypub.</p></div>
         public_key: (str | bytes, optional):
             Public key as hex string or bytes.
         overwrite (bool, optional) (default: False):
-            Will this operation overwrite the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
+            Determines if this operation overwrites the coldkeypub (if exists) under the same path &lt;wallet path&gt;/&lt;wallet name&gt;/coldkeypub
     Returns:
         wallet (Wallet):
             newly re-generated Wallet with coldkeypub.
@@ -2730,9 +2863,9 @@ this object with newly created hotkey.</p></div>
 <dt><strong><code>keypair</code></strong> :&ensp;<code>cybertensor.Keypair</code></dt>
 <dd>The coldkey keypair.</dd>
 <dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to encrypt the coldkey. Defaults to True.</dd>
+<dd>Whether to encrypt the coldkey. Defaults to <code>True</code>.</dd>
 <dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to overwrite an existing coldkey. Defaults to False.</dd>
+<dd>Whether to overwrite an existing coldkey. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2754,8 +2887,8 @@ this object with newly created hotkey.</p></div>
 
     Args:
         keypair (cybertensor.Keypair): The coldkey keypair.
-        encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to True.
-        overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to False.
+        encrypt (bool, optional): Whether to encrypt the coldkey. Defaults to ``True``.
+        overwrite (bool, optional): Whether to overwrite an existing coldkey. Defaults to ``False``.
 
     Returns:
         cybertensor.keyfile: The coldkey file.
@@ -2776,9 +2909,9 @@ this object with newly created hotkey.</p></div>
 <dt><strong><code>keypair</code></strong> :&ensp;<code>cybertensor.Keypair</code></dt>
 <dd>The coldkeypub keypair.</dd>
 <dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to encrypt the coldkeypub. Defaults to False.</dd>
+<dd>Whether to encrypt the coldkeypub. Defaults to <code>False</code>.</dd>
 <dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to overwrite an existing coldkeypub. Defaults to False.</dd>
+<dd>Whether to overwrite an existing coldkeypub. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2800,8 +2933,8 @@ this object with newly created hotkey.</p></div>
 
     Args:
         keypair (cybertensor.Keypair): The coldkeypub keypair.
-        encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to False.
-        overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to False.
+        encrypt (bool, optional): Whether to encrypt the coldkeypub. Defaults to ``False``.
+        overwrite (bool, optional): Whether to overwrite an existing coldkeypub. Defaults to ``False``.
 
     Returns:
         cybertensor.keyfile: The coldkeypub file.
@@ -2824,9 +2957,9 @@ this object with newly created hotkey.</p></div>
 <dt><strong><code>keypair</code></strong> :&ensp;<code>cybertensor.Keypair</code></dt>
 <dd>The hotkey keypair.</dd>
 <dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to encrypt the hotkey. Defaults to False.</dd>
+<dd>Whether to encrypt the hotkey. Defaults to <code>False</code>.</dd>
 <dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Whether to overwrite an existing hotkey. Defaults to False.</dd>
+<dd>Whether to overwrite an existing hotkey. Defaults to <code>False</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2848,8 +2981,8 @@ this object with newly created hotkey.</p></div>
 
     Args:
         keypair (cybertensor.Keypair): The hotkey keypair.
-        encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to False.
-        overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to False.
+        encrypt (bool, optional): Whether to encrypt the hotkey. Defaults to ``False``.
+        overwrite (bool, optional): Whether to overwrite an existing hotkey. Defaults to ``False``.
 
     Returns:
         cybertensor.keyfile: The hotkey file.

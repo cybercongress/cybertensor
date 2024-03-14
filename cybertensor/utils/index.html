@@ -45,6 +45,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+import hashlib
 from typing import Dict, Optional
 
 import requests
@@ -144,7 +145,17 @@ def get_explorer_url_for_network(
         # TODO add network in explorer_url
         explorer_url = f&#34;{explorer_root_url}/network/bostrom/tx/{tx_hash}&#34;
 
-    return explorer_url</code></pre>
+    return explorer_url
+
+
+def hash(content, encoding=&#34;utf-8&#34;):
+    sha3 = hashlib.sha3_256()
+
+    # Update the hash object with the concatenated string
+    sha3.update(content.encode(encoding))
+
+    # Produce the hash
+    return sha3.hexdigest()</code></pre>
 </details>
 </section>
 <section>
@@ -163,10 +174,6 @@ def get_explorer_url_for_network(
 <div class="desc"></div>
 </dd>
 <dt><code class="name"><a title="cybertensor.utils.registration" href="registration.html">cybertensor.utils.registration</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="cybertensor.utils.stats" href="stats.html">cybertensor.utils.stats</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -288,6 +295,25 @@ Or None if the network is not known.</p></div>
     return explorer_url</code></pre>
 </details>
 </dd>
+<dt id="cybertensor.utils.hash"><code class="name flex">
+<span>def <span class="ident">hash</span></span>(<span>content, encoding='utf-8')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hash(content, encoding=&#34;utf-8&#34;):
+    sha3 = hashlib.sha3_256()
+
+    # Update the hash object with the concatenated string
+    sha3.update(content.encode(encoding))
+
+    # Produce the hash
+    return sha3.hexdigest()</code></pre>
+</details>
+</dd>
 <dt id="cybertensor.utils.version_checking"><code class="name flex">
 <span>def <span class="ident">version_checking</span></span>(<span>timeout: int = 15)</span>
 </code></dt>
@@ -348,7 +374,6 @@ Or None if the network is not known.</p></div>
 <li><code><a title="cybertensor.utils.formatting" href="formatting.html">cybertensor.utils.formatting</a></code></li>
 <li><code><a title="cybertensor.utils.networking" href="networking.html">cybertensor.utils.networking</a></code></li>
 <li><code><a title="cybertensor.utils.registration" href="registration.html">cybertensor.utils.registration</a></code></li>
-<li><code><a title="cybertensor.utils.stats" href="stats.html">cybertensor.utils.stats</a></code></li>
 <li><code><a title="cybertensor.utils.wallet_utils" href="wallet_utils.html">cybertensor.utils.wallet_utils</a></code></li>
 <li><code><a title="cybertensor.utils.weight_utils" href="weight_utils.html">cybertensor.utils.weight_utils</a></code></li>
 </ul>
@@ -359,6 +384,7 @@ Or None if the network is not known.</p></div>
 <li><code><a title="cybertensor.utils.U64_NORMALIZED_FLOAT" href="#cybertensor.utils.U64_NORMALIZED_FLOAT">U64_NORMALIZED_FLOAT</a></code></li>
 <li><code><a title="cybertensor.utils.get_explorer_root_url_by_network_from_map" href="#cybertensor.utils.get_explorer_root_url_by_network_from_map">get_explorer_root_url_by_network_from_map</a></code></li>
 <li><code><a title="cybertensor.utils.get_explorer_url_for_network" href="#cybertensor.utils.get_explorer_url_for_network">get_explorer_url_for_network</a></code></li>
+<li><code><a title="cybertensor.utils.hash" href="#cybertensor.utils.hash">hash</a></code></li>
 <li><code><a title="cybertensor.utils.version_checking" href="#cybertensor.utils.version_checking">version_checking</a></code></li>
 </ul>
 </li>

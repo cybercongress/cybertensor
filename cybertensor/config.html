@@ -63,12 +63,13 @@ class InvalidConfigFile(Exception):
 
 class Config(DefaultMunch):
     &#34;&#34;&#34;
-    Implementation of the config class, which manages the config of different cybertensor modules.
+    Implementation of the config class, which manages the configuration of different cybertensor modules.
     &#34;&#34;&#34;
 
     __is_set: Dict[str, bool]
 
     r&#34;&#34;&#34; Translates the passed parser into a nested Cybertensor config.
+    
         Args:
             parser (argparse.ArgumentParser):
                 Command line parser object.
@@ -86,7 +87,7 @@ class Config(DefaultMunch):
 
     def __init__(
         self,
-        parser: argparse.ArgumentParser = None,
+        parser: Optional[argparse.ArgumentParser] = None,
         args: Optional[List[str]] = None,
         strict: bool = False,
         default: Optional[Any] = None,
@@ -96,7 +97,7 @@ class Config(DefaultMunch):
         self[&#34;__is_set&#34;] = {}
 
         if parser is None:
-            return None
+            return
 
         # Optionally add config specific arguments
         try:
@@ -124,7 +125,7 @@ class Config(DefaultMunch):
             parser.add_argument(
                 &#34;--no_version_checking&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;Set true to stop cli version checking.&#34;,
+                help=&#34;Set ``true`` to stop cli version checking.&#34;,
                 default=False,
             )
         except:
@@ -136,7 +137,7 @@ class Config(DefaultMunch):
                 &#34;--no_prompt&#34;,
                 dest=&#34;no_prompt&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;Set true to stop cli from prompting the user.&#34;,
+                help=&#34;Set ``true`` to stop cli from prompting the user.&#34;,
                 default=False,
             )
         except:
@@ -269,9 +270,10 @@ class Config(DefaultMunch):
 
     @staticmethod
     def __parse_args__(
-        args: List[str], parser: argparse.ArgumentParser = None, strict: bool = False
+        args: List[str], parser: Optional[argparse.ArgumentParser] = None, strict: bool = False
     ) -&gt; argparse.Namespace:
         &#34;&#34;&#34;Parses the passed args use the passed parser.
+
         Args:
             args (List[str]):
                 List of arguments to parse.
@@ -424,10 +426,10 @@ class DefaultConfig(Config):
 <dl>
 <dt id="cybertensor.config.Config"><code class="flex name class">
 <span>class <span class="ident">Config</span></span>
-<span>(</span><span>parser: argparse.ArgumentParser = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
+<span>(</span><span>parser: Optional[argparse.ArgumentParser] = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Implementation of the config class, which manages the config of different cybertensor modules.</p>
+<div class="desc"><p>Implementation of the config class, which manages the configuration of different cybertensor modules.</p>
 <p>Construct a new DefaultMunch. Like collections.defaultdict, the
 first argument is the default value; subsequent arguments are the
 same as those for dict.</p></div>
@@ -437,12 +439,13 @@ same as those for dict.</p></div>
 </summary>
 <pre><code class="python">class Config(DefaultMunch):
     &#34;&#34;&#34;
-    Implementation of the config class, which manages the config of different cybertensor modules.
+    Implementation of the config class, which manages the configuration of different cybertensor modules.
     &#34;&#34;&#34;
 
     __is_set: Dict[str, bool]
 
     r&#34;&#34;&#34; Translates the passed parser into a nested Cybertensor config.
+    
         Args:
             parser (argparse.ArgumentParser):
                 Command line parser object.
@@ -460,7 +463,7 @@ same as those for dict.</p></div>
 
     def __init__(
         self,
-        parser: argparse.ArgumentParser = None,
+        parser: Optional[argparse.ArgumentParser] = None,
         args: Optional[List[str]] = None,
         strict: bool = False,
         default: Optional[Any] = None,
@@ -470,7 +473,7 @@ same as those for dict.</p></div>
         self[&#34;__is_set&#34;] = {}
 
         if parser is None:
-            return None
+            return
 
         # Optionally add config specific arguments
         try:
@@ -498,7 +501,7 @@ same as those for dict.</p></div>
             parser.add_argument(
                 &#34;--no_version_checking&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;Set true to stop cli version checking.&#34;,
+                help=&#34;Set ``true`` to stop cli version checking.&#34;,
                 default=False,
             )
         except:
@@ -510,7 +513,7 @@ same as those for dict.</p></div>
                 &#34;--no_prompt&#34;,
                 dest=&#34;no_prompt&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;Set true to stop cli from prompting the user.&#34;,
+                help=&#34;Set ``true`` to stop cli from prompting the user.&#34;,
                 default=False,
             )
         except:
@@ -643,9 +646,10 @@ same as those for dict.</p></div>
 
     @staticmethod
     def __parse_args__(
-        args: List[str], parser: argparse.ArgumentParser = None, strict: bool = False
+        args: List[str], parser: Optional[argparse.ArgumentParser] = None, strict: bool = False
     ) -&gt; argparse.Namespace:
         &#34;&#34;&#34;Parses the passed args use the passed parser.
+
         Args:
             args (List[str]):
                 List of arguments to parse.
@@ -910,7 +914,7 @@ def merge_all(cls, configs: List[&#34;Config&#34;]) -&gt; &#34;Config&#34;:
 </dd>
 <dt id="cybertensor.config.DefaultConfig"><code class="flex name class">
 <span>class <span class="ident">DefaultConfig</span></span>
-<span>(</span><span>parser: argparse.ArgumentParser = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
+<span>(</span><span>parser: Optional[argparse.ArgumentParser] = None, args: Optional[List[str]] = None, strict: bool = False, default: Optional[Any] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A Config with a set of default values.</p>

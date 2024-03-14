@@ -55,7 +55,7 @@ defaults: Munch = munchify(
             &#34;update_interval&#34;: 50000,
             &#34;output_in_place&#34;: True,
             &#34;verbose&#34;: False,
-            &#34;cuda&#34;: {&#34;dev_id&#34;: [0], &#34;use_cuda&#34;: False, &#34;TPB&#34;: 256},
+            &#34;cuda&#34;: {&#34;dev_id&#34;: [0], &#34;use_cuda&#34;: False, &#34;tpb&#34;: 256},
         },
         &#34;axon&#34;: {
             &#34;port&#34;: 8091,
@@ -97,7 +97,8 @@ from cybertensor.commands.unstake import UnStakeCommand
 from cybertensor.commands.register import (
     PowRegisterCommand,
     RegisterCommand,
-    # RunFaucetCommand
+    # RunFaucetCommand,
+    # SwapHotkeyCommand,
 )
 from cybertensor.commands.delegates import (
     NominateCommand,
@@ -105,6 +106,7 @@ from cybertensor.commands.delegates import (
     DelegateStakeCommand,
     DelegateUnstakeCommand,
     MyDelegatesCommand,
+    # GetWalletHistoryCommand,
 )
 from cybertensor.commands.wallets import (
     NewColdkeyCommand,
@@ -120,7 +122,7 @@ from cybertensor.commands.transfer import TransferCommand
 from cybertensor.commands.inspect import InspectCommand
 from cybertensor.commands.metagraph import MetagraphCommand
 from cybertensor.commands.list import ListCommand
-# from cybertensor.commands.misc import UpdateCommand
+# from cybertensor.commands.misc import UpdateCommand, AutocompleteCommand
 from cybertensor.commands.network import (
     RegisterSubnetworkCommand,
     SubnetLockCostCommand,
@@ -134,13 +136,20 @@ from cybertensor.commands.root import (
     RootList,
     RootSetWeightsCommand,
     RootGetWeightsCommand,
-)</code></pre>
+    # RootSetBoostCommand,
+    # RootSetSlashCommand,
+)
+# from .identity import GetIdentityCommand, SetIdentityCommand</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
 <dt><code class="name"><a title="cybertensor.commands.delegates" href="delegates.html">cybertensor.commands.delegates</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.identity" href="identity.html">cybertensor.commands.identity</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -215,6 +224,7 @@ from cybertensor.commands.root import (
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
 <li><code><a title="cybertensor.commands.delegates" href="delegates.html">cybertensor.commands.delegates</a></code></li>
+<li><code><a title="cybertensor.commands.identity" href="identity.html">cybertensor.commands.identity</a></code></li>
 <li><code><a title="cybertensor.commands.inspect" href="inspect.html">cybertensor.commands.inspect</a></code></li>
 <li><code><a title="cybertensor.commands.list" href="list.html">cybertensor.commands.list</a></code></li>
 <li><code><a title="cybertensor.commands.metagraph" href="metagraph.html">cybertensor.commands.metagraph</a></code></li>

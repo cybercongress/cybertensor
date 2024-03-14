@@ -45,7 +45,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from typing import Union
+from typing import Union, Tuple
 
 import torch
 from loguru import logger
@@ -68,9 +68,11 @@ def set_weights_message(
     version_key: int = 0,
     wait_for_finalization: bool = True,
     prompt: bool = False,
-) -&gt; bool:
+) -&gt; Tuple[bool, str]:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
+        cwtensor (cybertensor.cwtensor):
+            CWTensor object
         wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
@@ -82,14 +84,14 @@ def set_weights_message(
         version_key (int):
             version key of the validator.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     # First convert types.
     if isinstance(uids, list):
@@ -109,19 +111,47 @@ def set_weights_message(
             f&#34;[bold white]  weights: {[float(v / 65535) for v in weight_vals]}\n&#34;
             f&#34;  uids: {weight_uids}[/bold white ]?&#34;
         ):
-            return False
+            return False, &#34;Prompt refused.&#34;
 
     with console.status(
         f&#34;:satellite: Setting weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
-        return cwtensor._do_set_weights(
+        try:
+            success, error_message = cwtensor._do_set_weights(
                 wallet=wallet,
                 netuid=netuid,
                 uids=weight_uids,
                 vals=weight_vals,
                 version_key=version_key,
                 wait_for_finalization=wait_for_finalization,
-            )</code></pre>
+            )
+
+            if not wait_for_finalization:
+                return True, &#34;Not waiting for finalization.&#34;
+
+            if success is True:
+                cybertensor.__console__.print(
+                    prefix=&#34;Set weights&#34;,
+                    sufix=&#34;&lt;green&gt;Finalized: &lt;/green&gt;&#34; + str(success),
+                )
+                return True, &#34;Successfully set weights and Finalized.&#34;
+            else:
+                cybertensor.__console__.print(
+                    &#34;:cross_mark: [red]Failed[/red]: error:{}&#34;.format(error_message)
+                )
+
+                cybertensor.logging.warning(
+                    prefix=&#34;Set weights&#34;,
+                    sufix=&#34;&lt;red&gt;Failed: &lt;/red&gt;&#34; + str(error_message),
+                )
+                return False, error_message
+
+        except Exception as e:
+            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
+            cybertensor.logging.warning(
+                prefix=&#34;Set weights&#34;, sufix=&#34;&lt;red&gt;Failed: &lt;/red&gt;&#34; + str(e)
+            )
+            return False, str(e)</code></pre>
 </details>
 </section>
 <section>
@@ -132,12 +162,14 @@ def set_weights_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.set_weights.set_weights_message"><code class="name flex">
-<span>def <span class="ident">set_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, netuid: int, uids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">set_weights_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, netuid: int, uids: Union[torch.LongTensor, list], weights: Union[torch.FloatTensor, list], version_key: int = 0, wait_for_finalization: bool = True, prompt: bool = False) ‑> Tuple[bool, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets the given weights and values on chain for wallet hotkey account.</p>
 <h2 id="args">Args</h2>
-<p>wallet (Wallet):
+<p>cwtensor (cybertensor.cwtensor):
+CWTensor object
+wallet (Wallet):
 cybertensor wallet object.
 netuid (int):
 netuid of the subnet to set weights for.
@@ -148,14 +180,14 @@ weights to set which must floats and correspond to the passed uids.
 version_key (int):
 version key of the validator.
 wait_for_finalization (bool):
-if set, waits for the extrinsic to be finalized on the chain before returning true,
-or returns false if the extrinsic fails to be finalized within the timeout.
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
 prompt (bool):
-If true, the call waits for confirmation from the user before proceeding.</p>
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-flag is true if extrinsic was finalized or uncluded in the block.
-If we did not wait for finalization / inclusion, the response is true.</p></div>
+Flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -169,9 +201,11 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
     version_key: int = 0,
     wait_for_finalization: bool = True,
     prompt: bool = False,
-) -&gt; bool:
+) -&gt; Tuple[bool, str]:
     r&#34;&#34;&#34;Sets the given weights and values on chain for wallet hotkey account.
     Args:
+        cwtensor (cybertensor.cwtensor):
+            CWTensor object
         wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
@@ -183,14 +217,14 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         version_key (int):
             version key of the validator.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     # First convert types.
     if isinstance(uids, list):
@@ -210,19 +244,47 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
             f&#34;[bold white]  weights: {[float(v / 65535) for v in weight_vals]}\n&#34;
             f&#34;  uids: {weight_uids}[/bold white ]?&#34;
         ):
-            return False
+            return False, &#34;Prompt refused.&#34;
 
     with console.status(
         f&#34;:satellite: Setting weights on [white]{cwtensor.network}[/white] ...&#34;
     ):
-        return cwtensor._do_set_weights(
+        try:
+            success, error_message = cwtensor._do_set_weights(
                 wallet=wallet,
                 netuid=netuid,
                 uids=weight_uids,
                 vals=weight_vals,
                 version_key=version_key,
                 wait_for_finalization=wait_for_finalization,
-            )</code></pre>
+            )
+
+            if not wait_for_finalization:
+                return True, &#34;Not waiting for finalization.&#34;
+
+            if success is True:
+                cybertensor.__console__.print(
+                    prefix=&#34;Set weights&#34;,
+                    sufix=&#34;&lt;green&gt;Finalized: &lt;/green&gt;&#34; + str(success),
+                )
+                return True, &#34;Successfully set weights and Finalized.&#34;
+            else:
+                cybertensor.__console__.print(
+                    &#34;:cross_mark: [red]Failed[/red]: error:{}&#34;.format(error_message)
+                )
+
+                cybertensor.logging.warning(
+                    prefix=&#34;Set weights&#34;,
+                    sufix=&#34;&lt;red&gt;Failed: &lt;/red&gt;&#34; + str(error_message),
+                )
+                return False, error_message
+
+        except Exception as e:
+            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
+            cybertensor.logging.warning(
+                prefix=&#34;Set weights&#34;, sufix=&#34;&lt;red&gt;Failed: &lt;/red&gt;&#34; + str(e)
+            )
+            return False, str(e)</code></pre>
 </details>
 </dd>
 </dl>

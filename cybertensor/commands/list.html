@@ -82,7 +82,7 @@ class ListCommand:
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Lists wallets.&#34;&#34;&#34;
         try:
             wallets = next(os.walk(os.path.expanduser(cli.config.wallet.path)))[1]
@@ -208,7 +208,7 @@ intended for use within the Cybertensor CLI to provide a quick overview of the u
     &#34;&#34;&#34;
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Lists wallets.&#34;&#34;&#34;
         try:
             wallets = next(os.walk(os.path.expanduser(cli.config.wallet.path)))[1]
@@ -304,7 +304,7 @@ def check_config(config: &#34;Config&#34;):
 </details>
 </dd>
 <dt id="cybertensor.commands.list.ListCommand.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>cli)</span>
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Lists wallets.</p></div>
@@ -313,7 +313,7 @@ def check_config(config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def run(cli):
+def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
     r&#34;&#34;&#34;Lists wallets.&#34;&#34;&#34;
     try:
         wallets = next(os.walk(os.path.expanduser(cli.config.wallet.path)))[1]

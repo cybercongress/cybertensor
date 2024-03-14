@@ -204,6 +204,27 @@ def get_all_wallets_for_path(path: str) -&gt; List[&#34;Wallet&#34;]:
     return all_wallets
 
 
+def filter_netuids_by_registered_hotkeys(
+    cli, cwtensor, netuids, all_hotkeys
+) -&gt; List[int]:
+    netuids_with_registered_hotkeys = []
+    for wallet in all_hotkeys:
+        netuids_list = cwtensor.get_netuids_for_hotkey(wallet.hotkey.address)
+        cybertensor.logging.debug(
+            f&#34;Hotkey {wallet.hotkey.address} registered in netuids: {netuids_list}&#34;
+        )
+        netuids_with_registered_hotkeys.extend(netuids_list)
+
+    if cli.config.netuids is None or cli.config.netuids == []:
+        netuids = netuids_with_registered_hotkeys
+
+    elif cli.config.netuids:
+        netuids = [netuid for netuid in netuids if netuid in cli.config.netuids]
+        netuids.extend(netuids_with_registered_hotkeys)
+
+    return list(set(netuids))
+
+
 @dataclass
 class DelegatesDetails:
     name: str
@@ -354,6 +375,36 @@ def get_delegates_details(url: str) -&gt; Optional[Dict[str, DelegatesDetails]]:
             config.netuid = int(netuid)
         except:
             raise ValueError(&#39;netuid must be an integer or &#34;None&#34; (if applicable)&#39;)</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.commands.utils.filter_netuids_by_registered_hotkeys"><code class="name flex">
+<span>def <span class="ident">filter_netuids_by_registered_hotkeys</span></span>(<span>cli, cwtensor, netuids, all_hotkeys) ‑> List[int]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter_netuids_by_registered_hotkeys(
+    cli, cwtensor, netuids, all_hotkeys
+) -&gt; List[int]:
+    netuids_with_registered_hotkeys = []
+    for wallet in all_hotkeys:
+        netuids_list = cwtensor.get_netuids_for_hotkey(wallet.hotkey.address)
+        cybertensor.logging.debug(
+            f&#34;Hotkey {wallet.hotkey.address} registered in netuids: {netuids_list}&#34;
+        )
+        netuids_with_registered_hotkeys.extend(netuids_list)
+
+    if cli.config.netuids is None or cli.config.netuids == []:
+        netuids = netuids_with_registered_hotkeys
+
+    elif cli.config.netuids:
+        netuids = [netuid for netuid in netuids if netuid in cli.config.netuids]
+        netuids.extend(netuids_with_registered_hotkeys)
+
+    return list(set(netuids))</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.utils.get_all_wallets_for_path"><code class="name flex">
@@ -598,6 +649,7 @@ def from_json(cls, json: Dict[str, any]) -&gt; &#34;DelegatesDetails&#34;:
 <ul class="">
 <li><code><a title="cybertensor.commands.utils.check_for_cuda_reg_config" href="#cybertensor.commands.utils.check_for_cuda_reg_config">check_for_cuda_reg_config</a></code></li>
 <li><code><a title="cybertensor.commands.utils.check_netuid_set" href="#cybertensor.commands.utils.check_netuid_set">check_netuid_set</a></code></li>
+<li><code><a title="cybertensor.commands.utils.filter_netuids_by_registered_hotkeys" href="#cybertensor.commands.utils.filter_netuids_by_registered_hotkeys">filter_netuids_by_registered_hotkeys</a></code></li>
 <li><code><a title="cybertensor.commands.utils.get_all_wallets_for_path" href="#cybertensor.commands.utils.get_all_wallets_for_path">get_all_wallets_for_path</a></code></li>
 <li><code><a title="cybertensor.commands.utils.get_coldkey_wallets_for_path" href="#cybertensor.commands.utils.get_coldkey_wallets_for_path">get_coldkey_wallets_for_path</a></code></li>
 <li><code><a title="cybertensor.commands.utils.get_delegates_details" href="#cybertensor.commands.utils.get_delegates_details">get_delegates_details</a></code></li>

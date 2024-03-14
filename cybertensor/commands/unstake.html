@@ -116,28 +116,23 @@ class UnStakeCommand:
                 hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
             else:
                 hotkeys = str(config.wallet.hotkey)
-            if not Confirm.ask(
-                &#34;Unstake all GBOOT from: [bold]&#39;{}&#39;[/bold]?&#34;.format(hotkeys)
-            ):
-                amount = Prompt.ask(&#34;Enter GBOOT amount to unstake&#34;)
-                config.unstake_all = False
-                try:
-                    config.amount = float(amount)
-                except ValueError:
-                    console.print(
-                        &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                            amount
-                        )
+            amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+            config.unstake_all = False
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
+                        amount
                     )
-                    sys.exit()
-            else:
-                config.unstake_all = True
+                )
+                sys.exit()
 
     @staticmethod
     def add_args(command_parser):
         unstake_parser = command_parser.add_parser(
             &#34;remove&#34;,
-            help=&#34;&#34;&#34;Remove stake from your hotkey accounts into their coldkey accounts.&#34;&#34;&#34;,
+            help=&#34;&#34;&#34;Remove stake from the specified hotkey into the coldkey balance.&#34;&#34;&#34;,
         )
         unstake_parser.add_argument(
             &#34;--all&#34;, dest=&#34;unstake_all&#34;, action=&#34;store_true&#34;, default=False
@@ -181,11 +176,20 @@ class UnStakeCommand:
         cybertensor.cwtensor.add_args(unstake_parser)
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            UnStakeCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
         config = cli.config.copy()
         wallet = Wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_unstake_from: List[Tuple[Optional[str], str]] = []
@@ -407,28 +411,23 @@ It allows for flexible management of token stakes across different neurons (hotk
                 hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
             else:
                 hotkeys = str(config.wallet.hotkey)
-            if not Confirm.ask(
-                &#34;Unstake all GBOOT from: [bold]&#39;{}&#39;[/bold]?&#34;.format(hotkeys)
-            ):
-                amount = Prompt.ask(&#34;Enter GBOOT amount to unstake&#34;)
-                config.unstake_all = False
-                try:
-                    config.amount = float(amount)
-                except ValueError:
-                    console.print(
-                        &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                            amount
-                        )
+            amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+            config.unstake_all = False
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
+                        amount
                     )
-                    sys.exit()
-            else:
-                config.unstake_all = True
+                )
+                sys.exit()
 
     @staticmethod
     def add_args(command_parser):
         unstake_parser = command_parser.add_parser(
             &#34;remove&#34;,
-            help=&#34;&#34;&#34;Remove stake from your hotkey accounts into their coldkey accounts.&#34;&#34;&#34;,
+            help=&#34;&#34;&#34;Remove stake from the specified hotkey into the coldkey balance.&#34;&#34;&#34;,
         )
         unstake_parser.add_argument(
             &#34;--all&#34;, dest=&#34;unstake_all&#34;, action=&#34;store_true&#34;, default=False
@@ -472,11 +471,20 @@ It allows for flexible management of token stakes across different neurons (hotk
         cybertensor.cwtensor.add_args(unstake_parser)
 
     @staticmethod
-    def run(cli):
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            UnStakeCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
         config = cli.config.copy()
         wallet = Wallet(config=config)
-        cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_unstake_from: List[Tuple[Optional[str], str]] = []
@@ -619,7 +627,7 @@ It allows for flexible management of token stakes across different neurons (hotk
 def add_args(command_parser):
     unstake_parser = command_parser.add_parser(
         &#34;remove&#34;,
-        help=&#34;&#34;&#34;Remove stake from your hotkey accounts into their coldkey accounts.&#34;&#34;&#34;,
+        help=&#34;&#34;&#34;Remove stake from the specified hotkey into the coldkey balance.&#34;&#34;&#34;,
     )
     unstake_parser.add_argument(
         &#34;--all&#34;, dest=&#34;unstake_all&#34;, action=&#34;store_true&#34;, default=False
@@ -702,26 +710,21 @@ def check_config(cls, config: &#34;Config&#34;):
             hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
         else:
             hotkeys = str(config.wallet.hotkey)
-        if not Confirm.ask(
-            &#34;Unstake all GBOOT from: [bold]&#39;{}&#39;[/bold]?&#34;.format(hotkeys)
-        ):
-            amount = Prompt.ask(&#34;Enter GBOOT amount to unstake&#34;)
-            config.unstake_all = False
-            try:
-                config.amount = float(amount)
-            except ValueError:
-                console.print(
-                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                        amount
-                    )
+        amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+        config.unstake_all = False
+        try:
+            config.amount = float(amount)
+        except ValueError:
+            console.print(
+                &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
+                    amount
                 )
-                sys.exit()
-        else:
-            config.unstake_all = True</code></pre>
+            )
+            sys.exit()</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.unstake.UnStakeCommand.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>cli)</span>
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Unstake token of amount from hotkey(s).</p></div>
@@ -730,137 +733,15 @@ def check_config(cls, config: &#34;Config&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def run(cli):
+def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
     r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
-    config = cli.config.copy()
-    wallet = Wallet(config=config)
-    cwtensor: cybertensor.cwtensor = cybertensor.cwtensor(config=cli.config)
-
-    # Get the hotkey_names (if any) and the hotkeys.
-    hotkeys_to_unstake_from: List[Tuple[Optional[str], str]] = []
-    if cli.config.get(&#34;hotkey_address&#34;):
-        # Stake to specific hotkey.
-        hotkeys_to_unstake_from = [(None, cli.config.get(&#34;hotkey_address&#34;))]
-    elif cli.config.get(&#34;all_hotkeys&#34;):
-        # Stake to all hotkeys.
-        all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
-            wallet=wallet
-        )
-        # Get the hotkeys to exclude. (d)efault to no exclusions.
-        hotkeys_to_exclude: List[str] = cli.config.get(&#34;hotkeys&#34;, d=[])
-        # Exclude hotkeys that are specified.
-        hotkeys_to_unstake_from = [
-            (wallet.hotkey_str, wallet.hotkey.address)
-            for wallet in all_hotkeys
-            if wallet.hotkey_str not in hotkeys_to_exclude
-        ]  # definitely wallets
-
-    elif cli.config.get(&#34;hotkeys&#34;):
-        # Stake to specific hotkeys.
-        for hotkey_or_hotkey_name in cli.config.get(&#34;hotkeys&#34;):
-            if cybertensor.utils.is_valid_address(hotkey_or_hotkey_name):
-                # If the hotkey is a valid address, we add it to the list.
-                hotkeys_to_unstake_from.append((None, hotkey_or_hotkey_name))
-            else:
-                # If the hotkey is not a valid address, we assume it is a hotkey name.
-                #  We then get the hotkey from the wallet and add it to the list.
-                wallet_ = Wallet(
-                    config=cli.config, hotkey=hotkey_or_hotkey_name
-                )
-                hotkeys_to_unstake_from.append(
-                    (wallet_.hotkey_str, wallet_.hotkey.address)
-                )
-    elif cli.config.wallet.get(&#34;hotkey&#34;):
-        # Only cli.config.wallet.hotkey is specified.
-        #  so we stake to that single hotkey.
-        hotkey_or_name = cli.config.wallet.get(&#34;hotkey&#34;)
-        if cybertensor.utils.is_valid_address(hotkey_or_name):
-            hotkeys_to_unstake_from = [(None, hotkey_or_name)]
-        else:
-            # Hotkey is not a valid address, so we assume it is a hotkey name.
-            wallet_ = Wallet(
-                config=cli.config, hotkey=hotkey_or_name
-            )
-            hotkeys_to_unstake_from = [
-                (wallet_.hotkey_str, wallet_.hotkey.address)
-            ]
-    else:
-        # Only cli.config.wallet.hotkey is specified.
-        #  so we stake to that single hotkey.
-        assert cli.config.wallet.hotkey is not None
-        hotkeys_to_unstake_from = [
-            (None, Wallet(config=cli.config).hotkey.address)
-        ]
-
-    final_hotkeys: List[Tuple[str, str]] = []
-    final_amounts: List[Union[float, Balance]] = []
-    for hotkey in tqdm(hotkeys_to_unstake_from):
-        hotkey: Tuple[Optional[str], str]  # (hotkey_name (or None), hotkey)
-        unstake_amount_gigaboot: float = cli.config.get(
-            &#34;amount&#34;
-        )  # The amount specified to unstake.
-        hotkey_stake: Balance = cwtensor.get_stake_for_coldkey_and_hotkey(
-            hotkey=hotkey[1], coldkey=wallet.coldkeypub.address
-        )
-        if unstake_amount_gigaboot is None:
-            unstake_amount_gigaboot = hotkey_stake.gboot
-        if cli.config.get(&#34;max_stake&#34;):
-            # Get the current stake of the hotkey from this coldkey.
-            unstake_amount_gigaboot: float = hotkey_stake.gboot - cli.config.get(
-                &#34;max_stake&#34;
-            )
-            cli.config.amount = unstake_amount_gigaboot
-            if unstake_amount_gigaboot &lt; 0:
-                # Skip if max_stake is greater than current stake.
-                continue
-        else:
-            if unstake_amount_gigaboot is not None:
-                # There is a specified amount to unstake.
-                if unstake_amount_gigaboot &gt; hotkey_stake.gboot:
-                    # Skip if the specified amount is greater than the current stake.
-                    continue
-
-        final_amounts.append(unstake_amount_gigaboot)
-        final_hotkeys.append(hotkey)  # add both the name and the address.
-
-    if len(final_hotkeys) == 0:
-        # No hotkeys to unstake from.
-        console.print(
-            &#34;Not enough stake to unstake from any hotkeys or max_stake is more than current stake.&#34;
-        )
-        return None
-
-    # Ask to unstake
-    if not cli.config.no_prompt:
-        if not Confirm.ask(
-            f&#34;Do you want to unstake from the following keys to {wallet.name}:\n&#34;
-            + &#34;&#34;.join(
-                [
-                    f&#34;    [bold white]- {hotkey[0] + &#39;:&#39; if hotkey[0] else &#39;&#39;}{hotkey[1]}: &#34;
-                    f&#34;{f&#39;{amount} {cwtensor.giga_token_symbol}&#39; if amount else &#39;All&#39;}[/bold white]\n&#34;
-                    for hotkey, amount in zip(final_hotkeys, final_amounts)
-                ]
-            )
-        ):
-            return None
-
-    if len(final_hotkeys) == 1:
-        # do regular unstake
-        return cwtensor.unstake(
-            wallet=wallet,
-            hotkey=final_hotkeys[0][1],
-            amount=None if cli.config.get(&#34;unstake_all&#34;) else final_amounts[0],
-            wait_for_finalization=True,
-            prompt=not cli.config.no_prompt,
-        )
-
-    cwtensor.unstake_multiple(
-        wallet=wallet,
-        hotkeys=[hotkey for _, hotkey in final_hotkeys],
-        amounts=None if cli.config.get(&#34;unstake_all&#34;) else final_amounts,
-        wait_for_finalization=True,
-        prompt=False,
-    )</code></pre>
+    try:
+        cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+        UnStakeCommand._run(cli, cwtensor)
+    finally:
+        if &#34;cwtensor&#34; in locals():
+            cwtensor.close()
+            cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)</code></pre>
 </details>
 </dd>
 </dl>

@@ -71,7 +71,7 @@ def nominate_message(
             The wallet to become a delegate for.
     Returns:
         success (bool):
-            True if the transaction was successful.
+            ``True`` if the transaction was successful.
     &#34;&#34;&#34;
     # Unlock the coldkey.
     wallet.coldkey
@@ -127,7 +127,7 @@ def delegate_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     wallet: &#34;Wallet&#34;,
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = False,
     prompt: bool = False,
 ) -&gt; bool:
@@ -138,16 +138,16 @@ def delegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:
@@ -261,7 +261,7 @@ def undelegate_message(
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     wallet: &#34;Wallet&#34;,
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -272,16 +272,16 @@ def undelegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to unstake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to unstake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:
@@ -396,7 +396,7 @@ def undelegate_message(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="cybertensor.messages.delegation.delegate_message"><code class="name flex">
-<span>def <span class="ident">delegate_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">delegate_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float, ForwardRef(None)] = None, wait_for_finalization: bool = False, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Delegates the specified amount of stake to the passed delegate.</p>
@@ -406,16 +406,16 @@ cybertensor wallet object.
 delegate (Optional[str]):
 address of the delegate.
 amount (Union[Balance, float]):
-Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+Amount to stake as cybertensor balance, or <code>float</code> interpreted as GBOOT.
 wait_for_finalization (bool):
-If set, waits for the extrinsic to be finalized on the chain before returning true,
-or returns false if the extrinsic fails to be finalized within the timeout.
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
 prompt (bool):
-If true, the call waits for confirmation from the user before proceeding.</p>
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-flag is true if extrinsic was finalized or uncluded in the block.
-If we did not wait for finalization / inclusion, the response is true.</p>
+flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p>
 <h2 id="raises">Raises</h2>
 <p>NotRegisteredError:
 If the wallet is not registered on the chain.
@@ -429,7 +429,7 @@ If the hotkey is not a delegate on the chain.</p></div>
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     wallet: &#34;Wallet&#34;,
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = False,
     prompt: bool = False,
 ) -&gt; bool:
@@ -440,16 +440,16 @@ If the hotkey is not a delegate on the chain.</p></div>
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:
@@ -569,7 +569,7 @@ If the hotkey is not a delegate on the chain.</p></div>
 The wallet to become a delegate for.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-True if the transaction was successful.</p></div>
+<code>True</code> if the transaction was successful.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -585,7 +585,7 @@ True if the transaction was successful.</p></div>
             The wallet to become a delegate for.
     Returns:
         success (bool):
-            True if the transaction was successful.
+            ``True`` if the transaction was successful.
     &#34;&#34;&#34;
     # Unlock the coldkey.
     wallet.coldkey
@@ -638,7 +638,7 @@ True if the transaction was successful.</p></div>
 </details>
 </dd>
 <dt id="cybertensor.messages.delegation.undelegate_message"><code class="name flex">
-<span>def <span class="ident">undelegate_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+<span>def <span class="ident">undelegate_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, delegate: Optional[str] = None, amount: Union[<a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, float, ForwardRef(None)] = None, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Un-delegates stake from the passed delegate.</p>
@@ -648,16 +648,16 @@ cybertensor wallet object.
 delegate (Optional[str]):
 address of the delegate.
 amount (Union[Balance, float]):
-Amount to unstake as cybertensor balance, or float interpreted as GBOOT.
+Amount to unstake as cybertensor balance, or <code>float</code> interpreted as GBOOT.
 wait_for_finalization (bool):
-If set, waits for the extrinsic to be finalized on the chain before returning true,
-or returns false if the extrinsic fails to be finalized within the timeout.
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
 prompt (bool):
-If true, the call waits for confirmation from the user before proceeding.</p>
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-flag is true if extrinsic was finalized or uncluded in the block.
-If we did not wait for finalization / inclusion, the response is true.</p>
+flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p>
 <h2 id="raises">Raises</h2>
 <p>NotRegisteredError:
 If the wallet is not registered on the chain.
@@ -671,7 +671,7 @@ If the hotkey is not a delegate on the chain.</p></div>
     cwtensor: &#34;cybertensor.cwtensor&#34;,
     wallet: &#34;Wallet&#34;,
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -&gt; bool:
@@ -682,16 +682,16 @@ If the hotkey is not a delegate on the chain.</p></div>
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to unstake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to unstake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:

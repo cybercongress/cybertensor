@@ -151,6 +151,8 @@ __giga_boot_symbol__: str = &#34;GPUSSY&#34;
 
 __networks__ = [&#34;local&#34;, &#34;bostrom&#34;, &#34;space-pussy&#34;]
 
+__default_network__ = &#34;space-pussy&#34;
+
 __local_network__ = NetworkConfigCwTensor(
     chain_id=&#34;localbostrom&#34;,
     url=&#34;grpc+http://localhost:9090&#34;,
@@ -203,7 +205,7 @@ __default_gas__ = None
 __default_transfer_gas__ = 100_000
 
 from cybertensor.errors import *
-from cybertensor.keyfile import keyfile
+from cybertensor.keyfile import keyfile, serialized_keypair_to_keyfile_data
 from cybertensor.keypair import Keypair
 from cybertensor.wallet import Wallet
 from cybertensor.utils import *
@@ -221,6 +223,8 @@ from cybertensor.tensor import tensor, Tensor
 from cybertensor.axon import axon
 from cybertensor.dendrite import dendrite
 from cybertensor.config import Config
+from cybertensor.mock import MockCwtensor
+# from .subnets import SubnetsAPI
 
 configs = [
     axon.config(),
@@ -228,6 +232,7 @@ configs = [
     PriorityThreadPoolExecutor.config(),
     Wallet.config(),
     logging.config(),
+    cwtensor.config(),
 ]
 defaults = Config.merge_all(configs)</code></pre>
 </details>
@@ -295,6 +300,10 @@ defaults = Config.merge_all(configs)</code></pre>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="cybertensor.subnets" href="subnets.html">cybertensor.subnets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="cybertensor.synapse" href="synapse.html">cybertensor.synapse</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -305,7 +314,7 @@ defaults = Config.merge_all(configs)</code></pre>
 </dd>
 <dt><code class="name"><a title="cybertensor.threadpool" href="threadpool.html">cybertensor.threadpool</a></code></dt>
 <dd>
-<div class="desc"><p>Implements ThreadPoolExecutor.</p></div>
+<div class="desc"><p>Implements <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_.</p></div>
 </dd>
 <dt><code class="name"><a title="cybertensor.types" href="types.html">cybertensor.types</a></code></dt>
 <dd>
@@ -465,6 +474,7 @@ defaults = Config.merge_all(configs)</code></pre>
 <li><code><a title="cybertensor.metagraph" href="metagraph.html">cybertensor.metagraph</a></code></li>
 <li><code><a title="cybertensor.mock" href="mock/index.html">cybertensor.mock</a></code></li>
 <li><code><a title="cybertensor.stream" href="stream.html">cybertensor.stream</a></code></li>
+<li><code><a title="cybertensor.subnets" href="subnets.html">cybertensor.subnets</a></code></li>
 <li><code><a title="cybertensor.synapse" href="synapse.html">cybertensor.synapse</a></code></li>
 <li><code><a title="cybertensor.tensor" href="tensor.html">cybertensor.tensor</a></code></li>
 <li><code><a title="cybertensor.threadpool" href="threadpool.html">cybertensor.threadpool</a></code></li>

@@ -61,6 +61,7 @@ from cybertensor.commands.utils import (
     get_hotkey_wallets_for_wallet,
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
+    filter_netuids_by_registered_hotkeys,
 )
 from cybertensor.config import Config
 from cybertensor.utils.balance import Balance
@@ -108,8 +109,17 @@ class OverviewCommand:
     @staticmethod
     def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
         r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            OverviewCommand._run(cli, cwtensor, max_len_netuids=max_len_netuids, max_len_keys=max_len_keys)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
         wallet = Wallet(config=cli.config)
-        cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
         total_balance = Balance(0)
@@ -169,8 +179,11 @@ class OverviewCommand:
         block = cwtensor.block
 
         netuids = cwtensor.get_all_subnet_netuids()
-        if cli.config.netuid != []:
-            netuids = [netuid for netuid in netuids if netuid in cli.config.netuid]
+        netuids = filter_netuids_by_registered_hotkeys(
+            cli, cwtensor, netuids, all_hotkeys
+        )
+        cybertensor.logging.debug(f&#34;Netuids to check: {netuids}&#34;)
+
         for netuid in netuids:
             neurons[str(netuid)] = []
 
@@ -204,7 +217,7 @@ class OverviewCommand:
                 netuid, neurons_result, err_msg = \
                     OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
                 if err_msg is not None:
-                    console.print(err_msg)
+                    console.print(f&#34;netuid &#39;{netuid}&#39;: {err_msg}&#34;)
                 if len(neurons_result) == 0:
                     # Remove netuid from overview if no neurons are found.
                     netuids.remove(netuid)
@@ -281,10 +294,13 @@ class OverviewCommand:
 
                     # Add this hotkey to the wallets dict
                     wallet_ = Wallet(
-                        name=wallet,
+                        name=wallet.name,
                     )
                     wallet_.hotkey = hotkey_addr
                     wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    # Indicates a hotkey not on local machine but exists in stake_info obj on-chain
+                    if hotkey_coldkey_to_hotkey_wallet.get(hotkey_addr) is None:
+                        hotkey_coldkey_to_hotkey_wallet[hotkey_addr] = {}
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
@@ -364,11 +380,13 @@ class OverviewCommand:
                     &#34;{:.5f}&#34;.format(validator_trust),
                     &#34;*&#34; if validator_permit else &#34;&#34;,
                     str(last_update),
-                    cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
-                    + &#34;:&#34;
-                    + str(nn.axon_info.port)
-                    if nn.axon_info.port != 0
-                    else &#34;[yellow]none[/yellow]&#34;,
+                    (
+                        cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
+                        + &#34;:&#34;
+                        + str(nn.axon_info.port)
+                        if nn.axon_info.port != 0
+                        else &#34;[yellow]none[/yellow]&#34;
+                    ),
                     nn.hotkey,
                 ]
 
@@ -566,7 +584,7 @@ class OverviewCommand:
         result: List[&#34;cybertensor.NeuronInfoLite&#34;] = []
 
         try:
-            cwtensor = cybertensor.cwtensor(config=cwtensor_config)
+            cwtensor = cybertensor.cwtensor(config=cwtensor_config)  # , log_verbose=False)
 
             all_neurons: List[&#34;cybertensor.NeuronInfoLite&#34;] = cwtensor.neurons_lite(
                 netuid=netuid
@@ -580,6 +598,10 @@ class OverviewCommand:
                     result.append(nn)
         except Exception as e:
             return netuid, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
 
         return netuid, result, None
 
@@ -616,12 +638,19 @@ class OverviewCommand:
 
             all_staked_hotkeys = filter(_filter_stake_info, all_stake_info_for_coldkey)
             result = [
-                (stake_info.hotkey, stake_info.stake)
+                (
+                    stake_info.hotkey,
+                    stake_info.stake.gboot
+                )  # stake is a Balance object
                 for stake_info in all_staked_hotkeys
             ]
 
         except Exception as e:
             return coldkey_wallet, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
 
         return coldkey_wallet, result, None
 
@@ -686,12 +715,12 @@ class OverviewCommand:
             help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
         )
         overview_parser.add_argument(
-            &#34;--netuid&#34;,
-            dest=&#34;netuid&#34;,
+            &#34;--netuids&#34;,
+            dest=&#34;netuids&#34;,
             type=int,
             nargs=&#34;*&#34;,
             help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
-            default=[],
+            default=None,
         )
         Wallet.add_args(overview_parser)
         cybertensor.cwtensor.add_args(overview_parser)
@@ -706,11 +735,11 @@ class OverviewCommand:
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
 
-        if config.netuid != []:
-            if not isinstance(config.netuid, list):
-                config.netuid = [int(config.netuid)]
+        if config.netuids:
+            if not isinstance(config.netuids, list):
+                config.netuids = [int(config.netuids)]
             else:
-                config.netuid = [int(netuid) for netuid in config.netuid]</code></pre>
+                config.netuids = [int(netuid) for netuid in config.netuids]</code></pre>
 </details>
 </section>
 <section>
@@ -803,8 +832,17 @@ and overall contribution to the cybertensor network.</p></div>
     @staticmethod
     def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
         r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            OverviewCommand._run(cli, cwtensor, max_len_netuids=max_len_netuids, max_len_keys=max_len_keys)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
         wallet = Wallet(config=cli.config)
-        cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
         total_balance = Balance(0)
@@ -864,8 +902,11 @@ and overall contribution to the cybertensor network.</p></div>
         block = cwtensor.block
 
         netuids = cwtensor.get_all_subnet_netuids()
-        if cli.config.netuid != []:
-            netuids = [netuid for netuid in netuids if netuid in cli.config.netuid]
+        netuids = filter_netuids_by_registered_hotkeys(
+            cli, cwtensor, netuids, all_hotkeys
+        )
+        cybertensor.logging.debug(f&#34;Netuids to check: {netuids}&#34;)
+
         for netuid in netuids:
             neurons[str(netuid)] = []
 
@@ -899,7 +940,7 @@ and overall contribution to the cybertensor network.</p></div>
                 netuid, neurons_result, err_msg = \
                     OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
                 if err_msg is not None:
-                    console.print(err_msg)
+                    console.print(f&#34;netuid &#39;{netuid}&#39;: {err_msg}&#34;)
                 if len(neurons_result) == 0:
                     # Remove netuid from overview if no neurons are found.
                     netuids.remove(netuid)
@@ -976,10 +1017,13 @@ and overall contribution to the cybertensor network.</p></div>
 
                     # Add this hotkey to the wallets dict
                     wallet_ = Wallet(
-                        name=wallet,
+                        name=wallet.name,
                     )
                     wallet_.hotkey = hotkey_addr
                     wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    # Indicates a hotkey not on local machine but exists in stake_info obj on-chain
+                    if hotkey_coldkey_to_hotkey_wallet.get(hotkey_addr) is None:
+                        hotkey_coldkey_to_hotkey_wallet[hotkey_addr] = {}
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
@@ -1059,11 +1103,13 @@ and overall contribution to the cybertensor network.</p></div>
                     &#34;{:.5f}&#34;.format(validator_trust),
                     &#34;*&#34; if validator_permit else &#34;&#34;,
                     str(last_update),
-                    cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
-                    + &#34;:&#34;
-                    + str(nn.axon_info.port)
-                    if nn.axon_info.port != 0
-                    else &#34;[yellow]none[/yellow]&#34;,
+                    (
+                        cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
+                        + &#34;:&#34;
+                        + str(nn.axon_info.port)
+                        if nn.axon_info.port != 0
+                        else &#34;[yellow]none[/yellow]&#34;
+                    ),
                     nn.hotkey,
                 ]
 
@@ -1261,7 +1307,7 @@ and overall contribution to the cybertensor network.</p></div>
         result: List[&#34;cybertensor.NeuronInfoLite&#34;] = []
 
         try:
-            cwtensor = cybertensor.cwtensor(config=cwtensor_config)
+            cwtensor = cybertensor.cwtensor(config=cwtensor_config)  # , log_verbose=False)
 
             all_neurons: List[&#34;cybertensor.NeuronInfoLite&#34;] = cwtensor.neurons_lite(
                 netuid=netuid
@@ -1275,6 +1321,10 @@ and overall contribution to the cybertensor network.</p></div>
                     result.append(nn)
         except Exception as e:
             return netuid, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
 
         return netuid, result, None
 
@@ -1311,12 +1361,19 @@ and overall contribution to the cybertensor network.</p></div>
 
             all_staked_hotkeys = filter(_filter_stake_info, all_stake_info_for_coldkey)
             result = [
-                (stake_info.hotkey, stake_info.stake)
+                (
+                    stake_info.hotkey,
+                    stake_info.stake.gboot
+                )  # stake is a Balance object
                 for stake_info in all_staked_hotkeys
             ]
 
         except Exception as e:
             return coldkey_wallet, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
 
         return coldkey_wallet, result, None
 
@@ -1381,12 +1438,12 @@ and overall contribution to the cybertensor network.</p></div>
             help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
         )
         overview_parser.add_argument(
-            &#34;--netuid&#34;,
-            dest=&#34;netuid&#34;,
+            &#34;--netuids&#34;,
+            dest=&#34;netuids&#34;,
             type=int,
             nargs=&#34;*&#34;,
             help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
-            default=[],
+            default=None,
         )
         Wallet.add_args(overview_parser)
         cybertensor.cwtensor.add_args(overview_parser)
@@ -1401,11 +1458,11 @@ and overall contribution to the cybertensor network.</p></div>
             wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
 
-        if config.netuid != []:
-            if not isinstance(config.netuid, list):
-                config.netuid = [int(config.netuid)]
+        if config.netuids:
+            if not isinstance(config.netuids, list):
+                config.netuids = [int(config.netuids)]
             else:
-                config.netuid = [int(netuid) for netuid in config.netuid]</code></pre>
+                config.netuids = [int(netuid) for netuid in config.netuids]</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -1479,12 +1536,12 @@ def add_args(parser: argparse.ArgumentParser):
         help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
     )
     overview_parser.add_argument(
-        &#34;--netuid&#34;,
-        dest=&#34;netuid&#34;,
+        &#34;--netuids&#34;,
+        dest=&#34;netuids&#34;,
         type=int,
         nargs=&#34;*&#34;,
         help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
-        default=[],
+        default=None,
     )
     Wallet.add_args(overview_parser)
     cybertensor.cwtensor.add_args(overview_parser)</code></pre>
@@ -1509,11 +1566,11 @@ def check_config(config: &#34;Config&#34;):
         wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
         config.wallet.name = str(wallet_name)
 
-    if config.netuid != []:
-        if not isinstance(config.netuid, list):
-            config.netuid = [int(config.netuid)]
+    if config.netuids:
+        if not isinstance(config.netuids, list):
+            config.netuids = [int(config.netuids)]
         else:
-            config.netuid = [int(netuid) for netuid in config.netuid]</code></pre>
+            config.netuids = [int(netuid) for netuid in config.netuids]</code></pre>
 </details>
 </dd>
 <dt id="cybertensor.commands.overview.OverviewCommand.run"><code class="name flex">
@@ -1528,454 +1585,13 @@ def check_config(config: &#34;Config&#34;):
 <pre><code class="python">@staticmethod
 def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
     r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
-    wallet = Wallet(config=cli.config)
-    cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(config=cli.config)
-
-    all_hotkeys = []
-    total_balance = Balance(0)
-
-    # We are printing for every coldkey.
-    if cli.config.get(&#34;all&#34;, d=None):
-        cold_wallets = get_coldkey_wallets_for_path(cli.config.wallet.path)
-        for cold_wallet in tqdm(cold_wallets, desc=&#34;Pulling balances&#34;):
-            if (
-                cold_wallet.coldkeypub_file.exists_on_device()
-                and not cold_wallet.coldkeypub_file.is_encrypted()
-            ):
-                total_balance = total_balance + cwtensor.get_balance(
-                    cold_wallet.coldkeypub.address
-                )
-        all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
-    else:
-        # We are only printing keys for a single coldkey
-        coldkey_wallet = Wallet(config=cli.config)
-        if (
-            coldkey_wallet.coldkeypub_file.exists_on_device()
-            and not coldkey_wallet.coldkeypub_file.is_encrypted()
-        ):
-            total_balance = cwtensor.get_balance(
-                coldkey_wallet.coldkeypub.address
-            )
-        if not coldkey_wallet.coldkeypub_file.exists_on_device():
-            console.print(&#34;[bold red]No wallets found.&#34;)
-            return
-        all_hotkeys = get_hotkey_wallets_for_wallet(coldkey_wallet)
-
-    # We are printing for a select number of hotkeys from all_hotkeys.
-
-    if cli.config.get(&#34;hotkeys&#34;, []):
-        if not cli.config.get(&#34;all_hotkeys&#34;, False):
-            # We are only showing hotkeys that are specified.
-            all_hotkeys = [
-                hotkey
-                for hotkey in all_hotkeys
-                if hotkey.hotkey_str in cli.config.hotkeys
-            ]
-        else:
-            # We are excluding the specified hotkeys from all_hotkeys.
-            all_hotkeys = [
-                hotkey
-                for hotkey in all_hotkeys
-                if hotkey.hotkey_str not in cli.config.hotkeys
-            ]
-
-    # Check we have keys to display.
-    if len(all_hotkeys) == 0:
-        console.print(&#34;[red]No wallets found.[/red]&#34;)
-        return
-
-    # Pull neuron info for all keys.
-    neurons: Dict[str, List[cybertensor.NeuronInfoLite]] = {}
-    block = cwtensor.block
-
-    netuids = cwtensor.get_all_subnet_netuids()
-    if cli.config.netuid != []:
-        netuids = [netuid for netuid in netuids if netuid in cli.config.netuid]
-    for netuid in netuids:
-        neurons[str(netuid)] = []
-
-    all_wallet_names = set([wallet.name for wallet in all_hotkeys])
-    all_coldkey_wallets = [
-        Wallet(name=wallet_name, path=cli.config.wallet.path) for wallet_name in all_wallet_names
-    ]
-
-    hotkey_coldkey_to_hotkey_wallet = {}
-    for hotkey_wallet in all_hotkeys:
-        if hotkey_wallet.hotkey.address not in hotkey_coldkey_to_hotkey_wallet:
-            hotkey_coldkey_to_hotkey_wallet[hotkey_wallet.hotkey.address] = {}
-
-        hotkey_coldkey_to_hotkey_wallet[hotkey_wallet.hotkey.address][
-            hotkey_wallet.coldkeypub.address
-        ] = hotkey_wallet
-
-    all_hotkey_addresses = list(hotkey_coldkey_to_hotkey_wallet.keys())
-    with console.status(
-        &#34;:satellite: Syncing with chain: [white]{}[/white] ...&#34;.format(
-            cli.config.cwtensor.get(
-                &#34;network&#34;, defaults.cwtensor.network
-            )
-        )
-    ):
-
-        # Pull neuron info for all keys.
-        ## Max len(netuids) or 5 threads.
-
-        for netuid in netuids[:max_len_netuids]:
-            netuid, neurons_result, err_msg = \
-                OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
-            if err_msg is not None:
-                console.print(err_msg)
-            if len(neurons_result) == 0:
-                # Remove netuid from overview if no neurons are found.
-                netuids.remove(netuid)
-                del neurons[str(netuid)]
-            else:
-                # Add neurons to overview.
-                neurons[str(netuid)] = neurons_result
-
-        total_coldkey_stake_from_metagraph = defaultdict(
-            lambda: Balance(0.0)
-        )
-        checked_hotkeys = set()
-        for neuron_list in neurons.values():
-            for neuron in neuron_list:
-                if neuron.hotkey in checked_hotkeys:
-                    continue
-                total_coldkey_stake_from_metagraph[
-                    neuron.coldkey
-                ] += neuron.stake_dict[neuron.coldkey]
-                checked_hotkeys.add(neuron.hotkey)
-
-        alerts_table = Table(show_header=True, header_style=&#34;bold magenta&#34;)
-        alerts_table.add_column(&#34;🥩 alert!&#34;)
-
-        coldkeys_to_check = []
-        for coldkey_wallet in all_coldkey_wallets:
-            # Check if we have any stake with hotkeys that are not registered.
-            total_coldkey_stake_from_chain = cwtensor.get_total_stake_for_coldkey(
-                address=coldkey_wallet.coldkeypub.address
-            )
-            difference = (
-                total_coldkey_stake_from_chain
-                - total_coldkey_stake_from_metagraph[
-                    coldkey_wallet.coldkeypub.address
-                ]
-            )
-            if difference == 0:
-                continue  # We have all our stake registered.
-
-            coldkeys_to_check.append(coldkey_wallet)
-            alerts_table.add_row(
-                &#34;Found {} stake with coldkey {} that is not registered.&#34;.format(
-                    difference, coldkey_wallet.coldkeypub.address
-                )
-            )
-
-        if len(coldkeys_to_check) &gt; 0:
-            # We have some stake that is not with a registered hotkey.
-            if &#34;-1&#34; not in neurons:
-                neurons[&#34;-1&#34;] = []
-
-        for coldkey_wallet in coldkeys_to_check:
-            coldkey_wallet, de_registered_stake, err_msg = \
-                OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
-                    (cli.config, all_hotkey_addresses, coldkey_wallet))
-
-            if err_msg is not None:
-                console.print(err_msg)
-
-            if len(de_registered_stake) == 0:
-                continue  # We have no de-registered stake with this coldkey.
-
-            de_registered_neurons = []
-            for hotkey_addr, our_stake in de_registered_stake:
-                # Make a neuron info lite for this hotkey and coldkey.
-                de_registered_neuron = cybertensor.NeuronInfoLite._null_neuron()
-                de_registered_neuron.hotkey = hotkey_addr
-                de_registered_neuron.coldkey = (
-                    coldkey_wallet.coldkeypub.address
-                )
-                de_registered_neuron.total_stake = Balance(our_stake)
-
-                de_registered_neurons.append(de_registered_neuron)
-
-                # Add this hotkey to the wallets dict
-                wallet_ = Wallet(
-                    name=wallet,
-                )
-                wallet_.hotkey = hotkey_addr
-                wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
-                hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
-                    coldkey_wallet.coldkeypub.address
-                ] = wallet_
-
-            # Add neurons to overview.
-            neurons[&#34;-1&#34;].extend(de_registered_neurons)
-
-    # Setup outer table.
-    grid = Table.grid(pad_edge=False)
-
-    # If there are any alerts, add them to the grid
-    if len(alerts_table.rows) &gt; 0:
-        grid.add_row(alerts_table)
-
-    title: str = &#34;&#34;
-    if not cli.config.get(&#34;all&#34;, d=None):
-        title = &#34;[bold white italic]Wallet - {}:{}&#34;.format(
-            cli.config.wallet.name, wallet.coldkeypub.address
-        )
-    else:
-        title = &#34;[bold whit italic]All Wallets:&#34;
-
-    # Add title
-    grid.add_row(Align(title, vertical=&#34;middle&#34;, align=&#34;center&#34;))
-
-    # Generate rows per netuid
-    hotkeys_seen = set()
-    total_neurons = 0
-    total_stake = 0.0
-    for netuid in netuids:
-        subnet_tempo = cwtensor.tempo(netuid=netuid)
-        last_subnet = netuid == netuids[-1]
-        TABLE_DATA = []
-        total_rank = 0.0
-        total_trust = 0.0
-        total_consensus = 0.0
-        total_validator_trust = 0.0
-        total_incentive = 0.0
-        total_dividends = 0.0
-        total_emission = 0
-
-        for nn in neurons[str(netuid)]:
-            hotwallet = hotkey_coldkey_to_hotkey_wallet.get(nn.hotkey, {}).get(
-                nn.coldkey, None
-            )
-            if not hotwallet:
-                # Indicates a mismatch between what the chain says the coldkey
-                # is for this hotkey and the local wallet coldkey-hotkey pair
-                hotwallet = argparse.Namespace()
-                hotwallet.name = nn.coldkey[:7]
-                hotwallet.hotkey_str = nn.hotkey[:7]
-            nn: cybertensor.NeuronInfoLite
-            uid = nn.uid
-            active = nn.active
-            stake = nn.total_stake.gboot
-            rank = nn.rank
-            trust = nn.trust
-            consensus = nn.consensus
-            validator_trust = nn.validator_trust
-            incentive = nn.incentive
-            dividends = nn.dividends
-            emission = int(nn.emission / (subnet_tempo + 1) * 1e9)
-            last_update = int(block - nn.last_update)
-            validator_permit = nn.validator_permit
-            row = [
-                hotwallet.name,
-                hotwallet.hotkey_str,
-                str(uid),
-                str(active),
-                &#34;{:.5f}&#34;.format(stake),
-                &#34;{:.5f}&#34;.format(rank),
-                &#34;{:.5f}&#34;.format(trust),
-                &#34;{:.5f}&#34;.format(consensus),
-                &#34;{:.5f}&#34;.format(incentive),
-                &#34;{:.5f}&#34;.format(dividends),
-                &#34;{:_}&#34;.format(emission),
-                &#34;{:.5f}&#34;.format(validator_trust),
-                &#34;*&#34; if validator_permit else &#34;&#34;,
-                str(last_update),
-                cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
-                + &#34;:&#34;
-                + str(nn.axon_info.port)
-                if nn.axon_info.port != 0
-                else &#34;[yellow]none[/yellow]&#34;,
-                nn.hotkey,
-            ]
-
-            total_rank += rank
-            total_trust += trust
-            total_consensus += consensus
-            total_incentive += incentive
-            total_dividends += dividends
-            total_emission += emission
-            total_validator_trust += validator_trust
-
-            if not (nn.hotkey, nn.coldkey) in hotkeys_seen:
-                # Don&#39;t double count stake on hotkey-coldkey pairs.
-                hotkeys_seen.add((nn.hotkey, nn.coldkey))
-                total_stake += stake
-
-            # netuid -1 are neurons that are de-registered.
-            if netuid != &#34;-1&#34;:
-                total_neurons += 1
-
-            TABLE_DATA.append(row)
-
-        # Add subnet header
-        if netuid == &#34;-1&#34;:
-            grid.add_row(f&#34;Deregistered Neurons&#34;)
-        else:
-            grid.add_row(f&#34;Subnet: [bold white]{netuid}[/bold white]&#34;)
-
-        table = Table(
-            show_footer=False,
-            width=cli.config.get(&#34;width&#34;, None),
-            pad_edge=False,
-            box=None,
-        )
-        if last_subnet:
-            table.add_column(
-                &#34;[overline white]COLDKEY&#34;,
-                str(total_neurons),
-                footer_style=&#34;overline white&#34;,
-                style=&#34;bold white&#34;,
-            )
-            table.add_column(
-                &#34;[overline white]HOTKEY&#34;,
-                str(total_neurons),
-                footer_style=&#34;overline white&#34;,
-                style=&#34;white&#34;,
-            )
-        else:
-            # No footer for non-last subnet.
-            table.add_column(&#34;[overline white]COLDKEY&#34;, style=&#34;bold white&#34;)
-            table.add_column(&#34;[overline white]HOTKEY&#34;, style=&#34;white&#34;)
-        table.add_column(
-            &#34;[overline white]UID&#34;,
-            str(total_neurons),
-            footer_style=&#34;overline white&#34;,
-            style=&#34;yellow&#34;,
-        )
-        table.add_column(
-            &#34;[overline white]ACTIVE&#34;, justify=&#34;right&#34;, style=&#34;green&#34;, no_wrap=True
-        )
-        if last_subnet:
-            table.add_column(
-                f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
-                f&#34;{cwtensor.giga_token_symbol}{total_stake:.5f}&#34;,
-                footer_style=&#34;overline white&#34;,
-                justify=&#34;right&#34;,
-                style=&#34;green&#34;,
-                no_wrap=True,
-            )
-        else:
-            # No footer for non-last subnet.
-            table.add_column(
-                f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
-                justify=&#34;right&#34;,
-                style=&#34;green&#34;,
-                no_wrap=True,
-            )
-        table.add_column(
-            &#34;[overline white]RANK&#34;,
-            f&#34;{total_rank:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            &#34;[overline white]TRUST&#34;,
-            f&#34;{total_trust:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            &#34;[overline white]CONSENSUS&#34;,
-            f&#34;{total_consensus:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            &#34;[overline white]INCENTIVE&#34;,
-            f&#34;{total_incentive:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            &#34;[overline white]DIVIDENDS&#34;,
-            f&#34;{total_dividends:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            f&#34;[overline white]EMISSION({cwtensor.giga_token_symbol})&#34;,
-            f&#34;{cwtensor.giga_token_symbol}{total_emission:_}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(
-            &#34;[overline white]VTRUST&#34;,
-            f&#34;{total_validator_trust:.5f}&#34;,
-            footer_style=&#34;overline white&#34;,
-            justify=&#34;right&#34;,
-            style=&#34;green&#34;,
-            no_wrap=True,
-        )
-        table.add_column(&#34;[overline white]VPERMIT&#34;, justify=&#34;right&#34;, no_wrap=True)
-        table.add_column(&#34;[overline white]UPDATED&#34;, justify=&#34;right&#34;, no_wrap=True)
-        table.add_column(
-            &#34;[overline white]AXON&#34;, justify=&#34;left&#34;, style=&#34;dim blue&#34;, no_wrap=True
-        )
-        table.add_column(
-            &#34;[overline white]HOTKEY&#34;, style=&#34;dim blue&#34;, no_wrap=False
-        )
-        table.show_footer = True
-
-        sort_by: Optional[str] = cli.config.get(&#34;sort_by&#34;, None)
-        sort_order: Optional[str] = cli.config.get(&#34;sort_order&#34;, None)
-
-        if sort_by is not None and sort_by != &#34;&#34;:
-            column_to_sort_by: int = 0
-            highest_matching_ratio: int = 0
-            sort_descending: bool = False  # Default sort_order to ascending
-
-            for index, column in zip(range(len(table.columns)), table.columns):
-                # Fuzzy match the column name. Default to the first column.
-                column_name = column.header.lower().replace(&#34;[overline white]&#34;, &#34;&#34;)
-                match_ratio = fuzz.ratio(sort_by.lower(), column_name)
-                # Finds the best matching column
-                if match_ratio &gt; highest_matching_ratio:
-                    highest_matching_ratio = match_ratio
-                    column_to_sort_by = index
-
-            if sort_order.lower() in {&#34;desc&#34;, &#34;descending&#34;, &#34;reverse&#34;}:
-                # Sort descending if the sort_order matches desc, descending, or reverse
-                sort_descending = True
-
-            def overview_sort_function(row):
-                data = row[column_to_sort_by]
-                # Try to convert to number if possible
-                try:
-                    data = float(data)
-                except ValueError:
-                    pass
-                return data
-
-            TABLE_DATA.sort(key=overview_sort_function, reverse=sort_descending)
-
-        for row in TABLE_DATA:
-            table.add_row(*row)
-
-        grid.add_row(table)
-
-    console.clear()
-
-    caption = f&#34;[italic][dim][white]Wallet balance: [green]{cwtensor.giga_token_symbol}{total_balance.gboot}&#34;
-    grid.add_row(Align(caption, vertical=&#34;middle&#34;, align=&#34;center&#34;))
-
-    # Print the entire table/grid
-    console.print(grid, width=cli.config.get(&#34;width&#34;, None))</code></pre>
+    try:
+        cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+        OverviewCommand._run(cli, cwtensor, max_len_netuids=max_len_netuids, max_len_keys=max_len_keys)
+    finally:
+        if &#34;cwtensor&#34; in locals():
+            cwtensor.close()
+            cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)</code></pre>
 </details>
 </dd>
 </dl>

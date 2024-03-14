@@ -132,7 +132,7 @@ class NeuronInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfo&#34;:
-        r&#34;&#34;&#34;Returns a NeuronInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a NeuronInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return NeuronInfo._null_neuron()
 
@@ -142,7 +142,7 @@ class NeuronInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded_list = [
             NeuronInfo.fix_decoded_values(decoded) for decoded in vec_any
@@ -235,9 +235,9 @@ class NeuronInfoLite:
     validator_permit: bool
     # weights: List[List[int]]
     # bonds: List[List[int]] No weights or bonds in lite version
-    prometheus_info: &#34;PrometheusInfo&#34;
-    axon_info: &#34;AxonInfo&#34;
     pruning_score: int
+    prometheus_info: Optional[&#34;PrometheusInfo&#34;] = None
+    axon_info: Optional[&#34;AxonInfo&#34;] = None
     is_null: bool = False
 
     @classmethod
@@ -282,7 +282,7 @@ class NeuronInfoLite:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfoLite&#34;:
-        r&#34;&#34;&#34;Returns a NeuronInfoLite object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a NeuronInfoLite object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return NeuronInfoLite._null_neuron()
 
@@ -292,7 +292,7 @@ class NeuronInfoLite:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfoLite&#34;]:
-        r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded_list = [
             NeuronInfoLite.fix_decoded_values(decoded) for decoded in vec_any
@@ -387,7 +387,7 @@ class AxonInfo:
             return True
 
     def ip_str(self) -&gt; str:
-        &#34;&#34;&#34;Return the whole ip as string&#34;&#34;&#34;
+        &#34;&#34;&#34;Return the whole IP as string&#34;&#34;&#34;
         return net.ip__str__(self.ip_type, self.ip, self.port)
 
     def __eq__(self, other: &#34;AxonInfo&#34;):
@@ -503,7 +503,7 @@ class DelegateInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;DelegateInfo&#34;]:
-        r&#34;&#34;&#34;Returns a DelegateInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a DelegateInfo object from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = DelegateInfo.fix_decoded_values(list_any)
 
@@ -511,7 +511,7 @@ class DelegateInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;DelegateInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -521,7 +521,7 @@ class DelegateInfo:
     def delegated_list_from_list_any(
         cls, vec_any: List[Any]
     ) -&gt; List[Tuple[&#34;DelegateInfo&#34;, Balance]]:
-        r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+        r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a ``vec_u8``.
         This is the list of delegates that the user has delegated to, and the amount of stake delegated.
         &#34;&#34;&#34;
 
@@ -554,7 +554,7 @@ class StakeInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;StakeInfo&#34;]:
-        r&#34;&#34;&#34;Returns a StakeInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a StakeInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return None
 
@@ -579,17 +579,19 @@ class StakeInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;StakeInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
 
         return decoded
+
 
 @dataclass
 class SubnetInfo:
     r&#34;&#34;&#34;
     Dataclass for subnet info.
     &#34;&#34;&#34;
+
     netuid: int
     rho: int
     kappa: int
@@ -662,6 +664,7 @@ class SubnetHyperparameters:
     r&#34;&#34;&#34;
     Dataclass for subnet hyperparameters.
     &#34;&#34;&#34;
+
     rho: int
     kappa: int
     immunity_period: int
@@ -680,6 +683,8 @@ class SubnetHyperparameters:
     max_burn: int
     bonds_moving_avg: int
     max_regs_per_block: int
+    # serving_rate_limit: int
+    # max_validators: int
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetHyperparameters&#34;]:
@@ -717,6 +722,8 @@ class SubnetHyperparameters:
             max_burn=decoded[&#34;max_burn&#34;],
             bonds_moving_avg=decoded[&#34;bonds_moving_avg&#34;],
             max_regs_per_block=decoded[&#34;max_regs_per_block&#34;],
+            # max_validators=decoded[&#34;max_validators&#34;],
+            # serving_rate_limit=decoded[&#34;serving_rate_limit&#34;],
         )
 
     def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
@@ -736,6 +743,7 @@ class IPInfo:
     r&#34;&#34;&#34;
     Dataclass for associated IP Info.
     &#34;&#34;&#34;
+
     ip: str
     ip_type: int
     protocol: int
@@ -751,7 +759,7 @@ class IPInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;IPInfo&#34;]:
-        r&#34;&#34;&#34;Returns a IPInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a IPInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return None
 
@@ -759,7 +767,7 @@ class IPInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;IPInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of IPInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of IPInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -824,7 +832,7 @@ class AxonInfo:
             return True
 
     def ip_str(self) -&gt; str:
-        &#34;&#34;&#34;Return the whole ip as string&#34;&#34;&#34;
+        &#34;&#34;&#34;Return the whole IP as string&#34;&#34;&#34;
         return net.ip__str__(self.ip_type, self.ip, self.port)
 
     def __eq__(self, other: &#34;AxonInfo&#34;):
@@ -1025,13 +1033,13 @@ def is_serving(self) -&gt; bool:
 <span>def <span class="ident">ip_str</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the whole ip as string</p></div>
+<div class="desc"><p>Return the whole IP as string</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def ip_str(self) -&gt; str:
-    &#34;&#34;&#34;Return the whole ip as string&#34;&#34;&#34;
+    &#34;&#34;&#34;Return the whole IP as string&#34;&#34;&#34;
     return net.ip__str__(self.ip_type, self.ip, self.port)</code></pre>
 </details>
 </dd>
@@ -1124,7 +1132,7 @@ class DelegateInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;DelegateInfo&#34;]:
-        r&#34;&#34;&#34;Returns a DelegateInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a DelegateInfo object from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = DelegateInfo.fix_decoded_values(list_any)
 
@@ -1132,7 +1140,7 @@ class DelegateInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;DelegateInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -1142,7 +1150,7 @@ class DelegateInfo:
     def delegated_list_from_list_any(
         cls, vec_any: List[Any]
     ) -&gt; List[Tuple[&#34;DelegateInfo&#34;, Balance]]:
-        r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+        r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a ``vec_u8``.
         This is the list of delegates that the user has delegated to, and the amount of stake delegated.
         &#34;&#34;&#34;
 
@@ -1198,7 +1206,7 @@ class DelegateInfo:
 <span>def <span class="ident">delegated_list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[Tuple[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+<div class="desc"><p>Returns a list of Tuples of DelegateInfo objects, and Balance, from a <code>vec_u8</code>.
 This is the list of delegates that the user has delegated to, and the amount of stake delegated.</p></div>
 <details class="source">
 <summary>
@@ -1208,7 +1216,7 @@ This is the list of delegates that the user has delegated to, and the amount of 
 def delegated_list_from_list_any(
     cls, vec_any: List[Any]
 ) -&gt; List[Tuple[&#34;DelegateInfo&#34;, Balance]]:
-    r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+    r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a ``vec_u8``.
     This is the list of delegates that the user has delegated to, and the amount of stake delegated.
     &#34;&#34;&#34;
 
@@ -1258,14 +1266,14 @@ def fix_decoded_values(cls, decoded: Any) -&gt; &#34;DelegateInfo&#34;:
 <span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a DelegateInfo object from a vec_u8.</p></div>
+<div class="desc"><p>Returns a DelegateInfo object from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;DelegateInfo&#34;]:
-    r&#34;&#34;&#34;Returns a DelegateInfo object from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a DelegateInfo object from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded = DelegateInfo.fix_decoded_values(list_any)
 
@@ -1276,14 +1284,14 @@ def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;DelegateInfo&#34
 <span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of DelegateInfo objects from a vec_u8.</p></div>
+<div class="desc"><p>Returns a list of DelegateInfo objects from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;DelegateInfo&#34;]:
-    r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -1307,6 +1315,7 @@ class IPInfo:
     r&#34;&#34;&#34;
     Dataclass for associated IP Info.
     &#34;&#34;&#34;
+
     ip: str
     ip_type: int
     protocol: int
@@ -1322,7 +1331,7 @@ class IPInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;IPInfo&#34;]:
-        r&#34;&#34;&#34;Returns a IPInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a IPInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return None
 
@@ -1330,7 +1339,7 @@ class IPInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;IPInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of IPInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of IPInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -1394,14 +1403,14 @@ def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;IPInfo&#34;:
 <span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a IPInfo object from a vec_u8.</p></div>
+<div class="desc"><p>Returns a IPInfo object from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;IPInfo&#34;]:
-    r&#34;&#34;&#34;Returns a IPInfo object from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a IPInfo object from a ``vec_u8``.&#34;&#34;&#34;
     if len(list_any) == 0:
         return None
 
@@ -1427,14 +1436,14 @@ def from_parameter_dict(cls, parameter_dict: &#34;torch.nn.ParameterDict&#34;) -
 <span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of IPInfo objects from a vec_u8.</p></div>
+<div class="desc"><p>Returns a list of IPInfo objects from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;IPInfo&#34;]:
-    r&#34;&#34;&#34;Returns a list of IPInfo objects from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a list of IPInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -1566,7 +1575,7 @@ class NeuronInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfo&#34;:
-        r&#34;&#34;&#34;Returns a NeuronInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a NeuronInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return NeuronInfo._null_neuron()
 
@@ -1576,7 +1585,7 @@ class NeuronInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded_list = [
             NeuronInfo.fix_decoded_values(decoded) for decoded in vec_any
@@ -1799,14 +1808,14 @@ def fix_decoded_values(cls, neuron_info_decoded: Any) -&gt; &#34;NeuronInfo&#34;
 <span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> <a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a NeuronInfo object from a vec_u8.</p></div>
+<div class="desc"><p>Returns a NeuronInfo object from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfo&#34;:
-    r&#34;&#34;&#34;Returns a NeuronInfo object from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a NeuronInfo object from a ``vec_u8``.&#34;&#34;&#34;
     if len(list_any) == 0:
         return NeuronInfo._null_neuron()
 
@@ -1842,14 +1851,14 @@ def from_weights_bonds_and_neuron_lite(
 <span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of NeuronInfo objects from a vec_u8.</p></div>
+<div class="desc"><p>Returns a list of NeuronInfo objects from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfo&#34;]:
-    r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded_list = [
         NeuronInfo.fix_decoded_values(decoded) for decoded in vec_any
@@ -1861,7 +1870,7 @@ def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfo&#34;]
 </dd>
 <dt id="cybertensor.chain_data.NeuronInfoLite"><code class="flex name class">
 <span>class <span class="ident">NeuronInfoLite</span></span>
-<span>(</span><span>hotkey: str, coldkey: str, uid: int, netuid: int, active: int, stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, stake_dict: Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>], total_stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, rank: float, emission: float, incentive: float, consensus: float, trust: float, validator_trust: float, dividends: float, last_update: int, validator_permit: bool, prometheus_info: <a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>, axon_info: <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>, pruning_score: int, is_null: bool = False)</span>
+<span>(</span><span>hotkey: str, coldkey: str, uid: int, netuid: int, active: int, stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, stake_dict: Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>], total_stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, rank: float, emission: float, incentive: float, consensus: float, trust: float, validator_trust: float, dividends: float, last_update: int, validator_permit: bool, pruning_score: int, prometheus_info: Optional[ForwardRef('<a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>')] = None, axon_info: Optional[ForwardRef('<a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>')] = None, is_null: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for neuron metadata, but without the weights and bonds.</p></div>
@@ -1894,9 +1903,9 @@ class NeuronInfoLite:
     validator_permit: bool
     # weights: List[List[int]]
     # bonds: List[List[int]] No weights or bonds in lite version
-    prometheus_info: &#34;PrometheusInfo&#34;
-    axon_info: &#34;AxonInfo&#34;
     pruning_score: int
+    prometheus_info: Optional[&#34;PrometheusInfo&#34;] = None
+    axon_info: Optional[&#34;AxonInfo&#34;] = None
     is_null: bool = False
 
     @classmethod
@@ -1941,7 +1950,7 @@ class NeuronInfoLite:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfoLite&#34;:
-        r&#34;&#34;&#34;Returns a NeuronInfoLite object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a NeuronInfoLite object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return NeuronInfoLite._null_neuron()
 
@@ -1951,7 +1960,7 @@ class NeuronInfoLite:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfoLite&#34;]:
-        r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded_list = [
             NeuronInfoLite.fix_decoded_values(decoded) for decoded in vec_any
@@ -2011,7 +2020,7 @@ class NeuronInfoLite:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="cybertensor.chain_data.NeuronInfoLite.axon_info"><code class="name">var <span class="ident">axon_info</span> : <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></code></dt>
+<dt id="cybertensor.chain_data.NeuronInfoLite.axon_info"><code class="name">var <span class="ident">axon_info</span> : Optional[<a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2051,7 +2060,7 @@ class NeuronInfoLite:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="cybertensor.chain_data.NeuronInfoLite.prometheus_info"><code class="name">var <span class="ident">prometheus_info</span> : <a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a></code></dt>
+<dt id="cybertensor.chain_data.NeuronInfoLite.prometheus_info"><code class="name">var <span class="ident">prometheus_info</span> : Optional[<a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2148,14 +2157,14 @@ def fix_decoded_values(cls, neuron_info_decoded: Any) -&gt; &#34;NeuronInfoLite&
 <span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> <a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a NeuronInfoLite object from a vec_u8.</p></div>
+<div class="desc"><p>Returns a NeuronInfoLite object from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfoLite&#34;:
-    r&#34;&#34;&#34;Returns a NeuronInfoLite object from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a NeuronInfoLite object from a ``vec_u8``.&#34;&#34;&#34;
     if len(list_any) == 0:
         return NeuronInfoLite._null_neuron()
 
@@ -2168,14 +2177,14 @@ def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfoLite&#34;:
 <span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of NeuronInfoLite objects from a vec_u8.</p></div>
+<div class="desc"><p>Returns a list of NeuronInfoLite objects from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfoLite&#34;]:
-    r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded_list = [
         NeuronInfoLite.fix_decoded_values(decoded) for decoded in vec_any
@@ -2292,7 +2301,7 @@ class StakeInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;StakeInfo&#34;]:
-        r&#34;&#34;&#34;Returns a StakeInfo object from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a StakeInfo object from a ``vec_u8``.&#34;&#34;&#34;
         if len(list_any) == 0:
             return None
 
@@ -2317,7 +2326,7 @@ class StakeInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;StakeInfo&#34;]:
-        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a vec_u8.&#34;&#34;&#34;
+        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
         decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -2364,14 +2373,14 @@ def fix_decoded_values(cls, decoded: Any) -&gt; &#34;StakeInfo&#34;:
 <span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a StakeInfo object from a vec_u8.</p></div>
+<div class="desc"><p>Returns a StakeInfo object from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;StakeInfo&#34;]:
-    r&#34;&#34;&#34;Returns a StakeInfo object from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a StakeInfo object from a ``vec_u8``.&#34;&#34;&#34;
     if len(list_any) == 0:
         return None
 
@@ -2384,14 +2393,14 @@ def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;StakeInfo&#34;]:
 <span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a list of StakeInfo objects from a vec_u8.</p></div>
+<div class="desc"><p>Returns a list of StakeInfo objects from a <code>vec_u8</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;StakeInfo&#34;]:
-    r&#34;&#34;&#34;Returns a list of StakeInfo objects from a vec_u8.&#34;&#34;&#34;
+    r&#34;&#34;&#34;Returns a list of StakeInfo objects from a ``vec_u8``.&#34;&#34;&#34;
 
     decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -2440,6 +2449,7 @@ class SubnetHyperparameters:
     r&#34;&#34;&#34;
     Dataclass for subnet hyperparameters.
     &#34;&#34;&#34;
+
     rho: int
     kappa: int
     immunity_period: int
@@ -2458,6 +2468,8 @@ class SubnetHyperparameters:
     max_burn: int
     bonds_moving_avg: int
     max_regs_per_block: int
+    # serving_rate_limit: int
+    # max_validators: int
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetHyperparameters&#34;]:
@@ -2495,6 +2507,8 @@ class SubnetHyperparameters:
             max_burn=decoded[&#34;max_burn&#34;],
             bonds_moving_avg=decoded[&#34;bonds_moving_avg&#34;],
             max_regs_per_block=decoded[&#34;max_regs_per_block&#34;],
+            # max_validators=decoded[&#34;max_validators&#34;],
+            # serving_rate_limit=decoded[&#34;serving_rate_limit&#34;],
         )
 
     def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
@@ -2616,6 +2630,8 @@ def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;SubnetHyperparameters&#34;
         max_burn=decoded[&#34;max_burn&#34;],
         bonds_moving_avg=decoded[&#34;bonds_moving_avg&#34;],
         max_regs_per_block=decoded[&#34;max_regs_per_block&#34;],
+        # max_validators=decoded[&#34;max_validators&#34;],
+        # serving_rate_limit=decoded[&#34;serving_rate_limit&#34;],
     )</code></pre>
 </details>
 </dd>
@@ -2704,6 +2720,7 @@ class SubnetInfo:
     r&#34;&#34;&#34;
     Dataclass for subnet info.
     &#34;&#34;&#34;
+
     netuid: int
     rho: int
     kappa: int

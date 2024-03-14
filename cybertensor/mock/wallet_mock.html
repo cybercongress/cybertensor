@@ -58,11 +58,11 @@ from .keyfile_mock import MockKeyfile
 
 class MockWallet(Wallet):
     &#34;&#34;&#34;
-    Mocked Version of the bittensor wallet class, meant to be used for testing
+    Mocked Version of the cybertensor wallet class, meant to be used for testing
     &#34;&#34;&#34;
 
     def __init__(self, **kwargs):
-        r&#34;&#34;&#34;Init bittensor wallet object containing a hot and coldkey.
+        r&#34;&#34;&#34;Init cybertensor wallet object containing a hot and coldkey.
         Args:
             _mock (required=True, default=False):
                 If true creates a mock wallet with random keys.
@@ -76,7 +76,7 @@ class MockWallet(Wallet):
     @property
     def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_hotkey_keyfile == None:
+            if self._mocked_hotkey_keyfile is None:
                 self._mocked_hotkey_keyfile = MockKeyfile(path=&#34;MockedHotkey&#34;)
             return self._mocked_hotkey_keyfile
         else:
@@ -87,7 +87,7 @@ class MockWallet(Wallet):
     @property
     def coldkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path=&#34;MockedColdkey&#34;)
             return self._mocked_coldkey_keyfile
         else:
@@ -98,7 +98,7 @@ class MockWallet(Wallet):
     @property
     def coldkeypub_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path=&#34;MockedColdkeyPub&#34;)
             return self._mocked_coldkey_keyfile
         else:
@@ -270,8 +270,8 @@ If test_name is provided, the uid is hashed with the test_name to create a uniqu
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Mocked Version of the bittensor wallet class, meant to be used for testing</p>
-<p>Init bittensor wallet object containing a hot and coldkey.</p>
+<div class="desc"><p>Mocked Version of the cybertensor wallet class, meant to be used for testing</p>
+<p>Init cybertensor wallet object containing a hot and coldkey.</p>
 <h2 id="args">Args</h2>
 <p>_mock (required=True, default=False):
 If true creates a mock wallet with random keys.</p></div>
@@ -281,11 +281,11 @@ If true creates a mock wallet with random keys.</p></div>
 </summary>
 <pre><code class="python">class MockWallet(Wallet):
     &#34;&#34;&#34;
-    Mocked Version of the bittensor wallet class, meant to be used for testing
+    Mocked Version of the cybertensor wallet class, meant to be used for testing
     &#34;&#34;&#34;
 
     def __init__(self, **kwargs):
-        r&#34;&#34;&#34;Init bittensor wallet object containing a hot and coldkey.
+        r&#34;&#34;&#34;Init cybertensor wallet object containing a hot and coldkey.
         Args:
             _mock (required=True, default=False):
                 If true creates a mock wallet with random keys.
@@ -299,7 +299,7 @@ If true creates a mock wallet with random keys.</p></div>
     @property
     def hotkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_hotkey_keyfile == None:
+            if self._mocked_hotkey_keyfile is None:
                 self._mocked_hotkey_keyfile = MockKeyfile(path=&#34;MockedHotkey&#34;)
             return self._mocked_hotkey_keyfile
         else:
@@ -310,7 +310,7 @@ If true creates a mock wallet with random keys.</p></div>
     @property
     def coldkey_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path=&#34;MockedColdkey&#34;)
             return self._mocked_coldkey_keyfile
         else:
@@ -321,7 +321,7 @@ If true creates a mock wallet with random keys.</p></div>
     @property
     def coldkeypub_file(self) -&gt; &#34;cybertensor.keyfile&#34;:
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path=&#34;MockedColdkeyPub&#34;)
             return self._mocked_coldkey_keyfile
         else:

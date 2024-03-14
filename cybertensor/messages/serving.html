@@ -53,6 +53,7 @@ from cybertensor import __console__ as console
 from cybertensor.types import AxonServeCallParams
 from cybertensor.utils import networking as net
 from cybertensor.wallet import Wallet
+from cybertensor.errors import MetadataError
 
 
 def serve_message(
@@ -84,14 +85,14 @@ def serve_message(
         placeholder2 (int):
             placeholder for future use.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     # Decrypt hotkey
     wallet.hotkey
@@ -180,14 +181,14 @@ def serve_axon_message(
         axon (cybertensor.Axon):
             Axon to serve.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     axon.wallet.hotkey
     axon.wallet.coldkeypub
@@ -220,7 +221,84 @@ def serve_axon_message(
         wait_for_finalization=wait_for_finalization,
         prompt=prompt,
     )
-    return serve_success</code></pre>
+    return serve_success
+
+
+def publish_metadata(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.Wallet&#34;,
+    netuid: int,
+    type: str,
+    data: bytes,
+    wait_for_finalization: bool = True,
+) -&gt; bool:
+    &#34;&#34;&#34;
+    Publishes metadata on the cybertensor network using the specified wallet and network identifier.
+
+    Args:
+        cwtensor (cybertensor.cwtensor):
+            The cwtensor instance representing the cybertensor blockchain connection.
+        wallet (cybertensor.Wallet):
+            The wallet object used for authentication in the transaction.
+        netuid (int):
+            Network UID on which the metadata is to be published.
+        type (str):
+            The data type of the information being submitted. It should be one of the following: ``&#39;Sha256&#39;``, ``&#39;Blake256&#39;``, ``&#39;Keccak256&#39;``, or ``&#39;Raw0-128&#39;``. This specifies the format or hashing algorithm used for the data.
+        data (str):
+            The actual metadata content to be published. This should be formatted or hashed according to the ``type`` specified. (Note: max ``str`` length is 128 bytes)
+        wait_for_finalization (bool, optional):
+            If ``True``, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to ``True``.
+
+    Returns:
+        bool:
+            ``True`` if the metadata was successfully published (and finalized if specified). ``False`` otherwise.
+
+    Raises:
+        MetadataError:
+            If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.
+    &#34;&#34;&#34;
+
+    wallet.hotkey
+
+    with cwtensor.substrate as substrate:
+        call = substrate.compose_call(
+            call_module=&#34;Commitments&#34;,
+            call_function=&#34;set_commitment&#34;,
+            call_params={&#34;netuid&#34;: netuid, &#34;info&#34;: {&#34;fields&#34;: [[{f&#34;{type}&#34;: data}]]}},
+        )
+
+        extrinsic = substrate.create_signed_extrinsic(call=call, keypair=wallet.hotkey)
+        response = substrate.submit_extrinsic(
+            extrinsic,
+            wait_for_finalization=wait_for_finalization,
+        )
+        # We only wait here if we expect finalization.
+        if not wait_for_finalization:
+            return True
+        response.process_events()
+        if response.is_success:
+            return True
+        else:
+            raise MetadataError(response.error_message)
+
+
+from retry import retry
+from typing import Optional
+
+
+def get_metadata(self, netuid: int, hotkey: str, block: Optional[int] = None) -&gt; str:
+    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    def make_substrate_call_with_retry():
+        with self.substrate as substrate:
+            return substrate.query(
+                module=&#34;Commitments&#34;,
+                storage_function=&#34;CommitmentOf&#34;,
+                params=[netuid, hotkey],
+                block_hash=None if block is None else substrate.get_block_hash(block),
+            )
+
+    commit_data = make_substrate_call_with_retry()
+    return commit_data.value</code></pre>
 </details>
 </section>
 <section>
@@ -230,6 +308,116 @@ def serve_axon_message(
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="cybertensor.messages.serving.get_metadata"><code class="name flex">
+<span>def <span class="ident">get_metadata</span></span>(<span>self, netuid: int, hotkey: str, block: Optional[int] = None) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_metadata(self, netuid: int, hotkey: str, block: Optional[int] = None) -&gt; str:
+    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    def make_substrate_call_with_retry():
+        with self.substrate as substrate:
+            return substrate.query(
+                module=&#34;Commitments&#34;,
+                storage_function=&#34;CommitmentOf&#34;,
+                params=[netuid, hotkey],
+                block_hash=None if block is None else substrate.get_block_hash(block),
+            )
+
+    commit_data = make_substrate_call_with_retry()
+    return commit_data.value</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.messages.serving.publish_metadata"><code class="name flex">
+<span>def <span class="ident">publish_metadata</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: cybertensor.Wallet, netuid: int, type: str, data: bytes, wait_for_finalization: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Publishes metadata on the cybertensor network using the specified wallet and network identifier.</p>
+<h2 id="args">Args</h2>
+<p>cwtensor (cybertensor.cwtensor):
+The cwtensor instance representing the cybertensor blockchain connection.
+wallet (cybertensor.Wallet):
+The wallet object used for authentication in the transaction.
+netuid (int):
+Network UID on which the metadata is to be published.
+type (str):
+The data type of the information being submitted. It should be one of the following: <code>'Sha256'</code>, <code>'Blake256'</code>, <code>'Keccak256'</code>, or <code>'Raw0-128'</code>. This specifies the format or hashing algorithm used for the data.
+data (str):
+The actual metadata content to be published. This should be formatted or hashed according to the <code>type</code> specified. (Note: max <code>str</code> length is 128 bytes)
+wait_for_finalization (bool, optional):
+If <code>True</code>, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to <code>True</code>.</p>
+<h2 id="returns">Returns</h2>
+<p>bool:
+<code>True</code> if the metadata was successfully published (and finalized if specified). <code>False</code> otherwise.</p>
+<h2 id="raises">Raises</h2>
+<p>MetadataError:
+If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def publish_metadata(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.Wallet&#34;,
+    netuid: int,
+    type: str,
+    data: bytes,
+    wait_for_finalization: bool = True,
+) -&gt; bool:
+    &#34;&#34;&#34;
+    Publishes metadata on the cybertensor network using the specified wallet and network identifier.
+
+    Args:
+        cwtensor (cybertensor.cwtensor):
+            The cwtensor instance representing the cybertensor blockchain connection.
+        wallet (cybertensor.Wallet):
+            The wallet object used for authentication in the transaction.
+        netuid (int):
+            Network UID on which the metadata is to be published.
+        type (str):
+            The data type of the information being submitted. It should be one of the following: ``&#39;Sha256&#39;``, ``&#39;Blake256&#39;``, ``&#39;Keccak256&#39;``, or ``&#39;Raw0-128&#39;``. This specifies the format or hashing algorithm used for the data.
+        data (str):
+            The actual metadata content to be published. This should be formatted or hashed according to the ``type`` specified. (Note: max ``str`` length is 128 bytes)
+        wait_for_finalization (bool, optional):
+            If ``True``, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to ``True``.
+
+    Returns:
+        bool:
+            ``True`` if the metadata was successfully published (and finalized if specified). ``False`` otherwise.
+
+    Raises:
+        MetadataError:
+            If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.
+    &#34;&#34;&#34;
+
+    wallet.hotkey
+
+    with cwtensor.substrate as substrate:
+        call = substrate.compose_call(
+            call_module=&#34;Commitments&#34;,
+            call_function=&#34;set_commitment&#34;,
+            call_params={&#34;netuid&#34;: netuid, &#34;info&#34;: {&#34;fields&#34;: [[{f&#34;{type}&#34;: data}]]}},
+        )
+
+        extrinsic = substrate.create_signed_extrinsic(call=call, keypair=wallet.hotkey)
+        response = substrate.submit_extrinsic(
+            extrinsic,
+            wait_for_finalization=wait_for_finalization,
+        )
+        # We only wait here if we expect finalization.
+        if not wait_for_finalization:
+            return True
+        response.process_events()
+        if response.is_success:
+            return True
+        else:
+            raise MetadataError(response.error_message)</code></pre>
+</details>
+</dd>
 <dt id="cybertensor.messages.serving.serve_axon_message"><code class="name flex">
 <span>def <span class="ident">serve_axon_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, netuid: int, axon: <a title="cybertensor.axon" href="../axon.html">cybertensor.axon</a>, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
 </code></dt>
@@ -241,14 +429,14 @@ The netuid being served on.
 axon (cybertensor.Axon):
 Axon to serve.
 wait_for_finalization (bool):
-If set, waits for the extrinsic to be finalized on the chain before returning true,
-or returns false if the extrinsic fails to be finalized within the timeout.
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
 prompt (bool):
-If true, the call waits for confirmation from the user before proceeding.</p>
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-flag is true if extrinsic was finalized or uncluded in the block.
-If we did not wait for finalization / inclusion, the response is true.</p></div>
+Flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -267,14 +455,14 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         axon (cybertensor.Axon):
             Axon to serve.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     axon.wallet.hotkey
     axon.wallet.coldkeypub
@@ -331,14 +519,14 @@ placeholder for future use.
 placeholder2 (int):
 placeholder for future use.
 wait_for_finalization (bool):
-if set, waits for the extrinsic to be finalized on the chain before returning true,
-or returns false if the extrinsic fails to be finalized within the timeout.
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
 prompt (bool):
-If true, the call waits for confirmation from the user before proceeding.</p>
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
 <h2 id="returns">Returns</h2>
 <p>success (bool):
-flag is true if extrinsic was finalized or uncluded in the block.
-If we did not wait for finalization / inclusion, the response is true.</p></div>
+Flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -372,14 +560,14 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
         placeholder2 (int):
             placeholder for future use.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     &#34;&#34;&#34;
     # Decrypt hotkey
     wallet.hotkey
@@ -472,6 +660,8 @@ If we did not wait for finalization / inclusion, the response is true.</p></div>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="cybertensor.messages.serving.get_metadata" href="#cybertensor.messages.serving.get_metadata">get_metadata</a></code></li>
+<li><code><a title="cybertensor.messages.serving.publish_metadata" href="#cybertensor.messages.serving.publish_metadata">publish_metadata</a></code></li>
 <li><code><a title="cybertensor.messages.serving.serve_axon_message" href="#cybertensor.messages.serving.serve_axon_message">serve_axon_message</a></code></li>
 <li><code><a title="cybertensor.messages.serving.serve_message" href="#cybertensor.messages.serving.serve_message">serve_message</a></code></li>
 </ul>
