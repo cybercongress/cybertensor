@@ -25,7 +25,6 @@ from rich.prompt import Confirm
 
 import cybertensor
 from cybertensor import __console__ as console
-from cybertensor.utils.balance import Balance
 from cybertensor.utils.registration import POWSolution, create_pow
 from cybertensor.wallet import Wallet
 
@@ -40,7 +39,7 @@ def register_message(
     output_in_place: bool = True,
     cuda: bool = False,
     dev_id: Union[List[int], int] = 0,
-    TPB: int = 256,
+    tpb: int = 256,
     num_processes: Optional[int] = None,
     update_interval: Optional[int] = None,
     log_verbose: bool = False,
@@ -52,17 +51,17 @@ def register_message(
         netuid (int):
             The netuid of the subnet to register on.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
         max_allowed_attempts (int):
             Maximum number of attempts to register the wallet.
         cuda (bool):
             If true, the wallet should be registered using CUDA device(s).
         dev_id (Union[List[int], int]):
             The CUDA device id to use, or a list of device ids.
-        TPB (int):
+        tpb (int):
             The number of threads per block (CUDA).
         num_processes (int):
             The number of processes to use to register.
@@ -72,8 +71,8 @@ def register_message(
             If true, the registration process will log more information.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     if not cwtensor.subnet_exists(netuid):
         console.print(
@@ -121,7 +120,7 @@ def register_message(
                 output_in_place,
                 cuda=cuda,
                 dev_id=dev_id,
-                TPB=TPB,
+                tpb=tpb,
                 num_processes=num_processes,
                 update_interval=update_interval,
                 log_verbose=log_verbose,
@@ -225,14 +224,14 @@ def burned_register_message(
         netuid (int):
             The netuid of the subnet to register on.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     if not cwtensor.subnet_exists(netuid):
         console.print(
@@ -250,7 +249,8 @@ def burned_register_message(
 
         old_balance = cwtensor.get_balance(wallet.coldkeypub.address)
 
-        burn_amount = Balance(cwtensor.burn(netuid=netuid))
+        recycle_amount = cwtensor.recycle(netuid=netuid)
+
         if not neuron.is_null:
             console.print(
                 f":white_heavy_check_mark: [green]Already Registered[/green]:\n"
@@ -263,13 +263,13 @@ def burned_register_message(
 
     if prompt:
         # Prompt user for confirmation.
-        if not Confirm.ask(f"Recycle {burn_amount} to register on subnet:{netuid}?"):
+        if not Confirm.ask(f"Recycle {recycle_amount} to register on subnet:{netuid}?"):
             return False
 
     with console.status(":satellite: Recycling BOOT for Registration..."):
         success, err_msg = cwtensor._do_burned_register(
             netuid=netuid,
-            burn=burn_amount.__int__(),
+            burn=recycle_amount.__int__(),
             wallet=wallet,
             wait_for_finalization=wait_for_finalization,
         )
@@ -306,3 +306,35 @@ def burned_register_message(
                 )
 
 
+def swap_hotkey_message(
+    cwtensor: "cybertensor.cwtensor",
+    wallet: "cybertensor.Wallet",
+    new_wallet: "cybertensor.Wallet",
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -> bool:
+    wallet.coldkey  # unlock coldkey
+    if prompt:
+        # Prompt user for confirmation.
+        if not Confirm.ask(
+            f"Swap {wallet.hotkey} for new hotkey: {new_wallet.hotkey}?"
+        ):
+            return False
+
+    with cybertensor.__console__.status(":satellite: Swapping hotkeys..."):
+        success, err_msg = cwtensor._do_swap_hotkey(
+            wallet=wallet,
+            new_wallet=new_wallet,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+        if success is not True or success is False:
+            cybertensor.__console__.print(
+                ":cross_mark: [red]Failed[/red]: error:{}".format(err_msg)
+            )
+            time.sleep(0.5)
+
+        else:
+            cybertensor.__console__.print(
+                f"Hotkey {wallet.hotkey} swapped for new hotkey: {new_wallet.hotkey}"
+            )

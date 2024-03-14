@@ -21,6 +21,7 @@ import os
 import sys
 from typing import Optional, List
 
+import requests
 from rich.prompt import Prompt, Confirm
 from rich.table import Table
 
@@ -58,8 +59,18 @@ class RegenColdkeyCommand:
     It should be used with caution to avoid overwriting existing keys unintentionally.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Creates a new coldkey under this wallet."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegenColdkeyCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
 
         json_str: Optional[str] = None
@@ -179,8 +190,18 @@ class RegenColdkeypubCommand:
     It is a recovery-focused utility that ensures continued access to wallet functionalities.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Creates a new coldkeypub under this wallet."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegenColdkeypubCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
         wallet.regenerate_coldkeypub(
             address=cli.config.get("address"),
@@ -202,9 +223,9 @@ class RegenColdkeypubCommand:
             else:
                 config.address = prompt_answer
         if not cybertensor.utils.is_valid_cybertensor_address_or_public_key(
-            address=config.address
-            if config.address
-            else config.public_key_hex
+                address=(
+                        config.address if config.address else config.public_key_hex
+                )
         ):
             sys.exit(1)
 
@@ -268,7 +289,7 @@ class RegenHotkeyCommand:
     It should be used cautiously to avoid accidental overwrites of existing keys.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Creates a new coldkey under this wallet."""
         wallet = Wallet(config=cli.config)
 
@@ -394,8 +415,18 @@ class NewHotkeyCommand:
     such as running multiple miners or separating operational roles within the network.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         """Creates a new hotke under this wallet."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            NewHotkeyCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
         wallet.create_new_hotkey(
             n_words=cli.config.n_words,
@@ -471,8 +502,18 @@ class NewColdkeyCommand:
     It's a foundational step in establishing a secure presence on the Cybertensor network.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Creates a new coldkey under this wallet."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            NewColdkeyCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
         wallet.create_new_coldkey(
             n_words=cli.config.n_words,
@@ -545,8 +586,18 @@ class WalletCreateCommand:
     It ensures a fresh start with new keys for secure and effective participation in the network.
     """
 
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Creates a new coldkey and hotkey under this wallet."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            WalletCreateCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
         wallet.create_new_coldkey(
             n_words=cli.config.n_words,
@@ -643,8 +694,18 @@ class UpdateWalletCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         """Check if any of the wallets needs an update."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            UpdateWalletCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         config = cli.config.copy()
         if config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
@@ -691,27 +752,35 @@ class UpdateWalletCommand:
             config.wallet.name = str(wallet_name)
 
 
-def _get_coldkey_addresses_for_path(path: str) -> List[str]:
+def _get_coldkey_addresses_for_path(path: str) -> tuple[list[str], list[str]]:
     """Get all coldkey addresses from path."""
 
     def list_coldkeypub_files(dir_path):
         abspath = os.path.abspath(os.path.expanduser(dir_path))
         coldkey_files = []
+        wallet_names = []
 
-        for file in os.listdir(abspath):
-            coldkey_path = os.path.join(abspath, file, "coldkeypub.txt")
-            if os.path.exists(coldkey_path):
+        for potential_wallet_name in os.listdir(abspath):
+            coldkey_path = os.path.join(
+                abspath, potential_wallet_name, "coldkeypub.txt"
+            )
+            if os.path.isdir(
+                    os.path.join(abspath, potential_wallet_name)
+            ) and os.path.exists(coldkey_path):
                 coldkey_files.append(coldkey_path)
+                wallet_names.append(potential_wallet_name)
             else:
                 cybertensor.logging.warning(
                     f"{coldkey_path} does not exist. Excluding..."
                 )
-        return coldkey_files
+        return coldkey_files, wallet_names
 
-    return [
-        cybertensor.keyfile(file).keypair.address
-        for file in list_coldkeypub_files(path)
+    coldkey_files, wallet_names = list_coldkeypub_files(path)
+    addresses = [
+        cybertensor.keyfile(coldkey_path).keypair.address
+        for coldkey_path in coldkey_files
     ]
+    return addresses, wallet_names
 
 
 class WalletBalanceCommand:
@@ -735,28 +804,82 @@ class WalletBalanceCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         """Check the balance of the wallet."""
-        wallet_names = os.listdir(os.path.expanduser(cli.config.wallet.path))
-        coldkeys = _get_coldkey_addresses_for_path(cli.config.wallet.path)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            WalletBalanceCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
-        free_balances = [
-            cwtensor.get_balance(coldkeys[i]) for i in range(len(coldkeys))
-        ]
-        staked_balances = [
-            cwtensor.get_total_stake_for_coldkey(coldkeys[i])
-            for i in range(len(coldkeys))
-        ]
-        total_free_balance = sum(free_balances)
-        total_staked_balance = sum(staked_balances)
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+        wallet = cybertensor.Wallet(config=cli.config)
 
-        balances = {
-            name: (coldkey, free, staked)
-            for name, coldkey, free, staked in sorted(
-                zip(wallet_names, coldkeys, free_balances, staked_balances)
+        wallet_names = []
+        coldkeys = []
+        free_balances = []
+        staked_balances = []
+        total_free_balance = 0
+        total_staked_balance = 0
+        balances = {}
+
+        if cli.config.get("all", d=None):
+            coldkeys, wallet_names = _get_coldkey_addresses_for_path(
+                cli.config.wallet.path
             )
-        }
+
+            free_balances = [
+                cwtensor.get_balance(coldkeys[i]) for i in range(len(coldkeys))
+            ]
+
+            staked_balances = [
+                cwtensor.get_total_stake_for_coldkey(coldkeys[i])
+                for i in range(len(coldkeys))
+            ]
+
+            total_free_balance = sum(free_balances)
+            total_staked_balance = sum(staked_balances)
+
+            balances = {
+                name: (coldkey, free, staked)
+                for name, coldkey, free, staked in sorted(
+                    zip(wallet_names, coldkeys, free_balances, staked_balances)
+                )
+            }
+        else:
+            coldkey_wallet = cybertensor.Wallet(config=cli.config)
+            if (
+                    coldkey_wallet.coldkeypub_file.exists_on_device()
+                    and not coldkey_wallet.coldkeypub_file.is_encrypted()
+            ):
+                coldkeys = [coldkey_wallet.coldkeypub.address]
+                wallet_names = [coldkey_wallet.name]
+
+                free_balances = [
+                    cwtensor.get_balance(coldkeys[i]) for i in range(len(coldkeys))
+                ]
+
+                staked_balances = [
+                    cwtensor.get_total_stake_for_coldkey(coldkeys[i])
+                    for i in range(len(coldkeys))
+                ]
+
+                total_free_balance = sum(free_balances)
+                total_staked_balance = sum(staked_balances)
+
+                balances = {
+                    name: (coldkey, free, staked)
+                    for name, coldkey, free, staked in sorted(
+                        zip(wallet_names, coldkeys, free_balances, staked_balances)
+                    )
+                }
+
+            if not coldkey_wallet.coldkeypub_file.exists_on_device():
+                cybertensor.__console__.print("[bold red]No wallets found.")
+                return
 
         table = Table(show_footer=False)
         table.title = "[white]Wallet Coldkey Balances"
@@ -814,14 +937,35 @@ class WalletBalanceCommand:
         balance_parser = parser.add_parser(
             "balance", help="""Checks balances of wallets in the wallet path."""
         )
+        balance_parser.add_argument(
+            "--all",
+            dest="all",
+            action="store_true",
+            help="""View balance for all wallets.""",
+            default=False,
+        )
         Wallet.add_args(balance_parser)
         cybertensor.cwtensor.add_args(balance_parser)
 
     @staticmethod
     def check_config(config: "Config"):
-        if not config.is_set("wallet.path") and not config.no_prompt:
+        if (
+            not config.is_set("wallet.path")
+            and not config.no_prompt
+            and not config.get("all", d=None)
+        ):
             path = Prompt.ask("Enter wallets path", default=defaults.wallet.path)
             config.wallet.path = str(path)
+
+        if (
+                not config.is_set("wallet.name")
+                and not config.no_prompt
+                and not config.get("all", d=None)
+        ):
+            wallet_name = Prompt.ask(
+                "Enter wallet name", default=defaults.wallet.name
+            )
+            config.wallet.name = str(wallet_name)
 
         if not config.is_set("cwtensor.network") and not config.no_prompt:
             network = Prompt.ask(
@@ -830,3 +974,166 @@ class WalletBalanceCommand:
                 choices=cybertensor.__networks__,
             )
             config.cwtensor.network = str(network)
+
+
+
+API_URL = ""
+MAX_TXN = 1000
+GRAPHQL_QUERY = """
+query ($first: Int!, $after: Cursor, $filter: TransferFilter, $order: [TransfersOrderBy!]!) {
+    transfers(first: $first, after: $after, filter: $filter, orderBy: $order) {
+        nodes {
+            id
+            from
+            to
+            amount
+            extrinsicId
+            blockNumber
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+        totalCount
+    }
+}
+"""
+
+
+class GetWalletHistoryCommand:
+    """
+    DISABLED COMMAND
+
+    Executes the ``history`` command to fetch the latest transfers of the provided wallet on the cybertensor network.
+
+    This command provides a detailed view of the transfers carried out on the wallet.
+
+    Usage:
+        The command lists the latest transfers of the provided wallet, showing the From, To, Amount, Extrinsic Id and Block Number.
+
+    Optional arguments:
+        None. The command uses the wallet and cwtensor configurations to fetch latest transfer data associated with a wallet.
+
+    Example usage::
+
+        ctcli wallet history
+
+    Note:
+        This command is essential for users to monitor their financial status on the cybertensor network.
+        It helps in fetching info on all the transfers so that user can easily tally and cross-check the transactions.
+    """
+
+    @staticmethod
+    def run(cli):
+        r"""Check the transfer history of the provided wallet."""
+        wallet = cybertensor.Wallet(config=cli.config)
+        wallet_address = wallet.get_coldkeypub().address
+        # Fetch all transfers
+        transfers = get_wallet_transfers(wallet_address)
+
+        # Create output table
+        table = create_transfer_history_table(transfers)
+
+        cybertensor.__console__.print(table)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        history_parser = parser.add_parser(
+            "history",
+            help="""Fetch transfer history associated with the provided wallet""",
+        )
+        cybertensor.Wallet.add_args(history_parser)
+        cybertensor.cwtensor.add_args(history_parser)
+
+    @staticmethod
+    def check_config(config: "cybertensor.Config"):
+        if not config.is_set("wallet.name") and not config.no_prompt:
+            wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+
+def get_wallet_transfers(wallet_address) -> List[dict]:
+    """Get all transfers associated with the provided wallet address."""
+
+    variables = {
+        "first": MAX_TXN,
+        "filter": {
+            "or": [
+                {"from": {"equalTo": wallet_address}},
+                {"to": {"equalTo": wallet_address}},
+            ]
+        },
+        "order": "BLOCK_NUMBER_DESC",
+    }
+
+    response = requests.post(
+        API_URL, json={"query": GRAPHQL_QUERY, "variables": variables}
+    )
+    data = response.json()
+
+    # Extract nodes and pageInfo from the response
+    transfer_data = data.get("data", {}).get("transfers", {})
+    transfers = transfer_data.get("nodes", [])
+
+    return transfers
+
+
+def create_transfer_history_table(transfers):
+    """Get output transfer table"""
+
+    table = Table(show_footer=False)
+    # Define the column names
+    column_names = [
+        "Id",
+        "From",
+        "To",
+        f"Amount ({cybertensor.__giga_boot_symbol__})",
+        "Extrinsic Id",
+        "Block Number",
+        "URL (stats)",
+    ]
+    stats_url_base = ""
+
+    # Create a table
+    table = Table(show_footer=False)
+    table.title = "[white]Wallet Transfers"
+
+    # Define the column styles
+    header_style = "overline white"
+    footer_style = "overline white"
+    column_style = "rgb(50,163,219)"
+    no_wrap = True
+
+    # Add columns to the table
+    for column_name in column_names:
+        table.add_column(
+            f"[white]{column_name}",
+            header_style=header_style,
+            footer_style=footer_style,
+            style=column_style,
+            no_wrap=no_wrap,
+            justify="left" if column_name == "Id" else "right",
+        )
+
+    # Add rows to the table
+    for item in transfers:
+        try:
+            gboot_amount = int(item["amount"]) / cybertensor.GIGA
+        except:
+            gboot_amount = item["amount"]
+        table.add_row(
+            item["id"],
+            item["from"],
+            item["to"],
+            f"{gboot_amount:.3f}",
+            str(item["extrinsicId"]),
+            item["blockNumber"],
+            f"{stats_url_base}/{item['blockNumber']}-{item['extrinsicId']}",
+        )
+    table.add_row()
+    table.show_footer = True
+    table.box = None
+    table.pad_edge = False
+    table.width = None
+    return table

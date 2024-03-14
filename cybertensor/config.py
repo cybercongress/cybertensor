@@ -35,12 +35,13 @@ class InvalidConfigFile(Exception):
 
 class Config(DefaultMunch):
     """
-    Implementation of the config class, which manages the config of different cybertensor modules.
+    Implementation of the config class, which manages the configuration of different cybertensor modules.
     """
 
     __is_set: Dict[str, bool]
 
     r""" Translates the passed parser into a nested Cybertensor config.
+    
         Args:
             parser (argparse.ArgumentParser):
                 Command line parser object.
@@ -58,7 +59,7 @@ class Config(DefaultMunch):
 
     def __init__(
         self,
-        parser: argparse.ArgumentParser = None,
+        parser: Optional[argparse.ArgumentParser] = None,
         args: Optional[List[str]] = None,
         strict: bool = False,
         default: Optional[Any] = None,
@@ -68,7 +69,7 @@ class Config(DefaultMunch):
         self["__is_set"] = {}
 
         if parser is None:
-            return None
+            return
 
         # Optionally add config specific arguments
         try:
@@ -96,7 +97,7 @@ class Config(DefaultMunch):
             parser.add_argument(
                 "--no_version_checking",
                 action="store_true",
-                help="Set true to stop cli version checking.",
+                help="Set ``true`` to stop cli version checking.",
                 default=False,
             )
         except:
@@ -108,7 +109,7 @@ class Config(DefaultMunch):
                 "--no_prompt",
                 dest="no_prompt",
                 action="store_true",
-                help="Set true to stop cli from prompting the user.",
+                help="Set ``true`` to stop cli from prompting the user.",
                 default=False,
             )
         except:
@@ -241,9 +242,10 @@ class Config(DefaultMunch):
 
     @staticmethod
     def __parse_args__(
-        args: List[str], parser: argparse.ArgumentParser = None, strict: bool = False
+        args: List[str], parser: Optional[argparse.ArgumentParser] = None, strict: bool = False
     ) -> argparse.Namespace:
         """Parses the passed args use the passed parser.
+
         Args:
             args (List[str]):
                 List of arguments to parse.

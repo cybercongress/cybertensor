@@ -18,6 +18,7 @@
 
 import argparse
 import sys
+import shtab
 from typing import List, Optional
 
 import cybertensor
@@ -44,6 +45,8 @@ ALIAS_TO_COMMAND = {
     "wallets": "wallet",
     "stakes": "stake",
     "sudos": "sudo",
+    # "i": "info",
+    # "info": "info",
 }
 COMMANDS = {
     "subnets": {
@@ -96,6 +99,10 @@ COMMANDS = {
             "regen_hotkey": RegenHotkeyCommand,
             # "faucet": RunFaucetCommand,
             "update": UpdateWalletCommand,
+            # "swap_hotkey": SwapHotkeyCommand,
+            # "set_identity": SetIdentityCommand,
+            # "get_identity": GetIdentityCommand,
+            # "history": GetWalletHistoryCommand,
         },
     },
     "stake": {
@@ -130,6 +137,20 @@ COMMANDS = {
 }
 
 
+class CLIErrorParser(argparse.ArgumentParser):
+    """
+    Custom ArgumentParser for better error messages.
+    """
+
+    def error(self, message):
+        """
+        This method is called when an error occurs. It prints a custom error message.
+        """
+        sys.stderr.write(f"Error: {message}\n")
+        self.print_help()
+        sys.exit(2)
+
+
 class cli:
     """
     Implementation of the Command Line Interface (CLI) class for the Cybertensor protocol.
@@ -142,7 +163,7 @@ class cli:
         args: Optional[List[str]] = None,
     ):
         """
-        Initializes a cybertensor.CLI object.
+        Initializes a cybertensor.cli object.
 
         Args:
             config (Config, optional): The configuration settings for the CLI.
@@ -186,10 +207,16 @@ class cli:
             argparse.ArgumentParser: An argument parser object for Cybertensor CLI.
         """
         # Define the basic argument parser.
-        parser = argparse.ArgumentParser(
+        parser = CLIErrorParser(
             description=f"cybertensor cli v{cybertensor.__version__}",
             usage="ctcli <command> <command args>",
             add_help=True,
+        )
+        # Add shtab completion
+        parser.add_argument(
+            "--print-completion",
+            choices=shtab.SUPPORTED_SHELLS,
+            help="Print shell tab completion script",
         )
         # Add arguments for each sub-command.
         cmd_parsers = parser.add_subparsers(dest="command")
@@ -264,6 +291,12 @@ class cli:
         """
         Executes the command from the configuration.
         """
+        # Check for print-completion argument
+        if self.config.print_completion:
+            shell = self.config.print_completion
+            print(shtab.complete(parser, shell))
+            return
+        
         # Check if command exists, if so, run the corresponding method.
         # If command doesn't exist, inform user and exit the program.
         command = self.config.command

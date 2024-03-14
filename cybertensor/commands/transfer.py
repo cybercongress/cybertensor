@@ -55,15 +55,23 @@ class TransferCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Transfer token of amount to destination."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            TransferCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
         cwtensor.transfer(
             wallet=wallet,
             dest=cli.config.dest,
             amount=cli.config.amount,
-            wait_for_inclusion=True,
             prompt=not cli.config.no_prompt,
         )
 
@@ -84,7 +92,7 @@ class TransferCommand:
         # Get current balance and print to user.
         if not config.no_prompt:
             wallet = Wallet(config=config)
-            cwtensor = cybertensor.cwtensor(config=config)
+            cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
             with console.status(":satellite: Checking Balance..."):
                 account_balance = cwtensor.get_balance(wallet.coldkeypub.address)
                 console.print(

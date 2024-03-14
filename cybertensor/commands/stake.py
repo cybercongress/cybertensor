@@ -55,11 +55,21 @@ class StakeCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Stake token of amount to hotkey(s)."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            StakeCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         config = cli.config.copy()
         wallet = Wallet(config=config)
-        cwtensor = cybertensor.cwtensor(config=config)
 
         # Get the hotkey_names (if any) and the hotkeys.
         hotkeys_to_stake_to: List[Tuple[Optional[str], str]] = []
@@ -346,8 +356,19 @@ class StakeShow:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Show all stake accounts."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            StakeShow._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         if cli.config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
         else:
@@ -358,21 +379,23 @@ class StakeShow:
         #     Dict[str, DelegatesDetails]
         # ] = get_delegates_details(url=cybertensor.__delegates_details_url__)
 
-        cwtensor = cybertensor.cwtensor(config=cli.config)
         registered_delegate_info: Optional[
             Dict[str, DelegatesDetails]
         ] = cwtensor.get_delegates()
 
-        def get_stake_accounts(wallet) -> Dict[str, Dict[str, Union[str, Balance]]]:
+        def get_stake_accounts(
+                wallet: "cybertensor.Wallet",
+                cwtensor: "cybertensor.cwtensor"
+        ) -> Dict[str, Dict[str, Union[str, Balance]]]:
             """Get stake account details for the given wallet.
 
             Args:
                 wallet: The wallet object to fetch the stake account details for.
+                cwtensor: The cwtensor object.
 
             Returns:
                 A dictionary mapping addresses to their respective stake account details.
             """
-            cwtensor = cybertensor.cwtensor(config=cli.config)
 
             wallet_stake_accounts = {}
 
@@ -392,12 +415,14 @@ class StakeShow:
             }
 
         def get_stakes_from_hotkeys(
-            cwtensor, wallet
+                wallet: "cybertensor.Wallet",
+                cwtensor: "cybertensor.cwtensor"
         ) -> Dict[str, Dict[str, Union[str, Balance]]]:
             """Fetch stakes from hotkeys for the provided wallet.
 
             Args:
                 wallet: The wallet object to fetch the stakes for.
+                cwtensor: The cwtensor object.
 
             Returns:
                 A dictionary of stakes related to hotkeys.
@@ -425,12 +450,14 @@ class StakeShow:
             return stakes
 
         def get_stakes_from_delegates(
-            cwtensor, wallet
+                wallet: "cybertensor.Wallet",
+                cwtensor: "cybertensor.cwtensor"
         ) -> Dict[str, Dict[str, Union[str, Balance]]]:
             """Fetch stakes from delegates for the provided wallet.
 
             Args:
                 wallet: The wallet object to fetch the stakes for.
+                cwtensor: The cwtensor object.
 
             Returns:
                 A dictionary of stakes related to delegates.
@@ -457,12 +484,14 @@ class StakeShow:
             return stakes
 
         def get_all_wallet_accounts(
-            wallets,
+                wallets: list["cybertensor.Wallet"],
+                cwtensor: "cybertensor.cwtensor"
         ) -> List[Dict[str, Dict[str, Union[str, Balance]]]]:
             """Fetch stake accounts for all provided wallets using a ThreadPool.
 
             Args:
                 wallets: List of wallets to fetch the stake accounts for.
+                cwtensor: The cwtensor object.
 
             Returns:
                 A list of dictionaries, each dictionary containing stake account details for each wallet.
@@ -471,14 +500,12 @@ class StakeShow:
             accounts = []
             # Create a progress bar using tqdm
             with tqdm(total=len(wallets), desc="Fetching accounts", ncols=100) as pbar:
-                # Using a ThreadPool to fetch accounts.
-                with ThreadPoolExecutor() as executor:
-                    for account in executor.map(get_stake_accounts, wallets):
-                        accounts.append(account)
-                        pbar.update()
+                for wallet in wallets:
+                    accounts.append(get_stake_accounts(wallet, cwtensor))
+                    pbar.update()
             return accounts
 
-        accounts = get_all_wallet_accounts(wallets)
+        accounts = get_all_wallet_accounts(wallets=wallets, cwtensor=cwtensor)
 
         total_stake = 0
         total_balance = 0

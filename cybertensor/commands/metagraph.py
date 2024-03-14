@@ -74,9 +74,18 @@ class MetagraphCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Prints an entire metagraph."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            MetagraphCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         console.print(
             ":satellite: Syncing with chain: [white]{}[/white] ...".format(
                 cli.config.cwtensor.network
@@ -115,9 +124,11 @@ class MetagraphCommand:
                 "*" if metagraph.validator_permit[uid] else "",
                 str((metagraph.block.item() - metagraph.last_update[uid].item())),
                 str(metagraph.active[uid].item()),
-                ep.ip + ":" + str(ep.port)
-                if ep.is_serving
-                else "[yellow]none[/yellow]",
+                (
+                    ep.ip + ":" + str(ep.port)
+                    if ep.is_serving
+                    else "[yellow]none[/yellow]"
+                ),
                 f"{ep.hotkey[:14]}...{ep.hotkey[-6:]}",
                 f"{ep.coldkey[:14]}...{ep.coldkey[-6:]}"
             ]
@@ -235,7 +246,7 @@ class MetagraphCommand:
 
     @staticmethod
     def check_config(config: "Config"):
-        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -247,6 +258,13 @@ class MetagraphCommand:
             dest="netuid",
             type=int,
             help="""Set the netuid to get the metagraph of""",
+            default=False,
+        )
+        metagraph_parser.add_argument(
+            "--no_prompt",
+            dest="no_prompt",
+            action="store_true",
+            help="""Set true to avoid prompting the user.""",
             default=False,
         )
 

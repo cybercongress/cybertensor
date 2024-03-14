@@ -196,6 +196,7 @@ from cybertensor.axon import axon
 from cybertensor.dendrite import dendrite
 from cybertensor.config import Config
 from cybertensor.mock import MockCwtensor
+# from .subnets import SubnetsAPI
 
 configs = [
     axon.config(),
@@ -203,5 +204,6 @@ configs = [
     PriorityThreadPoolExecutor.config(),
     Wallet.config(),
     logging.config(),
+    cwtensor.config(),
 ]
 defaults = Config.merge_all(configs)

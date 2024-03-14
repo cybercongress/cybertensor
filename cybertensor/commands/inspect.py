@@ -31,7 +31,13 @@ from cybertensor.commands.utils import get_delegates_details, DelegatesDetails
 from cybertensor.config import Config
 from cybertensor.utils.balance import Balance
 from cybertensor.wallet import Wallet
-
+from .utils import (
+    get_delegates_details,
+    DelegatesDetails,
+    get_hotkey_wallets_for_wallet,
+    get_all_wallets_for_path,
+    filter_netuids_by_registered_hotkeys,
+)
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
     try:
@@ -107,15 +113,31 @@ class InspectCommand:
     # TODO if wallet have saved addresses with different network prefixes, than run with flag --all command will fail
 
     @staticmethod
-    def run(cli) -> None:
+    def run(cli: "cybertensor.cli") -> None:
         r"""Inspect a cold, hot pair."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            InspectCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         if cli.config.get("all", d=False) is True:
             wallets = _get_coldkey_wallets_for_path(cli.config.wallet.path)
+            all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
         else:
             wallets = [Wallet(config=cli.config)]
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+            all_hotkeys = get_hotkey_wallets_for_wallet(wallets[0])
 
         netuids = cwtensor.get_all_subnet_netuids()
+        netuids = filter_netuids_by_registered_hotkeys(
+            cli, cwtensor, netuids, all_hotkeys
+        )
+        cybertensor.logging.debug(f"Netuids to check: {netuids}")
 
         registered_delegate_info: Optional[
             Dict[str, DelegatesDetails]
@@ -221,12 +243,18 @@ class InspectCommand:
     @staticmethod
     def check_config(config: "Config") -> None:
         if (
-            not config.get("all", d=None)
-            and not config.is_set("wallet.name")
+            not config.is_set("wallet.name")
             and not config.no_prompt
+            and not config.get("all", d=None)
         ):
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
+
+        if config.netuids != [] and config.netuids != None:
+            if not isinstance(config.netuids, list):
+                config.netuids = [int(config.netuids)]
+            else:
+                config.netuids = [int(netuid) for netuid in config.netuids]
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser) -> None:
@@ -238,6 +266,14 @@ class InspectCommand:
             action="store_true",
             help="""Check all coldkey wallets.""",
             default=False,
+        )
+        inspect_parser.add_argument(
+            "--netuids",
+            dest="netuids",
+            type=int,
+            nargs="*",
+            help="""Set the netuid(s) to filter by.""",
+            default=None,
         )
 
         Wallet.add_args(inspect_parser)

@@ -45,14 +45,14 @@ def __do_remove_stake_single(
         amount (Balance):
             Amount to unstake as cybertensor balance object.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     Raises:
         cybertensor.errors.StakeError:
             If the extrinsic fails to be finalized or included in the block.
@@ -77,7 +77,7 @@ def unstake_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkey: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
@@ -89,16 +89,16 @@ def unstake_message(
             address of the hotkey to unstake from.
             by default, the wallet hotkey is used.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     # Decrypt keys,
     wallet.coldkey
@@ -197,7 +197,7 @@ def unstake_multiple_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkey: List[str],
-    amounts: List[Union[Balance, float]] = None,
+    amounts: Optional[List[Union[Balance, float]]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
@@ -210,15 +210,15 @@ def unstake_multiple_message(
         amounts (List[Union[Balance, float]]):
             List of amounts to unstake. If None, unstake all.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
             flag is true if extrinsic was finalized or included in the block.
             flag is true if any wallet was unstaked.
-            If we did not wait for finalization / inclusion, the response is true.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     if not isinstance(hotkey, list) or not all(
         isinstance(hotkey, str) for hotkey in hotkey

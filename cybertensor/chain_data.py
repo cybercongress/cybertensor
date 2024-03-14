@@ -104,7 +104,7 @@ class NeuronInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> "NeuronInfo":
-        r"""Returns a NeuronInfo object from a vec_u8."""
+        r"""Returns a NeuronInfo object from a ``vec_u8``."""
         if len(list_any) == 0:
             return NeuronInfo._null_neuron()
 
@@ -114,7 +114,7 @@ class NeuronInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["NeuronInfo"]:
-        r"""Returns a list of NeuronInfo objects from a vec_u8."""
+        r"""Returns a list of NeuronInfo objects from a ``vec_u8``."""
 
         decoded_list = [
             NeuronInfo.fix_decoded_values(decoded) for decoded in vec_any
@@ -207,9 +207,9 @@ class NeuronInfoLite:
     validator_permit: bool
     # weights: List[List[int]]
     # bonds: List[List[int]] No weights or bonds in lite version
-    prometheus_info: "PrometheusInfo"
-    axon_info: "AxonInfo"
     pruning_score: int
+    prometheus_info: Optional["PrometheusInfo"] = None
+    axon_info: Optional["AxonInfo"] = None
     is_null: bool = False
 
     @classmethod
@@ -254,7 +254,7 @@ class NeuronInfoLite:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> "NeuronInfoLite":
-        r"""Returns a NeuronInfoLite object from a vec_u8."""
+        r"""Returns a NeuronInfoLite object from a ``vec_u8``."""
         if len(list_any) == 0:
             return NeuronInfoLite._null_neuron()
 
@@ -264,7 +264,7 @@ class NeuronInfoLite:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["NeuronInfoLite"]:
-        r"""Returns a list of NeuronInfoLite objects from a vec_u8."""
+        r"""Returns a list of NeuronInfoLite objects from a ``vec_u8``."""
 
         decoded_list = [
             NeuronInfoLite.fix_decoded_values(decoded) for decoded in vec_any
@@ -359,7 +359,7 @@ class AxonInfo:
             return True
 
     def ip_str(self) -> str:
-        """Return the whole ip as string"""
+        """Return the whole IP as string"""
         return net.ip__str__(self.ip_type, self.ip, self.port)
 
     def __eq__(self, other: "AxonInfo"):
@@ -475,7 +475,7 @@ class DelegateInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> Optional["DelegateInfo"]:
-        r"""Returns a DelegateInfo object from a vec_u8."""
+        r"""Returns a DelegateInfo object from a ``vec_u8``."""
 
         decoded = DelegateInfo.fix_decoded_values(list_any)
 
@@ -483,7 +483,7 @@ class DelegateInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["DelegateInfo"]:
-        r"""Returns a list of DelegateInfo objects from a vec_u8."""
+        r"""Returns a list of DelegateInfo objects from a ``vec_u8``."""
 
         decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
 
@@ -493,7 +493,7 @@ class DelegateInfo:
     def delegated_list_from_list_any(
         cls, vec_any: List[Any]
     ) -> List[Tuple["DelegateInfo", Balance]]:
-        r"""Returns a list of Tuples of DelegateInfo objects, and Balance, from a vec_u8.
+        r"""Returns a list of Tuples of DelegateInfo objects, and Balance, from a ``vec_u8``.
         This is the list of delegates that the user has delegated to, and the amount of stake delegated.
         """
 
@@ -526,7 +526,7 @@ class StakeInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> Optional["StakeInfo"]:
-        r"""Returns a StakeInfo object from a vec_u8."""
+        r"""Returns a StakeInfo object from a ``vec_u8``."""
         if len(list_any) == 0:
             return None
 
@@ -551,17 +551,19 @@ class StakeInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["StakeInfo"]:
-        r"""Returns a list of StakeInfo objects from a vec_u8."""
+        r"""Returns a list of StakeInfo objects from a ``vec_u8``."""
 
         decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
 
         return decoded
+
 
 @dataclass
 class SubnetInfo:
     r"""
     Dataclass for subnet info.
     """
+
     netuid: int
     rho: int
     kappa: int
@@ -634,6 +636,7 @@ class SubnetHyperparameters:
     r"""
     Dataclass for subnet hyperparameters.
     """
+
     rho: int
     kappa: int
     immunity_period: int
@@ -652,6 +655,8 @@ class SubnetHyperparameters:
     max_burn: int
     bonds_moving_avg: int
     max_regs_per_block: int
+    # serving_rate_limit: int
+    # max_validators: int
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> Optional["SubnetHyperparameters"]:
@@ -689,6 +694,8 @@ class SubnetHyperparameters:
             max_burn=decoded["max_burn"],
             bonds_moving_avg=decoded["bonds_moving_avg"],
             max_regs_per_block=decoded["max_regs_per_block"],
+            # max_validators=decoded["max_validators"],
+            # serving_rate_limit=decoded["serving_rate_limit"],
         )
 
     def to_parameter_dict(self) -> "torch.nn.ParameterDict":
@@ -708,6 +715,7 @@ class IPInfo:
     r"""
     Dataclass for associated IP Info.
     """
+
     ip: str
     ip_type: int
     protocol: int
@@ -723,7 +731,7 @@ class IPInfo:
 
     @classmethod
     def from_list_any(cls, list_any: List[Any]) -> Optional["IPInfo"]:
-        r"""Returns a IPInfo object from a vec_u8."""
+        r"""Returns a IPInfo object from a ``vec_u8``."""
         if len(list_any) == 0:
             return None
 
@@ -731,7 +739,7 @@ class IPInfo:
 
     @classmethod
     def list_from_list_any(cls, vec_any: List[Any]) -> List["IPInfo"]:
-        r"""Returns a list of IPInfo objects from a vec_u8."""
+        r"""Returns a list of IPInfo objects from a ``vec_u8``."""
 
         decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
 

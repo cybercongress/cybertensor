@@ -30,11 +30,11 @@ from .keyfile_mock import MockKeyfile
 
 class MockWallet(Wallet):
     """
-    Mocked Version of the bittensor wallet class, meant to be used for testing
+    Mocked Version of the cybertensor wallet class, meant to be used for testing
     """
 
     def __init__(self, **kwargs):
-        r"""Init bittensor wallet object containing a hot and coldkey.
+        r"""Init cybertensor wallet object containing a hot and coldkey.
         Args:
             _mock (required=True, default=False):
                 If true creates a mock wallet with random keys.

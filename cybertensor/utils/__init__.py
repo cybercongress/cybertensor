@@ -17,6 +17,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+import hashlib
 from typing import Dict, Optional
 
 import requests
@@ -117,3 +118,13 @@ def get_explorer_url_for_network(
         explorer_url = f"{explorer_root_url}/network/bostrom/tx/{tx_hash}"
 
     return explorer_url
+
+
+def hash(content, encoding="utf-8"):
+    sha3 = hashlib.sha3_256()
+
+    # Update the hash object with the concatenated string
+    sha3.update(content.encode(encoding))
+
+    # Produce the hash
+    return sha3.hexdigest()

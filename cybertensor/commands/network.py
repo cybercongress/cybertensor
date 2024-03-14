@@ -31,6 +31,7 @@ from cybertensor.commands import defaults
 from cybertensor.commands.utils import DelegatesDetails, check_netuid_set
 from cybertensor.config import Config
 from cybertensor.wallet import Wallet
+# from cybertensor.commands.identity import SetIdentityCommand
 
 
 class RegisterSubnetworkCommand:
@@ -68,16 +69,40 @@ class RegisterSubnetworkCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Register a subnetwork"""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegisterSubnetworkCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         config = cli.config.copy()
         wallet = Wallet(config=cli.config)
         cwtensor = cybertensor.cwtensor(config=config)
         # Call register command.
-        cwtensor.register_subnetwork(
+        success = cwtensor.register_subnetwork(
             wallet=wallet,
             prompt=not cli.config.no_prompt,
         )
+        # if success and not cli.config.no_prompt:
+        #     # Prompt for user to set identity.
+        #     do_set_identity = Prompt.ask(
+        #         f"Subnetwork registered successfully. Would you like to set your identity? [y/n]",
+        #         choices=["y", "n"],
+        #     )
+        #
+        #     if do_set_identity.lower() == "y":
+        #         cwtensor.close()
+        #         config = cli.config.copy()
+        #         SetIdentityCommand.check_config(config)
+        #         cli.config = config
+        #         SetIdentityCommand.run(cli)
 
     @classmethod
     def check_config(cls, config: "Config"):
@@ -94,6 +119,7 @@ class RegisterSubnetworkCommand:
 
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
+
 
 class SubnetLockCostCommand:
     """
@@ -123,13 +149,23 @@ class SubnetLockCostCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""View locking cost of creating a new subnetwork"""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetLockCostCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         config = cli.config.copy()
-        cwtensor = cybertensor.cwtensor(config=config)
         try:
             console.print(
-                f"Subnet lock cost: [green]{cybertensor.utils.balance.Balance( cwtensor.get_subnet_burn_cost() )}[/green]"
+                f"Subnet lock cost: [green]{cybertensor.Balance( cwtensor.get_subnet_burn_cost() )}[/green]"
             )
         except Exception as e:
             console.print(
@@ -185,9 +221,19 @@ class SubnetListCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""List all subnet netuids in the network."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetListCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
 
         rows = []
@@ -241,7 +287,7 @@ class SubnetListCommand:
         table.add_column("[overline white]MAX_N", style="white", justify="center")
         table.add_column("[overline white]EMISSION", style="white", justify="center")
         table.add_column("[overline white]TEMPO", style="white", justify="center")
-        table.add_column("[overline white]BURN", style="white", justify="center")
+        table.add_column("[overline white]RECYCLE", style="white", justify="center")
         table.add_column("[overline white]POW", style="white", justify="center")
         table.add_column("[overline white]SUDO", style="white")
         table.add_column("[overline white]METADATA", style="white")
@@ -263,12 +309,19 @@ class SubnetListCommand:
 
 HYPERPARAMS = {
     "serving_rate_limit": "sudo_set_serving_rate_limit",
+    "min_difficulty": "sudo_set_min_difficulty",
+    "max_difficulty": "sudo_set_max_difficulty",
     "weights_version_key": "sudo_set_weights_version_key",
+    "weights_rate_limit": "sudo_set_weights_set_rate_limit",
     "weights_set_rate_limit": "sudo_set_weights_set_rate_limit",
     "max_weight_limit": "sudo_set_max_weight_limit",
     "immunity_period": "sudo_set_immunity_period",
     "min_allowed_weights": "sudo_set_min_allowed_weights",
     "activity_cutoff": "sudo_set_activity_cutoff",
+    "network_registration_allowed": "sudo_set_network_registration_allowed",
+    "network_pow_registration_allowed": "sudo_set_network_pow_registration_allowed",
+    "min_burn": "sudo_set_min_burn",
+    "max_burn": "sudo_set_max_burn",
     "max_allowed_validators": "sudo_set_max_allowed_validators",
 }
 
@@ -294,25 +347,40 @@ class SubnetSudoCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Set subnet hyperparameters."""
-        config = cli.config.copy()
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetSudoCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=config)
         print("\n")
         SubnetHyperparamsCommand.run(cli)
-        if not config.is_set("param") and not config.no_prompt:
+        if not cli.config.is_set("param") and not cli.config.no_prompt:
             param = Prompt.ask("Enter hyperparameter", choices=HYPERPARAMS)
-            config.param = str(param)
-        if not config.is_set("value") and not config.no_prompt:
+            cli.config.param = str(param)
+        if not cli.config.is_set("value") and not cli.config.no_prompt:
             value = Prompt.ask("Enter new value")
-            config.value = value
+            cli.config.value = value
+
+        if (
+            cli.config.param == "network_registration_allowed"
+            or cli.config.param == "network_pow_registration_allowed"
+        ):
+            cli.config.value = True if cli.config.value.lower() == "true" else False
 
         cwtensor.set_hyperparameter(
             wallet,
             netuid=cli.config.netuid,
-            parameter=config.param,
-            value=config.value,
+            parameter=cli.config.param,
+            value=cli.config.value,
             prompt=not cli.config.no_prompt,
         )
 
@@ -323,7 +391,7 @@ class SubnetSudoCommand:
             config.wallet.name = str(wallet_name)
 
         if not config.is_set("netuid") and not config.no_prompt:
-            check_netuid_set(config, cybertensor.cwtensor(config=config))
+            check_netuid_set(config, cybertensor.cwtensor(config=config, log_verbose=False))
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -379,9 +447,19 @@ class SubnetHyperparamsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""View hyperparameters of a subnetwork."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetHyperparamsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         subnet: cybertensor.SubnetHyperparameters = cwtensor.get_subnet_hyperparameters(
             cli.config.netuid
         )
@@ -407,7 +485,7 @@ class SubnetHyperparamsCommand:
     @staticmethod
     def check_config(config: "Config"):
         if not config.is_set("netuid") and not config.no_prompt:
-            check_netuid_set(config, cybertensor.cwtensor(config=config))
+            check_netuid_set(config, cybertensor.cwtensor(config=config, log_verbose=False))
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -416,6 +494,13 @@ class SubnetHyperparamsCommand:
         )
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
+        )
+        parser.add_argument(
+            "--no_prompt",
+            dest="no_prompt",
+            action="store_true",
+            help="""Set true to avoid prompting the user.""",
+            default=False,
         )
         cybertensor.cwtensor.add_args(parser)
 
@@ -460,9 +545,18 @@ class SubnetGetHyperparamsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""View hyperparameters of a subnetwork."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetGetHyperparamsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         subnet: cybertensor.SubnetHyperparameters = cwtensor.get_subnet_hyperparameters(
             cli.config.netuid
         )
@@ -496,6 +590,13 @@ class SubnetGetHyperparamsCommand:
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
         )
+        parser.add_argument(
+            "--no_prompt",
+            dest="no_prompt",
+            action="store_true",
+            help="""Set true to avoid prompting the user.""",
+            default=False,
+        )
         cybertensor.cwtensor.add_args(parser)
 
 
@@ -511,11 +612,20 @@ class SubnetSetWeightsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Set weights for subnetwork."""
-        wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetSetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
+        wallet = Wallet(config=cli.config)
         # Get values if not set.
         example_uids = range(3)
         if not cli.config.is_set("uids"):
@@ -559,7 +669,13 @@ class SubnetSetWeightsCommand:
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
         )
-
+        parser.add_argument(
+            "--no_prompt",
+            dest="no_prompt",
+            action="store_true",
+            help="""Set true to avoid prompting the user.""",
+            default=False,
+        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
@@ -611,9 +727,19 @@ class SubnetGetWeightsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Get weights for root network."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetSetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         weights = cwtensor.weights(cli.config.netuid)
 
         table = Table(show_footer=False)
@@ -685,7 +811,13 @@ class SubnetGetWeightsCommand:
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
         )
-
+        parser.add_argument(
+            "--no_prompt",
+            dest="no_prompt",
+            action="store_true",
+            help="""Set true to avoid prompting the user.""",
+            default=False,
+        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 

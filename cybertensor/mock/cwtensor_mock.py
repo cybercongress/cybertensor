@@ -992,7 +992,6 @@ class MockCwtensor(cwtensor):
         wallet: "Wallet",
         delegate: str,
         amount: "Balance",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> bool:
         # Check if delegate
@@ -1004,7 +1003,6 @@ class MockCwtensor(cwtensor):
             wallet=wallet,
             hotkey=delegate,
             amount=amount,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
         )
 
@@ -1015,7 +1013,6 @@ class MockCwtensor(cwtensor):
         wallet: "Wallet",
         delegate: str,
         amount: "Balance",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> bool:
         # Check if delegate
@@ -1027,14 +1024,12 @@ class MockCwtensor(cwtensor):
             wallet=wallet,
             hotkey=delegate,
             amount=amount,
-            wait_for_inclusion=wait_for_inclusion,
             wait_for_finalization=wait_for_finalization,
         )
 
     def _do_nominate(
         self,
         wallet: "Wallet",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> bool:
         hotkey = wallet.hotkey.address
@@ -1062,7 +1057,6 @@ class MockCwtensor(cwtensor):
         wallet: "Wallet",
         dest: str,
         transfer_balance: "Balance",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> Tuple[bool, Optional[str], Optional[str]]:
         bal = self.get_balance(wallet.coldkeypub.address)
@@ -1094,7 +1088,6 @@ class MockCwtensor(cwtensor):
         netuid: int,
         wallet: "Wallet",
         pow_result: "POWSolution",
-        wait_for_inclusion: bool = False,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         # Assume pow result is valid
@@ -1115,7 +1108,6 @@ class MockCwtensor(cwtensor):
         self,
         netuid: int,
         wallet: "Wallet",
-        wait_for_inclusion: bool = False,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         cwtensor_state = self.chain_state["CwtensorModule"]
@@ -1147,7 +1139,6 @@ class MockCwtensor(cwtensor):
         wallet: "Wallet",
         hotkey: str,
         amount: "Balance",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> bool:
         cwtensor_state = self.chain_state["CwtensorModule"]
@@ -1218,7 +1209,6 @@ class MockCwtensor(cwtensor):
         wallet: "Wallet",
         hotkey: str,
         amount: "Balance",
-        wait_for_inclusion: bool = True,
         wait_for_finalization: bool = False,
     ) -> bool:
         cwtensor_state = self.chain_state["CwtensorModule"]
@@ -1405,7 +1395,6 @@ class MockCwtensor(cwtensor):
         self,
         wallet: "Wallet",
         call_params: "PrometheusServeCallParams",
-        wait_for_inclusion: bool = False,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         return True, None
@@ -1425,7 +1414,6 @@ class MockCwtensor(cwtensor):
         self,
         wallet: "Wallet",
         call_params: "AxonServeCallParams",
-        wait_for_inclusion: bool = False,
         wait_for_finalization: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         return True, None

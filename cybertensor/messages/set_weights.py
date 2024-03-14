@@ -17,7 +17,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from typing import Union
+from typing import Union, Tuple
 
 import torch
 from loguru import logger
@@ -40,9 +40,11 @@ def set_weights_message(
     version_key: int = 0,
     wait_for_finalization: bool = True,
     prompt: bool = False,
-) -> bool:
+) -> Tuple[bool, str]:
     r"""Sets the given weights and values on chain for wallet hotkey account.
     Args:
+        cwtensor (cybertensor.cwtensor):
+            CWTensor object
         wallet (Wallet):
             cybertensor wallet object.
         netuid (int):
@@ -54,14 +56,14 @@ def set_weights_message(
         version_key (int):
             version key of the validator.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     # First convert types.
     if isinstance(uids, list):
@@ -81,12 +83,13 @@ def set_weights_message(
             f"[bold white]  weights: {[float(v / 65535) for v in weight_vals]}\n"
             f"  uids: {weight_uids}[/bold white ]?"
         ):
-            return False
+            return False, "Prompt refused."
 
     with console.status(
         f":satellite: Setting weights on [white]{cwtensor.network}[/white] ..."
     ):
-        return cwtensor._do_set_weights(
+        try:
+            success, error_message = cwtensor._do_set_weights(
                 wallet=wallet,
                 netuid=netuid,
                 uids=weight_uids,
@@ -94,3 +97,30 @@ def set_weights_message(
                 version_key=version_key,
                 wait_for_finalization=wait_for_finalization,
             )
+
+            if not wait_for_finalization:
+                return True, "Not waiting for finalization."
+
+            if success is True:
+                cybertensor.__console__.print(
+                    prefix="Set weights",
+                    sufix="<green>Finalized: </green>" + str(success),
+                )
+                return True, "Successfully set weights and Finalized."
+            else:
+                cybertensor.__console__.print(
+                    ":cross_mark: [red]Failed[/red]: error:{}".format(error_message)
+                )
+
+                cybertensor.logging.warning(
+                    prefix="Set weights",
+                    sufix="<red>Failed: </red>" + str(error_message),
+                )
+                return False, error_message
+
+        except Exception as e:
+            # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
+            cybertensor.logging.warning(
+                prefix="Set weights", sufix="<red>Failed: </red>" + str(e)
+            )
+            return False, str(e)

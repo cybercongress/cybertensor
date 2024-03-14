@@ -33,6 +33,7 @@ from cybertensor.commands.utils import DelegatesDetails
 from cybertensor.config import Config
 from cybertensor.utils.balance import Balance
 from cybertensor.wallet import Wallet
+# from cybertensor.commands.identity import SetIdentityCommand
 
 
 def _get_coldkey_wallets_for_path(path: str) -> List["Wallet"]:
@@ -255,18 +256,23 @@ class DelegateStakeCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli"):
         """Delegates stake to a chain delegate."""
-        config = cli.config.copy()
-        wallet = Wallet(config=config)
-        cwtensor = cybertensor.cwtensor(config=config)
-        cwtensor.delegate(
-            wallet=wallet,
-            delegate=config.get("delegatekey"),
-            amount=config.get("amount"),
-            wait_for_finalization=True,
-            prompt=not config.no_prompt,
-        )
+        try:
+            config = cli.config.copy()
+            wallet = Wallet(config=config)
+            cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
+            cwtensor.delegate(
+                wallet=wallet,
+                delegate=config.get("delegatekey"),
+                amount=config.get("amount"),
+                wait_for_finalization=True,
+                prompt=not config.no_prompt,
+            )
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -295,7 +301,7 @@ class DelegateStakeCommand:
         if not config.get("delegatekey"):
             # Check for delegates.
             with console.status(":satellite: Loading delegates..."):
-                cwtensor = cybertensor.cwtensor(config=config)
+                cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
                 delegates: List[cybertensor.DelegateInfo] = cwtensor.get_delegates()
                 try:
                     prev_delegates = cwtensor.get_delegates(
@@ -373,18 +379,24 @@ class DelegateUnstakeCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli"):
         """Undelegates stake from a chain delegate."""
-        config = cli.config.copy()
-        wallet = Wallet(config=config)
-        cwtensor = cybertensor.cwtensor(config=config)
-        cwtensor.undelegate(
-            wallet=wallet,
-            delegate=config.get("delegatekey"),
-            amount=config.get("amount"),
-            wait_for_finalization=True,
-            prompt=not config.no_prompt,
-        )
+        try:
+            config = cli.config.copy()
+            wallet = Wallet(config=config)
+            cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
+            cwtensor.undelegate(
+                wallet=wallet,
+                delegate=config.get("delegatekey"),
+                amount=config.get("amount"),
+                wait_for_finalization=True,
+                prompt=not config.no_prompt,
+            )
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -417,7 +429,7 @@ class DelegateUnstakeCommand:
         if not config.get("delegatekey"):
             # Check for delegates.
             with console.status(":satellite: Loading delegates..."):
-                cwtensor = cybertensor.cwtensor(config=config)
+                cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
                 delegates: List[cybertensor.DelegateInfo] = cwtensor.get_delegates()
                 try:
                     prev_delegates = cwtensor.get_delegates(
@@ -487,7 +499,7 @@ class ListDelegatesCommand:
     Example usage:
     >>> ctcli root list_delegates
     >>> ctcli root list_delegates --wallet.name my_wallet
-    >>> ctcli root list_delegates --cwtensor.network finney # can also be `test` or `local`
+    >>> ctcli root list_delegates --cwtensor.network space-pussy # can also be `test` or `local`
 
     Note:
     This function is part of the Cybertensor CLI tools and is intended for use within a console
@@ -495,33 +507,38 @@ class ListDelegatesCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli"):
         r"""
         List all delegates on the network.
         """
-        # TODO revisit
-        # cli.config.cwtensor.network = "archive"
-        # cli.config.cwtensor.chain_endpoint = "wss://archive.chain.opentensor.ai:443"
-        cwtensor = cybertensor.cwtensor(config=cli.config)
-        with console.status(":satellite: Loading delegates..."):
-            # TODO added list, check get_deletates
-            delegates: List[cybertensor.DelegateInfo] = cwtensor.get_delegates()
-            try:
-                prev_delegates = cwtensor.get_delegates(max(0, cwtensor.block - 1200))
-            except RuntimeError:
-                prev_delegates = None
+        try:
+            # TODO revisit
+            # cli.config.cwtensor.network = "archive"
+            # cli.config.cwtensor.chain_endpoint = "wss://archive.chain.opentensor.ai:443"
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            with console.status(":satellite: Loading delegates..."):
+                # TODO added list, check get_deletates
+                delegates: List[cybertensor.DelegateInfo] = cwtensor.get_delegates()
+                try:
+                    prev_delegates = cwtensor.get_delegates(max(0, cwtensor.block - 1200))
+                except RuntimeError:
+                    prev_delegates = None
 
-        if prev_delegates is None:
-            console.print(
-                ":warning: [yellow]Could not fetch delegates history[/yellow]"
+            if prev_delegates is None:
+                console.print(
+                    ":warning: [yellow]Could not fetch delegates history[/yellow]"
+                )
+
+            show_delegates(
+                cli.config,
+                delegates,
+                prev_delegates=prev_delegates,
+                width=cli.config.get("width", None),
             )
-
-        show_delegates(
-            cli.config,
-            delegates,
-            prev_delegates=prev_delegates,
-            width=cli.config.get("width", None),
-        )
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -567,46 +584,65 @@ class NominateCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli"):
         r"""Nominate wallet."""
-        wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            wallet = Wallet(config=cli.config)
+            cwtensor = cybertensor.cwtensor(config=cli.config)
 
-        # Unlock the wallet.
-        wallet.hotkey
-        wallet.coldkey
+            # Unlock the wallet.
+            wallet.hotkey
+            wallet.coldkey
 
-        # Check if the hotkey is already a delegate.
-        if cwtensor.is_hotkey_delegate(wallet.hotkey.address):
-            console.print(
-                "Aborting: Hotkey {} is already a delegate.".format(
-                    wallet.hotkey.address
+            # Check if the hotkey is already a delegate.
+            if cwtensor.is_hotkey_delegate(wallet.hotkey.address):
+                console.print(
+                    "Aborting: Hotkey {} is already a delegate.".format(
+                        wallet.hotkey.address
+                    )
                 )
-            )
-            return
+                return
 
-        result: bool = cwtensor.nominate(wallet)
-        if not result:
-            console.print(
-                "Could not became a delegate on [white]{}[/white]".format(
-                    cwtensor.network
-                )
-            )
-        else:
-            # Check if we are a delegate.
-            is_delegate: bool = cwtensor.is_hotkey_delegate(wallet.hotkey.address)
-            if not is_delegate:
+            result: bool = cwtensor.nominate(wallet)
+            if not result:
                 console.print(
                     "Could not became a delegate on [white]{}[/white]".format(
                         cwtensor.network
                     )
                 )
-                return
-            console.print(
-                "Successfully became a delegate on [white]{}[/white]".format(
-                    cwtensor.network
+            else:
+                # Check if we are a delegate.
+                is_delegate: bool = cwtensor.is_hotkey_delegate(wallet.hotkey.address)
+                if not is_delegate:
+                    console.print(
+                        "Could not became a delegate on [white]{}[/white]".format(
+                            cwtensor.network
+                        )
+                    )
+                    return
+                console.print(
+                    "Successfully became a delegate on [white]{}[/white]".format(
+                        cwtensor.network
+                    )
                 )
-            )
+            # # Prompt use to set identity on chain.
+            # if not cli.config.no_prompt:
+            #     do_set_identity = Prompt.ask(
+            #         f"Subnetwork registered successfully. Would you like to set your identity? [y/n]",
+            #         choices=["y", "n"],
+            #     )
+            #
+            #     if do_set_identity.lower() == "y":
+            #         cwtensor.close()
+            #         config = cli.config.copy()
+            #         SetIdentityCommand.check_config(config)
+            #         cli.config = config
+            #         SetIdentityCommand.run(cli)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
@@ -670,14 +706,24 @@ class MyDelegatesCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli"):
+        """Delegates stake to a chain delegate."""
+        try:
+            config = cli.config.copy()
+            cwtensor = cybertensor.cwtensor(config=config, log_verbose=False)
+            MyDelegatesCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         """Delegates stake to a chain delegate."""
         config = cli.config.copy()
         if config.get("all", d=None) is True:
             wallets = _get_coldkey_wallets_for_path(config.wallet.path)
         else:
             wallets = [Wallet(config=config)]
-        cwtensor = cybertensor.cwtensor(config=config)
 
         table = Table(show_footer=True, pad_edge=False, box=None, expand=True)
         table.add_column(
@@ -738,7 +784,7 @@ class MyDelegatesCommand:
                     ):
                         my_delegates[delegate[0].hotkey] = staked
 
-            delegates.sort(key=lambda delegate: delegate[0].total_stake, reverse=True)
+            delegates.sort(key=lambda _delegate: _delegate[0].total_stake, reverse=True)
             total_delegated += sum(my_delegates.values())
 
             # TODO revisit
@@ -799,7 +845,7 @@ class MyDelegatesCommand:
                         ),
                         # f'{delegate.take * 100:.1f}%',s
                         f"{delegate[0].total_daily_return.gboot * (1000 / (0.001 + delegate[0].total_stake.gboot))!s:6.6}",
-                        str(delegate_description)
+                        str(delegate_description),
                         # f'{delegate_profile.description:140.140}',
                     )
 

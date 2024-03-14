@@ -33,6 +33,7 @@ from cybertensor.commands.utils import (
     get_hotkey_wallets_for_wallet,
     get_coldkey_wallets_for_path,
     get_all_wallets_for_path,
+    filter_netuids_by_registered_hotkeys,
 )
 from cybertensor.config import Config
 from cybertensor.utils.balance import Balance
@@ -80,8 +81,17 @@ class OverviewCommand:
     @staticmethod
     def run(cli: "cybertensor.cli", max_len_netuids: int = 5, max_len_keys: int = 5):
         r"""Prints an overview for the wallet's colkey."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            OverviewCommand._run(cli, cwtensor, max_len_netuids=max_len_netuids, max_len_keys=max_len_keys)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor", max_len_netuids: int = 5, max_len_keys: int = 5):
         wallet = Wallet(config=cli.config)
-        cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(config=cli.config)
 
         all_hotkeys = []
         total_balance = Balance(0)
@@ -141,8 +151,11 @@ class OverviewCommand:
         block = cwtensor.block
 
         netuids = cwtensor.get_all_subnet_netuids()
-        if cli.config.netuid != []:
-            netuids = [netuid for netuid in netuids if netuid in cli.config.netuid]
+        netuids = filter_netuids_by_registered_hotkeys(
+            cli, cwtensor, netuids, all_hotkeys
+        )
+        cybertensor.logging.debug(f"Netuids to check: {netuids}")
+
         for netuid in netuids:
             neurons[str(netuid)] = []
 
@@ -176,7 +189,7 @@ class OverviewCommand:
                 netuid, neurons_result, err_msg = \
                     OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
                 if err_msg is not None:
-                    console.print(err_msg)
+                    console.print(f"netuid '{netuid}': {err_msg}")
                 if len(neurons_result) == 0:
                     # Remove netuid from overview if no neurons are found.
                     netuids.remove(netuid)
@@ -253,10 +266,13 @@ class OverviewCommand:
 
                     # Add this hotkey to the wallets dict
                     wallet_ = Wallet(
-                        name=wallet,
+                        name=wallet.name,
                     )
                     wallet_.hotkey = hotkey_addr
                     wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    # Indicates a hotkey not on local machine but exists in stake_info obj on-chain
+                    if hotkey_coldkey_to_hotkey_wallet.get(hotkey_addr) is None:
+                        hotkey_coldkey_to_hotkey_wallet[hotkey_addr] = {}
                     hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
                         coldkey_wallet.coldkeypub.address
                     ] = wallet_
@@ -336,11 +352,13 @@ class OverviewCommand:
                     "{:.5f}".format(validator_trust),
                     "*" if validator_permit else "",
                     str(last_update),
-                    cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
-                    + ":"
-                    + str(nn.axon_info.port)
-                    if nn.axon_info.port != 0
-                    else "[yellow]none[/yellow]",
+                    (
+                        cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
+                        + ":"
+                        + str(nn.axon_info.port)
+                        if nn.axon_info.port != 0
+                        else "[yellow]none[/yellow]"
+                    ),
                     nn.hotkey,
                 ]
 
@@ -538,7 +556,7 @@ class OverviewCommand:
         result: List["cybertensor.NeuronInfoLite"] = []
 
         try:
-            cwtensor = cybertensor.cwtensor(config=cwtensor_config)
+            cwtensor = cybertensor.cwtensor(config=cwtensor_config)  # , log_verbose=False)
 
             all_neurons: List["cybertensor.NeuronInfoLite"] = cwtensor.neurons_lite(
                 netuid=netuid
@@ -552,6 +570,10 @@ class OverviewCommand:
                     result.append(nn)
         except Exception as e:
             return netuid, [], "Error: {}".format(e)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
         return netuid, result, None
 
@@ -588,12 +610,19 @@ class OverviewCommand:
 
             all_staked_hotkeys = filter(_filter_stake_info, all_stake_info_for_coldkey)
             result = [
-                (stake_info.hotkey, stake_info.stake)
+                (
+                    stake_info.hotkey,
+                    stake_info.stake.gboot
+                )  # stake is a Balance object
                 for stake_info in all_staked_hotkeys
             ]
 
         except Exception as e:
             return coldkey_wallet, [], "Error: {}".format(e)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
 
         return coldkey_wallet, result, None
 
@@ -658,12 +687,12 @@ class OverviewCommand:
             help="""To specify all hotkeys. Specifying hotkeys will exclude them from this all.""",
         )
         overview_parser.add_argument(
-            "--netuid",
-            dest="netuid",
+            "--netuids",
+            dest="netuids",
             type=int,
             nargs="*",
             help="""Set the netuid(s) to filter by.""",
-            default=[],
+            default=None,
         )
         Wallet.add_args(overview_parser)
         cybertensor.cwtensor.add_args(overview_parser)
@@ -678,8 +707,8 @@ class OverviewCommand:
             wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
             config.wallet.name = str(wallet_name)
 
-        if config.netuid != []:
-            if not isinstance(config.netuid, list):
-                config.netuid = [int(config.netuid)]
+        if config.netuids:
+            if not isinstance(config.netuids, list):
+                config.netuids = [int(config.netuids)]
             else:
-                config.netuid = [int(netuid) for netuid in config.netuid]
+                config.netuids = [int(netuid) for netuid in config.netuids]
