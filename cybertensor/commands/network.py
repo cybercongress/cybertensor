@@ -669,13 +669,6 @@ class SubnetSetWeightsCommand:
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
         )
-        parser.add_argument(
-            "--no_prompt",
-            dest="no_prompt",
-            action="store_true",
-            help="""Set true to avoid prompting the user.""",
-            default=False,
-        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
@@ -731,7 +724,7 @@ class SubnetGetWeightsCommand:
         r"""Get weights for root network."""
         try:
             cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
-            SubnetSetWeightsCommand._run(cli, cwtensor)
+            SubnetGetWeightsCommand._run(cli, cwtensor)
         finally:
             if "cwtensor" in locals():
                 cwtensor.close()
@@ -810,13 +803,6 @@ class SubnetGetWeightsCommand:
         )
         parser.add_argument(
             "--netuid", dest="netuid", type=int, required=False, default=False
-        )
-        parser.add_argument(
-            "--no_prompt",
-            dest="no_prompt",
-            action="store_true",
-            help="""Set true to avoid prompting the user.""",
-            default=False,
         )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)

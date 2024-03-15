@@ -138,13 +138,6 @@ class Wallet:
             default_hotkey = os.getenv("CT_WALLET_NAME") or "default"
             default_path = os.getenv("CT_WALLET_PATH") or "~/.cybertensor/wallets/"
             parser.add_argument(
-                "--no_prompt",
-                dest="no_prompt",
-                action="store_true",
-                help="""Set true to avoid prompting the user.""",
-                default=False,
-            )
-            parser.add_argument(
                 "--" + prefix_str + "wallet.name",
                 required=False,
                 default=default_name,
@@ -163,7 +156,15 @@ class Wallet:
                 default=default_path,
                 help="The path to your cybertensor wallets",
             )
+            parser.add_argument(
+                "--no_prompt",
+                dest="no_prompt",
+                action="store_true",
+                help="""Set true to avoid prompting the user.""",
+                default=False,
+            )
         except argparse.ArgumentError as e:
+            print(f'ArgumentError {e}')
             pass
 
     def __init__(

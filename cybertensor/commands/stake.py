@@ -403,10 +403,10 @@ class StakeShow:
             cold_balance = cwtensor.get_balance(wallet.coldkeypub.address)
 
             # Populate the stake accounts with local hotkeys data.
-            wallet_stake_accounts.update(get_stakes_from_hotkeys(cwtensor, wallet))
+            wallet_stake_accounts.update(get_stakes_from_hotkeys(cwtensor=cwtensor, wallet=wallet))
 
             # Populate the stake accounts with delegations data.
-            wallet_stake_accounts.update(get_stakes_from_delegates(cwtensor, wallet))
+            wallet_stake_accounts.update(get_stakes_from_delegates(cwtensor=cwtensor, wallet=wallet))
 
             return {
                 "name": wallet.name,

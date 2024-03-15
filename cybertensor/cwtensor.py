@@ -623,29 +623,29 @@ class cwtensor:
         This function is crucial in shaping the network's collective intelligence, where each neuron's
         learning and contribution are influenced by the weights it sets towards others【81†source】.
         """
-        uid = self.get_uid_for_hotkey_on_subnet(wallet.hotkey.address, netuid)
-        retries = 0
+        # uid = self.get_uid_for_hotkey_on_subnet(wallet.hotkey.address, netuid)
+        # retries = 0
         success = False
         message = "No attempt made. Perhaps it is too soon to set weights!"
-        while (
-            self.blocks_since_last_update(netuid, uid) > self.weights_rate_limit(netuid)  # type: ignore
-            and retries < max_retries
-        ):
-            try:
-                success, message = set_weights_message(
-                    cwtensor=self,
-                    wallet=wallet,
-                    netuid=netuid,
-                    uids=uids,
-                    weights=weights,
-                    version_key=version_key,
-                    wait_for_finalization=wait_for_finalization,
-                    prompt=prompt,
-                )
-            except Exception as e:
-                cybertensor.logging.error(f"Error setting weights: {e}")
-            finally:
-                retries += 1
+        # while (
+        #     self.blocks_since_last_update(netuid, uid) > self.weights_rate_limit(netuid)  # type: ignore
+        #     and retries < max_retries
+        # ):
+        try:
+            success, message = set_weights_message(
+                cwtensor=self,
+                wallet=wallet,
+                netuid=netuid,
+                uids=uids,
+                weights=weights,
+                version_key=version_key,
+                wait_for_finalization=wait_for_finalization,
+                prompt=prompt,
+            )
+        except Exception as e:
+            cybertensor.logging.error(f"Error setting weights: {e}")
+            # finally:
+            #     retries += 1
 
         return success, message
 
@@ -1547,6 +1547,50 @@ class cwtensor:
             return None
 
         return subnet_info.subnetwork_n
+
+    # def max_n(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
+    #     """Returns network MaxAllowedUids hyper parameter"""
+    #     if not self.subnet_exists(netuid, block):
+    #         return None
+    #     _res = self.contract.query(
+    #         {"max_allowed_uids": {"netuid": netuid}}
+    #     )
+    #     if _res is None:
+    #         return None
+    #     return _res
+    #
+    # def blocks_since_epoch(
+    #     self, netuid: int, block: Optional[int] = None
+    # ) -> Optional[int]:
+    #     """Returns network BlocksSinceLastStep hyper parameter"""
+    #     if not self.subnet_exists(netuid, block):
+    #         return None
+    #     _res = self.contract.query(
+    #         {"block_since_last_step": {"netuid": netuid}}
+    #     )
+    #     if _res is None:
+    #         return None
+    #     return _res
+
+    # def blocks_since_last_update(self, netuid: int, uid: int) -> Optional[int]:
+        # if not self.subnet_exists(netuid):
+        #     return None
+        # _res = self.contract.query(
+        #     {"block_since_last_update": {"netuid": netuid, "uid": uid}}
+        # )
+        # if _res is None:
+        #     return None
+        # return _res
+
+    # def weights_rate_limit(self, netuid: int) -> Optional[int]:
+        # if not self.subnet_exists(netuid):
+        #     return None
+        # _res = self.contract.query(
+        #     {"weights_set_rate_limit": {"netuid": netuid}}
+        # )
+        # if _res is None:
+        #     return None
+        # return _res
 
     def tempo(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
         """Returns network Tempo hyperparameter"""

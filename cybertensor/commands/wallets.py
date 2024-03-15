@@ -723,13 +723,6 @@ class UpdateWalletCommand:
             help="""Updates the wallet security using NaCL instead of anvisible vault.""",
         )
         update_wallet_parser.add_argument("--all", action="store_true")
-        update_wallet_parser.add_argument(
-            "--no_prompt",
-            dest="no_prompt",
-            action="store_true",
-            help="""Set true to avoid prompting the user.""",
-            default=False,
-        )
         Wallet.add_args(update_wallet_parser)
         cybertensor.cwtensor.add_args(update_wallet_parser)
 
