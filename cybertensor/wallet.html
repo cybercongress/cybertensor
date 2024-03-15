@@ -166,13 +166,6 @@ class Wallet:
             default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
             default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
             parser.add_argument(
-                &#34;--no_prompt&#34;,
-                dest=&#34;no_prompt&#34;,
-                action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-                default=False,
-            )
-            parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
                 required=False,
                 default=default_name,
@@ -191,7 +184,15 @@ class Wallet:
                 default=default_path,
                 help=&#34;The path to your cybertensor wallets&#34;,
             )
+            parser.add_argument(
+                &#34;--no_prompt&#34;,
+                dest=&#34;no_prompt&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+                default=False,
+            )
         except argparse.ArgumentError as e:
+            print(f&#39;ArgumentError {e}&#39;)
             pass
 
     def __init__(
@@ -1017,13 +1018,6 @@ my_wallet.coldkey</p>
             default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
             default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
             parser.add_argument(
-                &#34;--no_prompt&#34;,
-                dest=&#34;no_prompt&#34;,
-                action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-                default=False,
-            )
-            parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
                 required=False,
                 default=default_name,
@@ -1042,7 +1036,15 @@ my_wallet.coldkey</p>
                 default=default_path,
                 help=&#34;The path to your cybertensor wallets&#34;,
             )
+            parser.add_argument(
+                &#34;--no_prompt&#34;,
+                dest=&#34;no_prompt&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+                default=False,
+            )
         except argparse.ArgumentError as e:
+            print(f&#39;ArgumentError {e}&#39;)
             pass
 
     def __init__(
@@ -1701,13 +1703,6 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         default_hotkey = os.getenv(&#34;CT_WALLET_NAME&#34;) or &#34;default&#34;
         default_path = os.getenv(&#34;CT_WALLET_PATH&#34;) or &#34;~/.cybertensor/wallets/&#34;
         parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
-        parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;wallet.name&#34;,
             required=False,
             default=default_name,
@@ -1726,7 +1721,15 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
             default=default_path,
             help=&#34;The path to your cybertensor wallets&#34;,
         )
+        parser.add_argument(
+            &#34;--no_prompt&#34;,
+            dest=&#34;no_prompt&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+            default=False,
+        )
     except argparse.ArgumentError as e:
+        print(f&#39;ArgumentError {e}&#39;)
         pass</code></pre>
 </details>
 </dd>

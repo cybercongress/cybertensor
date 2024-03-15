@@ -697,13 +697,6 @@ class SubnetSetWeightsCommand:
         parser.add_argument(
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
-        parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
@@ -759,7 +752,7 @@ class SubnetGetWeightsCommand:
         r&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
         try:
             cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
-            SubnetSetWeightsCommand._run(cli, cwtensor)
+            SubnetGetWeightsCommand._run(cli, cwtensor)
         finally:
             if &#34;cwtensor&#34; in locals():
                 cwtensor.close()
@@ -838,13 +831,6 @@ class SubnetGetWeightsCommand:
         )
         parser.add_argument(
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
-        )
-        parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
         )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
@@ -1457,7 +1443,7 @@ It offers transparency into how network rewards and responsibilities are allocat
         r&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
         try:
             cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
-            SubnetSetWeightsCommand._run(cli, cwtensor)
+            SubnetGetWeightsCommand._run(cli, cwtensor)
         finally:
             if &#34;cwtensor&#34; in locals():
                 cwtensor.close()
@@ -1537,13 +1523,6 @@ It offers transparency into how network rewards and responsibilities are allocat
         parser.add_argument(
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
-        parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
@@ -1570,13 +1549,6 @@ def add_args(parser: argparse.ArgumentParser):
     )
     parser.add_argument(
         &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
-    )
-    parser.add_argument(
-        &#34;--no_prompt&#34;,
-        dest=&#34;no_prompt&#34;,
-        action=&#34;store_true&#34;,
-        help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-        default=False,
     )
     Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>
@@ -1611,7 +1583,7 @@ def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
     r&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
     try:
         cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
-        SubnetSetWeightsCommand._run(cli, cwtensor)
+        SubnetGetWeightsCommand._run(cli, cwtensor)
     finally:
         if &#34;cwtensor&#34; in locals():
             cwtensor.close()
@@ -2291,13 +2263,6 @@ def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
         parser.add_argument(
             &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
         )
-        parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
         Wallet.add_args(parser)
         cybertensor.cwtensor.add_args(parser)
 
@@ -2332,13 +2297,6 @@ def add_args(parser: argparse.ArgumentParser):
     parser.add_argument(&#34;--weights&#34;, dest=&#34;weights&#34;, type=str, required=False)
     parser.add_argument(
         &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
-    )
-    parser.add_argument(
-        &#34;--no_prompt&#34;,
-        dest=&#34;no_prompt&#34;,
-        action=&#34;store_true&#34;,
-        help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-        default=False,
     )
     Wallet.add_args(parser)
     cybertensor.cwtensor.add_args(parser)</code></pre>

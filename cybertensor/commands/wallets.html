@@ -751,13 +751,6 @@ class UpdateWalletCommand:
             help=&#34;&#34;&#34;Updates the wallet security using NaCL instead of anvisible vault.&#34;&#34;&#34;,
         )
         update_wallet_parser.add_argument(&#34;--all&#34;, action=&#34;store_true&#34;)
-        update_wallet_parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
         Wallet.add_args(update_wallet_parser)
         cybertensor.cwtensor.add_args(update_wallet_parser)
 
@@ -2677,13 +2670,6 @@ It is recommended to run this command periodically to ensure wallets are up-to-d
             help=&#34;&#34;&#34;Updates the wallet security using NaCL instead of anvisible vault.&#34;&#34;&#34;,
         )
         update_wallet_parser.add_argument(&#34;--all&#34;, action=&#34;store_true&#34;)
-        update_wallet_parser.add_argument(
-            &#34;--no_prompt&#34;,
-            dest=&#34;no_prompt&#34;,
-            action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-            default=False,
-        )
         Wallet.add_args(update_wallet_parser)
         cybertensor.cwtensor.add_args(update_wallet_parser)
 
@@ -2723,13 +2709,6 @@ def add_args(parser: argparse.ArgumentParser):
         help=&#34;&#34;&#34;Updates the wallet security using NaCL instead of anvisible vault.&#34;&#34;&#34;,
     )
     update_wallet_parser.add_argument(&#34;--all&#34;, action=&#34;store_true&#34;)
-    update_wallet_parser.add_argument(
-        &#34;--no_prompt&#34;,
-        dest=&#34;no_prompt&#34;,
-        action=&#34;store_true&#34;,
-        help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
-        default=False,
-    )
     Wallet.add_args(update_wallet_parser)
     cybertensor.cwtensor.add_args(update_wallet_parser)</code></pre>
 </details>
