@@ -195,7 +195,7 @@ from cybertensor.tensor import tensor, Tensor
 from cybertensor.axon import axon
 from cybertensor.dendrite import dendrite
 from cybertensor.config import Config
-from cybertensor.mock import MockCwtensor
+from cybertensor.mock import MockCwtensor, MockWallet
 # from .subnets import SubnetsAPI
 
 configs = [

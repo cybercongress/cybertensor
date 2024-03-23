@@ -72,8 +72,8 @@ class Balance:
                     break
         else:
             raise TypeError(
-                "balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, "
-                "or list of cosmpy.aerial.client.Coin"
+                f"balance must be an int ({self.boot_unit}), a float ({self.unit}), "
+                f"cosmpy.aerial.client.Coin, or list of cosmpy.aerial.client.Coin"
             )
 
     @property

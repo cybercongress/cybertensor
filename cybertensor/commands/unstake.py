@@ -88,15 +88,15 @@ class UnStakeCommand:
                 hotkeys = str(config.hotkeys).replace("[", "").replace("]", "")
             else:
                 hotkeys = str(config.wallet.hotkey)
-            amount = Prompt.ask(f"Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]")
+            amount = Prompt.ask(
+                f"Enter {cybertensor.__giga_boot_symbol__} amount to unstake from [bold]{hotkeys}[/bold]"
+            )
             config.unstake_all = False
             try:
                 config.amount = float(amount)
             except ValueError:
                 console.print(
-                    ":cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]".format(
-                        amount
-                    )
+                    f":cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{amount}[/bold white]"
                 )
                 sys.exit()
 

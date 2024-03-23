@@ -17,3 +17,4 @@
 # DEALINGS IN THE SOFTWARE.
 
 from .cwtensor_mock import MockCwtensor as MockCwtensor
+from .wallet_mock import MockWallet

@@ -21,6 +21,7 @@ import copy
 import os
 import sys
 import re
+from typing import Optional
 
 import torch
 from loguru import logger
@@ -98,16 +99,19 @@ class logging:
 
     def __new__(
         cls,
-        config: "Config" = None,
-        debug: bool = None,
-        trace: bool = None,
-        record_log: bool = None,
-        logging_dir: str = None,
+        config: Optional["Config"] = None,
+        level: Optional[int] = 40,
+        debug: Optional[bool] = None,
+        trace: Optional[bool] = None,
+        record_log: Optional[bool] = None,
+        logging_dir: Optional[str] = None,
     ):
         r"""Instantiate cybertensor logging system backend.
         Args:
             config (Config, optional):
                 cybertensor.logging.config()
+            level (int, optional):
+                logger level (default: 40).
             debug (bool, optional):
                 Turn on debug.
             trace (bool, optional):
@@ -147,7 +151,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=40,
+            level=level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
