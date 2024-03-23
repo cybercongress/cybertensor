@@ -49,6 +49,7 @@ import copy
 import os
 import sys
 import re
+from typing import Optional
 
 import torch
 from loguru import logger
@@ -126,16 +127,19 @@ class logging:
 
     def __new__(
         cls,
-        config: &#34;Config&#34; = None,
-        debug: bool = None,
-        trace: bool = None,
-        record_log: bool = None,
-        logging_dir: str = None,
+        config: Optional[&#34;Config&#34;] = None,
+        level: Optional[int] = 40,
+        debug: Optional[bool] = None,
+        trace: Optional[bool] = None,
+        record_log: Optional[bool] = None,
+        logging_dir: Optional[str] = None,
     ):
         r&#34;&#34;&#34;Instantiate cybertensor logging system backend.
         Args:
             config (Config, optional):
                 cybertensor.logging.config()
+            level (int, optional):
+                logger level (default: 40).
             debug (bool, optional):
                 Turn on debug.
             trace (bool, optional):
@@ -175,7 +179,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=40,
+            level=level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
@@ -387,7 +391,7 @@ class logging:
 <dl>
 <dt id="cybertensor.ctlogging.logging"><code class="flex name class">
 <span>class <span class="ident">logging</span></span>
-<span>(</span><span>config: Config = None, debug: bool = None, trace: bool = None, record_log: bool = None, logging_dir: str = None)</span>
+<span>(</span><span>config: Optional[ForwardRef('Config')] = None, level: Optional[int] = 40, debug: Optional[bool] = None, trace: Optional[bool] = None, record_log: Optional[bool] = None, logging_dir: Optional[str] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Standardized logging for cybertensor.</p></div>
@@ -452,16 +456,19 @@ class logging:
 
     def __new__(
         cls,
-        config: &#34;Config&#34; = None,
-        debug: bool = None,
-        trace: bool = None,
-        record_log: bool = None,
-        logging_dir: str = None,
+        config: Optional[&#34;Config&#34;] = None,
+        level: Optional[int] = 40,
+        debug: Optional[bool] = None,
+        trace: Optional[bool] = None,
+        record_log: Optional[bool] = None,
+        logging_dir: Optional[str] = None,
     ):
         r&#34;&#34;&#34;Instantiate cybertensor logging system backend.
         Args:
             config (Config, optional):
                 cybertensor.logging.config()
+            level (int, optional):
+                logger level (default: 40).
             debug (bool, optional):
                 Turn on debug.
             trace (bool, optional):
@@ -501,7 +508,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=40,
+            level=level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,

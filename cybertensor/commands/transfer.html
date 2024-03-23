@@ -130,28 +130,26 @@ class TransferCommand:
         # Get amount.
         if not config.get(&#34;amount&#34;):
             if not config.no_prompt:
-                amount = Prompt.ask(&#34;Enter GBOOT amount to transfer&#34;)
+                amount = Prompt.ask(f&#34;Enter {cwtensor.giga_token_symbol} amount to transfer&#34;)
                 try:
                     config.amount = float(amount)
                     if config.amount &lt;= 0:
                         raise ValueError(&#34;Zero or negative amount&#34;)
                 except ValueError:
                     console.print(
-                        f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
+                        f&#34;:cross_mark:[red] Invalid {cwtensor.giga_token_symbol} amount[/red] [bold white]{amount}[/bold white]&#34;
                     )
                     sys.exit()
             else:
                 console.print(
-                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                        None
-                    )
+                    f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{None}[/bold white]&#34;
                 )
                 sys.exit(1)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         transfer_parser = parser.add_parser(
-            &#34;transfer&#34;, help=&#34;&#34;&#34;Transfer GBOOT between accounts.&#34;&#34;&#34;
+            &#34;transfer&#34;, help=f&#34;&#34;&#34;Transfer {cybertensor.__giga_boot_symbol__} between accounts.&#34;&#34;&#34;
         )
         transfer_parser.add_argument(&#34;--dest&#34;, dest=&#34;dest&#34;, type=str, required=False)
         transfer_parser.add_argument(
@@ -269,28 +267,26 @@ the destination address and amount before confirming the transaction to avoid er
         # Get amount.
         if not config.get(&#34;amount&#34;):
             if not config.no_prompt:
-                amount = Prompt.ask(&#34;Enter GBOOT amount to transfer&#34;)
+                amount = Prompt.ask(f&#34;Enter {cwtensor.giga_token_symbol} amount to transfer&#34;)
                 try:
                     config.amount = float(amount)
                     if config.amount &lt;= 0:
                         raise ValueError(&#34;Zero or negative amount&#34;)
                 except ValueError:
                     console.print(
-                        f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
+                        f&#34;:cross_mark:[red] Invalid {cwtensor.giga_token_symbol} amount[/red] [bold white]{amount}[/bold white]&#34;
                     )
                     sys.exit()
             else:
                 console.print(
-                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                        None
-                    )
+                    f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{None}[/bold white]&#34;
                 )
                 sys.exit(1)
 
     @staticmethod
     def add_args(parser: argparse.ArgumentParser):
         transfer_parser = parser.add_parser(
-            &#34;transfer&#34;, help=&#34;&#34;&#34;Transfer GBOOT between accounts.&#34;&#34;&#34;
+            &#34;transfer&#34;, help=f&#34;&#34;&#34;Transfer {cybertensor.__giga_boot_symbol__} between accounts.&#34;&#34;&#34;
         )
         transfer_parser.add_argument(&#34;--dest&#34;, dest=&#34;dest&#34;, type=str, required=False)
         transfer_parser.add_argument(
@@ -314,7 +310,7 @@ the destination address and amount before confirming the transaction to avoid er
 <pre><code class="python">@staticmethod
 def add_args(parser: argparse.ArgumentParser):
     transfer_parser = parser.add_parser(
-        &#34;transfer&#34;, help=&#34;&#34;&#34;Transfer GBOOT between accounts.&#34;&#34;&#34;
+        &#34;transfer&#34;, help=f&#34;&#34;&#34;Transfer {cybertensor.__giga_boot_symbol__} between accounts.&#34;&#34;&#34;
     )
     transfer_parser.add_argument(&#34;--dest&#34;, dest=&#34;dest&#34;, type=str, required=False)
     transfer_parser.add_argument(
@@ -361,21 +357,19 @@ def check_config(config: &#34;Config&#34;):
     # Get amount.
     if not config.get(&#34;amount&#34;):
         if not config.no_prompt:
-            amount = Prompt.ask(&#34;Enter GBOOT amount to transfer&#34;)
+            amount = Prompt.ask(f&#34;Enter {cwtensor.giga_token_symbol} amount to transfer&#34;)
             try:
                 config.amount = float(amount)
                 if config.amount &lt;= 0:
                     raise ValueError(&#34;Zero or negative amount&#34;)
             except ValueError:
                 console.print(
-                    f&#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{amount}[/bold white]&#34;
+                    f&#34;:cross_mark:[red] Invalid {cwtensor.giga_token_symbol} amount[/red] [bold white]{amount}[/bold white]&#34;
                 )
                 sys.exit()
         else:
             console.print(
-                &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                    None
-                )
+                f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{None}[/bold white]&#34;
             )
             sys.exit(1)</code></pre>
 </details>

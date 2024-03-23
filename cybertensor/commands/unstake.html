@@ -116,15 +116,15 @@ class UnStakeCommand:
                 hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
             else:
                 hotkeys = str(config.wallet.hotkey)
-            amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+            amount = Prompt.ask(
+                f&#34;Enter {cybertensor.__giga_boot_symbol__} amount to unstake from [bold]{hotkeys}[/bold]&#34;
+            )
             config.unstake_all = False
             try:
                 config.amount = float(amount)
             except ValueError:
                 console.print(
-                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                        amount
-                    )
+                    f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{amount}[/bold white]&#34;
                 )
                 sys.exit()
 
@@ -411,15 +411,15 @@ It allows for flexible management of token stakes across different neurons (hotk
                 hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
             else:
                 hotkeys = str(config.wallet.hotkey)
-            amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+            amount = Prompt.ask(
+                f&#34;Enter {cybertensor.__giga_boot_symbol__} amount to unstake from [bold]{hotkeys}[/bold]&#34;
+            )
             config.unstake_all = False
             try:
                 config.amount = float(amount)
             except ValueError:
                 console.print(
-                    &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                        amount
-                    )
+                    f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{amount}[/bold white]&#34;
                 )
                 sys.exit()
 
@@ -710,15 +710,15 @@ def check_config(cls, config: &#34;Config&#34;):
             hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
         else:
             hotkeys = str(config.wallet.hotkey)
-        amount = Prompt.ask(f&#34;Enter GBOOT amount to unstake from [bold]{hotkeys}[/bold]&#34;)
+        amount = Prompt.ask(
+            f&#34;Enter {cybertensor.__giga_boot_symbol__} amount to unstake from [bold]{hotkeys}[/bold]&#34;
+        )
         config.unstake_all = False
         try:
             config.amount = float(amount)
         except ValueError:
             console.print(
-                &#34;:cross_mark:[red] Invalid GBOOT amount[/red] [bold white]{}[/bold white]&#34;.format(
-                    amount
-                )
+                f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{amount}[/bold white]&#34;
             )
             sys.exit()</code></pre>
 </details>

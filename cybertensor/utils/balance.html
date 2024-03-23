@@ -100,8 +100,8 @@ class Balance:
                     break
         else:
             raise TypeError(
-                &#34;balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, &#34;
-                &#34;or list of cosmpy.aerial.client.Coin&#34;
+                f&#34;balance must be an int ({self.boot_unit}), a float ({self.unit}), &#34;
+                f&#34;cosmpy.aerial.client.Coin, or list of cosmpy.aerial.client.Coin&#34;
             )
 
     @property
@@ -439,8 +439,8 @@ If balance is a list of cosmpy.aerial.client.Coin, the amount of boot is retriev
                     break
         else:
             raise TypeError(
-                &#34;balance must be an int (boot), a float (gboot), cosmpy.aerial.client.Coin, &#34;
-                &#34;or list of cosmpy.aerial.client.Coin&#34;
+                f&#34;balance must be an int ({self.boot_unit}), a float ({self.unit}), &#34;
+                f&#34;cosmpy.aerial.client.Coin, or list of cosmpy.aerial.client.Coin&#34;
             )
 
     @property
