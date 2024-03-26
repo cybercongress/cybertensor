@@ -123,6 +123,8 @@ __giga_boot_symbol__: str = "GPUSSY"
 
 __networks__ = ["local", "bostrom", "space-pussy"]
 
+__default_network__ = "space-pussy"
+
 __local_network__ = NetworkConfigCwTensor(
     chain_id="localbostrom",
     url="grpc+http://localhost:9090",
@@ -175,7 +177,7 @@ __default_gas__ = None
 __default_transfer_gas__ = 100_000
 
 from cybertensor.errors import *
-from cybertensor.keyfile import keyfile
+from cybertensor.keyfile import keyfile, serialized_keypair_to_keyfile_data
 from cybertensor.keypair import Keypair
 from cybertensor.wallet import Wallet
 from cybertensor.utils import *
@@ -193,6 +195,8 @@ from cybertensor.tensor import tensor, Tensor
 from cybertensor.axon import axon
 from cybertensor.dendrite import dendrite
 from cybertensor.config import Config
+from cybertensor.mock import MockCwtensor, MockWallet
+# from .subnets import SubnetsAPI
 
 configs = [
     axon.config(),
@@ -200,5 +204,6 @@ configs = [
     PriorityThreadPoolExecutor.config(),
     Wallet.config(),
     logging.config(),
+    cwtensor.config(),
 ]
 defaults = Config.merge_all(configs)

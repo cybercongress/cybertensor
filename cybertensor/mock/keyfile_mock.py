@@ -3,6 +3,7 @@
 # Copyright © 2021 Yuma Rao
 # Copyright © 2022 Opentensor Foundation
 # Copyright © 2023 Opentensor Technologies
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -18,11 +19,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from cybertensor.keyfile import serialized_keypair_to_keyfile_data, keyfile, Keypair
+from cybertensor import serialized_keypair_to_keyfile_data, keyfile, Keypair
 
 
 class MockKeyfile(keyfile):
-    """Defines an interface to a mocked keyfile object (nothing is created on device) keypair is treated as non encrypted and the data is just the string version."""
+    """Defines an interface to a mocked keyfile object (nothing is created on device) keypair is treated as non
+    encrypted and the data is just the string version."""
 
     def __init__(self, path: str):
         super().__init__(path)

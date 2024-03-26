@@ -1,9 +1,9 @@
-aiohttp==3.8.5
+aiohttp==3.9.0b0
 ansible==6.7.0
 ansible_vault==2.1.0
 backoff
 black==23.7.0
-cryptography==41.0.3
+cryptography==42.0.0
 ddt==1.6.0
 grpcio
 fuzzywuzzy>=0.18.0
@@ -27,6 +27,7 @@ retry
 requests
 rich
 setuptools<=65.6.3
+shtab==1.6.5
 termcolor
 torch>=1.13.1
 tqdm

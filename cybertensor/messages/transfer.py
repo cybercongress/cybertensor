@@ -35,7 +35,6 @@ def transfer_message(
     wallet: "Wallet",
     dest: Union[Address, str],
     amount: Union[Balance, float],
-    wait_for_inclusion: bool = True,
     wait_for_finalization: bool = False,
     keep_alive: bool = True,
     prompt: bool = False,
@@ -47,21 +46,18 @@ def transfer_message(
         dest (Union[cosmpy.crypto.address.Address, str]):
             Destination public key address of a receiver.
         amount (Union[Balance, int]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
-        wait_for_inclusion (bool):
-            If set, waits for the extrinsic to enter a block before returning true,
-            or returns false if the extrinsic fails to enter the block within the timeout.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         keep_alive (bool):
             If set, keeps the account alive by keeping the balance above the existential deposit.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            Flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     # Validate destination address.
     if not is_valid_address(dest):
@@ -119,7 +115,6 @@ def transfer_message(
             Address(dest),
             transfer_balance,
             wait_for_finalization=wait_for_finalization,
-            wait_for_inclusion=wait_for_inclusion,
         )
 
         if success:

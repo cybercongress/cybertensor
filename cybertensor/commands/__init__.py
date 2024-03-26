@@ -27,7 +27,7 @@ defaults: Munch = munchify(
             "update_interval": 50000,
             "output_in_place": True,
             "verbose": False,
-            "cuda": {"dev_id": [0], "use_cuda": False, "TPB": 256},
+            "cuda": {"dev_id": [0], "use_cuda": False, "tpb": 256},
         },
         "axon": {
             "port": 8091,
@@ -69,7 +69,8 @@ from cybertensor.commands.unstake import UnStakeCommand
 from cybertensor.commands.register import (
     PowRegisterCommand,
     RegisterCommand,
-    # RunFaucetCommand
+    # RunFaucetCommand,
+    # SwapHotkeyCommand,
 )
 from cybertensor.commands.delegates import (
     NominateCommand,
@@ -77,6 +78,7 @@ from cybertensor.commands.delegates import (
     DelegateStakeCommand,
     DelegateUnstakeCommand,
     MyDelegatesCommand,
+    # GetWalletHistoryCommand,
 )
 from cybertensor.commands.wallets import (
     NewColdkeyCommand,
@@ -92,7 +94,7 @@ from cybertensor.commands.transfer import TransferCommand
 from cybertensor.commands.inspect import InspectCommand
 from cybertensor.commands.metagraph import MetagraphCommand
 from cybertensor.commands.list import ListCommand
-# from cybertensor.commands.misc import UpdateCommand
+# from cybertensor.commands.misc import UpdateCommand, AutocompleteCommand
 from cybertensor.commands.network import (
     RegisterSubnetworkCommand,
     SubnetLockCostCommand,
@@ -106,4 +108,7 @@ from cybertensor.commands.root import (
     RootList,
     RootSetWeightsCommand,
     RootGetWeightsCommand,
+    # RootSetBoostCommand,
+    # RootSetSlashCommand,
 )
+# from .identity import GetIdentityCommand, SetIdentityCommand

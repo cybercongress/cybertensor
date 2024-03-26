@@ -1,5 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Opentensor Technologies Inc
+# Copyright © 2024 cyber~Congress
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -15,4 +16,5 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# from .cwtensor_mock import MockCwtensor as MockCwtensor
+from .cwtensor_mock import MockCwtensor as MockCwtensor
+from .wallet_mock import MockWallet

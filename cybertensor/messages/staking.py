@@ -32,11 +32,11 @@ def add_stake_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkey: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
-    r"""Adds the specified amount of stake to passed hotkey uid.
+    r"""Adds the specified amount of stake to passed hotkey ``uid``.
     Args:
         wallet (Wallet):
             cybertensor wallet object.
@@ -44,16 +44,16 @@ def add_stake_message(
             address of the hotkey account to stake to
             defaults to the wallet's hotkey.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         cybertensor.errors.NotRegisteredError:
@@ -198,28 +198,28 @@ def add_stake_multiple_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     hotkeys: List[str],
-    amounts: List[Union[Balance, float]] = None,
+    amounts: Optional[List[Union[Balance, float]]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
-    r"""Adds stake to each hotkey in the list, using each amount, from a common coldkey.
+    r"""Adds stake to each ``hotkey`` in the list, using each amount, from a common coldkey.
     Args:
         wallet (Wallet):
             cybertensor wallet object for the coldkey.
         hotkeys (List[str]):
             List of hotkeys to stake to.
         amounts (List[Union[Balance, float]]):
-            List of amounts to stake. If None, stake all to the first hotkey.
+            List of amounts to stake. If ``None``, stake all to the first hotkey.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            if set, waits for the message to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or included in the block.
-            flag is true if any wallet was staked.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if message was finalized or included in the block.
+            flag is ``true`` if any wallet was staked.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     if not isinstance(hotkeys, list) or not all(
         isinstance(hotkey, str) for hotkey in hotkeys
@@ -422,14 +422,14 @@ def __do_add_stake_single(
         amount (Balance):
             Amount to stake as cybertensor balance object.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     Raises:
         cybertensor.errors.StakeError:
             If the extrinsic fails to be finalized or included in the block.

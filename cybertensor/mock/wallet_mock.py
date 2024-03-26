@@ -30,11 +30,11 @@ from .keyfile_mock import MockKeyfile
 
 class MockWallet(Wallet):
     """
-    Mocked Version of the bittensor wallet class, meant to be used for testing
+    Mocked Version of the cybertensor wallet class, meant to be used for testing
     """
 
     def __init__(self, **kwargs):
-        r"""Init bittensor wallet object containing a hot and coldkey.
+        r"""Init cybertensor wallet object containing a hot and coldkey.
         Args:
             _mock (required=True, default=False):
                 If true creates a mock wallet with random keys.
@@ -48,7 +48,7 @@ class MockWallet(Wallet):
     @property
     def hotkey_file(self) -> "cybertensor.keyfile":
         if self._is_mock:
-            if self._mocked_hotkey_keyfile == None:
+            if self._mocked_hotkey_keyfile is None:
                 self._mocked_hotkey_keyfile = MockKeyfile(path="MockedHotkey")
             return self._mocked_hotkey_keyfile
         else:
@@ -59,7 +59,7 @@ class MockWallet(Wallet):
     @property
     def coldkey_file(self) -> "cybertensor.keyfile":
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path="MockedColdkey")
             return self._mocked_coldkey_keyfile
         else:
@@ -70,7 +70,7 @@ class MockWallet(Wallet):
     @property
     def coldkeypub_file(self) -> "cybertensor.keyfile":
         if self._is_mock:
-            if self._mocked_coldkey_keyfile == None:
+            if self._mocked_coldkey_keyfile is None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path="MockedColdkeyPub")
             return self._mocked_coldkey_keyfile
         else:

@@ -43,7 +43,7 @@ def nominate_message(
             The wallet to become a delegate for.
     Returns:
         success (bool):
-            True if the transaction was successful.
+            ``True`` if the transaction was successful.
     """
     # Unlock the coldkey.
     wallet.coldkey
@@ -99,7 +99,7 @@ def delegate_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = False,
     prompt: bool = False,
 ) -> bool:
@@ -110,16 +110,16 @@ def delegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to stake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to stake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:
@@ -233,7 +233,7 @@ def undelegate_message(
     cwtensor: "cybertensor.cwtensor",
     wallet: "Wallet",
     delegate: Optional[str] = None,
-    amount: Union[Balance, float] = None,
+    amount: Optional[Union[Balance, float]] = None,
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
@@ -244,16 +244,16 @@ def undelegate_message(
         delegate (Optional[str]):
             address of the delegate.
         amount (Union[Balance, float]):
-            Amount to unstake as cybertensor balance, or float interpreted as GBOOT.
+            Amount to unstake as cybertensor balance, or ``float`` interpreted as GBOOT.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
 
     Raises:
         NotRegisteredError:

@@ -1,8 +1,27 @@
+# The MIT License (MIT)
+# Copyright © 2021 Yuma Rao
+# Copyright © 2023 Opentensor Foundation
+# Copyright © 2024 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+from aiohttp import ClientResponse
 from abc import ABC, abstractmethod
 from typing import Callable, Awaitable
 
 from pydantic import BaseModel
-from starlette.responses import Response
 from starlette.responses import StreamingResponse as _StreamingResponse
 from starlette.types import Send, Receive, Scope
 
@@ -11,9 +30,9 @@ from cybertensor.synapse import Synapse
 
 class BTStreamingResponseModel(BaseModel):
     """
-    BTStreamingResponseModel is a Pydantic model that encapsulates the token streamer callable for Pydantic validation.
-    It is used within the StreamingSynapse class to create a BTStreamingResponse object, which is responsible for handling
-    the streaming of tokens.
+    :func:`BTStreamingResponseModel` is a Pydantic model that encapsulates the token streamer callable for Pydantic validation.
+    It is used within the :func:`StreamingSynapse` class to create a :func:`BTStreamingResponse` object,
+    which is responsible for handling the streaming of tokens.
 
     The token streamer is a callable that takes a send function and returns an awaitable. It is responsible for generating
     the content of the streaming response, typically by processing tokens and sending them to the client.
@@ -32,7 +51,7 @@ class BTStreamingResponseModel(BaseModel):
 
 class StreamingSynapse(Synapse, ABC):
     """
-    The StreamingSynapse class is designed to be subclassed for handling streaming responses in the Cybertensor network.
+    The :func:`StreamingSynapse` class is designed to be subclassed for handling streaming responses in the Cybertensor network.
     It provides abstract methods that must be implemented by the subclass to deserialize, process streaming responses,
     and extract JSON data. It also includes a method to create a streaming response object.
     """
@@ -42,12 +61,12 @@ class StreamingSynapse(Synapse, ABC):
 
     class BTStreamingResponse(_StreamingResponse):
         """
-        BTStreamingResponse is a specialized subclass of the Starlette StreamingResponse designed to handle the streaming
-        of tokens within the Cybertensor network. It is used internally by the StreamingSynapse class to manage the response
+        :func:`BTStreamingResponse` is a specialized subclass of the Starlette StreamingResponse designed to handle the streaming
+        of tokens within the Cybertensor network. It is used internally by the :func:`StreamingSynapse` class to manage the response
         streaming process, including sending headers and calling the token streamer provided by the subclass.
 
         This class is not intended to be directly instantiated or modified by developers subclassing StreamingSynapse.
-        Instead, it is used by the create_streaming_response method to create a response object based on the token streamer
+        Instead, it is used by the :func:`create_streaming_response` method to create a response object based on the token streamer
         provided by the subclass.
         """
 
@@ -86,11 +105,11 @@ class StreamingSynapse(Synapse, ABC):
 
         async def __call__(self, scope: Scope, receive: Receive, send: Send):
             """
-            Asynchronously calls the stream_response method, allowing the BTStreamingResponse object to be used as an ASGI
+            Asynchronously calls the :func:`stream_response` method, allowing the BTStreamingResponse object to be used as an ASGI
             application.
 
             This method is part of the ASGI interface and is called by the ASGI server to handle the request and send the
-            response. It delegates to the stream_response method to perform the actual streaming process.
+            response. It delegates to the :func:`stream_response` method to perform the actual streaming process.
 
             Args:
                 scope: The scope of the request, containing information about the client, server, and request itself.
@@ -100,7 +119,7 @@ class StreamingSynapse(Synapse, ABC):
             await self.stream_response(send)
 
     @abstractmethod
-    async def process_streaming_response(self, response: Response):
+    async def process_streaming_response(self, response: ClientResponse):
         """
         Abstract method that must be implemented by the subclass.
         This method should provide logic to handle the streaming response, such as parsing and accumulating data.
@@ -113,7 +132,7 @@ class StreamingSynapse(Synapse, ABC):
         ...
 
     @abstractmethod
-    def extract_response_json(self, response: Response) -> dict:
+    def extract_response_json(self, response: ClientResponse) -> dict:
         """
         Abstract method that must be implemented by the subclass.
         This method should provide logic to extract JSON data from the response, including headers and content.

@@ -34,25 +34,25 @@ def prometheus_message(
     ip: int = None,
     wait_for_finalization=True,
 ) -> bool:
-    r"""Subscribes a cybertensor endpoint to the substensor chain.
+    r"""Subscribes a cybertensor endpoint to the chain.
     Args:
         cwtensor (cybertensor.cwtensor):
             cybertensor cwtensor object.
         wallet (Wallet):
             cybertensor wallet object.
         ip (str):
-            endpoint host port i.e. 192.122.31.4
+            endpoint host port i.e. ``192.122.31.4``
         port (int):
-            endpoint port number i.e. 9221
+            endpoint port number i.e. ``9221``
         netuid (int):
             network uid to serve on.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
 
     # ---- Get external ip ----

@@ -176,6 +176,27 @@ def get_all_wallets_for_path(path: str) -> List["Wallet"]:
     return all_wallets
 
 
+def filter_netuids_by_registered_hotkeys(
+    cli, cwtensor, netuids, all_hotkeys
+) -> List[int]:
+    netuids_with_registered_hotkeys = []
+    for wallet in all_hotkeys:
+        netuids_list = cwtensor.get_netuids_for_hotkey(wallet.hotkey.address)
+        cybertensor.logging.debug(
+            f"Hotkey {wallet.hotkey.address} registered in netuids: {netuids_list}"
+        )
+        netuids_with_registered_hotkeys.extend(netuids_list)
+
+    if cli.config.netuids is None or cli.config.netuids == []:
+        netuids = netuids_with_registered_hotkeys
+
+    elif cli.config.netuids:
+        netuids = [netuid for netuid in netuids if netuid in cli.config.netuids]
+        netuids.extend(netuids_with_registered_hotkeys)
+
+    return list(set(netuids))
+
+
 @dataclass
 class DelegatesDetails:
     name: str

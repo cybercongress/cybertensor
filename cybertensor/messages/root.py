@@ -43,14 +43,14 @@ def root_register_message(
         wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
-            If set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
 
     wallet.coldkey  # unlock coldkey
@@ -60,7 +60,8 @@ def root_register_message(
     )
     if is_registered:
         console.print(
-            ":white_heavy_check_mark: [green]Already registered on root network.[/green]"
+            f":white_heavy_check_mark: [green] {wallet.name} {wallet.coldkey.address} "
+            f"Already registered on root network.[/green]"
         )
         return True
 
@@ -89,7 +90,7 @@ def root_register_message(
             else:
                 # neuron not found, try again
                 console.print(
-                    ":cross_mark: [red]Unknown error. Neuron not found.[/red]"
+                    ":cross_mark: [red]Unknown error. Neuron was not registered.[/red]"
                 )
 
         return False
@@ -115,16 +116,17 @@ def set_root_weights_message(
         version_key (int):
             version key of the validator.
         wait_for_finalization (bool):
-            if set, waits for the extrinsic to be finalized on the chain before returning true,
-            or returns false if the extrinsic fails to be finalized within the timeout.
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or uncluded in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     # First convert types.
+    print(f"netuids {netuids}  weights {weights}")
     if isinstance(netuids, list):
         netuids = torch.tensor(netuids, dtype=torch.int64)
     if isinstance(weights, list):
@@ -146,7 +148,7 @@ def set_root_weights_message(
 
     # Normalize the weights to max value.
     formatted_weights = normalize_max_weight(x=weights, limit=max_weight_limit)
-    console.print(f"\nNormalized weights: \n\t{weights} -> {formatted_weights}\n")
+    console.print(f"\nRaw Weights -> Normalized weights: \n\t{weights} -> \n\t{formatted_weights}\n")
 
     # Ask before moving on.
     if prompt:

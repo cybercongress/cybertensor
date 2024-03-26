@@ -40,9 +40,11 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 import cybertensor
-from cybertensor.keypair import Keypair
-from cybertensor.wallet import Wallet
 from cybertensor.config import Config
+from cybertensor.errors import *
+from cybertensor.keypair import Keypair
+from cybertensor.threadpool import PriorityThreadPoolExecutor
+from cybertensor.wallet import Wallet
 
 """ Create and init Axon, which services Forward and Backward requests from other neurons.
 """
@@ -52,14 +54,60 @@ from cybertensor.config import Config
 
 
 class FastAPIThreadedServer(uvicorn.Server):
+    """
+    The ``FastAPIThreadedServer`` class is a specialized server implementation for the Axon server in the cybertensor network.
+    It extends the functionality of :func:`uvicorn.Server` to run the FastAPI application in a separate thread, allowing
+    the Axon server to handle HTTP requests concurrently and non-blocking.
+    This class is designed to facilitate the integration of FastAPI with the Axon's asynchronous architecture, ensuring
+    efficient and scalable handling of network requests.
+    Importance and Functionality
+        Threaded Execution
+            The class allows the FastAPI application to run in a separate thread, enabling concurrent handling of HTTP
+            requests which is crucial for the performance and scalability of the Axon server.
+        Seamless Integration
+            By running FastAPI in a threaded manner, this class ensures seamless integration of FastAPI's capabilities
+            with the Axon server's asynchronous and multi-threaded architecture.
+        Controlled Server Management
+            The methods start and stop provide controlled management of the server's lifecycle, ensuring that the server
+            can be started and stopped as needed, which is vital for maintaining the Axon server's reliability and
+            availability.
+        Signal Handling
+            Overriding the default signal handlers prevents potential conflicts with the Axon server's main application
+            flow, ensuring stable operation in various network conditions.
+    Use Cases
+        Starting the Server
+            When the Axon server is initialized, it can use this class to start the FastAPI application in a separate
+            thread, enabling it to begin handling HTTP requests immediately.
+        Stopping the Server
+            During shutdown or maintenance of the Axon server, this class can be used to stop the FastAPI application
+            gracefully, ensuring that all resources are properly released.
+    Args:
+        should_exit (bool): Flag to indicate whether the server should stop running.
+        is_running (bool): Flag to indicate whether the server is currently running.
+
+    The server overrides the default signal handlers to prevent interference with the main application flow and provides
+    methods to start and stop the server in a controlled manner.
+    """
     should_exit: bool = False
     is_running: bool = False
 
     def install_signal_handlers(self):
+        """
+        Overrides the default signal handlers provided by ``uvicorn.Server``. This method is essential to ensure that
+        the signal handling in the threaded server does not interfere with the main application's flow, especially in
+        a complex asynchronous environment like the Axon server.
+        """
         pass
 
     @contextlib.contextmanager
     def run_in_thread(self):
+        """
+        Manages the execution of the server in a separate thread, allowing the FastAPI application to run asynchronously
+        without blocking the main thread of the Axon server. This method is a key component in enabling concurrent
+        request handling in the Axon server.
+        Yields:
+            None: This method yields control back to the caller while the server is running in the background thread.
+        """
         thread = threading.Thread(target=self.run, daemon=True)
         thread.start()
         try:
@@ -71,11 +119,21 @@ class FastAPIThreadedServer(uvicorn.Server):
             thread.join()
 
     def _wrapper_run(self):
+        """
+        A wrapper method for the :func:`run_in_thread` context manager. This method is used internally by the ``start``
+        method to initiate the server's execution in a separate thread.
+        """
         with self.run_in_thread():
             while not self.should_exit:
                 time.sleep(1e-3)
 
     def start(self):
+        """
+        Starts the FastAPI server in a separate thread if it is not already running. This method sets up the server to
+        handle HTTP requests concurrently, enabling the Axon server to efficiently manage incoming network requests.
+        The method ensures that the server starts running in a non-blocking manner, allowing the Axon server to
+        continue its other operations seamlessly.
+        """
         if not self.is_running:
             self.should_exit = False
             thread = threading.Thread(target=self._wrapper_run, daemon=True)
@@ -83,100 +141,130 @@ class FastAPIThreadedServer(uvicorn.Server):
             self.is_running = True
 
     def stop(self):
+        """
+        Signals the FastAPI server to stop running. This method sets the :func:`should_exit` flag to ``True``,
+        indicating that the server should cease its operations and exit the running thread.
+        Stopping the server is essential for controlled shutdowns and resource management in the Axon server,
+        especially during maintenance or when redeploying with updated configurations.
+        """
         if self.is_running:
             self.should_exit = True
 
 
 class axon:
     """
-    The `axon` class is an object that forms the core part of cybertensor's serving synapses.
-    The class relies heavily on an underlying FastAPI router, which is utilized to create endpoints for different message types.
-    Methods in this class are equipped to deal with incoming requests from other scenarios in the network and serve as the server face for a neuron.
+    The ``axon`` class in cybertensor is a fundamental component that serves as the server-side interface for a neuron 
+    within the cybertensor network.
+    This class is responsible for managing incoming requests from other neurons and implements various mechanisms to 
+    ensure efficient and secure network interactions.
+    An axon relies on a FastAPI router to create endpoints for different message types. These endpoints are crucial for 
+    handling various request types that a neuron might receive. The class is designed to be flexible and customizable, 
+    allowing users to specify custom rules for forwarding, blacklisting, prioritizing, and verifying incoming requests. 
+    The class also includes internal mechanisms to manage a thread pool, supporting concurrent handling of requests with 
+    defined priority levels.
+    
+    Methods in this class are equipped to deal with incoming requests from various scenarios in the network and serve as 
+    the server face for a neuron. It accepts multiple arguments, like wallet, configuration parameters, ip address, 
+    server binding  port, external ip, external port and max workers. Key methods involve managing and operating the 
+    FastAPI application router, including the attachment and operation of endpoints.
+    
+    Key Features:
+    - FastAPI router integration for endpoint creation and management.
+    - Customizable request handling including forwarding, blacklisting, and prioritization.
+    - Verification of incoming requests against custom-defined functions.
+    - Thread pool management for concurrent request handling.
+    - Command-line argument support for user-friendly program interaction.
 
-    It accepts multiple arguments, like wallet, configuration parameters, ip address, server binding port, external ip, external port and max workers.
-    Key methods involve managing and operating the FastAPI application router, including the attachment and operation of endpoints.
-    The `axon` class offers flexibility to specify custom rules to forward, blacklist, prioritize and verify incoming requests against custom functions.
+    Example usage::
 
-    The class also encapsulates methods to add command-line arguments for user-friendly interaction with the program, and supports the handling of these arguments,
-    to define the behavior of the axon object.
+        import cybertensor
+        # Define your custom synapse class
+        class MySynapse( cybertensor.Synapse ):
+            input: int = 1
+            output: int = None
 
-    Internal mechanisms manage a thread pool to support concurrent requests handling, using defined priority levels.
+        # Define a custom request forwarding function
+        def forward( synapse: MySynapse ) -> MySynapse:
+            # Apply custom logic to synapse and return it
+            synapse.output = 2
+            return synapse
 
-    ### Example usage:
+        # Define a custom request verification function
+        def verify_my_synapse( synapse: MySynapse ):
+            # Apply custom verification logic to synapse
+            # Optionally raise Exception
 
-    ```python
-    import cybertensor
+        # Define a custom request blacklist fucntion
+        def blacklist_my_synapse( synapse: MySynapse ) -> bool:
+            # Apply custom blacklist
+            # return False ( if non blacklisted ) or True ( if blacklisted )
 
-    class MySyanpse( cybertensor.Synapse ):
-        input: int = 1
-        output: int = None
+        # Define a custom request priority fucntion
+        def prioritize_my_synape( synapse: MySynapse ) -> float:
+            # Apply custom priority
+            return 1.0
 
-    # Define a custom request forwarding function
-    def forward( synapse: MySyanpse ) -> MySyanpse:
-        # Apply custom logic to synapse and return it
-        synapse.output = 2
-        return synapse
+        # Initialize Axon object with a custom configuration
+        my_axon = cybertensor.axon(config=my_config, wallet=my_wallet, port=9090, ip="192.0.2.0", external_ip="203.0.113.0", external_port=7070)
 
-    # Define a custom request verification function
-    def verify_my_synapse( synapse: MySyanpse ):
-        # Apply custom verification logic to synapse
-        # Optionally raise Exception
+        # Attach the endpoint with the specified verification and forwarding functions
+        my_axon.attach(
+            forward_fn = forward_my_synapse,
+            verify_fn = verify_my_synapse,
+            blacklist_fn = blacklist_my_synapse,
+            priority_fn = prioritize_my_synape
+        ).attach(
+            forward_fn = forward_my_synapse_2,
+            verify_fn = verify_my_synapse_2,
+            blacklist_fn = blacklist_my_synapse_2,
+            priority_fn = prioritize_my_synape_2
+        ).serve(
+            netuid = ...
+            cwtensor = ...
+        ).start()
 
-    # Define a custom request blacklist fucntion
-    def blacklist_my_synapse( synapse: MySyanpse ) -> bool:
-        # Apply custom blacklist
-        # return False ( if non blacklisted ) or True ( if blacklisted )
-
-    # Define a custom request priority fucntion
-    def prioritize_my_synape( synapse: MySyanpse ) -> float:
-        # Apply custom priority
-        return 1.0
-
-    # Initialize Axon object with a custom configuration
-    my_axon = cybertensor.axon(config=my_config, wallet=my_wallet, port=9090, ip="192.0.2.0", external_ip="203.0.113.0", external_port=7070)
-
-    # Attach the endpoint with the specified verification and forwarding functions
-    my_axon.attach(
-        forward_fn = forward_my_synapse,
-        verify_fn = verify_my_synapse,
-        blacklist_fn = blacklist_my_synapse,
-        priority_fn = prioritize_my_synape
-    ).attach(
-        forward_fn = forward_my_synapse_2,
-        verify_fn = verify_my_synapse_2,
-        blacklist_fn = blacklist_my_synapse_2,
-        priority_fn = prioritize_my_synape_2
-    ).serve(
-        netuid = ...
-        cwtensor = ...
-    ).start()
-    ```
+   Args:
+        wallet (cybertensor.wallet, optional): Wallet with hotkey and coldkeypub.
+        config (cybertensor.config, optional): Configuration parameters for the axon.
+        port (int, optional): Port for server binding.
+        ip (str, optional): Binding IP address.
+        external_ip (str, optional): External IP address to broadcast.
+        external_port (int, optional): External port to broadcast.
+        max_workers (int, optional): Number of active threads for request handling.
+    Returns:
+        cybertensor.axon: An instance of the axon class configured as per the provided arguments.
+    Note:
+        This class is a core part of cybertensor's decentralized network for machine intelligence,
+        allowing neurons to communicate effectively and securely.
+    Importance and Functionality
+        Endpoint Registration
+            This method dynamically registers API endpoints based on the Synapse used, allowing the Axon to respond to 
+            specific types of requests and synapses.
+        Customization of Request Handling
+            By attaching different functions, the Axon can customize how it
+            handles, verifies, prioritizes, and potentially blocks incoming requests, making it adaptable to various 
+            network scenarios.
+        Security and Efficiency
+            The method contributes to both the security (via verification and blacklisting) and efficiency (via 
+            prioritization) of request handling, which are crucial in a decentralized network environment.
+        Flexibility
+            The ability to define custom functions for different aspects of request handling provides great flexibility, 
+            allowing the Axon to be tailored to specific needs and use cases within the cybertensor network.
+        Error Handling and Validation
+            The method ensures that the attached functions meet the required
+            signatures, providing error handling to prevent runtime issues.
     """
-
-    def info(self) -> "cybertensor.AxonInfo":
-        """Returns the axon info object associated with this axon."""
-        return cybertensor.AxonInfo(
-            version=cybertensor.__version_as_int__,
-            ip=self.external_ip,
-            ip_type=4,
-            port=self.external_port,
-            hotkey=self.wallet.hotkey.address,
-            coldkey=self.wallet.coldkeypub.address,
-            protocol=4,
-            placeholder1=0,
-            placeholder2=0,
-        )
 
     def __init__(
         self,
-        wallet: "Wallet" = None,
+        wallet: Optional["Wallet"] = None,
         config: Optional["Config"] = None,
         port: Optional[int] = None,
         ip: Optional[str] = None,
         external_ip: Optional[str] = None,
         external_port: Optional[int] = None,
         max_workers: Optional[int] = None,
-    ) -> "cybertensor.axon":
+    ):
         r"""Creates a new cybertensor.Axon object from passed arguments.
         Args:
             config (:obj:`Optional[Config]`, `optional`):
@@ -269,38 +357,77 @@ class axon:
             forward_fn=ping, verify_fn=None, blacklist_fn=None, priority_fn=None
         )
 
+    def info(self) -> "cybertensor.AxonInfo":
+        """Returns the axon info object associated with this axon."""
+        return cybertensor.AxonInfo(
+            version=cybertensor.__version_as_int__,
+            ip=self.external_ip,
+            ip_type=4,
+            port=self.external_port,
+            hotkey=self.wallet.hotkey.address,
+            coldkey=self.wallet.coldkeypub.address,
+            protocol=4,
+            placeholder1=0,
+            placeholder2=0,
+        )
+
     def attach(
         self,
         forward_fn: Callable,
-        blacklist_fn: Callable = None,
-        priority_fn: Callable = None,
-        verify_fn: Callable = None,
+        blacklist_fn: Optional[Callable] = None,
+        priority_fn: Optional[Callable] = None,
+        verify_fn: Optional[Callable] = None,
     ) -> "cybertensor.axon":
         """
+        Attaches custom functions to the Axon server for handling incoming requests. This method enables
+        the Axon to define specific behaviors for request forwarding, verification, blacklisting, and
+        prioritization, thereby customizing its interaction within the cybertensor network.
         Registers an API endpoint to the FastAPI application router.
-        It uses the name of the first argument of the 'forward_fn' function as the endpoint name.
-
+        It uses the name of the first argument of the :func:`forward_fn` function as the endpoint name.
+        The attach method in the cybertensor framework's axon class is a crucial function for registering
+        API endpoints to the Axon's FastAPI application router. This method allows the Axon server to
+        define how it handles incoming requests by attaching functions for forwarding, verifying,
+        blacklisting, and prioritizing requests. It's a key part of customizing the server's behavior
+        and ensuring efficient and secure handling of requests within the cybertensor network.
         Args:
-            forward_fn (Callable): Function to be called when the API endpoint is accessed.
-                                   It should have at least one argument.
-            blacklist_fn (Callable, optional): Function to filter out undesired requests. It should take the same arguments
-                                               as 'forward_fn' and return a boolean value. Defaults to None, meaning no blacklist filter will be used.
-            priority_fn (Callable, optional): Function to rank requests based on their priority. It should take the same arguments
-                                              as 'forward_fn' and return a numerical value representing the request's priority.
-                                              Defaults to None, meaning no priority sorting will be applied.
-            verify_fn (Callable, optional): Function to verify requests. It should take the same arguments as 'forward_fn' and return
-                                            a boolean value. If None, 'self.default_verify' function will be used.
-
-        Note: 'forward_fn', 'blacklist_fn', 'priority_fn', and 'verify_fn' should be designed to receive the same parameters.
-
+            forward_fn (Callable): Function to be called when the API endpoint is accessed. It should have at least one
+                argument.
+            blacklist_fn (Callable, optional): Function to filter out undesired requests. It should take the same
+                arguments as :func:`forward_fn` and return a boolean value. Defaults to ``None``, meaning no blacklist
+                filter will be used.
+            priority_fn (Callable, optional): Function to rank requests based on their priority. It should take the same
+                arguments as :func:`forward_fn` and return a numerical value representing the request's priority.
+                Defaults to ``None``, meaning no priority sorting will be applied.
+            verify_fn (Callable, optional): Function to verify requests. It should take the same arguments as
+                :func:`forward_fn` and return a boolean value. If ``None``, :func:`self.default_verify` function will be used.
+        Note:
+            The methods :func:`forward_fn`, :func:`blacklist_fn`, :func:`priority_fn`, and :func:`verify_fn` should be
+            designed to receive the same parameters.
         Raises:
-            AssertionError: If 'forward_fn' does not have the signature: forward( synapse: YourSynapse ) -> synapse:
-            AssertionError: If 'blacklist_fn' does not have the signature: blacklist( synapse: YourSynapse ) -> bool
-            AssertionError: If 'priority_fn' does not have the signature: priority( synapse: YourSynapse ) -> float
-            AssertionError: If 'verify_fn' does not have the signature: verify( synapse: YourSynapse ) -> None
-
+            AssertionError: If :func:`forward_fn` does not have the signature: ``forward( synapse: YourSynapse ) -> synapse``.
+            AssertionError: If :func:`blacklist_fn` does not have the signature: ``blacklist( synapse: YourSynapse ) -> bool``.
+            AssertionError: If :func:`priority_fn` does not have the signature: ``priority( synapse: YourSynapse ) -> float``.
+            AssertionError: If :func:`verify_fn` does not have the signature: ``verify( synapse: YourSynapse ) -> None``.
         Returns:
             self: Returns the instance of the AxonServer class for potential method chaining.
+        Example Usage::
+            def forward_custom(synapse: MyCustomSynapse) -> MyCustomSynapse:
+                # Custom logic for processing the request
+                return synapse
+            def blacklist_custom(synapse: MyCustomSynapse) -> Tuple[bool, str]:
+                return True, "Allowed!"
+            def priority_custom(synapse: MyCustomSynapse) -> float:
+                return 1.0
+            def verify_custom(synapse: MyCustomSynapse):
+                # Custom logic for verifying the request
+                pass
+            my_axon = cybertensor.axon(...)
+            my_axon.attach(forward_fn=forward_custom, verify_fn=verify_custom)
+        Note:
+            The :func:`attach` method is fundamental in setting up the Axon server's request handling capabilities,
+            enabling it to participate effectively and securely in the cybertensor network. The flexibility
+            offered by this method allows developers to tailor the Axon's behavior to specific requirements and
+            use cases.
         """
 
         # Assert 'forward_fn' has exactly one argument
@@ -413,7 +540,7 @@ class axon:
     @classmethod
     def config(cls) -> "Config":
         """
-        Parses command-line arguments to form a cybertensor configuration object.
+        Parses the command-line arguments to form a cybertensor configuration object.
 
         Returns:
             Config: Configuration object with settings from command-line arguments.
@@ -433,7 +560,7 @@ class axon:
         parser.print_help()  # Print parser's help text
 
     @classmethod
-    def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
+    def add_args(cls, parser: argparse.ArgumentParser, prefix: Optional[str] = None):
         """
         Adds AxonServer-specific command-line arguments to the argument parser.
 
@@ -494,7 +621,10 @@ class axon:
 
     async def verify_body_integrity(self, request: Request):
         """
-        Asynchronously verifies the integrity of the body of a request by comparing the hash of required fields
+        The ``verify_body_integrity`` method in the cybertensor framework is a key security function within the
+        Axon server's middleware. It is responsible for ensuring the integrity of the body of incoming HTTP
+        requests.
+        It asynchronously verifies the integrity of the body of a request by comparing the hash of required fields
         with the corresponding hashes provided in the request headers. This method is critical for ensuring
         that the incoming request payload has not been altered or tampered with during transmission, establishing
         a level of trust and security between the sender and receiver in the network.
@@ -511,16 +641,18 @@ class axon:
                         indicating a potential integrity issue with the incoming request payload.
                         The response includes the detailed error message specifying which field has a hash mismatch.
 
-        Example:
-            Assuming this method is set as a dependency in a route:
-
-            @app.post("/some_endpoint")
-            async def some_endpoint(body_dict: dict = Depends(verify_body_integrity)):
-                # body_dict is the parsed body of the request and is available for use in the route function.
-                # The function only executes if the body integrity verification is successful.
-                ...
+        This method performs several key functions:
+        1. Decoding and loading the request body for inspection.
+        2. Gathering required field names for hash comparison from the Axon configuration.
+        3. Loading and parsing the request body into a dictionary.
+        4. Reconstructing the Synapse object and recomputing the hash for verification and logging.
+        5. Comparing the recomputed hash with the hash provided in the request headers for verification.
+        Note:
+            The integrity verification is an essential step in ensuring the security of the data exchange
+            within the cybertensor network. It helps prevent tampering and manipulation of data during transit,
+            thereby maintaining the reliability and trust in the network communication.
         """
-        # Await and load the request body so we can inspect it
+        # Await and load the request body, so we can inspect it
         body = await request.body()
         request_body = body.decode() if isinstance(body, bytes) else body
 
@@ -532,7 +664,7 @@ class axon:
         body_dict = json.loads(request_body)
 
         # Reconstruct the synapse object from the body dict and recompute the hash
-        syn = self.forward_class_types[request_name](**body_dict)
+        syn = self.forward_class_types[request_name](**body_dict)  # type: ignore
         parsed_body_hash = syn.body_hash  # Rehash the body from request
 
         body_hash = request.headers.get("computed_body_hash", "")
@@ -597,10 +729,21 @@ class axon:
 
     def start(self) -> "cybertensor.axon":
         """
-        Starts the Axon server's GRPC server thread and marks the Axon as started.
-
+        Starts the Axon server and its underlying FastAPI server thread, transitioning the state of the
+        Axon instance to ``started``. This method initiates the server's ability to accept and process
+        incoming network requests, making it an active participant in the cybertensor network.
+        The start method triggers the FastAPI server associated with the Axon to begin listening for
+        incoming requests. It is a crucial step in making the neuron represented by this Axon operational
+        within the cybertensor network.
         Returns:
-            cybertensor.axon: The started Axon instance.
+            cybertensor.axon: The Axon instance in the 'started' state.
+        Example::
+            my_axon = cybertensor.axon(...)
+            ... # setup axon, attach functions, etc.
+            my_axon.start()  # Starts the axon server
+        Note:
+            After invoking this method, the Axon is ready to handle requests as per its configured endpoints and custom
+            logic.
         """
         self.fast_server.start()
         self.started = True
@@ -608,28 +751,49 @@ class axon:
 
     def stop(self) -> "cybertensor.axon":
         """
-        Stops the Axon server's GRPC server thread and marks the Axon as stopped.
-
+        Stops the Axon server and its underlying GRPC server thread, transitioning the state of the Axon
+        instance to ``stopped``. This method ceases the server's ability to accept new network requests,
+        effectively removing the neuron's server-side presence in the cybertensor network.
+        By stopping the FastAPI server, the Axon ceases to listen for incoming requests, and any existing
+        connections are gracefully terminated. This function is typically used when the neuron is being
+        shut down or needs to temporarily go offline.
         Returns:
-            cybertensor.axon: The stopped Axon instance.
+            cybertensor.axon: The Axon instance in the 'stopped' state.
+        Example::
+            my_axon = cybertensor.axon(...)
+            my_axon.start()
+            ...
+            my_axon.stop()  # Stops the axon server
+        Note:
+            It is advisable to ensure that all ongoing processes or requests are completed or properly handled before
+            invoking this method.
         """
         self.fast_server.stop()
         self.started = False
         return self
 
     def serve(
-        self, netuid: int, cwtensor: cybertensor.cwtensor = None
+        self, netuid: int, cwtensor: Optional[cybertensor.cwtensor] = None
     ) -> "cybertensor.axon":
         """
-        Serves the axon on the passed cwtensor connection using the axon wallet.
-
+        Serves the Axon on the specified cwtensor connection using the configured wallet. This method
+        registers the Axon with a specific subnet within the cybertensor network, identified by the ``netuid``.
+        It links the Axon to the broader network, allowing it to participate in the decentralized exchange
+        of information.
         Args:
-            netuid: int
-                The subnet uid to register on.
-            cwtensor: Optional[ cybertensor.cwtensor ]
-                The cwtensor connection to use for serving.
+            netuid (int): The unique identifier of the subnet to register on. This ID is essential for the Axon to
+                correctly position itself within the cybertensor network topology.
+            cwtensor (cybertensor.cwtensor, optional): The cwtensor connection to use for serving. If not provided,
+                a new connection is established based on default configurations.
         Returns:
-            cybertensor.axon: The served Axon instance.
+            cybertensor.axon: The Axon instance that is now actively serving on the specified cwtensor.
+        Example::
+            my_axon = cybertensor.axon(...)
+            cwtensor = ct.cwtensor(network="local") # Local by default
+            my_axon.serve(netuid=1, cwtensor=cwtensor)  # Serves the axon on subnet with netuid 1
+        Note:
+            The ``serve`` method is crucial for integrating the Axon into the cybertensor network, allowing it
+            to start receiving and processing requests from other neurons.
         """
         if cwtensor is None:
             cwtensor = cybertensor.cwtensor()
@@ -640,52 +804,136 @@ class axon:
         """
         This method is used to verify the authenticity of a received message using a digital signature.
         It ensures that the message was not tampered with and was sent by the expected sender.
+        The :func:`default_verify` method in the cybertensor framework is a critical security function within the
+        Axon server. It is designed to authenticate incoming messages by verifying their digital
+        signatures. This verification ensures the integrity of the message and confirms that it was
+        indeed sent by the claimed sender. The method plays a pivotal role in maintaining the trustworthiness
+        and reliability of the communication within the cybertensor network.
+        Key Features
+            Security Assurance
+                The default_verify method is crucial for ensuring the security of the cybertensor network. By verifying
+                digital signatures, it guards against unauthorized access and data manipulation.
+            Preventing Replay Attacks
+                The method checks for increasing nonce values, which is a vital
+                step in preventing replay attacks. A replay attack involves an adversary reusing or
+                delaying the transmission of a valid data transmission to deceive the receiver.
+            Authenticity and Integrity Checks
+                By verifying that the message's digital signature matches
+                its content, the method ensures the message's authenticity (it comes from the claimed
+                sender) and integrity (it hasn't been altered during transmission).
+            Trust in Communication
+                This method fosters trust in the network communication. Neurons
+                (nodes in the cybertensor network) can confidently interact, knowing that the messages they
+                receive are genuine and have not been tampered with.
+            Cryptographic Techniques
+                The method's reliance on asymmetric encryption techniques is a
+                cornerstone of modern cryptographic security, ensuring that only entities with the correct
+                cryptographic keys can participate in secure communication.
 
         Args:
             synapse: cybertensor.Synapse
                 cybertensor request synapse.
 
         Raises:
-            Exception: If the receiver_hotkey doesn't match with self.receiver_hotkey.
+            Exception: If the ``receiver_hotkey`` doesn't match with ``self.receiver_hotkey``.
             Exception: If the nonce is not larger than the previous nonce for the same endpoint key.
             Exception: If the signature verification fails.
 
         After successful verification, the nonce for the given endpoint key is updated.
 
         Note:
-            The verification process assumes the use of an asymmetric encryption algorithm,
-            where the sender signs the message with their private key and the receiver verifies the signature using the sender's public key.
+            The verification process assumes the use of an asymmetric encryption algorithm, where the sender signs the
+            message with their private key and the receiver verifies the signature using the sender's public key.
         """
         # Build the keypair from the dendrite_hotkey
-        keypair = Keypair(address=synapse.dendrite.hotkey)
+        if synapse.dendrite is not None:
+            keypair = Keypair(address=synapse.dendrite.hotkey)  # type: ignore
+            # Build the signature messages.
+            message = (f"{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{self.wallet.hotkey.address}."
+                       f"{synapse.dendrite.uuid}.{synapse.computed_body_hash}")
 
-        # Build the signature messages.
-        message = f"{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{self.wallet.hotkey.address}.{synapse.dendrite.uuid}.{synapse.computed_body_hash}"
+            # Build the unique endpoint key.
+            endpoint_key = f"{synapse.dendrite.hotkey}:{synapse.dendrite.uuid}"
 
-        # Build the unique endpoint key.
-        endpoint_key = f"{synapse.dendrite.hotkey}:{synapse.dendrite.uuid}"
-
-        # Check the nonce from the endpoint key.
-        if endpoint_key in self.nonces.keys():
-            # Ensure the nonce increases.
-            if synapse.dendrite.nonce <= self.nonces[endpoint_key]:
+            # Check the nonce from the endpoint key.
+            if (
+                    endpoint_key in self.nonces.keys()
+                    and self.nonces[endpoint_key] is not None
+                    and synapse.dendrite.nonce is not None
+                    and synapse.dendrite.nonce <= self.nonces[endpoint_key]
+            ):
                 raise Exception("Nonce is too small")
 
-        if not keypair.verify(message, synapse.dendrite.signature):
-            raise Exception(
-                f"Signature mismatch with {message} and {synapse.dendrite.signature}"
-            )
+            if not keypair.verify(message, synapse.dendrite.signature):  # type: ignore
+                raise Exception(
+                    f"Signature mismatch with {message} and {synapse.dendrite.signature}"
+                )
 
-        # Success
-        self.nonces[endpoint_key] = synapse.dendrite.nonce
+            # Success
+            self.nonces[endpoint_key] = synapse.dendrite.nonce  # type: ignore
+        else:
+            raise SynapseDendriteNoneException()
+
+
+def create_error_response(synapse: cybertensor.Synapse):
+    if synapse.axon is None:
+        return JSONResponse(
+            status_code=400,
+            headers=synapse.to_headers(),
+            content={"message": "Invalid request name"},
+        )
+    else:
+        return JSONResponse(
+            status_code=synapse.axon.status_code or 400,
+            headers=synapse.to_headers(),
+            content={"message": synapse.axon.status_message},
+        )
+
+
+def log_and_handle_error(
+    synapse: cybertensor.Synapse,
+    exception: Exception,
+    status_code: int,
+    start_time: float,
+):
+    # Display the traceback for user clarity.
+    cybertensor.logging.trace(f"Forward exception: {traceback.format_exc()}")
+
+    # Set the status code of the synapse to the given status code.
+    error_type = exception.__class__.__name__
+    error_message = str(exception)
+    detailed_error_message = f"{error_type}: {error_message}"
+
+    # Log the detailed error message for internal use
+    cybertensor.logging.error(detailed_error_message)
+
+    if synapse.axon is None:
+        raise SynapseParsingError(detailed_error_message)
+    # Set a user-friendly error message
+    synapse.axon.status_code = status_code
+    synapse.axon.status_message = error_message
+
+    # Calculate the processing time by subtracting the start time from the current time.
+    synapse.axon.process_time = str(time.time() - start_time)  # type: ignore
+
+    return synapse
 
 
 class AxonMiddleware(BaseHTTPMiddleware):
     """
-    Class AxonMiddleware handles the entire process of the request to the Axon.
-    It fills the necessary information into the synapse and manages the logging of messages and errors.
-    It handles the verification, blacklist checking and running priority functions.
-    This class also runs the requested function and updates the headers of the response.
+    The `AxonMiddleware` class is a key component in the Axon server, responsible for processing all incoming requests.
+    It handles the essential tasks of verifying requests, executing blacklist checks,
+    running priority functions, and managing the logging of messages and errors. Additionally, the class
+    is responsible for updating the headers of the response and executing the requested functions.
+    This middleware acts as an intermediary layer in request handling, ensuring that each request is
+    processed according to the defined rules and protocols of the cybertensor network. It plays a pivotal
+    role in maintaining the integrity and security of the network communication.
+    Args:
+        app (FastAPI): An instance of the FastAPI application to which this middleware is attached.
+        axon (cybertensor.axon): The Axon instance that will process the requests.
+    The middleware operates by intercepting incoming requests, performing necessary preprocessing
+    (like verification and priority assessment), executing the request through the Axon's endpoints, and
+    then handling any postprocessing steps such as response header updating and logging.
     """
 
     def __init__(self, app: "AxonMiddleware", axon: "cybertensor.axon"):
@@ -701,16 +949,27 @@ class AxonMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Request:
+    ) -> Response:
         """
-        Processes incoming requests.
-
+        Asynchronously processes incoming HTTP requests and returns the corresponding responses. This
+        method acts as the central processing unit of the AxonMiddleware, handling each step in the
+        request lifecycle.
         Args:
-            request(starlette: Request): The incoming request.
-            call_next(starlette: RequestResponseEndpoint): The function to call after processing the request.
-
+            request (Request): The incoming HTTP request to be processed.
+            call_next (RequestResponseEndpoint): A callable that processes the request and returns a response.
         Returns:
-            response (starlette: Response): The processed request.
+            Response: The HTTP response generated after processing the request.
+        This method performs several key functions:
+        1. Request Preprocessing: Sets up Synapse object from request headers and fills necessary information.
+        2. Logging: Logs the start of request processing.
+        3. Blacklist Checking: Verifies if the request is blacklisted.
+        4. Request Verification: Ensures the authenticity and integrity of the request.
+        5. Priority Assessment: Evaluates and assigns priority to the request.
+        6. Request Execution: Calls the next function in the middleware chain to process the request.
+        7. Response Postprocessing: Updates response headers and logs the end of the request processing.
+
+        The method also handles exceptions and errors that might occur during each stage, ensuring that
+        appropriate responses are returned to the client.
         """
         # Records the start time of the request processing.
         start_time = time.time()
@@ -720,9 +979,14 @@ class AxonMiddleware(BaseHTTPMiddleware):
             synapse: cybertensor.Synapse = await self.preprocess(request)
 
             # Logs the start of the request processing
-            cybertensor.logging.debug(
-                f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | {synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port} | 200 | Success "
-            )
+            if synapse.dendrite is not None:
+                cybertensor.logging.trace(
+                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | {synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port} | 200 | Success "
+                )
+            else:
+                cybertensor.logging.trace(
+                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | None | None | 200 | Success "
+                )
 
             # Call the blacklist function
             await self.blacklist(synapse)
@@ -760,50 +1024,114 @@ class AxonMiddleware(BaseHTTPMiddleware):
                 status_code=404, headers=synapse.to_headers(), content={}
             )
 
-        # Start of catching all exceptions, updating the status message, and processing time.
+        # Handle errors related to preprocess.
+        except InvalidRequestNameError as e:
+            if "synapse" not in locals():
+                synapse: cybertensor.Synapse = cybertensor.Synapse()  # type: ignore
+            log_and_handle_error(synapse, e, 400, start_time)
+            response = create_error_response(synapse)
+
+        except SynapseParsingError as e:
+            if "synapse" not in locals():
+                synapse = cybertensor.Synapse()
+            log_and_handle_error(synapse, e, 400, start_time)
+            response = create_error_response(synapse)
+
+        except UnknownSynapseError as e:
+            if "synapse" not in locals():
+                synapse = cybertensor.Synapse()
+            log_and_handle_error(synapse, e, 404, start_time)
+            response = create_error_response(synapse)
+
+        # Handle errors related to verify.
+        except NotVerifiedException as e:
+            log_and_handle_error(synapse, e, 401, start_time)
+            response = create_error_response(synapse)
+
+        # Handle errors related to blacklist.
+        except BlacklistedException as e:
+            log_and_handle_error(synapse, e, 403, start_time)
+            response = create_error_response(synapse)
+
+        # Handle errors related to priority.
+        except PriorityException as e:
+            log_and_handle_error(synapse, e, 503, start_time)
+            response = create_error_response(synapse)
+
+        # Handle errors related to run.
+        except RunException as e:
+            log_and_handle_error(synapse, e, 500, start_time)
+            response = create_error_response(synapse)
+
+        # Handle errors related to postprocess.
+        except PostProcessException as e:
+            log_and_handle_error(synapse, e, 500, start_time)
+            response = create_error_response(synapse)
+
+        # Handle all other errors.
         except Exception as e:
-            # Log the exception for debugging purposes.
-            cybertensor.logging.error(f"Exception: {str(e)}")
-            cybertensor.logging.trace(f"Forward exception: {traceback.format_exc()}")
-
-            # Set the status message of the synapse to the string representation of the exception.
-            synapse.axon.status_message = f"{str(e)}"
-
-            # Calculate the processing time by subtracting the start time from the current time.
-            synapse.axon.process_time = str(time.time() - start_time)
-
-            # Create a JSON response with a status code of 500 (internal server error),
-            # synapse headers, and an empty content.
-            response = JSONResponse(
-                status_code=500, headers=synapse.to_headers(), content={}
-            )
+            log_and_handle_error(synapse, InternalServerError(str(e)), 500, start_time)
+            response = create_error_response(synapse)
 
         # Logs the end of request processing and returns the response
         finally:
             # Log the details of the processed synapse, including total size, name, hotkey, IP, port,
             # status code, and status message, using the debug level of the logger.
-            cybertensor.logging.debug(
-                f"axon     | --> | {response.headers.get('content-length', -1)} B | {synapse.name} | {synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port}  | {synapse.axon.status_code} | {synapse.axon.status_message}"
-            )
+            if synapse.dendrite is not None and synapse.axon is not None:
+                cybertensor.logging.trace(
+                    f"axon     | --> | {response.headers.get('content-length', -1)} B | {synapse.name} | {synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port}  | {synapse.axon.status_code} | {synapse.axon.status_message}"
+                )
+            elif synapse.axon is not None:
+                cybertensor.logging.trace(
+                    f"axon     | --> | {response.headers.get('content-length', -1)} B | {synapse.name} | None | None | {synapse.axon.status_code} | {synapse.axon.status_message}"
+                )
+            else:
+                cybertensor.logging.trace(
+                    f"axon     | --> | {response.headers.get('content-length', -1)} B | {synapse.name} | None | None | 200 | Success "
+                )
 
             # Return the response to the requester.
             return response
 
     async def preprocess(self, request: Request) -> cybertensor.Synapse:
         """
-        Perform preprocess operations for the request and generate the synapse state object.
-
+        Performs the initial processing of the incoming request. This method is responsible for
+        extracting relevant information from the request and setting up the Synapse object, which
+        represents the state and context of the request within the Axon server.
         Args:
-            synapse (Synapse): The synapse instance representing the request.
+            request (Request): The incoming request to be preprocessed.
+        Returns:
+            cybertensor.Synapse: The Synapse object representing the preprocessed state of the request.
+        The preprocessing involves:
+        1. Extracting the request name from the URL path.
+        2. Creating a Synapse instance from the request headers using the appropriate class type.
+        3. Filling in the Axon and Dendrite information into the Synapse object.
+        4. Signing the Synapse from the Axon side using the wallet hotkey.
+        This method sets the foundation for the subsequent steps in the request handling process,
+        ensuring that all necessary information is encapsulated within the Synapse object.
         """
         # Extracts the request name from the URL path.
-        request_name = request.url.path.split("/")[1]
+        try:
+            request_name = request.url.path.split("/")[1]
+        except:
+            raise InvalidRequestNameError(
+                f"Improperly formatted request. Could not parser request {request.url.path}."
+            )
 
         # Creates a synapse instance from the headers using the appropriate forward class type
         # based on the request name obtained from the URL path.
-        synapse = self.axon.forward_class_types[request_name].from_headers(
-            request.headers
-        )
+        request_synapse = self.axon.forward_class_types.get(request_name)
+        if request_synapse is None:
+            raise UnknownSynapseError(
+                f"Synapse name '{request_name}' not found. Available synapses {list(self.axon.forward_class_types.keys())}"
+            )
+
+        try:
+            synapse = request_synapse.from_headers(request.headers)  # type: ignore
+        except Exception as e:
+            raise SynapseParsingError(
+                f"Improperly formatted request. Could not parse headers {request.headers} into synapse of type {request_name}."
+            )
         synapse.name = request_name
 
         # Fills the local axon information into the synapse.
@@ -819,7 +1147,7 @@ class AxonMiddleware(BaseHTTPMiddleware):
 
         # Fills the dendrite information into the synapse.
         synapse.dendrite.__dict__.update(
-            {"port": str(request.client.port), "ip": str(request.client.host)}
+            {"port": str(request.client.port), "ip": str(request.client.host)}  # type: ignore
         )
 
         # Signs the synapse from the axon side using the wallet hotkey.
@@ -831,19 +1159,25 @@ class AxonMiddleware(BaseHTTPMiddleware):
 
     async def verify(self, synapse: cybertensor.Synapse):
         """
-        Verify the request.
-
+        Verifies the authenticity and integrity of the request. This method ensures that the incoming
+        request meets the predefined security and validation criteria.
         Args:
-            synapse ( cybertensor.Synapse ): The synapse instance representing the request.
-
+            synapse (cybertensor.Synapse): The Synapse object representing the request.
         Raises:
-            Exception: If verification fails.
+            Exception: If the verification process fails due to unmet criteria or security concerns.
+        The verification process involves:
+        1. Retrieving the specific verification function for the request's Synapse type.
+        2. Executing the verification function and handling any exceptions that arise.
+        Successful verification allows the request to proceed further in the processing pipeline, while
+        failure results in an appropriate exception being raised.
         """
         # Start of the verification process. Verification is the process where we ensure that
         # the incoming request is from a trusted source or fulfills certain requirements.
         # We get a specific verification function from 'verify_fns' dictionary that corresponds
         # to our request's name. Each request name (synapse name) has its unique verification function.
-        verify_fn = self.axon.verify_fns[synapse.name]
+        verify_fn = (
+            self.axon.verify_fns.get(synapse.name) if synapse.name is not None else None
+        )
 
         # If a verification function exists for the request's name
         if verify_fn:
@@ -851,36 +1185,52 @@ class AxonMiddleware(BaseHTTPMiddleware):
                 # We attempt to run the verification function using the synapse instance
                 # created from the request. If this function runs without throwing an exception,
                 # it means that the verification was successful.
-                await verify_fn(synapse) if inspect.iscoroutinefunction(
-                    verify_fn
-                ) else verify_fn(synapse)
+                (
+                    await verify_fn(synapse)
+                    if inspect.iscoroutinefunction(verify_fn)
+                    else verify_fn(synapse)
+                )
             except Exception as e:
                 # If there was an exception during the verification process, we log that
                 # there was a verification exception.
                 cybertensor.logging.trace(f"Verify exception {str(e)}")
 
-                # We set the status code of the synapse to "401" which denotes an unauthorized access.
-                synapse.axon.status_code = "401"
+                # Check if the synapse.axon object exists
+                if synapse.axon is not None:
+                    # We set the status code of the synapse to "401" which denotes an unauthorized access.
+                    synapse.axon.status_code = 401
+                else:
+                    # If the synapse.axon object doesn't exist, raise an exception.
+                    raise Exception("Synapse.axon object is None")
 
                 # We raise an exception to stop the process and return the error to the requester.
                 # The error message includes the original exception message.
-                raise Exception(f"Not Verified with error: {str(e)}")
+                raise NotVerifiedException(f"Not Verified with error: {str(e)}")
 
     async def blacklist(self, synapse: cybertensor.Synapse):
         """
-        Check if the request is blacklisted.
-
+        Checks if the request should be blacklisted. This method ensures that requests from disallowed
+        sources or with malicious intent are blocked from processing. This can be extremely useful for
+        preventing spam or other forms of abuse. The blacklist is a list of keys or identifiers that
+        are prohibited from accessing certain resources.
         Args:
-            synapse (Synapse): The synapse instance representing the request.
-
+            synapse (cybertensor.Synapse): The Synapse object representing the request.
         Raises:
-            Exception: If the request is blacklisted.
+            Exception: If the request is found in the blacklist.
+        The blacklist check involves:
+        1. Retrieving the blacklist checking function for the request's Synapse type.
+        2. Executing the check and handling the case where the request is blacklisted.
+        If a request is blacklisted, it is blocked, and an exception is raised to halt further processing.
         """
         # A blacklist is a list of keys or identifiers
         # that are prohibited from accessing certain resources.
         # We retrieve the blacklist checking function from the 'blacklist_fns' dictionary
         # that corresponds to the request's name (synapse name).
-        blacklist_fn = self.axon.blacklist_fns[synapse.name]
+        blacklist_fn = (
+            self.axon.blacklist_fns.get(synapse.name)
+            if synapse.name is not None
+            else None
+        )
 
         # If a blacklist checking function exists for the request's name
         if blacklist_fn:
@@ -895,29 +1245,34 @@ class AxonMiddleware(BaseHTTPMiddleware):
                 # We log that the key or identifier is blacklisted.
                 cybertensor.logging.trace(f"Blacklisted: {blacklisted}, {reason}")
 
-                # We set the status code of the synapse to "403" which indicates a forbidden access.
-                synapse.axon.status_code = "403"
+                # Check if the synapse.axon object exists
+                if synapse.axon is not None:
+                    # We set the status code of the synapse to "403" which indicates a forbidden access.
+                    synapse.axon.status_code = 403
+                else:
+                    # If the synapse.axon object doesn't exist, raise an exception.
+                    raise Exception("Synapse.axon object is None")
 
                 # We raise an exception to halt the process and return the error message to the requester.
-                raise Exception(f"Forbidden. Key is blacklisted: {reason}.")
+                raise BlacklistedException(f"Forbidden. Key is blacklisted: {reason}.")
 
     async def priority(self, synapse: cybertensor.Synapse):
         """
-        Execute the priority function for the request.
-
-        A priority function is a function that determines the priority or urgency of processing the request compared to other requests.
+        Executes the priority function for the request. This method assesses and assigns a priority
+        level to the request, determining its urgency and importance in the processing queue.
         Args:
-            synapse (cybertensor.Synapse): The synapse instance representing the request.
-
+            synapse (cybertensor.Synapse): The Synapse object representing the request.
         Raises:
-            Exception: If the priority function times out.
+            Exception: If the priority assessment process encounters issues, such as timeouts.
+        The priority function plays a crucial role in managing the processing load and ensuring that
+        critical requests are handled promptly.
         """
         # Retrieve the priority function from the 'priority_fns' dictionary that corresponds
         # to the request's name (synapse name).
-        priority_fn = self.axon.priority_fns[synapse.name]
+        priority_fn = self.axon.priority_fns.get(str(synapse.name), None)
 
         async def submit_task(
-            executor: cybertensor.threadpool, priority: float
+            executor: PriorityThreadPoolExecutor, priority: float
         ) -> Tuple[float, Any]:
             """
             Submits the given priority function to the specified executor for asynchronous execution.
@@ -954,11 +1309,12 @@ class AxonMiddleware(BaseHTTPMiddleware):
                 # it raises an exception to handle the timeout error.
                 cybertensor.logging.trace(f"TimeoutError: {str(e)}")
 
-                # Set the status code of the synapse to "408" which indicates a timeout error.
-                synapse.axon.status_code = "408"
+                # Set the status code of the synapse to 408 which indicates a timeout error.
+                if synapse.axon is not None:
+                    synapse.axon.status_code = 408
 
                 # Raise an exception to stop the process and return an appropriate error message to the requester.
-                raise Exception(f"Response timeout after: {synapse.timeout}s")
+                raise PriorityException(f"Response timeout after: {synapse.timeout}s")
 
     async def run(
         self,
@@ -967,15 +1323,16 @@ class AxonMiddleware(BaseHTTPMiddleware):
         request: Request,
     ) -> Response:
         """
-        Execute the requested function.
-
+        Executes the requested function as part of the request processing pipeline. This method calls
+        the next function in the middleware chain to process the request and generate a response.
         Args:
-            synapse: ( cybertensor.Synapse ): call state.
-            call_next: ( starlet RequestResponseEndpoint ): The function to call after processing the request.
-            request: ( starlet Request ): The incoming request.
-
+            synapse (cybertensor.Synapse): The Synapse object representing the request.
+            call_next (RequestResponseEndpoint): The next function in the middleware chain to process requests.
+            request (Request): The original HTTP request.
         Returns:
-            response (starlet Response): The processed request.
+            Response: The HTTP response generated by processing the request.
+        This method is a critical part of the request lifecycle, where the actual processing of the
+        request takes place, leading to the generation of a response.
         """
         try:
             # The requested function is executed by calling the 'call_next' function,
@@ -991,10 +1348,11 @@ class AxonMiddleware(BaseHTTPMiddleware):
             cybertensor.logging.trace(f"Run exception: {str(e)}")
 
             # Set the status code of the synapse to "500" which indicates an internal server error.
-            synapse.axon.status_code = "500"
+            if synapse.axon is not None:
+                synapse.axon.status_code = 500
 
             # Raise an exception to stop the process and return an appropriate error message to the requester.
-            raise Exception(f"Internal server error with error: {str(e)}")
+            raise RunException(f"Internal server error with error: {str(e)}")
 
         # Return the starlet response
         return response
@@ -1003,26 +1361,35 @@ class AxonMiddleware(BaseHTTPMiddleware):
         self, synapse: cybertensor.Synapse, response: Response, start_time: float
     ) -> Response:
         """
-        Perform post-processing operations on the request.
-
+        Performs the final processing on the response before sending it back to the client. This method
+        updates the response headers and logs the end of the request processing.
         Args:
-            synapse (cybertensor.Synapse): The synapse instance representing the request.
-            response (starlet Response): The response from the requested function.
-            start_time (float): The start time of request processing.
-
+            synapse (cybertensor.Synapse): The Synapse object representing the request.
+            response (Response): The response generated by processing the request.
+            start_time (float): The timestamp when the request processing started.
         Returns:
-            response (starlet Response): The processed request with updated headers.
+            Response: The final HTTP response, with updated headers, ready to be sent back to the client.
+        Postprocessing is the last step in the request handling process, ensuring that the response is
+        properly formatted and contains all necessary information.
         """
         # Set the status code of the synapse to "200" which indicates a successful response.
-        synapse.axon.status_code = "200"
+        if synapse.axon is not None:
+            synapse.axon.status_code = 200
 
-        # Set the status message of the synapse to "Success".
-        synapse.axon.status_message = "Success"
+            # Set the status message of the synapse to "Success".
+            synapse.axon.status_message = "Success"
+
+        try:
+            # Update the response headers with the headers from the synapse.
+            updated_headers = synapse.to_headers()
+            response.headers.update(updated_headers)
+        except Exception as e:
+            # If there is an exception during the response header update, we log the exception.
+            raise PostProcessException(
+                f"Error while parsing or updating response headers. Postprocess exception: {str(e)}."
+            )
 
         # Calculate the processing time by subtracting the start time from the current time.
-        synapse.axon.process_time = str(time.time() - start_time)
-
-        # Update the response headers with the headers from the synapse.
-        response.headers.update(synapse.to_headers())
+        synapse.axon.process_time = str(time.time() - start_time)  # type: ignore
 
         return response

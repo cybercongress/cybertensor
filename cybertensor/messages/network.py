@@ -33,21 +33,22 @@ def register_subnetwork_message(
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
-    r"""Registers a new subnetwork
+    """
+    Registers a new subnetwork.
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
         wallet (Wallet):
             cybertensor wallet object.
         wait_for_finalization (bool):
-            If set, waits for the transaction to be finalized on the chain before returning true,
-            or returns false if the transaction fails to be finalized within the timeout.
+            If set, waits for the transaction to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the transaction fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or included in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or included in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
     your_balance = cwtensor.get_balance(wallet.coldkeypub.address)
     burn_cost = Balance(cwtensor.get_subnet_burn_cost())
@@ -105,13 +106,22 @@ def register_subnetwork_message(
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                console.print(
-                    f":cross_mark: [red]Failed[/red]: error:{e}"
-                )
+                console.print(f":cross_mark: [red]Failed[/red]: error:{e}")
                 return False
 
 
-from ..commands.network import HYPERPARAMS
+def find_event_attributes_in_extrinsic_receipt(response, event_name) -> list:
+    for event in response.triggered_events:
+        # Access the event details
+        event_details = event.value["event"]
+        # Check if the event_id is 'NetworkAdded'
+        if event_details["event_id"] == event_name:
+            # Once found, you can access the attributes of the event_name
+            return event_details["attributes"]
+    return [-1]
+
+
+from cybertensor.commands.network import HYPERPARAMS
 
 
 def set_hyperparameter_message(
@@ -123,7 +133,8 @@ def set_hyperparameter_message(
     wait_for_finalization: bool = True,
     prompt: bool = False,
 ) -> bool:
-    r"""Sets a hyperparameter for a specific subnetwork.
+    """
+    Sets a hyperparameter for a specific subnetwork.
     Args:
         cwtensor (cybertensor.cwtensor):
             the CWTensor
@@ -136,14 +147,14 @@ def set_hyperparameter_message(
         value (any):
             New hyperparameter value.
         wait_for_finalization (bool):
-            If set, waits for the transaction to be finalized on the chain before returning true,
-            or returns false if the transaction fails to be finalized within the timeout.
+            If set, waits for the transaction to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the transaction fails to be finalized within the timeout.
         prompt (bool):
-            If true, the call waits for confirmation from the user before proceeding.
+            If ``true``, the call waits for confirmation from the user before proceeding.
     Returns:
         success (bool):
-            flag is true if extrinsic was finalized or included in the block.
-            If we did not wait for finalization / inclusion, the response is true.
+            Flag is ``true`` if extrinsic was finalized or included in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
     """
 
     if cwtensor.get_subnet_owner(netuid) != wallet.coldkeypub.address:
@@ -156,9 +167,7 @@ def set_hyperparameter_message(
 
     message = HYPERPARAMS.get(parameter)
     if message is None:
-        console.print(
-            ":cross_mark: [red]Invalid hyperparameter specified.[/red]"
-        )
+        console.print(":cross_mark: [red]Invalid hyperparameter specified.[/red]")
         return False
 
     with console.status(
@@ -196,7 +205,5 @@ def set_hyperparameter_message(
                     time.sleep(0.5)
                     return False
             except Exception as e:
-                console.print(
-                    f":cross_mark: [red]Failed[/red]: error:{e}"
-                )
+                console.print(f":cross_mark: [red]Failed[/red]: error:{e}")
                 return False

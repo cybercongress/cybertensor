@@ -27,9 +27,9 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 import cybertensor
+from cybertensor import __console__ as console
 from cybertensor.commands import defaults
 from cybertensor.commands.utils import DelegatesDetails
-from cybertensor import __console__ as console
 from cybertensor.config import Config
 from cybertensor.wallet import Wallet
 
@@ -54,10 +54,20 @@ class RootRegisterCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Register to root network."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootRegisterCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
 
         cwtensor.root_register(wallet=wallet, prompt=not cli.config.no_prompt)
 
@@ -112,9 +122,19 @@ class RootList:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""List the root network"""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootList._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         console.print(
             ":satellite: Syncing with chain: [white]{}[/white] ...".format(
                 cwtensor.network
@@ -177,9 +197,11 @@ class RootList:
                 str(neuron_data.uid),
                 # TODO revisit
                 # delegate_info[neuron_data.hotkey].name
-                delegate_info[neuron_data.hotkey].delegate
-                if neuron_data.hotkey in delegate_info
-                else "",
+                (
+                    delegate_info[neuron_data.hotkey].name
+                    if neuron_data.hotkey in delegate_info
+                    else ""
+                ),
                 neuron_data.hotkey,
                 "{:.5f}".format(
                     float(cwtensor.get_total_stake_for_hotkey(neuron_data.hotkey))
@@ -200,6 +222,243 @@ class RootList:
     @staticmethod
     def check_config(config: "Config"):
         pass
+
+
+class RootSetBoostCommand:
+    """
+    Executes the ``boost`` command to boost the weights for a specific subnet within the root network on the cybertensor network.
+
+    Usage:
+        The command allows boosting the weights for different subnets within the root network.
+
+    Optional arguments:
+        - ``--netuid`` (int): A single netuid for which weights are to be boosted.
+        - ``--increase`` (float): The corresponding increase in the weight for this subnet.
+
+    Example usage::
+
+        $ ctcli root boost --netuid 1 --increase 0.01
+
+        Enter netuid (e.g. 1): 1
+        Enter amount (e.g. 0.01): 0.1
+        Boosting weight for subnet: 1 by amount: 0.1
+
+        Normalized weights:
+                tensor([
+                0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -> tensor([0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+            )
+
+        Do you want to set the following root weights?:
+        weights: tensor([
+                0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+        uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40])? [y/n]: y
+        True None
+        ✅ Finalized
+        ⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+
+    """
+
+    @staticmethod
+    def run(cli: "cybertensor.cli"):
+        r"""Set weights for root network."""
+        try:
+            cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            RootSetBoostCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+        r"""Set weights for root network."""
+        wallet = cybertensor.Wallet(config=cli.config)
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        root = cwtensor.metagraph(0, lite=False)
+        try:
+            my_uid = root.hotkeys.index(wallet.hotkey.address)
+        except ValueError:
+            cybertensor.__console__.print(
+                "Wallet hotkey: {} not found in root metagraph".format(wallet.hotkey)
+            )
+            exit()
+        my_weights = root.weights[my_uid]
+        prev_weight = my_weights[cli.config.netuid]
+        new_weight = prev_weight + cli.config.amount
+
+        cybertensor.__console__.print(
+            f"Boosting weight for netuid {cli.config.netuid} from {prev_weight} -> {new_weight}"
+        )
+        my_weights[cli.config.netuid] = new_weight
+        all_netuids = torch.tensor(list(range(len(my_weights))))
+
+        cybertensor.__console__.print("Setting root weights...")
+        cwtensor.root_set_weights(
+            wallet=wallet,
+            netuids=all_netuids,
+            weights=my_weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            "boost", help="""Boost weight for a specific subnet by increase amount."""
+        )
+        parser.add_argument("--netuid", dest="netuid", type=int, required=False)
+        parser.add_argument("--increase", dest="amount", type=float, required=False)
+
+        cybertensor.Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: "cybertensor.config"):
+        if not config.is_set("wallet.name") and not config.no_prompt:
+            wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+        if not config.is_set("wallet.hotkey") and not config.no_prompt:
+            hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+        if not config.is_set("netuid") and not config.no_prompt:
+            config.netuid = int(Prompt.ask(f"Enter netuid (e.g. 1)"))
+        if not config.is_set("amount") and not config.no_prompt:
+            config.amount = float(Prompt.ask(f"Enter amount (e.g. 0.01)"))
+
+
+class RootSetSlashCommand:
+    """
+    Executes the ``slash`` command to decrease the weights for a specific subnet within the root network on the cybertensor network.
+
+    Usage:
+        The command allows slashing (decreasing) the weights for different subnets within the root network.
+
+    Optional arguments:
+        - ``--netuid`` (int): A single netuid for which weights are to be slashed.
+        - ``--decrease`` (float): The corresponding decrease in the weight for this subnet.
+
+    Example usage::
+
+        $ ctcli root slash --netuid 1 --decrease 0.01
+
+        Enter netuid (e.g. 1): 1
+        Enter decrease amount (e.g. 0.01): 0.2
+        Slashing weight for subnet: 1 by amount: 0.2
+
+        Normalized weights:
+                tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -> tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+            )
+
+        Do you want to set the following root weights?:
+        weights: tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+        uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40])? [y/n]: y
+        ⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+    """
+
+    @staticmethod
+    def run(cli: "cybertensor.cli"):
+        """Set weights for root network with decreased values."""
+        try:
+            cwtensor: "cybertensor.cwtensor" = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            RootSetSlashCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+        wallet = cybertensor.Wallet(config=cli.config)
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        cybertensor.__console__.print(
+            "Slashing weight for subnet: {} by amount: {}".format(
+                cli.config.netuid, cli.config.amount
+            )
+        )
+        root = cwtensor.metagraph(0, lite=False)
+        try:
+            my_uid = root.hotkeys.index(wallet.hotkey.address)
+        except ValueError:
+            cybertensor.__console__.print(
+                "Wallet hotkey: {} not found in root metagraph".format(wallet.hotkey)
+            )
+            exit()
+        my_weights = root.weights[my_uid]
+        my_weights[cli.config.netuid] -= cli.config.amount
+        my_weights[my_weights < 0] = 0  # Ensure weights don't go negative
+        all_netuids = torch.tensor(list(range(len(my_weights))))
+
+        cwtensor.root_set_weights(
+            wallet=wallet,
+            netuids=all_netuids,
+            weights=my_weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            "slash", help="""Slash weight for a specific subnet by decrease amount."""
+        )
+        parser.add_argument("--netuid", dest="netuid", type=int, required=False)
+        parser.add_argument("--decrease", dest="amount", type=float, required=False)
+
+        cybertensor.wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: "cybertensor.config"):
+        if not config.is_set("wallet.name") and not config.no_prompt:
+            wallet_name = Prompt.ask("Enter wallet name", default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+        if not config.is_set("wallet.hotkey") and not config.no_prompt:
+            hotkey = Prompt.ask("Enter hotkey name", default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+        if not config.is_set("netuid") and not config.no_prompt:
+            config.netuid = int(Prompt.ask(f"Enter netuid (e.g. 1)"))
+        if not config.is_set("amount") and not config.no_prompt:
+            config.amount = float(Prompt.ask(f"Enter decrease amount (e.g. 0.01)"))
+
 
 
 class RootSetWeightsCommand:
@@ -224,10 +483,19 @@ class RootSetWeightsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Set weights for root network."""
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootSetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
         wallet = Wallet(config=cli.config)
-        cwtensor = cybertensor.cwtensor(config=cli.config)
         subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
 
         # Get values if not set.
@@ -325,9 +593,19 @@ class RootGetWeightsCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Get weights for root network."""
-        cwtensor = cybertensor.cwtensor(config=cli.config)
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootGetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if "cwtensor" in locals():
+                cwtensor.close()
+                cybertensor.logging.debug("closing cwtensor connection")
+
+    @staticmethod
+    def _run(cli: "cybertensor.cli", cwtensor: "cybertensor.cwtensor"):
+
         weights = cwtensor.weights(0)
 
         table = Table(show_footer=False)

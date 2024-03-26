@@ -54,7 +54,7 @@ class ListCommand:
     """
 
     @staticmethod
-    def run(cli):
+    def run(cli: "cybertensor.cli") -> None:
         r"""Lists wallets."""
         try:
             wallets = next(os.walk(os.path.expanduser(cli.config.wallet.path)))[1]

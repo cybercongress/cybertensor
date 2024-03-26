@@ -1,7 +1,7 @@
 # Copyright 2009 Brian Quinlan. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Implements ThreadPoolExecutor."""
+"""Implements `ThreadPoolExecutor <https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor>`_."""
 
 __author__ = "Brian Quinlan (brian@sweetapp.com)"
 
@@ -113,7 +113,7 @@ def _worker(executor_reference, work_queue, initializer, initargs):
 
 class BrokenThreadPool(_base.BrokenExecutor):
     """
-    Raised when a worker thread in a ThreadPoolExecutor failed initializing.
+    Raised when a worker thread in a `ThreadPoolExecutor <https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor>`_ failed initializing.
     """
 
 
@@ -131,7 +131,8 @@ class PriorityThreadPoolExecutor(_base.Executor):
         initializer=None,
         initargs=(),
     ):
-        """Initializes a new ThreadPoolExecutor instance.
+        """
+        Initializes a new `ThreadPoolExecutor <https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor>`_ instance.
         Args:
             max_workers: The maximum number of threads that can be used to
                 execute the given calls.
@@ -195,7 +196,9 @@ class PriorityThreadPoolExecutor(_base.Executor):
 
     @classmethod
     def config(cls) -> "Config":
-        """Get config from the argument parser
+        """
+        Get config from the argument parser
+
         Return: Config object
         """
         parser = argparse.ArgumentParser()
@@ -276,7 +279,7 @@ class PriorityThreadPoolExecutor(_base.Executor):
                 if work_item is not None:
                     work_item.future.set_exception(BrokenThreadPool(self._broken))
 
-    def shutdown(self, wait=True):
+    def shutdown(self, wait: bool = True):
         with self._shutdown_lock:
             self._shutdown = True
             self._work_queue.put(NULL_ENTRY)

@@ -21,6 +21,7 @@ import copy
 import os
 import sys
 import re
+from typing import Optional
 
 import torch
 from loguru import logger
@@ -42,33 +43,82 @@ def _remove_loguru_ansi_directive(text: str) -> str:
 
 
 class logging:
-    """Standardize logging for cybertensor"""
+    """Standardized logging for cybertensor."""
 
     __has_been_inited__: bool = False
     __debug_on__: bool = False
     __trace_on__: bool = False
     __std_sink__: int = None
     __file_sink__: int = None
+    __off__: bool = False
+
+    @classmethod
+    def off(cls):
+        """Turn off all logging output."""
+        if not cls.__has_been_inited__:
+            cls()
+        cls.__off__ = True
+
+        for handler_id in list(logger._core.handlers):
+            logger.remove(handler_id)
+
+    @classmethod
+    def on(cls):
+        """Turn on logging output by re-adding the sinks."""
+        if cls.__off__:
+            cls.__off__ = False
+
+            cls.__std_sink__ = logger.add(
+                sys.stdout,
+                level=0,
+                filter=cls.log_filter,
+                colorize=True,
+                enqueue=True,
+                backtrace=True,
+                diagnose=True,
+                format=cls.log_formatter,
+            )
+
+            # Check if logging to file was originally enabled and re-add the file sink
+            if cls.__file_sink__ is not None:
+                config = cls.config()
+                filepath = config.logging.logging_dir + "/logs.log"
+                cls.__file_sink__ = logger.add(
+                    filepath,
+                    filter=cls.log_save_filter,
+                    enqueue=True,
+                    backtrace=True,
+                    diagnose=True,
+                    format=cls.log_save_formatter,
+                    rotation="25 MB",
+                    retention="10 days",
+                )
+
+            cls.set_debug(cls.__debug_on__)
+            cls.set_trace(cls.__trace_on__)
 
     def __new__(
         cls,
-        config: "Config" = None,
-        debug: bool = None,
-        trace: bool = None,
-        record_log: bool = None,
-        logging_dir: str = None,
+        config: Optional["Config"] = None,
+        level: Optional[int] = 40,
+        debug: Optional[bool] = None,
+        trace: Optional[bool] = None,
+        record_log: Optional[bool] = None,
+        logging_dir: Optional[str] = None,
     ):
         r"""Instantiate cybertensor logging system backend.
         Args:
-            config (:obj:`Config`, `optional`):
+            config (Config, optional):
                 cybertensor.logging.config()
-            debug (:obj:`bool`, `optional`):
+            level (int, optional):
+                logger level (default: 40).
+            debug (bool, optional):
                 Turn on debug.
-            trace (:obj:`bool`, `optional`):
+            trace (bool, optional):
                 Turn on trace.
-            record_log (:obj:`bool`, `optional`):
-                If true, logs are saved to loggind dir.
-            logging_dir (:obj:`str`, `optional`):
+            record_log (bool, optional):
+                If ``True``, logs are saved to logging dir.
+            logging_dir (str, optional):
                 Directory where logs are sunk.
         """
 
@@ -101,7 +151,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=40,
+            level=level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
@@ -129,8 +179,10 @@ class logging:
 
     @classmethod
     def config(cls):
-        """Get config from the argument parser
-        Return: Config object
+        """Get config from the argument parser.
+
+        Return:
+            Config object
         """
         parser = argparse.ArgumentParser()
         logging.add_args(parser)
