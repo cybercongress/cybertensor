@@ -128,7 +128,7 @@ class logging:
     def __new__(
         cls,
         config: Optional[&#34;Config&#34;] = None,
-        level: Optional[int] = 40,
+        level: Optional[int] = None,
         debug: Optional[bool] = None,
         trace: Optional[bool] = None,
         record_log: Optional[bool] = None,
@@ -139,7 +139,7 @@ class logging:
             config (Config, optional):
                 cybertensor.logging.config()
             level (int, optional):
-                logger level (default: 40).
+                logger level in numeric value.
             debug (bool, optional):
                 Turn on debug.
             trace (bool, optional):
@@ -157,6 +157,9 @@ class logging:
         config = copy.deepcopy(config)
         config.logging.debug = debug if debug is not None else config.logging.debug
         config.logging.trace = trace if trace is not None else config.logging.trace
+        config.logging.level = (
+            level if level is not None else config.logging.level if config.logging.level is not None else 20
+        )
         config.logging.record_log = (
             record_log if record_log is not None else config.logging.record_log
         )
@@ -179,7 +182,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=level,
+            level=config.logging.level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
@@ -238,14 +241,20 @@ class logging:
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.debug&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Turn on cybertensor debugging information&#34;&#34;&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor debugging information.&#34;&#34;&#34;,
                 default=default_logging_debug,
             )
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.trace&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Turn on cybertensor trace level information&#34;&#34;&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor trace level information.&#34;&#34;&#34;,
                 default=default_logging_trace,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.level&#34;,
+                type=int,
+                help=&#34;&#34;&#34;The default logging level in numeric values.&#34;&#34;&#34;,
+                default=None,
             )
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.record_log&#34;,
@@ -256,7 +265,7 @@ class logging:
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.logging_dir&#34;,
                 type=str,
-                help=&#34;Logging default root directory.&#34;,
+                help=&#34;&#34;&#34;Logging default root directory.&#34;&#34;&#34;,
                 default=default_logging_logging_dir,
             )
         except argparse.ArgumentError:
@@ -391,7 +400,7 @@ class logging:
 <dl>
 <dt id="cybertensor.ctlogging.logging"><code class="flex name class">
 <span>class <span class="ident">logging</span></span>
-<span>(</span><span>config: Optional[ForwardRef('Config')] = None, level: Optional[int] = 40, debug: Optional[bool] = None, trace: Optional[bool] = None, record_log: Optional[bool] = None, logging_dir: Optional[str] = None)</span>
+<span>(</span><span>config: Optional[ForwardRef('Config')] = None, level: Optional[int] = None, debug: Optional[bool] = None, trace: Optional[bool] = None, record_log: Optional[bool] = None, logging_dir: Optional[str] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Standardized logging for cybertensor.</p></div>
@@ -457,7 +466,7 @@ class logging:
     def __new__(
         cls,
         config: Optional[&#34;Config&#34;] = None,
-        level: Optional[int] = 40,
+        level: Optional[int] = None,
         debug: Optional[bool] = None,
         trace: Optional[bool] = None,
         record_log: Optional[bool] = None,
@@ -468,7 +477,7 @@ class logging:
             config (Config, optional):
                 cybertensor.logging.config()
             level (int, optional):
-                logger level (default: 40).
+                logger level in numeric value.
             debug (bool, optional):
                 Turn on debug.
             trace (bool, optional):
@@ -486,6 +495,9 @@ class logging:
         config = copy.deepcopy(config)
         config.logging.debug = debug if debug is not None else config.logging.debug
         config.logging.trace = trace if trace is not None else config.logging.trace
+        config.logging.level = (
+            level if level is not None else config.logging.level if config.logging.level is not None else 20
+        )
         config.logging.record_log = (
             record_log if record_log is not None else config.logging.record_log
         )
@@ -508,7 +520,7 @@ class logging:
         # Add filtered sys.stdout.
         cls.__std_sink__ = logger.add(
             sys.stdout,
-            level=level,
+            level=config.logging.level,
             filter=cls.log_filter,
             colorize=True,
             enqueue=True,
@@ -567,14 +579,20 @@ class logging:
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.debug&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Turn on cybertensor debugging information&#34;&#34;&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor debugging information.&#34;&#34;&#34;,
                 default=default_logging_debug,
             )
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.trace&#34;,
                 action=&#34;store_true&#34;,
-                help=&#34;&#34;&#34;Turn on cybertensor trace level information&#34;&#34;&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor trace level information.&#34;&#34;&#34;,
                 default=default_logging_trace,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.level&#34;,
+                type=int,
+                help=&#34;&#34;&#34;The default logging level in numeric values.&#34;&#34;&#34;,
+                default=None,
             )
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.record_log&#34;,
@@ -585,7 +603,7 @@ class logging:
             parser.add_argument(
                 &#34;--&#34; + prefix_str + &#34;logging.logging_dir&#34;,
                 type=str,
-                help=&#34;Logging default root directory.&#34;,
+                help=&#34;&#34;&#34;Logging default root directory.&#34;&#34;&#34;,
                 default=default_logging_logging_dir,
             )
         except argparse.ArgumentError:
@@ -733,14 +751,20 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;logging.debug&#34;,
             action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Turn on cybertensor debugging information&#34;&#34;&#34;,
+            help=&#34;&#34;&#34;Turn on cybertensor debugging information.&#34;&#34;&#34;,
             default=default_logging_debug,
         )
         parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;logging.trace&#34;,
             action=&#34;store_true&#34;,
-            help=&#34;&#34;&#34;Turn on cybertensor trace level information&#34;&#34;&#34;,
+            help=&#34;&#34;&#34;Turn on cybertensor trace level information.&#34;&#34;&#34;,
             default=default_logging_trace,
+        )
+        parser.add_argument(
+            &#34;--&#34; + prefix_str + &#34;logging.level&#34;,
+            type=int,
+            help=&#34;&#34;&#34;The default logging level in numeric values.&#34;&#34;&#34;,
+            default=None,
         )
         parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;logging.record_log&#34;,
@@ -751,7 +775,7 @@ def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
         parser.add_argument(
             &#34;--&#34; + prefix_str + &#34;logging.logging_dir&#34;,
             type=str,
-            help=&#34;Logging default root directory.&#34;,
+            help=&#34;&#34;&#34;Logging default root directory.&#34;&#34;&#34;,
             default=default_logging_logging_dir,
         )
     except argparse.ArgumentError:
