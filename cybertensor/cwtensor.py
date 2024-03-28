@@ -345,7 +345,11 @@ class cwtensor:
             self.contract.execute(msg, signer_wallet, gas, funds=funds)
             return True
         else:
-            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                # NOTE will raise exeption if tx simulation is not successful, need to catch it
+                tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            except Exception as e:
+                raise error(e.__str__())
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
@@ -406,7 +410,12 @@ class cwtensor:
             self.contract.execute(msg, signer_wallet, gas, funds=funds)
             return True, None
         else:
-            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                # NOTE will raise exeption if tx simulation is not successful, need to catch it
+                tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            except Exception as e:
+                return False, e.__str__()
+
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():

@@ -651,6 +651,29 @@
     {
       "type": "object",
       "required": [
+        "get_subnetwork_n"
+      ],
+      "properties": {
+        "get_subnetwork_n": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
         "get_network_registration_cost"
       ],
       "properties": {
