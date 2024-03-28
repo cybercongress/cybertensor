@@ -157,6 +157,31 @@ class Keypair:
             prefix=prefix,
         )
 
+    def sign(self, data: Union[bytes, str]) -> bytes:
+        """
+        Creates a signature for given data
+
+        Parameters
+        ----------
+        data: data to sign in bytes or hex string format
+
+        Returns
+        -------
+        signature in bytes
+
+        """
+        if data[0:2] == '0x':
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+
+        if not self.private_key:
+            raise ValueError('No private key set to create signatures')
+
+        # return signature
+        # TODO think about update to ADR-36
+        return PrivateKey(self.private_key).sign(data, deterministic=True)
+
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
         """
         Verifies data with specified signature
@@ -182,14 +207,8 @@ class Keypair:
         if type(signature) is not bytes:
             raise TypeError("Signature should be of type bytes or a hex-string")
 
-        # TODO replace verify function to correct
-        verified = True
-        # verified = crypto_verify_fn(signature, data, self.public_key)
-        #
-        # if not verified:
-        #     verified = crypto_verify_fn(signature, b'<Bytes>' + data + b'</Bytes>', self.public_key)
-        #
-        return verified
+        # TODO think about update to ADR-36
+        return PublicKey(self.public_key).verify(data, signature)
 
     def __repr__(self):
         if self.address:
