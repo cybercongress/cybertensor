@@ -185,6 +185,31 @@ class Keypair:
             prefix=prefix,
         )
 
+    def sign(self, data: Union[bytes, str]) -&gt; bytes:
+        &#34;&#34;&#34;
+        Creates a signature for given data
+
+        Parameters
+        ----------
+        data: data to sign in bytes or hex string format
+
+        Returns
+        -------
+        signature in bytes
+
+        &#34;&#34;&#34;
+        if data[0:2] == &#39;0x&#39;:
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+
+        if not self.private_key:
+            raise ValueError(&#39;No private key set to create signatures&#39;)
+
+        # return signature
+        # TODO think about update to ADR-36
+        return PrivateKey(self.private_key).sign(data, deterministic=True)
+
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -&gt; bool:
         &#34;&#34;&#34;
         Verifies data with specified signature
@@ -210,14 +235,8 @@ class Keypair:
         if type(signature) is not bytes:
             raise TypeError(&#34;Signature should be of type bytes or a hex-string&#34;)
 
-        # TODO replace verify function to correct
-        verified = True
-        # verified = crypto_verify_fn(signature, data, self.public_key)
-        #
-        # if not verified:
-        #     verified = crypto_verify_fn(signature, b&#39;&lt;Bytes&gt;&#39; + data + b&#39;&lt;/Bytes&gt;&#39;, self.public_key)
-        #
-        return verified
+        # TODO think about update to ADR-36
+        return PublicKey(self.public_key).verify(data, signature)
 
     def __repr__(self):
         if self.address:
@@ -411,6 +430,31 @@ mnemonic or URI containing soft and hard derivation paths. With these Keypairs d
             prefix=prefix,
         )
 
+    def sign(self, data: Union[bytes, str]) -&gt; bytes:
+        &#34;&#34;&#34;
+        Creates a signature for given data
+
+        Parameters
+        ----------
+        data: data to sign in bytes or hex string format
+
+        Returns
+        -------
+        signature in bytes
+
+        &#34;&#34;&#34;
+        if data[0:2] == &#39;0x&#39;:
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+
+        if not self.private_key:
+            raise ValueError(&#39;No private key set to create signatures&#39;)
+
+        # return signature
+        # TODO think about update to ADR-36
+        return PrivateKey(self.private_key).sign(data, deterministic=True)
+
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -&gt; bool:
         &#34;&#34;&#34;
         Verifies data with specified signature
@@ -436,14 +480,8 @@ mnemonic or URI containing soft and hard derivation paths. With these Keypairs d
         if type(signature) is not bytes:
             raise TypeError(&#34;Signature should be of type bytes or a hex-string&#34;)
 
-        # TODO replace verify function to correct
-        verified = True
-        # verified = crypto_verify_fn(signature, data, self.public_key)
-        #
-        # if not verified:
-        #     verified = crypto_verify_fn(signature, b&#39;&lt;Bytes&gt;&#39; + data + b&#39;&lt;/Bytes&gt;&#39;, self.public_key)
-        #
-        return verified
+        # TODO think about update to ADR-36
+        return PublicKey(self.public_key).verify(data, signature)
 
     def __repr__(self):
         if self.address:
@@ -626,6 +664,51 @@ def validate_mnemonic(cls, mnemonic: str) -&gt; bool:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="cybertensor.keypair.Keypair.sign"><code class="name flex">
+<span>def <span class="ident">sign</span></span>(<span>self, data: Union[bytes, str]) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a signature for given data</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>data to sign in bytes</code> or <code>hex string format</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>signature in bytes</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sign(self, data: Union[bytes, str]) -&gt; bytes:
+    &#34;&#34;&#34;
+    Creates a signature for given data
+
+    Parameters
+    ----------
+    data: data to sign in bytes or hex string format
+
+    Returns
+    -------
+    signature in bytes
+
+    &#34;&#34;&#34;
+    if data[0:2] == &#39;0x&#39;:
+        data = bytes.fromhex(data[2:])
+    elif type(data) is str:
+        data = data.encode()
+
+    if not self.private_key:
+        raise ValueError(&#39;No private key set to create signatures&#39;)
+
+    # return signature
+    # TODO think about update to ADR-36
+    return PrivateKey(self.private_key).sign(data, deterministic=True)</code></pre>
+</details>
+</dd>
 <dt id="cybertensor.keypair.Keypair.verify"><code class="name flex">
 <span>def <span class="ident">verify</span></span>(<span>self, data: Union[bytes, str], signature: Union[bytes, str]) ‑> bool</span>
 </code></dt>
@@ -672,14 +755,8 @@ def validate_mnemonic(cls, mnemonic: str) -&gt; bool:
     if type(signature) is not bytes:
         raise TypeError(&#34;Signature should be of type bytes or a hex-string&#34;)
 
-    # TODO replace verify function to correct
-    verified = True
-    # verified = crypto_verify_fn(signature, data, self.public_key)
-    #
-    # if not verified:
-    #     verified = crypto_verify_fn(signature, b&#39;&lt;Bytes&gt;&#39; + data + b&#39;&lt;/Bytes&gt;&#39;, self.public_key)
-    #
-    return verified</code></pre>
+    # TODO think about update to ADR-36
+    return PublicKey(self.public_key).verify(data, signature)</code></pre>
 </details>
 </dd>
 </dl>
@@ -712,6 +789,7 @@ def validate_mnemonic(cls, mnemonic: str) -&gt; bool:
 <li><code><a title="cybertensor.keypair.Keypair.create_from_mnemonic" href="#cybertensor.keypair.Keypair.create_from_mnemonic">create_from_mnemonic</a></code></li>
 <li><code><a title="cybertensor.keypair.Keypair.create_from_private_key" href="#cybertensor.keypair.Keypair.create_from_private_key">create_from_private_key</a></code></li>
 <li><code><a title="cybertensor.keypair.Keypair.generate_mnemonic" href="#cybertensor.keypair.Keypair.generate_mnemonic">generate_mnemonic</a></code></li>
+<li><code><a title="cybertensor.keypair.Keypair.sign" href="#cybertensor.keypair.Keypair.sign">sign</a></code></li>
 <li><code><a title="cybertensor.keypair.Keypair.validate_mnemonic" href="#cybertensor.keypair.Keypair.validate_mnemonic">validate_mnemonic</a></code></li>
 <li><code><a title="cybertensor.keypair.Keypair.verify" href="#cybertensor.keypair.Keypair.verify">verify</a></code></li>
 </ul>
