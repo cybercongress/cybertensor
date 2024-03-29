@@ -18,6 +18,7 @@
 from typing import Optional, Union
 
 from bip39 import bip39_generate, bip39_validate
+from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.address import Address
 from cosmpy.crypto.keypairs import PrivateKey, PublicKey
 from cosmpy.mnemonic import (
@@ -27,6 +28,7 @@ from cosmpy.mnemonic import (
 )
 
 from cybertensor import __chain_address_prefix__
+from cybertensor.errors import ConfigurationError
 
 
 class Keypair:
@@ -62,7 +64,7 @@ class Keypair:
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
         if not public_key:
-            raise ValueError("No public key provided")
+            raise ConfigurationError("No public key provided")
 
         self.public_key: bytes = public_key
 
@@ -156,6 +158,29 @@ class Keypair:
             private_key=private_key,
             prefix=prefix,
         )
+
+    def sign(self, data: Union[bytes, str]) -> bytes:
+        """
+        Creates a signature for given data
+        Parameters
+        ----------
+        data: data to sign in bytes or hex string format
+        Returns
+        -------
+        signature in bytes
+        """
+
+        if data[0:2] == '0x':
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+        elif type(data) is not bytes:
+            raise TypeError(f'Signing data should be of type bytes or hex string, given data type is {type(data)}')
+
+        if not self.private_key:
+            raise ConfigurationError('No private key set to create signatures')
+
+        return LocalWallet(PrivateKey(self.private_key)).signer().sign(message=data)
 
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
         """
