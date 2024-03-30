@@ -27,6 +27,7 @@ from cosmpy.mnemonic import (
 )
 
 from cybertensor import __chain_address_prefix__
+from cybertensor.errors import ConfigurationError
 
 
 class Keypair:
@@ -62,7 +63,7 @@ class Keypair:
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
         if not public_key:
-            raise ValueError("No public key provided")
+            raise ConfigurationError("No public key provided")
 
         self.public_key: bytes = public_key
 
@@ -174,13 +175,15 @@ class Keypair:
             data = bytes.fromhex(data[2:])
         elif type(data) is str:
             data = data.encode()
+        elif type(data) is not bytes:
+            raise TypeError(f"Signed data should be of type bytes or hex-string, given data type is {type(data)}")
 
         if not self.private_key:
-            raise ValueError('No private key set to create signatures')
+            raise ConfigurationError("No private key set to create signatures")
 
         # return signature
         # TODO think about update to ADR-36
-        return PrivateKey(self.private_key).sign(data, deterministic=True)
+        return PrivateKey(self.private_key).sign(message=data, deterministic=True)
 
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
         """
@@ -200,15 +203,17 @@ class Keypair:
             data = bytes.fromhex(data[2:])
         elif type(data) is str:
             data = data.encode()
+        elif type(data) is not bytes:
+            raise TypeError(f"Signed data should be of type bytes or hex-string, given data type is {type(data)}")
 
         if type(signature) is str and signature[0:2] == "0x":
             signature = bytes.fromhex(signature[2:])
 
         if type(signature) is not bytes:
-            raise TypeError("Signature should be of type bytes or a hex-string")
+            raise TypeError(f"Signature should be of type bytes or a hex-string, given signature type is {type(signature)}")
 
         # TODO think about update to ADR-36
-        return PublicKey(self.public_key).verify(data, signature)
+        return PublicKey(self.public_key).verify(message=data, signature=signature)
 
     def __repr__(self):
         if self.address:

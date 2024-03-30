@@ -105,6 +105,11 @@ class KeyFileError(Exception):
     pass
 
 
+class ConfigurationError(Exception):
+    r"""Error raised when a private key is not found."""
+    pass
+
+
 class MetadataError(ChainTransactionError):
     r"""Error raised when metadata commitment transaction fails."""
 
@@ -112,7 +117,7 @@ class MetadataError(ChainTransactionError):
 
 
 class InvalidRequestNameError(Exception):
-    r"""This exception is raised when the request name is invalid. Ususally indicates a broken URL."""
+    r"""This exception is raised when the request name is invalid. Usually indicates a broken URL."""
 
     pass
 
@@ -145,6 +150,7 @@ class PriorityException(Exception):
     r"""This exception is raised when the request priority is not met."""
 
     pass
+
 
 class PostProcessException(Exception):
     r"""This exception is raised when the response headers cannot be updated."""
