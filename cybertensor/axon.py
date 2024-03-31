@@ -40,6 +40,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 import cybertensor
+import cybertensor.utils.networking as net
 from cybertensor.config import Config
 from cybertensor.errors import *
 from cybertensor.keypair import Keypair
@@ -309,16 +310,8 @@ class axon:
         self.uuid = str(uuid.uuid1())
         self.ip = self.config.axon.ip
         self.port = self.config.axon.port
-        self.external_ip = (
-            self.config.axon.external_ip
-            if self.config.axon.external_ip is not None
-            else cybertensor.utils.networking.get_external_ip()
-        )
-        self.external_port = (
-            self.config.axon.external_port
-            if self.config.axon.external_port is not None
-            else self.config.axon.port
-        )
+        self.external_ip = self.config.axon.external_ip or net.get_external_ip()
+        self.external_port = self.config.axon.external_port or self.config.axon.port
         self.full_address = str(self.config.axon.ip) + ":" + str(self.config.axon.port)
         self.started = False
 

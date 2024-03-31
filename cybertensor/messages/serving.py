@@ -169,7 +169,7 @@ def serve_axon_message(
     # ---- Get external ip ----
     if axon.external_ip is None:
         try:
-            external_ip = net.get_external_ip()
+            external_ip = cwtensor.config.axon.external_ip or net.get_external_ip()
             console.print(
                 f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )
