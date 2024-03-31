@@ -620,6 +620,7 @@ class dendrite(torch.nn.Module):
             nonce=time.monotonic_ns(),
             uuid=self.uuid,
             hotkey=self.keypair.address,
+            pubkey=self.keypair.public_key
         )
 
         # Build the Axon headers using the target axon's details
@@ -627,11 +628,17 @@ class dendrite(torch.nn.Module):
             ip=target_axon_info.ip,
             port=target_axon_info.port,
             hotkey=target_axon_info.hotkey,
+            pubkey=None
         )
 
         # Sign the request using the dendrite, axon info, and the synapse body hash
         message = f"{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{synapse.axon.hotkey}.{synapse.dendrite.uuid}.{synapse.body_hash}"
-        synapse.dendrite.signature = f"0x{self.keypair.sign(message).hex()}"
+        signed = self.keypair.sign(message)
+        cybertensor.logging.info(f"\nDENDRITE ADDR {self.keypair.address}")
+        cybertensor.logging.info(f"DENDRITE MSG {message}")
+        cybertensor.logging.info(f"DENDRITE SGN {signed}")
+        cybertensor.logging.info(f"DENDRITE SGN 0x{signed.hex()}\n")
+        synapse.dendrite.signature = f"0x{signed.hex()}"
 
         return synapse
 
