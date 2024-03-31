@@ -15,28 +15,40 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+import base64
+import hashlib
+import logging
 from typing import Optional, Union
 
+from bech32 import (  # pylint: disable=wrong-import-order
+    bech32_encode,
+    convertbits,
+)
 from bip39 import bip39_generate, bip39_validate
 from cosmpy.crypto.address import Address
+from cosmpy.crypto.hashfuncs import ripemd160
 from cosmpy.crypto.keypairs import PrivateKey, PublicKey
 from cosmpy.mnemonic import (
     derive_child_key_from_mnemonic,
     COSMOS_HD_PATH,
     validate_mnemonic_and_normalise,
 )
-
 from cybertensor import __chain_address_prefix__
+from ecdsa import (  # type: ignore # pylint: disable=wrong-import-order
+    SECP256k1,
+    SigningKey,
+    VerifyingKey,
+)
 from cybertensor.errors import ConfigurationError
 
 
 class Keypair:
     def __init__(
-        self,
-        address: str = None,
-        public_key: Union[bytes, str] = None,
-        private_key: Union[bytes, str] = None,
-        prefix: Optional[str] = None,
+            self,
+            address: str = None,
+            public_key: Union[bytes, str] = None,
+            private_key: Union[bytes, str] = None,
+            prefix: Optional[str] = None,
     ):
         """
         Allows generation of Keypairs from a variety of input combination, such as a public/private key combination,
@@ -62,8 +74,12 @@ class Keypair:
             public_key = private_key_obj.public_key.public_key
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
-        if not public_key:
-            raise ConfigurationError("No public key provided")
+        if public_key and isinstance(public_key, str):
+            # self.public_key = bytes(public_key, 'utf-8')
+            self.public_key = public_key
+
+        # if not public_key:
+        #     raise ValueError("No public key provided")
 
         self.public_key: bytes = public_key
 
@@ -105,7 +121,7 @@ class Keypair:
 
     @classmethod
     def create_from_mnemonic(
-        cls, mnemonic: str, prefix: Optional[str] = None
+            cls, mnemonic: str, prefix: Optional[str] = None
     ) -> "Keypair":
         """
         Create a Keypair for given mnemonic
@@ -135,7 +151,7 @@ class Keypair:
 
     @classmethod
     def create_from_private_key(
-        cls, private_key: Union[bytes, str], prefix: Optional[str] = None
+            cls, private_key: Union[bytes, str], prefix: Optional[str] = None
     ) -> "Keypair":
         """
         Creates Keypair for specified public/private keys
@@ -157,6 +173,45 @@ class Keypair:
             private_key=private_key,
             prefix=prefix,
         )
+
+    def get_address_from_public_key(self, public_key: str) -> str:
+        """
+        Get the address from the public key.
+
+        :param public_key: the public key
+        :return: str
+        """
+        public_key_bytes = bytes.fromhex(public_key)
+        s = hashlib.new("sha256", public_key_bytes).digest()
+        r = ripemd160(s)
+        five_bit_r = convertbits(r, 8, 5)
+        if five_bit_r is None:  # pragma: nocover
+            raise TypeError("Unsuccessful bech32.convertbits call")
+
+        ## TODO add configuration for chain prefix
+        address = bech32_encode(__chain_address_prefix__, five_bit_r)
+        return address
+
+    def recover_message(self, message: bytes, signature: str) -> tuple[Address, ...]:
+        public_keys = self.recover_public_keys_from_message(message, signature)
+        addresses = [
+            self.get_address_from_public_key(public_key) for public_key in public_keys
+        ]
+        return tuple(addresses)
+
+    def recover_public_keys_from_message(self, message: bytes, signature: str) -> tuple[str, ...]:
+        signature_b64 = base64.b64decode(signature)
+        verifying_keys = VerifyingKey.from_public_key_recovery(
+            signature_b64,
+            message,
+            SECP256k1,
+            hashfunc=hashlib.sha256,
+        )
+        public_keys = [
+            verifying_key.to_string("compressed").hex()
+            for verifying_key in verifying_keys
+        ]
+        return tuple(public_keys)
 
     def sign(self, data: Union[bytes, str]) -> bytes:
         """
@@ -181,9 +236,14 @@ class Keypair:
         if not self.private_key:
             raise ConfigurationError("No private key set to create signatures")
 
-        # return signature
-        # TODO think about update to ADR-36
-        return PrivateKey(self.private_key).sign(message=data, deterministic=True)
+        signature_compact = PrivateKey(self.private_key).sign(data, deterministic=True)
+        signature_base64_str = base64.b64encode(signature_compact).decode("utf-8").encode()
+
+        logging.debug(f"\nKEYPAIR address: {self.address}")
+        logging.debug(f"KEYPAIR Signing data: {data}")
+        logging.debug(f"KEYPAIR Generated signature: {signature_base64_str}\n")
+
+        return signature_base64_str
 
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
         """
@@ -209,11 +269,26 @@ class Keypair:
         if type(signature) is str and signature[0:2] == "0x":
             signature = bytes.fromhex(signature[2:])
 
-        if type(signature) is not bytes:
-            raise TypeError(f"Signature should be of type bytes or a hex-string, given signature type is {type(signature)}")
+        for address in self.recover_message(data, signature):
+            if self.address == address:
+                logging.debug(f"KEYPAIR Verified data: True")
+                return True
+        logging.debug(f"KEYPAIR Verified data: False")
+        return False
 
-        # TODO think about update to ADR-36
-        return PublicKey(self.public_key).verify(message=data, signature=signature)
+        # recovered_addresses = self.recover_message(data, signature)
+        # logging.debug(f"\nKEYPAIR Verifying data: {data}")
+        # logging.debug(f"KEYPAIR Recovered addresses: {recovered_addresses}")
+        # if self.address == recovered_addresses[0]:
+        #     logging.debug(f"KEYPAIR Verified data: True 1")
+        #     return True
+        #
+        # if self.address == recovered_addresses[1]:
+        #     logging.debug(f"KEYPAIR Verified data: True 2\n")
+        #     return True
+        #
+        # logging.debug(f"KEYPAIR Verified data: False\n")
+        # return False
 
     def __repr__(self):
         if self.address:
