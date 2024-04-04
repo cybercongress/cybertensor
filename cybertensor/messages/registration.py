@@ -88,7 +88,7 @@ def register_message(
         )
         if not neuron.is_null:
             cybertensor.logging.debug(
-                f"Wallet {wallet} is already registered on {neuron.netuid} with {neuron.uid}"
+                f"Wallet {wallet} is already registered on network: {neuron.netuid} with user id: {neuron.uid}"
             )
             return True
 

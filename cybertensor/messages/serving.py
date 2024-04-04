@@ -96,11 +96,8 @@ def serve_message(
         "placeholder1": neuron.axon_info.placeholder1,
         "placeholder2": neuron.axon_info.placeholder2,
     }
-    output = params.copy()
-    output["coldkey"] = wallet.coldkeypub.address
-    output["hotkey"] = wallet.hotkey.address
     if neuron_up_to_date:
-        cybertensor.logging.debug(
+        cybertensor.logging.info(
             f"Axon already served on: AxonInfo({wallet.hotkey.address},{ip}:{port}) "
         )
         return True
@@ -135,8 +132,8 @@ def serve_message(
                 f"Axon failed to served with error: {error_message} "
             )
             return False
-    else:
-        return True
+
+    return True
 
 
 def serve_axon_message(

@@ -860,9 +860,9 @@ class axon:
                 raise Exception("Nonce is too small")
 
             verified = keypair.verify(message, synapse.dendrite.signature)
-            cybertensor.logging.info(f"\nAXON VERIFY MSG: {message}")
-            cybertensor.logging.info(f"AXON VERIFY SGN: {synapse.dendrite.signature}")
-            cybertensor.logging.info(f"AXON VERIFY : {verified}")
+            cybertensor.logging.debug(f"\nAXON VERIFY MSG: {message}")
+            cybertensor.logging.debug(f"AXON VERIFY SGN: {synapse.dendrite.signature}")
+            cybertensor.logging.debug(f"AXON VERIFY : {verified}")
             if not verified:
                 raise Exception(
                     f"Signature mismatch with {message} and {synapse.dendrite.signature}"

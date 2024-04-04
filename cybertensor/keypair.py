@@ -17,7 +17,6 @@
 
 import base64
 import hashlib
-import logging
 from typing import Optional, Union
 
 from bech32 import (  # pylint: disable=wrong-import-order
@@ -25,6 +24,11 @@ from bech32 import (  # pylint: disable=wrong-import-order
     convertbits,
 )
 from bip39 import bip39_generate, bip39_validate
+from ecdsa import (  # type: ignore # pylint: disable=wrong-import-order
+    SECP256k1,
+    SigningKey,
+    VerifyingKey,
+)
 from cosmpy.crypto.address import Address
 from cosmpy.crypto.hashfuncs import ripemd160
 from cosmpy.crypto.keypairs import PrivateKey, PublicKey
@@ -33,12 +37,9 @@ from cosmpy.mnemonic import (
     COSMOS_HD_PATH,
     validate_mnemonic_and_normalise,
 )
+
+import cybertensor as ct
 from cybertensor import __chain_address_prefix__
-from ecdsa import (  # type: ignore # pylint: disable=wrong-import-order
-    SECP256k1,
-    SigningKey,
-    VerifyingKey,
-)
 from cybertensor.errors import ConfigurationError
 
 
@@ -76,12 +77,12 @@ class Keypair:
 
         if public_key and isinstance(public_key, str):
             # self.public_key = bytes(public_key, 'utf-8')
-            self.public_key = public_key
+            self.public_key: str = public_key
+        elif public_key and isinstance(public_key, bytes):
+            self.public_key: bytes = public_key
 
         # if not public_key:
         #     raise ValueError("No public key provided")
-
-        self.public_key: bytes = public_key
 
         self.address: str = address
 
@@ -236,12 +237,12 @@ class Keypair:
         if not self.private_key:
             raise ConfigurationError("No private key set to create signatures")
 
-        signature_compact = PrivateKey(self.private_key).sign(data, deterministic=True)
+        signature_compact = PrivateKey(self.private_key).sign(message=data, deterministic=True)
         signature_base64_str = base64.b64encode(signature_compact).decode("utf-8").encode()
 
-        logging.debug(f"\nKEYPAIR address: {self.address}")
-        logging.debug(f"KEYPAIR Signing data: {data}")
-        logging.debug(f"KEYPAIR Generated signature: {signature_base64_str}\n")
+        ct.logging.debug(f"\nKEYPAIR address: {self.address}")
+        ct.logging.debug(f"KEYPAIR Signing data: {data}")
+        ct.logging.debug(f"KEYPAIR Generated signature: {signature_base64_str}\n")
 
         return signature_base64_str
 
@@ -269,11 +270,11 @@ class Keypair:
         if type(signature) is str and signature[0:2] == "0x":
             signature = bytes.fromhex(signature[2:])
 
-        for address in self.recover_message(data, signature):
+        for address in self.recover_message(message=data, signature=signature):
             if self.address == address:
-                logging.debug(f"KEYPAIR Verified data: True")
+                ct.logging.debug(f"KEYPAIR Verified data: True")
                 return True
-        logging.debug(f"KEYPAIR Verified data: False")
+        ct.logging.debug(f"KEYPAIR Verified data: False")
         return False
 
         # recovered_addresses = self.recover_message(data, signature)
