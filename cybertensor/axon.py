@@ -847,9 +847,9 @@ class axon:
         """
         # Build the keypair from the dendrite_hotkey
         if synapse.dendrite is not None:
-            cybertensor.logging.info(f"dendrite: {synapse.dendrite}")
-            # keypair = Keypair(address=synapse.dendrite.hotkey, public_key=synapse.dendrite.pubkey)
-            keypair = Keypair(address=synapse.dendrite.hotkey)
+            keypair = Keypair(address=synapse.dendrite.hotkey, public_key=synapse.dendrite.pubkey)
+            # TODO think to return to this, related to keypair initialization
+            # keypair = Keypair(address=synapse.dendrite.hotkey)
             # Build the signature messages.
             message = (f"{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{self.wallet.hotkey.address}."
                        f"{synapse.dendrite.uuid}.{synapse.computed_body_hash}")
@@ -866,11 +866,7 @@ class axon:
             ):
                 raise Exception("Nonce is too small")
 
-            verified = keypair.verify(message, synapse.dendrite.signature)
-            cybertensor.logging.info(f"\nAXON VERIFY MSG: {message}")
-            cybertensor.logging.info(f"AXON VERIFY SGN: {synapse.dendrite.signature}")
-            cybertensor.logging.info(f"AXON VERIFY : {verified}")
-            if not verified:
+            if not keypair.verify(message, synapse.dendrite.signature):
                 raise Exception(
                     f"Signature mismatch with {message} and {synapse.dendrite.signature}"
                 )

@@ -257,15 +257,6 @@ class TerminalInfo(pydantic.BaseModel):
         allow_mutation=True,
     )
 
-    # The cybertensor version on the terminal as an int.
-    pubkey: Optional[str] = pydantic.Field(
-        title="pubkey",
-        description="The pubkey string of the terminal wallet.",
-        examples="",
-        default=None,
-        allow_mutation=True,
-    )
-
 
 class Synapse(pydantic.BaseModel):
     """

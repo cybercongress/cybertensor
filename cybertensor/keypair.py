@@ -74,14 +74,13 @@ class Keypair:
             public_key = private_key_obj.public_key.public_key
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
-        if public_key and isinstance(public_key, str):
-            # self.public_key = bytes(public_key, 'utf-8')
-            self.public_key = public_key
+        if isinstance(public_key, str):
+            self.public_key = bytes(public_key, 'utf-8')
+        else:
+            self.public_key: bytes = public_key
 
         # if not public_key:
         #     raise ValueError("No public key provided")
-
-        self.public_key: bytes = public_key
 
         self.address: str = address
 
@@ -239,10 +238,6 @@ class Keypair:
         signature_compact = PrivateKey(self.private_key).sign(data, deterministic=True)
         signature_base64_str = base64.b64encode(signature_compact).decode("utf-8").encode()
 
-        logging.debug(f"\nKEYPAIR address: {self.address}")
-        logging.debug(f"KEYPAIR Signing data: {data}")
-        logging.debug(f"KEYPAIR Generated signature: {signature_base64_str}\n")
-
         return signature_base64_str
 
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
@@ -271,27 +266,68 @@ class Keypair:
 
         for address in self.recover_message(data, signature):
             if self.address == address:
-                logging.debug(f"KEYPAIR Verified data: True")
                 return True
-        logging.debug(f"KEYPAIR Verified data: False")
         return False
-
-        # recovered_addresses = self.recover_message(data, signature)
-        # logging.debug(f"\nKEYPAIR Verifying data: {data}")
-        # logging.debug(f"KEYPAIR Recovered addresses: {recovered_addresses}")
-        # if self.address == recovered_addresses[0]:
-        #     logging.debug(f"KEYPAIR Verified data: True 1")
-        #     return True
-        #
-        # if self.address == recovered_addresses[1]:
-        #     logging.debug(f"KEYPAIR Verified data: True 2\n")
-        #     return True
-        #
-        # logging.debug(f"KEYPAIR Verified data: False\n")
-        # return False
 
     def __repr__(self):
         if self.address:
             return f"<Keypair (address={self.address})>"
         else:
             return f"<Keypair (public_key={self.public_key})>"
+
+import unittest
+
+class TestKeypair(unittest.TestCase):
+    logging.basicConfig(level=logging.DEBUG)
+    def setUp(self):
+        self.keypair = Keypair.create_from_mnemonic(
+            "soft gun middle game together suspect anchor sing idle three naive mercy")
+
+    def test_sign_and_verify1(self):
+        keypair = Keypair.create_from_mnemonic(
+            "soft gun middle game together suspect anchor sing idle three naive mercy")
+        data = "385738983833.pussy1n423wpcennjyjuvgkvlyhppgjd9lwrqfusqmgu.pussy1ygxx9zslqjjcwmcd8wgejrue4vnz49k7fuzhku.fcb9ece0-ef78-11ee-9389-9e8df22e2270.a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"
+        signature = "0x6d535a7a6b534a3664336e3479342f76364239457543572f53394d3146555632484d6a44347668356d4a305446335a3550642b342f7573736c7771514252582f4e732b47375945517236506c457a4e565363497064673d3d"
+        print(f"\nVerification result: {keypair.recover_message(data.encode(), bytes.fromhex(signature[2:]))}")
+        self.assertTrue(True)
+
+    def test_sign_and_verify(self):
+        keypair = Keypair.create_from_mnemonic(
+            "soft gun middle game together suspect anchor sing idle three naive mercy")
+        # message = "Hello, World!"
+        # message = "0x502b683041372f35677374382b525659315733385453666263746c324c2f36727148386250676a71324d524b652f6b68537350365a3148494f5231344b5a545673485832542f596b2b416339364545745946677a4b673d3d"
+        message = "504235593958.pussy1ygxx9zslqjjcwmcd8wgejrue4vnz49k7fuzhku.pussy1n423wpcennjyjuvgkvlyhppgjd9lwrqfusqmgu.8bc2b7e4-ef49-11ee-9419-9e8df22e2270.a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"
+
+        print(f"\nKeypair  : {keypair}")
+        signature = keypair.sign(message)
+        print(signature)
+        print("tiisU5oD8UnHZbENOfbDyrEhjZrOvoSMi6sK5YZduA1b+I3rDztzuMX3jymfIe5/1zLq52gtIklbjcTERFHbWg==")
+        print(f"0x{signature.hex()}")
+        print("0x6d69322b417473376f6c504f77313178336947336b4a4c3173396f55302f4f555a4550416659453443306f306575564d485766565a38684a55367a784d4f4b2f624a7364567579437544352b374d4a694559446e4f413d3d")
+        data = message
+
+        if data[0:2] == "0x":
+            data = bytes.fromhex(data[2:])
+        elif type(data) is str:
+            data = data.encode()
+        #
+        if type(signature) is str and signature[0:2] == "0x":
+            signature = bytes.fromhex(signature[2:])
+
+        # if type(signature) is not bytes:
+        #     raise TypeError("Signature should be of type bytes or a hex-string")
+        print(f"\nVerifying data: {data} with signature: {signature}")
+        print(f"\nVerification result: {keypair.recover_message(data, signature)}")
+
+
+        # if self.address == self.recover_message(data, signature)[0]:
+        # logging.info(signature)
+        # keypair.verify(message, signature)
+        signature = f"0x{signature.hex()}"
+        self.assertTrue(keypair.verify(message, signature))
+
+
+        # with 6575560262750.pussy1ygxx9zslqjjcwmcd8wgejrue4vnz49k7fuzhku.pussy1n423wpcennjyjuvgkvlyhppgjd9lwrqfusqmgu.2c015c6e-ef2d-11ee-9559-9e8df22e2270.a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a and 0x6d69322b417473376f6c504f77313178336947336b4a4c3173396f55302f4f555a4550416659453443306f306575564d485766565a38684a55367a784d4f4b2f624a7364567579437544352b374d4a694559446e4f413d3d
+
+# if __name__ == "__main__":
+#     unittest.main()

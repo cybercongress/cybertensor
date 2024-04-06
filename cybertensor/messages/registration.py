@@ -266,6 +266,7 @@ def burned_register_message(
         if not Confirm.ask(f"Recycle {recycle_amount} to register on subnet:{netuid}?"):
             return False
 
+    # Update BOOT to configured token
     with console.status(":satellite: Recycling BOOT for Registration..."):
         success, err_msg = cwtensor._do_burned_register(
             netuid=netuid,
