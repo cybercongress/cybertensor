@@ -65,15 +65,6 @@ def turn_console_on():
 turn_console_on()
 
 
-# Logging helpers.
-def trace(on: bool = True):
-    logging.set_trace(on)
-
-
-def debug(on: bool = True):
-    logging.set_debug(on)
-
-
 class NetworkConfigCwTensor(NetworkConfig):
     def __init__(
         self,
@@ -196,7 +187,6 @@ from cybertensor.axon import axon
 from cybertensor.dendrite import dendrite
 from cybertensor.config import Config
 from cybertensor.mock import MockCwtensor, MockWallet
-# from .subnets import SubnetsAPI
 
 configs = [
     axon.config(),

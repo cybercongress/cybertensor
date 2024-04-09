@@ -185,7 +185,7 @@ class axon:
             output: int = None
 
         # Define a custom request forwarding function
-        def forward( synapse: MySynapse ) -> MySynapse:
+        def forward_my_synapse( synapse: MySynapse ) -> MySynapse:
             # Apply custom logic to synapse and return it
             synapse.output = 2
             return synapse
@@ -195,13 +195,13 @@ class axon:
             # Apply custom verification logic to synapse
             # Optionally raise Exception
 
-        # Define a custom request blacklist fucntion
+        # Define a custom request blacklist function
         def blacklist_my_synapse( synapse: MySynapse ) -> bool:
             # Apply custom blacklist
             # return False ( if non blacklisted ) or True ( if blacklisted )
 
-        # Define a custom request priority fucntion
-        def prioritize_my_synape( synapse: MySynapse ) -> float:
+        # Define a custom request priority function
+        def prioritize_my_synapse( synapse: MySynapse ) -> float:
             # Apply custom priority
             return 1.0
 
@@ -213,12 +213,12 @@ class axon:
             forward_fn = forward_my_synapse,
             verify_fn = verify_my_synapse,
             blacklist_fn = blacklist_my_synapse,
-            priority_fn = prioritize_my_synape
+            priority_fn = prioritize_my_synapse
         ).attach(
             forward_fn = forward_my_synapse_2,
             verify_fn = verify_my_synapse_2,
             blacklist_fn = blacklist_my_synapse_2,
-            priority_fn = prioritize_my_synape_2
+            priority_fn = prioritize_my_synapse_2
         ).serve(
             netuid = ...
             cwtensor = ...
@@ -680,12 +680,12 @@ class axon:
         Raises:
             AssertionError: If the axon or external ports are not in range [1024, 65535]
         """
-        assert (
-            config.axon.port > 1024 and config.axon.port < 65535
+        assert config.axon.port is None or (
+                1024 < config.axon.port < 65535
         ), "Axon port must be in range [1024, 65535]"
 
         assert config.axon.external_port is None or (
-            config.axon.external_port > 1024 and config.axon.external_port < 65535
+                1024 < config.axon.external_port < 65535
         ), "External port must be in range [1024, 65535]"
 
     def to_string(self):
@@ -980,11 +980,13 @@ class AxonMiddleware(BaseHTTPMiddleware):
             # Logs the start of the request processing
             if synapse.dendrite is not None:
                 cybertensor.logging.trace(
-                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | {synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port} | 200 | Success "
+                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | "
+                    f"{synapse.dendrite.hotkey} | {synapse.dendrite.ip}:{synapse.dendrite.port} | 200 | Success "
                 )
             else:
                 cybertensor.logging.trace(
-                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | None | None | 200 | Success "
+                    f"axon     | <-- | {request.headers.get('content-length', -1)} B | {synapse.name} | "
+                    f"None | None | 200 | Success "
                 )
 
             # Call the blacklist function
