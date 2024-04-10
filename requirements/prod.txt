@@ -37,4 +37,5 @@ cosmpy>=0.9.1
 ecdsa<0.15
 py-bip39-bindings
 urllib3==1.26.15
-websocket
+websocket>=0.2.1
+websocket-client==1.7.0
