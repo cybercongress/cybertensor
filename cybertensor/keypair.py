@@ -75,14 +75,13 @@ class Keypair:
             public_key = private_key_obj.public_key.public_key
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
-        if public_key and isinstance(public_key, str):
-            # self.public_key = bytes(public_key, 'utf-8')
-            self.public_key: str = public_key
-        elif public_key and isinstance(public_key, bytes):
-            self.public_key: bytes = public_key
+        if not public_key:
+            raise ValueError("No public key provided")
 
-        # if not public_key:
-        #     raise ValueError("No public key provided")
+        if isinstance(public_key, str):
+            self.public_key = bytes(public_key, 'utf-8')
+        else:
+            self.public_key: bytes = public_key
 
         self.address: str = address
 
@@ -240,10 +239,6 @@ class Keypair:
         signature_compact = PrivateKey(self.private_key).sign(message=data, deterministic=True)
         signature_base64_str = base64.b64encode(signature_compact).decode("utf-8").encode()
 
-        ct.logging.debug(f"\nKEYPAIR address: {self.address}")
-        ct.logging.debug(f"KEYPAIR Signing data: {data}")
-        ct.logging.debug(f"KEYPAIR Generated signature: {signature_base64_str}\n")
-
         return signature_base64_str
 
     def verify(self, data: Union[bytes, str], signature: Union[bytes, str]) -> bool:
@@ -272,24 +267,8 @@ class Keypair:
 
         for address in self.recover_message(message=data, signature=signature):
             if self.address == address:
-                ct.logging.debug(f"KEYPAIR Verified data: True")
                 return True
-        ct.logging.debug(f"KEYPAIR Verified data: False")
         return False
-
-        # recovered_addresses = self.recover_message(data, signature)
-        # logging.debug(f"\nKEYPAIR Verifying data: {data}")
-        # logging.debug(f"KEYPAIR Recovered addresses: {recovered_addresses}")
-        # if self.address == recovered_addresses[0]:
-        #     logging.debug(f"KEYPAIR Verified data: True 1")
-        #     return True
-        #
-        # if self.address == recovered_addresses[1]:
-        #     logging.debug(f"KEYPAIR Verified data: True 2\n")
-        #     return True
-        #
-        # logging.debug(f"KEYPAIR Verified data: False\n")
-        # return False
 
     def __repr__(self):
         if self.address:

@@ -633,12 +633,7 @@ class dendrite(torch.nn.Module):
 
         # Sign the request using the dendrite, axon info, and the synapse body hash
         message = f"{synapse.dendrite.nonce}.{synapse.dendrite.hotkey}.{synapse.axon.hotkey}.{synapse.dendrite.uuid}.{synapse.body_hash}"
-        signed = self.keypair.sign(message)
-        cybertensor.logging.debug(f"\nDENDRITE ADDR {self.keypair.address}")
-        cybertensor.logging.debug(f"DENDRITE MSG {message}")
-        cybertensor.logging.debug(f"DENDRITE SGN {signed}")
-        cybertensor.logging.debug(f"DENDRITE SGN 0x{signed.hex()}\n")
-        synapse.dendrite.signature = f"0x{signed.hex()}"
+        synapse.dendrite.signature = f"0x{self.keypair.sign(message).hex()}"
 
         return synapse
 
