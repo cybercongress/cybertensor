@@ -620,6 +620,7 @@ class dendrite(torch.nn.Module):
             nonce=time.monotonic_ns(),
             uuid=self.uuid,
             hotkey=self.keypair.address,
+            pubkey=self.keypair.public_key
         )
 
         # Build the Axon headers using the target axon's details
@@ -627,6 +628,7 @@ class dendrite(torch.nn.Module):
             ip=target_axon_info.ip,
             port=target_axon_info.port,
             hotkey=target_axon_info.hotkey,
+            pubkey=None
         )
 
         # Sign the request using the dendrite, axon info, and the synapse body hash

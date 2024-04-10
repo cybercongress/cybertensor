@@ -51,14 +51,14 @@ def prometheus_message(
             or returns ``false`` if the extrinsic fails to be finalized within the timeout.
     Returns:
         success (bool):
-            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            Flag is ``true`` if extrinsic was finalized or included in the block.
             If we did not wait for finalization / inclusion, the response is ``true``.
     """
 
     # ---- Get external ip ----
     if ip is None:
         try:
-            external_ip = net.get_external_ip()
+            external_ip = cwtensor.config.axon.external_ip or net.get_external_ip()
             console.print(
                 f":white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]"
             )

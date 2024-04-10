@@ -88,7 +88,7 @@ def register_message(
         )
         if not neuron.is_null:
             cybertensor.logging.debug(
-                f"Wallet {wallet} is already registered on {neuron.netuid} with {neuron.uid}"
+                f"Wallet {wallet} is already registered on network: {neuron.netuid} with user id: {neuron.uid}"
             )
             return True
 
@@ -266,6 +266,7 @@ def burned_register_message(
         if not Confirm.ask(f"Recycle {recycle_amount} to register on subnet:{netuid}?"):
             return False
 
+    # TODO Update to configured token
     with console.status(":satellite: Recycling BOOT for Registration..."):
         success, err_msg = cwtensor._do_burned_register(
             netuid=netuid,

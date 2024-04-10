@@ -139,8 +139,9 @@ class TerminalInfo(pydantic.BaseModel):
             version=111,
             nonce=111111,
             uuid="5ecbd69c-1cec-11ee-b0dc-e29ce36fec1a",
-            hotkey="5EnjDGNqqWnuL2HCAdxeEtN2oqtXZw6BMBe936Kfy2PFz1J1",
-            signature="0x0813029319030129u4120u10841824y0182u091u230912u"
+            hotkey="pussy1tqhv59nmdwls2263gtwc86swgte20mtsqvhtrd",
+            signature="0x657a43695079644639586631434c4570593844337262684432436e3776503741495870626e656f4d6e4878426e566d61464854347274686142313155377865376d4f4e385057587856523746567a5169442f6d5757513d3d",
+            pubkey="AmET/9CWsKo3TWCg2zsaldtdgr2MLug4/yZQfxQiZafJ"
         )
 
         # Accessing TerminalInfo attributes
@@ -192,7 +193,7 @@ class TerminalInfo(pydantic.BaseModel):
     # The terminal ip.
     ip: Optional[str] = pydantic.Field(
         title="ip",
-        description="The ip of the axon recieving the request.",
+        description="The ip of the axon receiving the request.",
         examples="198.123.23.1",
         default=None,
         allow_mutation=True,
@@ -243,7 +244,7 @@ class TerminalInfo(pydantic.BaseModel):
     hotkey: Optional[str] = pydantic.Field(
         title="hotkey",
         description="The hotkey string of the terminal wallet.",
-        examples="5EnjDGNqqWnuL2HCAdxeEtN2oqtXZw6BMBe936Kfy2PFz1J1",
+        examples="pussy1tqhv59nmdwls2263gtwc86swgte20mtsqvhtrd",
         default=None,
         allow_mutation=True,
     )
@@ -252,7 +253,16 @@ class TerminalInfo(pydantic.BaseModel):
     signature: Optional[str] = pydantic.Field(
         title="signature",
         description="A signature verifying the tuple (nonce, axon_hotkey, dendrite_hotkey, uuid)",
-        examples="0x0813029319030129u4120u10841824y0182u091u230912u",
+        examples="0x657a43695079644639586631434c4570593844337262684432436e3776503741495870626e656f4d6e4878426e566d61464854347274686142313155377865376d4f4e385057587856523746567a5169442f6d5757513d3d",
+        default=None,
+        allow_mutation=True,
+    )
+
+    # The cybertensor version on the terminal as an int.
+    pubkey: Optional[str] = pydantic.Field(
+        title="pubkey",
+        description="The hotkey pubkey string of the terminal wallet.",
+        examples="AmET/9CWsKo3TWCg2zsaldtdgr2MLug4/yZQfxQiZafJ",
         default=None,
         allow_mutation=True,
     )

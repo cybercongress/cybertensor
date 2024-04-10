@@ -345,11 +345,15 @@ class cwtensor:
             self.contract.execute(msg, signer_wallet, gas, funds=funds)
             return True
         else:
-            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                # NOTE will raise exception if tx simulation is not successful, need to catch it
+                tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            except Exception as e:
+                raise error(e.__str__())
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
-                    print(f'Gas used: {tx.response.gas_used}')
+                    cybertensor.logging.trace(f'Gas used: {tx.response.gas_used}')
                     return True
                 else:
                     raise error(tx.response.logs)
@@ -371,6 +375,7 @@ class cwtensor:
             signer_wallet = LocalWallet(
                 PrivateKey(_private_key), self.address_prefix
             )
+            cybertensor.logging.trace(f'tx msg {msg}\tsigner_wallet {signer_wallet}')
             res = self.make_call_with_retry(
                 wait_for_finalization=wait_for_finalization,
                 msg=msg,
@@ -402,11 +407,17 @@ class cwtensor:
     def make_call_with_retry_2(self, wait_for_finalization: bool,
                                msg: dict, signer_wallet: LocalWallet, gas: Optional[int] = cybertensor.__default_gas__,
                                funds: Optional[str] = None) -> [bool, Optional[str]]:
+        cybertensor.logging.trace(f'tx msg {msg}\tsigner_wallet {signer_wallet}')
         if not wait_for_finalization:
             self.contract.execute(msg, signer_wallet, gas, funds=funds)
             return True, None
         else:
-            tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            try:
+                # NOTE will raise exception if tx simulation is not successful, need to catch it
+                tx = self.contract.execute(msg, signer_wallet, gas, funds=funds)
+            except Exception as e:
+                return False, e.__str__()
+
             try:
                 tx.wait_to_complete()
                 if tx.response.is_successful():
@@ -417,9 +428,9 @@ class cwtensor:
             except Exception as e:
                 return False, e.__str__()
 
-    ####################
-    #### Websocket Interface related
-    ####################
+    #####################################
+    #### Websocket Interface related ####
+    #####################################
     def connect_websocket(self):
         """
         (Re)creates the websocket connection, if the URL contains a 'ws' or 'wss' scheme
@@ -1457,9 +1468,9 @@ class cwtensor:
             prompt=prompt,
         )
 
-    #####################################
-    #### Hyper parameter calls. ####
-    #####################################
+    ###############################
+    #### Hyper parameter calls ####
+    ###############################
 
     def difficulty(self, netuid: int, block: Optional[int] = None) -> Optional[int]:
         """
@@ -1749,9 +1760,9 @@ class cwtensor:
         """
         return self.contract.query({"get_tx_rate_limit": {}})
 
-    #####################################
+    ############################
     #### Network Parameters ####
-    #####################################
+    ############################
 
     def get_subnet_burn_cost(self, block: Optional[int] = None) -> Optional[int]:
         lock_cost = self.contract.query({"get_network_registration_cost": {}})
@@ -2092,9 +2103,9 @@ class cwtensor:
 
         return StakeInfo.list_of_tuple_from_list_any(result)
 
-    ########################################
+    #######################################
     #### Neuron information per subnet ####
-    ########################################
+    #######################################
 
     def is_hotkey_registered_any(
         self, hotkey: str, block: Optional[int] = None
