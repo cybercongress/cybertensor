@@ -75,13 +75,13 @@ class Keypair:
             public_key = private_key_obj.public_key.public_key
             address = Address(PublicKey(private_key_obj.public_key), prefix).__str__()
 
-        if not public_key:
-            raise ValueError("No public key provided")
-
         if isinstance(public_key, str):
-            self.public_key = bytes(public_key, 'utf-8')
+            self.public_key = public_key
         else:
-            self.public_key: bytes = public_key
+            self.public_key: str = public_key.decode("utf-8")
+
+        if not self.public_key:
+            raise ValueError("No public key provided")
 
         self.address: str = address
 
