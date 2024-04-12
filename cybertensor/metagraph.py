@@ -265,7 +265,7 @@ class metagraph(torch.nn.Module):
         }
 
     def __init__(
-        self, netuid: int, network: str = "finney", lite: bool = True, sync: bool = True
+        self, netuid: int, network: str = cybertensor.__default_network__, lite: bool = True, sync: bool = True
     ) -> "metagraph":
         """
         Initialize the metagraph object.
@@ -379,7 +379,6 @@ class metagraph(torch.nn.Module):
             cwtensor: The initialized cwtensor.
         """
         if not cwtensor:
-            # TODO: Check and test the initialization of the new cwtensor
             cwtensor = cybertensor.cwtensor(network=self.network)
         return cwtensor
 

@@ -420,7 +420,7 @@ class SubnetHyperparamsCommand:
     Example usage:
     >>> ctcli subnets hyperparameters --netuid 1
 
-    Subnet Hyperparameters - NETUID: 1 - finney
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
     HYPERPARAMETER            VALUE
     rho                       10
     kappa                     32767
@@ -518,7 +518,7 @@ class SubnetGetHyperparamsCommand:
     Example usage:
     >>> ctcli sudo get --netuid 1
 
-    Subnet Hyperparameters - NETUID: 1 - finney
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
     HYPERPARAMETER            VALUE
     rho                       10
     kappa                     32767
