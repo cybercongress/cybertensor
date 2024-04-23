@@ -102,25 +102,17 @@ def set_weights_message(
                 return True, "Not waiting for finalization."
 
             if success is True:
-                cybertensor.__console__.print(
-                    prefix="Set weights",
-                    sufix="<green>Finalized: </green>" + str(success),
-                )
                 return True, "Successfully set weights and Finalized."
             else:
-                cybertensor.__console__.print(
-                    ":cross_mark: [red]Failed[/red]: error:{}".format(error_message)
-                )
-
                 cybertensor.logging.warning(
                     prefix="Set weights",
-                    sufix="<red>Failed: </red>" + str(error_message),
+                    sufix=f"<red>Failed: </red> {error_message}",
                 )
                 return False, error_message
 
         except Exception as e:
             # TODO( devs ): lets remove all of the cybertensor.__console__ calls and replace with loguru.
             cybertensor.logging.warning(
-                prefix="Set weights", sufix="<red>Failed: </red>" + str(e)
+                prefix="Set weights", sufix=f"<red>Failed: </red> {e}"
             )
             return False, str(e)
