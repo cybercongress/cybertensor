@@ -27,15 +27,13 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -e .
-          pip install pdoc3
+          pip install pdoc3 ghp-import
 
       - name: Build documentation
         run: |
           source venv/bin/activate
           pdoc --html --output-dir docs/ ../cybertensor
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/
+      - name: Deploy to GitHub Pages, Run ghp-import
+        run: |
+          ghp-import -n -p -f docs/cybertensor
