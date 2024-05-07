@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - add_docs
   pull_request:
     branches:
       - main
@@ -36,4 +35,5 @@ jobs:
 
       - name: Deploy to GitHub Pages, Run ghp-import
         run: |
+          source venv/bin/activate
           ghp-import -n -p -f docs/cybertensor
