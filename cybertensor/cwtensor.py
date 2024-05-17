@@ -82,7 +82,7 @@ class cwtensor:
     """Factory Class for cybertensor.cwtensor
 
     The cwtensor class handles interactions with the substrate cwtensor chain.
-    By default, the cwtensor class connects to the Finney which serves as the main cybertensor network.
+    By default, the cwtensor class connects to the Space-pussy which serves as the main cybertensor network.
     
     The cwtensor class in cybertensor serves as a crucial interface for interacting with the cybertensor blockchain, 
     facilitating a range of operations essential for the decentralized machine learning network.
@@ -95,7 +95,7 @@ class cwtensor:
     the ranking and incentive mechanisms within the network. Higher-ranked neurons, as determined by their
     contributions and trust within the network, receive more incentives.
 
-    The cwtensor class connects to various cybertensor networks like the main ``finney`` network or local test
+    The cwtensor class connects to various cybertensor networks like the main ``space-pussy`` network or local test
     networks, providing a gateway to the blockchain layer of cybertensor. It leverages a staked weighted trust
     system and consensus to ensure fair and distributed incentive mechanisms, where incentives (I) are
     primarily allocated to neurons that are trusted by the majority of the network.
@@ -2347,7 +2347,7 @@ class cwtensor:
         netuid: int,
         lite: bool = True,
         block: Optional[int] = None,
-    ) -> "cybertensor.Metagraph":
+    ) -> "cybertensor.metagraph":
         """
         Returns a synced metagraph for a specified subnet within the cybertensor network. The metagraph
         represents the network's structure, including neuron connections and interactions.

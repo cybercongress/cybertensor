@@ -173,8 +173,9 @@ def set_hyperparameter_message(
     with console.status(
         f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
     ):
+        _value = int(value) if parameter != 'particle' else str(value)
         sudo_msg = {
-            str(message): {"netuid": netuid, str(parameter): int(value)},
+            str(message): {"netuid": netuid, str(parameter): _value},
         }
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
