@@ -184,7 +184,7 @@ class cwtensor:
         """
         if network is None:
             return None, None
-        if network in ["local", "bostrom", "space-pussy"]:
+        if network in ["local", "bostrom", "space-pussy", "space-pussy-graph"]:
             if network == "bostrom":
                 return (
                     network,
@@ -194,6 +194,11 @@ class cwtensor:
                 return (
                     network,
                     cybertensor.__space_pussy_network__,
+                )
+            elif network == "space-pussy-graph":
+                return (
+                    network,
+                    cybertensor.__space_pussy_graph_network__,
                 )
             elif network == "local":
                 return (

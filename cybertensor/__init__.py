@@ -112,7 +112,7 @@ __chain_address_prefix__ = "pussy"
 __boot_symbol__: str = "PUSSY"
 __giga_boot_symbol__: str = "GPUSSY"
 
-__networks__ = ["local", "bostrom", "space-pussy"]
+__networks__ = ["local", "bostrom", "space-pussy", "space-pussy-graph"]
 
 __default_network__ = "space-pussy"
 
@@ -158,7 +158,22 @@ __space_pussy_network__ = NetworkConfigCwTensor(
     giga_token_symbol="GPUSSY",
     network_explorer="https://cyb.ai",
     address_prefix="pussy",
-    contract_address="pussy1ddwq8rxgdsm27pvpxqdy2ep9enuen6t2yhrqujvj9qwl4dtukx0s8hpka9",
+    contract_address="pussy1guj27rm0uj2mhwnnsr8j7cz6uvsz2d759kpalgqs60jahfzwgjcs4l28cw",
+)
+
+__space_pussy_graph_network__ = NetworkConfigCwTensor(
+    chain_id="space-pussy",
+    url="grpc+https://grpc.space-pussy.cybernode.ai:1443",
+    fee_minimum_gas_price=0.01,
+    fee_denomination="pussy",
+    staking_denomination="pussy",
+    faucet_url="",
+    token="pussy",
+    token_symbol="PUSSY",
+    giga_token_symbol="GPUSSY",
+    network_explorer="https://cyb.ai",
+    address_prefix="pussy",
+    contract_address="pussy1j9qku20ssfjdzgl3y5hl0vfxzsjwzwn7d7us2t2n4ejgc6pesqcqhnxsz0",
 )
 
 __contract_path__ = None

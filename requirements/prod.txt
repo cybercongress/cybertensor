@@ -29,8 +29,7 @@ rich
 setuptools<=65.6.3
 shtab==1.6.5
 termcolor
-torch==1.13.1+cpu
-torchvision==0.14.1+cpu
+torch==1.13.1
 tqdm
 uvicorn==0.22.0
 wheel

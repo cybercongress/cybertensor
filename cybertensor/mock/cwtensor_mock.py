@@ -1322,7 +1322,7 @@ class MockCwtensor(cwtensor):
                 if self.neuron_has_validator_permit(uid=uid, netuid=subnet, block=block)
             ],
             registrations=[subnet for subnet, _ in registered_subnets],
-            return_per_1000=Balance.from_gboot(1234567),  # Doesn't matter for mock?
+            return_per_giga=Balance.from_gboot(1234567),  # Doesn't matter for mock?
             total_daily_return=Balance.from_gboot(1234567),  # Doesn't matter for mock?
         )
 

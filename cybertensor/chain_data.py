@@ -446,7 +446,7 @@ class DelegateInfo:
         int
     ]  # List of subnets that the delegate is allowed to validate on
     registrations: List[int]  # List of subnets that the delegate is registered on
-    return_per_1000: Balance  # Return per 1000 gboot of the delegate over a day
+    return_per_giga: Balance  # Return per 1 gboot of the delegate over a day
     total_daily_return: Balance  # Total daily return of the delegate
 
     @classmethod
@@ -469,8 +469,8 @@ class DelegateInfo:
             ),
             validator_permits=decoded["validator_permits"],
             registrations=decoded["registrations"],
-            return_per_1000=Balance.from_boot(decoded["return_per_1000"]),
-            total_daily_return=Balance.from_boot(decoded["total_daily_return"]),
+            return_per_giga=Balance.from_boot(int(decoded["return_per_giga"]["amount"])),
+            total_daily_return=Balance.from_boot(int(decoded["total_daily_return"]["amount"])),
         )
 
     @classmethod
