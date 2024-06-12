@@ -30,7 +30,7 @@ from rich.traceback import install
 nest_asyncio.apply()
 
 # Cybertensor code and protocol version.
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 version_split = __version__.split(".")
 __version_as_int__ = (
     (100 * int(version_split[0]))

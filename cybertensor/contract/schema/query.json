@@ -651,29 +651,6 @@
     {
       "type": "object",
       "required": [
-        "get_subnetwork_n"
-      ],
-      "properties": {
-        "get_subnetwork_n": {
-          "type": "object",
-          "required": [
-            "netuid"
-          ],
-          "properties": {
-            "netuid": {
-              "type": "integer",
-              "format": "uint16",
-              "minimum": 0.0
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    {
-      "type": "object",
-      "required": [
         "get_network_registration_cost"
       ],
       "properties": {
@@ -857,6 +834,99 @@
               "minimum": 0.0
             }
           },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_block_rewards"
+      ],
+      "properties": {
+        "get_block_rewards": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnet_metadata"
+      ],
+      "properties": {
+        "get_subnet_metadata": {
+          "type": "object",
+          "required": [
+            "netuid"
+          ],
+          "properties": {
+            "netuid": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_subnets_metadata"
+      ],
+      "properties": {
+        "get_subnets_metadata": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint16",
+              "minimum": 0.0
+            },
+            "start_after": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint16",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_verse_metadata"
+      ],
+      "properties": {
+        "get_verse_metadata": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "get_economy"
+      ],
+      "properties": {
+        "get_economy": {
+          "type": "object",
           "additionalProperties": false
         }
       },

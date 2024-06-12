@@ -323,7 +323,7 @@ HYPERPARAMS = {
     "min_burn": "sudo_set_min_burn",
     "max_burn": "sudo_set_max_burn",
     "max_allowed_validators": "sudo_set_max_allowed_validators",
-    "particle": "sudo_set_subnet_metadata",
+    "metadata": "sudo_set_subnet_metadata",
 }
 
 
