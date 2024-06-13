@@ -323,6 +323,7 @@ HYPERPARAMS = {
     "min_burn": "sudo_set_min_burn",
     "max_burn": "sudo_set_max_burn",
     "max_allowed_validators": "sudo_set_max_allowed_validators",
+    "metadata": "sudo_set_subnet_metadata",
 }
 
 
@@ -420,7 +421,7 @@ class SubnetHyperparamsCommand:
     Example usage:
     >>> ctcli subnets hyperparameters --netuid 1
 
-    Subnet Hyperparameters - NETUID: 1 - finney
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
     HYPERPARAMETER            VALUE
     rho                       10
     kappa                     32767
@@ -518,7 +519,7 @@ class SubnetGetHyperparamsCommand:
     Example usage:
     >>> ctcli sudo get --netuid 1
 
-    Subnet Hyperparameters - NETUID: 1 - finney
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
     HYPERPARAMETER            VALUE
     rho                       10
     kappa                     32767

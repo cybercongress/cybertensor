@@ -16,6 +16,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 import time
+import json
 
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
@@ -173,8 +174,9 @@ def set_hyperparameter_message(
     with console.status(
         f":satellite: Setting hyperparameter {parameter} to {value} on subnet: {netuid} ..."
     ):
+        _value = int(value) if parameter != 'metadata' else json.loads(value)
         sudo_msg = {
-            str(message): {"netuid": netuid, str(parameter): int(value)},
+            str(message): {"netuid": netuid, str(parameter): _value},
         }
         signer_wallet = LocalWallet(
             PrivateKey(wallet.coldkey.private_key), cwtensor.address_prefix
@@ -187,7 +189,7 @@ def set_hyperparameter_message(
                 f":exclamation_mark: [yellow]Warning[/yellow]: TX {tx.tx_hash} broadcasted without confirmation..."
             )
         else:
-            tx = cwtensor.contract.execute(sudo_msg, signer_wallet, gas)
+            tx = cwtensor.contract.execute(sudo_msg, sender=signer_wallet, gas_limit=gas)
             console.print(
                 f":satellite: [green]Processing..[/green]: TX {tx.tx_hash} waiting to complete..."
             )
