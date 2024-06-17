@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.messages.serving API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.messages.serving</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># The MIT License (MIT)
+# Copyright © 2021 Yuma Rao
+# Copyright © 2023 Opentensor Foundation
+# Copyright © 2024 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+import json
+
+from rich.prompt import Confirm
+
+import cybertensor
+from cybertensor import __console__ as console
+from cybertensor.types import AxonServeCallParams
+from cybertensor.utils import networking as net
+from cybertensor.wallet import Wallet
+from cybertensor.errors import MetadataError
+
+
+def serve_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;Wallet&#34;,
+    ip: str,
+    port: int,
+    protocol: int,
+    netuid: int,
+    placeholder1: int = 0,
+    placeholder2: int = 0,
+    wait_for_finalization=True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Subscribes a cybertensor endpoint to the substensor chain.
+    Args:
+        wallet (Wallet):
+            cybertensor wallet object.
+        ip (str):
+            endpoint host port i.e. 192.122.31.4
+        port (int):
+            endpoint port number i.e. 9221
+        protocol (int):
+            int representation of the protocol
+        netuid (int):
+            network uid to serve on.
+        placeholder1 (int):
+            placeholder for future use.
+        placeholder2 (int):
+            placeholder for future use.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If ``true``, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
+    &#34;&#34;&#34;
+    # Decrypt hotkey
+    wallet.hotkey
+    params: &#34;AxonServeCallParams&#34; = {
+        &#34;netuid&#34;: netuid,
+        &#34;version&#34;: cybertensor.__version_as_int__,
+        &#34;ip&#34;: net.ip_to_int(ip),
+        &#34;port&#34;: port,
+        &#34;ip_type&#34;: net.ip_version(ip),
+        # &#34;hotkey&#34;: wallet.hotkey.address,
+        # &#34;coldkey&#34;: wallet.coldkeypub.address,
+        &#34;protocol&#34;: protocol,
+        &#34;placeholder1&#34;: placeholder1,
+        &#34;placeholder2&#34;: placeholder2,
+    }
+    cybertensor.logging.debug(&#34;Checking axon ...&#34;)
+    neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
+        wallet.hotkey.address, netuid=netuid
+    )
+    neuron_up_to_date = not neuron.is_null and params == {
+        &#34;version&#34;: neuron.axon_info.version,
+        &#34;ip&#34;: net.ip_to_int(neuron.axon_info.ip),
+        &#34;port&#34;: neuron.axon_info.port,
+        &#34;ip_type&#34;: neuron.axon_info.ip_type,
+        &#34;netuid&#34;: neuron.netuid,
+        # &#34;hotkey&#34;: neuron.hotkey,
+        # &#34;coldkey&#34;: neuron.coldkey,
+        &#34;protocol&#34;: neuron.axon_info.protocol,
+        &#34;placeholder1&#34;: neuron.axon_info.placeholder1,
+        &#34;placeholder2&#34;: neuron.axon_info.placeholder2,
+    }
+    if neuron_up_to_date:
+        cybertensor.logging.info(
+            f&#34;Axon already served on: AxonInfo({wallet.hotkey.address},{ip}:{port}) &#34;
+        )
+        return True
+
+    if prompt:
+        output = params.copy()
+        output[&#34;coldkey&#34;] = wallet.coldkeypub.address
+        output[&#34;hotkey&#34;] = wallet.hotkey.address
+        if not Confirm.ask(
+            f&#34;Do you want to serve axon:\n&#34;
+            f&#34;  [bold white]{json.dumps(output, indent=4, sort_keys=True)}[/bold white]&#34;
+        ):
+            return False
+
+    cybertensor.logging.debug(
+        f&#34;Serving axon with: AxonInfo({wallet.hotkey.address},{ip}:{port}) -&gt; {cwtensor.network}:{netuid}&#34;
+    )
+    success, error_message = cwtensor._do_serve_axon(
+        wallet=wallet,
+        call_params=params,
+        wait_for_finalization=wait_for_finalization,
+    )
+
+    if wait_for_finalization:
+        if success is True:
+            cybertensor.logging.debug(
+                f&#34;Axon served with: AxonInfo({wallet.hotkey.address},{ip}:{port}) on {cwtensor.network}:{netuid} &#34;
+            )
+            return True
+        else:
+            cybertensor.logging.debug(
+                f&#34;Axon failed to served with error: {error_message} &#34;
+            )
+            return False
+
+    return True
+
+
+def serve_axon_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    netuid: int,
+    axon: &#34;cybertensor.axon&#34;,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Serves the axon to the network.
+    Args:
+        netuid ( int ):
+            The netuid being served on.
+        axon (cybertensor.Axon):
+            Axon to serve.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If ``true``, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
+    &#34;&#34;&#34;
+    axon.wallet.hotkey
+    axon.wallet.coldkeypub
+    external_port = axon.external_port
+
+    # ---- Get external ip ----
+    if axon.external_ip is None:
+        try:
+            external_ip = cwtensor.config.axon.external_ip or net.get_external_ip()
+            console.print(
+                f&#34;:white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]&#34;
+            )
+            cybertensor.logging.success(
+                prefix=&#34;External IP&#34;, sufix=f&#34;&lt;blue&gt;{external_ip}&lt;/blue&gt;&#34;
+            )
+        except Exception as e:
+            raise RuntimeError(
+                f&#34;Unable to attain your external ip. Check your internet connection. error: {e}&#34;
+            ) from e
+    else:
+        external_ip = axon.external_ip
+
+    # ---- Subscribe to chain ----
+    serve_success = cwtensor.serve(
+        wallet=axon.wallet,
+        ip=external_ip,
+        port=external_port,
+        netuid=netuid,
+        protocol=4,
+        wait_for_finalization=wait_for_finalization,
+        prompt=prompt,
+    )
+    return serve_success
+
+
+def publish_metadata(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.Wallet&#34;,
+    netuid: int,
+    type: str,
+    data: bytes,
+    wait_for_finalization: bool = True,
+) -&gt; bool:
+    &#34;&#34;&#34;
+    Publishes metadata on the cybertensor network using the specified wallet and network identifier.
+
+    Args:
+        cwtensor (cybertensor.cwtensor):
+            The cwtensor instance representing the cybertensor blockchain connection.
+        wallet (cybertensor.Wallet):
+            The wallet object used for authentication in the transaction.
+        netuid (int):
+            Network UID on which the metadata is to be published.
+        type (str):
+            The data type of the information being submitted. It should be one of the following: ``&#39;Sha256&#39;``, ``&#39;Blake256&#39;``, ``&#39;Keccak256&#39;``, or ``&#39;Raw0-128&#39;``. This specifies the format or hashing algorithm used for the data.
+        data (str):
+            The actual metadata content to be published. This should be formatted or hashed according to the ``type`` specified. (Note: max ``str`` length is 128 bytes)
+        wait_for_finalization (bool, optional):
+            If ``True``, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to ``True``.
+
+    Returns:
+        bool:
+            ``True`` if the metadata was successfully published (and finalized if specified). ``False`` otherwise.
+
+    Raises:
+        MetadataError:
+            If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.
+    &#34;&#34;&#34;
+
+    wallet.hotkey
+
+    with cwtensor.substrate as substrate:
+        call = substrate.compose_call(
+            call_module=&#34;Commitments&#34;,
+            call_function=&#34;set_commitment&#34;,
+            call_params={&#34;netuid&#34;: netuid, &#34;info&#34;: {&#34;fields&#34;: [[{f&#34;{type}&#34;: data}]]}},
+        )
+
+        extrinsic = substrate.create_signed_extrinsic(call=call, keypair=wallet.hotkey)
+        response = substrate.submit_extrinsic(
+            extrinsic,
+            wait_for_finalization=wait_for_finalization,
+        )
+        # We only wait here if we expect finalization.
+        if not wait_for_finalization:
+            return True
+        response.process_events()
+        if response.is_success:
+            return True
+        else:
+            raise MetadataError(response.error_message)
+
+
+from retry import retry
+from typing import Optional
+
+
+def get_metadata(self, netuid: int, hotkey: str, block: Optional[int] = None) -&gt; str:
+    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    def make_substrate_call_with_retry():
+        with self.substrate as substrate:
+            return substrate.query(
+                module=&#34;Commitments&#34;,
+                storage_function=&#34;CommitmentOf&#34;,
+                params=[netuid, hotkey],
+                block_hash=None if block is None else substrate.get_block_hash(block),
+            )
+
+    commit_data = make_substrate_call_with_retry()
+    return commit_data.value</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.messages.serving.get_metadata"><code class="name flex">
+<span>def <span class="ident">get_metadata</span></span>(<span>self, netuid: int, hotkey: str, block: Optional[int] = None) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_metadata(self, netuid: int, hotkey: str, block: Optional[int] = None) -&gt; str:
+    @retry(delay=2, tries=3, backoff=2, max_delay=4)
+    def make_substrate_call_with_retry():
+        with self.substrate as substrate:
+            return substrate.query(
+                module=&#34;Commitments&#34;,
+                storage_function=&#34;CommitmentOf&#34;,
+                params=[netuid, hotkey],
+                block_hash=None if block is None else substrate.get_block_hash(block),
+            )
+
+    commit_data = make_substrate_call_with_retry()
+    return commit_data.value</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.messages.serving.publish_metadata"><code class="name flex">
+<span>def <span class="ident">publish_metadata</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: cybertensor.Wallet, netuid: int, type: str, data: bytes, wait_for_finalization: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Publishes metadata on the cybertensor network using the specified wallet and network identifier.</p>
+<h2 id="args">Args</h2>
+<p>cwtensor (cybertensor.cwtensor):
+The cwtensor instance representing the cybertensor blockchain connection.
+wallet (cybertensor.Wallet):
+The wallet object used for authentication in the transaction.
+netuid (int):
+Network UID on which the metadata is to be published.
+type (str):
+The data type of the information being submitted. It should be one of the following: <code>'Sha256'</code>, <code>'Blake256'</code>, <code>'Keccak256'</code>, or <code>'Raw0-128'</code>. This specifies the format or hashing algorithm used for the data.
+data (str):
+The actual metadata content to be published. This should be formatted or hashed according to the <code>type</code> specified. (Note: max <code>str</code> length is 128 bytes)
+wait_for_finalization (bool, optional):
+If <code>True</code>, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to <code>True</code>.</p>
+<h2 id="returns">Returns</h2>
+<p>bool:
+<code>True</code> if the metadata was successfully published (and finalized if specified). <code>False</code> otherwise.</p>
+<h2 id="raises">Raises</h2>
+<p>MetadataError:
+If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def publish_metadata(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;cybertensor.Wallet&#34;,
+    netuid: int,
+    type: str,
+    data: bytes,
+    wait_for_finalization: bool = True,
+) -&gt; bool:
+    &#34;&#34;&#34;
+    Publishes metadata on the cybertensor network using the specified wallet and network identifier.
+
+    Args:
+        cwtensor (cybertensor.cwtensor):
+            The cwtensor instance representing the cybertensor blockchain connection.
+        wallet (cybertensor.Wallet):
+            The wallet object used for authentication in the transaction.
+        netuid (int):
+            Network UID on which the metadata is to be published.
+        type (str):
+            The data type of the information being submitted. It should be one of the following: ``&#39;Sha256&#39;``, ``&#39;Blake256&#39;``, ``&#39;Keccak256&#39;``, or ``&#39;Raw0-128&#39;``. This specifies the format or hashing algorithm used for the data.
+        data (str):
+            The actual metadata content to be published. This should be formatted or hashed according to the ``type`` specified. (Note: max ``str`` length is 128 bytes)
+        wait_for_finalization (bool, optional):
+            If ``True``, the function will wait for the extrinsic to be finalized on the chain before returning. Defaults to ``True``.
+
+    Returns:
+        bool:
+            ``True`` if the metadata was successfully published (and finalized if specified). ``False`` otherwise.
+
+    Raises:
+        MetadataError:
+            If there is an error in submitting the extrinsic or if the response from the blockchain indicates failure.
+    &#34;&#34;&#34;
+
+    wallet.hotkey
+
+    with cwtensor.substrate as substrate:
+        call = substrate.compose_call(
+            call_module=&#34;Commitments&#34;,
+            call_function=&#34;set_commitment&#34;,
+            call_params={&#34;netuid&#34;: netuid, &#34;info&#34;: {&#34;fields&#34;: [[{f&#34;{type}&#34;: data}]]}},
+        )
+
+        extrinsic = substrate.create_signed_extrinsic(call=call, keypair=wallet.hotkey)
+        response = substrate.submit_extrinsic(
+            extrinsic,
+            wait_for_finalization=wait_for_finalization,
+        )
+        # We only wait here if we expect finalization.
+        if not wait_for_finalization:
+            return True
+        response.process_events()
+        if response.is_success:
+            return True
+        else:
+            raise MetadataError(response.error_message)</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.messages.serving.serve_axon_message"><code class="name flex">
+<span>def <span class="ident">serve_axon_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, netuid: int, axon: <a title="cybertensor.axon" href="../axon.html">cybertensor.axon</a>, wait_for_finalization: bool = True, prompt: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Serves the axon to the network.</p>
+<h2 id="args">Args</h2>
+<p>netuid ( int ):
+The netuid being served on.
+axon (cybertensor.Axon):
+Axon to serve.
+wait_for_finalization (bool):
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
+prompt (bool):
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
+<h2 id="returns">Returns</h2>
+<p>success (bool):
+Flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def serve_axon_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    netuid: int,
+    axon: &#34;cybertensor.axon&#34;,
+    wait_for_finalization: bool = True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Serves the axon to the network.
+    Args:
+        netuid ( int ):
+            The netuid being served on.
+        axon (cybertensor.Axon):
+            Axon to serve.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If ``true``, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
+    &#34;&#34;&#34;
+    axon.wallet.hotkey
+    axon.wallet.coldkeypub
+    external_port = axon.external_port
+
+    # ---- Get external ip ----
+    if axon.external_ip is None:
+        try:
+            external_ip = cwtensor.config.axon.external_ip or net.get_external_ip()
+            console.print(
+                f&#34;:white_heavy_check_mark: [green]Found external ip: {external_ip}[/green]&#34;
+            )
+            cybertensor.logging.success(
+                prefix=&#34;External IP&#34;, sufix=f&#34;&lt;blue&gt;{external_ip}&lt;/blue&gt;&#34;
+            )
+        except Exception as e:
+            raise RuntimeError(
+                f&#34;Unable to attain your external ip. Check your internet connection. error: {e}&#34;
+            ) from e
+    else:
+        external_ip = axon.external_ip
+
+    # ---- Subscribe to chain ----
+    serve_success = cwtensor.serve(
+        wallet=axon.wallet,
+        ip=external_ip,
+        port=external_port,
+        netuid=netuid,
+        protocol=4,
+        wait_for_finalization=wait_for_finalization,
+        prompt=prompt,
+    )
+    return serve_success</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.messages.serving.serve_message"><code class="name flex">
+<span>def <span class="ident">serve_message</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: Wallet, ip: str, port: int, protocol: int, netuid: int, placeholder1: int = 0, placeholder2: int = 0, wait_for_finalization=True, prompt: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Subscribes a cybertensor endpoint to the substensor chain.</p>
+<h2 id="args">Args</h2>
+<p>wallet (Wallet):
+cybertensor wallet object.
+ip (str):
+endpoint host port i.e. 192.122.31.4
+port (int):
+endpoint port number i.e. 9221
+protocol (int):
+int representation of the protocol
+netuid (int):
+network uid to serve on.
+placeholder1 (int):
+placeholder for future use.
+placeholder2 (int):
+placeholder for future use.
+wait_for_finalization (bool):
+If set, waits for the extrinsic to be finalized on the chain before returning <code>true</code>,
+or returns <code>false</code> if the extrinsic fails to be finalized within the timeout.
+prompt (bool):
+If <code>true</code>, the call waits for confirmation from the user before proceeding.</p>
+<h2 id="returns">Returns</h2>
+<p>success (bool):
+Flag is <code>true</code> if extrinsic was finalized or uncluded in the block.
+If we did not wait for finalization / inclusion, the response is <code>true</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def serve_message(
+    cwtensor: &#34;cybertensor.cwtensor&#34;,
+    wallet: &#34;Wallet&#34;,
+    ip: str,
+    port: int,
+    protocol: int,
+    netuid: int,
+    placeholder1: int = 0,
+    placeholder2: int = 0,
+    wait_for_finalization=True,
+    prompt: bool = False,
+) -&gt; bool:
+    r&#34;&#34;&#34;Subscribes a cybertensor endpoint to the substensor chain.
+    Args:
+        wallet (Wallet):
+            cybertensor wallet object.
+        ip (str):
+            endpoint host port i.e. 192.122.31.4
+        port (int):
+            endpoint port number i.e. 9221
+        protocol (int):
+            int representation of the protocol
+        netuid (int):
+            network uid to serve on.
+        placeholder1 (int):
+            placeholder for future use.
+        placeholder2 (int):
+            placeholder for future use.
+        wait_for_finalization (bool):
+            If set, waits for the extrinsic to be finalized on the chain before returning ``true``,
+            or returns ``false`` if the extrinsic fails to be finalized within the timeout.
+        prompt (bool):
+            If ``true``, the call waits for confirmation from the user before proceeding.
+    Returns:
+        success (bool):
+            Flag is ``true`` if extrinsic was finalized or uncluded in the block.
+            If we did not wait for finalization / inclusion, the response is ``true``.
+    &#34;&#34;&#34;
+    # Decrypt hotkey
+    wallet.hotkey
+    params: &#34;AxonServeCallParams&#34; = {
+        &#34;netuid&#34;: netuid,
+        &#34;version&#34;: cybertensor.__version_as_int__,
+        &#34;ip&#34;: net.ip_to_int(ip),
+        &#34;port&#34;: port,
+        &#34;ip_type&#34;: net.ip_version(ip),
+        # &#34;hotkey&#34;: wallet.hotkey.address,
+        # &#34;coldkey&#34;: wallet.coldkeypub.address,
+        &#34;protocol&#34;: protocol,
+        &#34;placeholder1&#34;: placeholder1,
+        &#34;placeholder2&#34;: placeholder2,
+    }
+    cybertensor.logging.debug(&#34;Checking axon ...&#34;)
+    neuron = cwtensor.get_neuron_for_pubkey_and_subnet(
+        wallet.hotkey.address, netuid=netuid
+    )
+    neuron_up_to_date = not neuron.is_null and params == {
+        &#34;version&#34;: neuron.axon_info.version,
+        &#34;ip&#34;: net.ip_to_int(neuron.axon_info.ip),
+        &#34;port&#34;: neuron.axon_info.port,
+        &#34;ip_type&#34;: neuron.axon_info.ip_type,
+        &#34;netuid&#34;: neuron.netuid,
+        # &#34;hotkey&#34;: neuron.hotkey,
+        # &#34;coldkey&#34;: neuron.coldkey,
+        &#34;protocol&#34;: neuron.axon_info.protocol,
+        &#34;placeholder1&#34;: neuron.axon_info.placeholder1,
+        &#34;placeholder2&#34;: neuron.axon_info.placeholder2,
+    }
+    if neuron_up_to_date:
+        cybertensor.logging.info(
+            f&#34;Axon already served on: AxonInfo({wallet.hotkey.address},{ip}:{port}) &#34;
+        )
+        return True
+
+    if prompt:
+        output = params.copy()
+        output[&#34;coldkey&#34;] = wallet.coldkeypub.address
+        output[&#34;hotkey&#34;] = wallet.hotkey.address
+        if not Confirm.ask(
+            f&#34;Do you want to serve axon:\n&#34;
+            f&#34;  [bold white]{json.dumps(output, indent=4, sort_keys=True)}[/bold white]&#34;
+        ):
+            return False
+
+    cybertensor.logging.debug(
+        f&#34;Serving axon with: AxonInfo({wallet.hotkey.address},{ip}:{port}) -&gt; {cwtensor.network}:{netuid}&#34;
+    )
+    success, error_message = cwtensor._do_serve_axon(
+        wallet=wallet,
+        call_params=params,
+        wait_for_finalization=wait_for_finalization,
+    )
+
+    if wait_for_finalization:
+        if success is True:
+            cybertensor.logging.debug(
+                f&#34;Axon served with: AxonInfo({wallet.hotkey.address},{ip}:{port}) on {cwtensor.network}:{netuid} &#34;
+            )
+            return True
+        else:
+            cybertensor.logging.debug(
+                f&#34;Axon failed to served with error: {error_message} &#34;
+            )
+            return False
+
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.messages" href="index.html">cybertensor.messages</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.messages.serving.get_metadata" href="#cybertensor.messages.serving.get_metadata">get_metadata</a></code></li>
+<li><code><a title="cybertensor.messages.serving.publish_metadata" href="#cybertensor.messages.serving.publish_metadata">publish_metadata</a></code></li>
+<li><code><a title="cybertensor.messages.serving.serve_axon_message" href="#cybertensor.messages.serving.serve_axon_message">serve_axon_message</a></code></li>
+<li><code><a title="cybertensor.messages.serving.serve_message" href="#cybertensor.messages.serving.serve_message">serve_message</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

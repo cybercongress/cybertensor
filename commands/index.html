@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>cybertensor.commands API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># The MIT License (MIT)
+# Copyright © 2023 Opentensor Technologies Inc
+# Copyright © 2024 cyber~Congress
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+from munch import Munch, munchify
+
+defaults: Munch = munchify(
+    {
+        &#34;netuid&#34;: 1,
+        &#34;cwtensor&#34;: {&#34;network&#34;: &#34;space-pussy&#34;, &#34;_mock&#34;: False},
+        &#34;pow_register&#34;: {
+            &#34;num_processes&#34;: None,
+            &#34;update_interval&#34;: 50000,
+            &#34;output_in_place&#34;: True,
+            &#34;verbose&#34;: False,
+            &#34;cuda&#34;: {&#34;dev_id&#34;: [0], &#34;use_cuda&#34;: False, &#34;tpb&#34;: 256},
+        },
+        &#34;axon&#34;: {
+            &#34;port&#34;: 8091,
+            &#34;ip&#34;: &#34;[::]&#34;,
+            &#34;external_port&#34;: None,
+            &#34;external_ip&#34;: None,
+            &#34;max_workers&#34;: 10,
+            &#34;maximum_concurrent_rpcs&#34;: 400,
+        },
+        &#34;priority&#34;: {&#34;max_workers&#34;: 5, &#34;maxsize&#34;: 10},
+        &#34;prometheus&#34;: {&#34;port&#34;: 7091, &#34;level&#34;: &#34;INFO&#34;},
+        &#34;wallet&#34;: {
+            &#34;name&#34;: &#34;default&#34;,
+            &#34;hotkey&#34;: &#34;default&#34;,
+            &#34;path&#34;: &#34;~/.cybertensor/wallets/&#34;,
+        },
+        &#34;dataset&#34;: {
+            &#34;batch_size&#34;: 10,
+            &#34;block_size&#34;: 20,
+            &#34;num_workers&#34;: 0,
+            &#34;dataset_names&#34;: &#34;default&#34;,
+            &#34;data_dir&#34;: &#34;~/.cybertensor/data/&#34;,
+            &#34;save_dataset&#34;: False,
+            &#34;max_datasets&#34;: 3,
+            &#34;num_batches&#34;: 100,
+        },
+        &#34;logging&#34;: {
+            &#34;debug&#34;: False,
+            &#34;trace&#34;: False,
+            &#34;record_log&#34;: False,
+            &#34;logging_dir&#34;: &#34;~/.cybertensor/miners&#34;,
+        },
+    }
+)
+
+from cybertensor.commands.overview import OverviewCommand
+from cybertensor.commands.stake import StakeCommand, StakeShow
+from cybertensor.commands.unstake import UnStakeCommand
+from cybertensor.commands.register import (
+    PowRegisterCommand,
+    RegisterCommand,
+    # RunFaucetCommand,
+    # SwapHotkeyCommand,
+)
+from cybertensor.commands.delegates import (
+    NominateCommand,
+    ListDelegatesCommand,
+    DelegateStakeCommand,
+    DelegateUnstakeCommand,
+    MyDelegatesCommand,
+    # GetWalletHistoryCommand,
+)
+from cybertensor.commands.wallets import (
+    NewColdkeyCommand,
+    NewHotkeyCommand,
+    RegenColdkeyCommand,
+    RegenColdkeypubCommand,
+    RegenHotkeyCommand,
+    UpdateWalletCommand,
+    WalletCreateCommand,
+    WalletBalanceCommand,
+)
+from cybertensor.commands.transfer import TransferCommand
+from cybertensor.commands.inspect import InspectCommand
+from cybertensor.commands.metagraph import MetagraphCommand
+from cybertensor.commands.list import ListCommand
+# from cybertensor.commands.misc import UpdateCommand, AutocompleteCommand
+from cybertensor.commands.network import (
+    RegisterSubnetworkCommand,
+    SubnetLockCostCommand,
+    SubnetListCommand,
+    SubnetSudoCommand,
+    SubnetHyperparamsCommand,
+    SubnetGetHyperparamsCommand,
+)
+from cybertensor.commands.root import (
+    RootRegisterCommand,
+    RootList,
+    RootSetWeightsCommand,
+    RootGetWeightsCommand,
+    # RootSetBoostCommand,
+    # RootSetSlashCommand,
+)
+# from .identity import GetIdentityCommand, SetIdentityCommand</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="cybertensor.commands.delegates" href="delegates.html">cybertensor.commands.delegates</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.identity" href="identity.html">cybertensor.commands.identity</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.inspect" href="inspect.html">cybertensor.commands.inspect</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.list" href="list.html">cybertensor.commands.list</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.metagraph" href="metagraph.html">cybertensor.commands.metagraph</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.network" href="network.html">cybertensor.commands.network</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.overview" href="overview.html">cybertensor.commands.overview</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.register" href="register.html">cybertensor.commands.register</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.root" href="root.html">cybertensor.commands.root</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.stake" href="stake.html">cybertensor.commands.stake</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.transfer" href="transfer.html">cybertensor.commands.transfer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.unstake" href="unstake.html">cybertensor.commands.unstake</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.utils" href="utils.html">cybertensor.commands.utils</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="cybertensor.commands.wallets" href="wallets.html">cybertensor.commands.wallets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="../index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="cybertensor.commands.delegates" href="delegates.html">cybertensor.commands.delegates</a></code></li>
+<li><code><a title="cybertensor.commands.identity" href="identity.html">cybertensor.commands.identity</a></code></li>
+<li><code><a title="cybertensor.commands.inspect" href="inspect.html">cybertensor.commands.inspect</a></code></li>
+<li><code><a title="cybertensor.commands.list" href="list.html">cybertensor.commands.list</a></code></li>
+<li><code><a title="cybertensor.commands.metagraph" href="metagraph.html">cybertensor.commands.metagraph</a></code></li>
+<li><code><a title="cybertensor.commands.network" href="network.html">cybertensor.commands.network</a></code></li>
+<li><code><a title="cybertensor.commands.overview" href="overview.html">cybertensor.commands.overview</a></code></li>
+<li><code><a title="cybertensor.commands.register" href="register.html">cybertensor.commands.register</a></code></li>
+<li><code><a title="cybertensor.commands.root" href="root.html">cybertensor.commands.root</a></code></li>
+<li><code><a title="cybertensor.commands.stake" href="stake.html">cybertensor.commands.stake</a></code></li>
+<li><code><a title="cybertensor.commands.transfer" href="transfer.html">cybertensor.commands.transfer</a></code></li>
+<li><code><a title="cybertensor.commands.unstake" href="unstake.html">cybertensor.commands.unstake</a></code></li>
+<li><code><a title="cybertensor.commands.utils" href="utils.html">cybertensor.commands.utils</a></code></li>
+<li><code><a title="cybertensor.commands.wallets" href="wallets.html">cybertensor.commands.wallets</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
