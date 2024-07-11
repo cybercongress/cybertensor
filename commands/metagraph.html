@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.metagraph API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.metagraph</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.metagraph.MetagraphCommand"><code class="flex name class">
+<span>class <span class="ident">MetagraphCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'metagraph' command to retrieve and display the entire metagraph
+for a specified network. This metagraph contains detailed information about
+all the neurons (nodes) participating in the network, including their stakes,
+trust scores, and more.</p>
+<p>Optional arguments:
+&ndash;netuid: The netuid of the network to query. Defaults to the default network UID.
+&ndash;cwtensor.network: The name of the network to query. Defaults to the default network name.</p>
+<p>The table displayed includes the following columns for each neuron:
+- UID: Unique identifier of the neuron.
+- STAKE(τ): Total stake of the neuron in Tau (τ).
+- RANK: Rank score of the neuron.
+- TRUST: Trust score assigned to the neuron by other neurons.
+- CONSENSUS: Consensus score of the neuron.
+- INCENTIVE: Incentive score representing the neuron's incentive alignment.
+- DIVIDENDS: Dividends earned by the neuron.
+- EMISSION(p): Emission in Rho (p) received by the neuron.
+- VTRUST: Validator trust score indicating the network's trust in the neuron as a validator.
+- VAL: Validator status of the neuron.
+- UPDATED: Number of blocks since the neuron's last update.
+- ACTIVE: Activity status of the neuron.
+- AXON: Network endpoint information of the neuron.
+- HOTKEY: Partial hotkey (public key) of the neuron.
+- COLDKEY: Partial coldkey (public key) of the neuron.</p>
+<p>The command also prints network-wide statistics such as total stake, issuance,
+and difficulty.</p>
+<p>Usage:
+The user must specify the network UID to query the metagraph. If not specified,
+the default network UID is used.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli metagraph --netuid 0 # Root network
+&gt;&gt;&gt; ctcli metagraph --netuid 1 --cwtensor.network test
+</code></pre>
+<p>Note:
+This command provides a snapshot of the network's state at the time of calling.
+It is useful for network analysis and diagnostics. It is intended to be used as
+part of the Cybertensor CLI and not as a standalone function within user code.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MetagraphCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;metagraph&#39; command to retrieve and display the entire metagraph
+    for a specified network. This metagraph contains detailed information about
+    all the neurons (nodes) participating in the network, including their stakes,
+    trust scores, and more.
+
+    Optional arguments:
+    --netuid: The netuid of the network to query. Defaults to the default network UID.
+    --cwtensor.network: The name of the network to query. Defaults to the default network name.
+
+    The table displayed includes the following columns for each neuron:
+    - UID: Unique identifier of the neuron.
+    - STAKE(τ): Total stake of the neuron in Tau (τ).
+    - RANK: Rank score of the neuron.
+    - TRUST: Trust score assigned to the neuron by other neurons.
+    - CONSENSUS: Consensus score of the neuron.
+    - INCENTIVE: Incentive score representing the neuron&#39;s incentive alignment.
+    - DIVIDENDS: Dividends earned by the neuron.
+    - EMISSION(p): Emission in Rho (p) received by the neuron.
+    - VTRUST: Validator trust score indicating the network&#39;s trust in the neuron as a validator.
+    - VAL: Validator status of the neuron.
+    - UPDATED: Number of blocks since the neuron&#39;s last update.
+    - ACTIVE: Activity status of the neuron.
+    - AXON: Network endpoint information of the neuron.
+    - HOTKEY: Partial hotkey (public key) of the neuron.
+    - COLDKEY: Partial coldkey (public key) of the neuron.
+
+    The command also prints network-wide statistics such as total stake, issuance,
+    and difficulty.
+
+    Usage:
+    The user must specify the network UID to query the metagraph. If not specified,
+    the default network UID is used.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli metagraph --netuid 0 # Root network
+    &gt;&gt;&gt; ctcli metagraph --netuid 1 --cwtensor.network test
+
+    Note:
+    This command provides a snapshot of the network&#39;s state at the time of calling.
+    It is useful for network analysis and diagnostics. It is intended to be used as
+    part of the Cybertensor CLI and not as a standalone function within user code.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Prints an entire metagraph.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            MetagraphCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        console.print(
+            &#34;:satellite: Syncing with chain: [white]{}[/white] ...&#34;.format(
+                cli.config.cwtensor.network
+            )
+        )
+        metagraph: cybertensor.metagraph = cwtensor.metagraph(netuid=cli.config.netuid)
+        metagraph.save()
+        difficulty = cwtensor.difficulty(cli.config.netuid)
+        # subnet_emission = Balance.from_gboot(
+        #     cwtensor.get_emission_value_by_subnet(cli.config.netuid)
+        # )
+        total_issuance = Balance.from_boot(cwtensor.total_issuance().boot)
+
+        TABLE_DATA = []
+        total_stake = 0.0
+        total_rank = 0.0
+        total_validator_trust = 0.0
+        total_trust = 0.0
+        total_consensus = 0.0
+        total_incentive = 0.0
+        total_dividends = 0.0
+        total_emission = 0
+        for uid in metagraph.uids:
+            neuron = metagraph.neurons[uid]
+            ep = metagraph.axons[uid]
+            row = [
+                str(neuron.uid),
+                &#34;{:.5f}&#34;.format(metagraph.total_stake[uid]),
+                &#34;{:.5f}&#34;.format(metagraph.ranks[uid]),
+                &#34;{:.5f}&#34;.format(metagraph.trust[uid]),
+                &#34;{:.5f}&#34;.format(metagraph.consensus[uid]),
+                &#34;{:.5f}&#34;.format(metagraph.incentive[uid]),
+                &#34;{:.5f}&#34;.format(metagraph.dividends[uid]),
+                &#34;{}&#34;.format(int(metagraph.emission[uid] * 1000000000)),
+                &#34;{:.5f}&#34;.format(metagraph.validator_trust[uid]),
+                &#34;*&#34; if metagraph.validator_permit[uid] else &#34;&#34;,
+                str((metagraph.block.item() - metagraph.last_update[uid].item())),
+                str(metagraph.active[uid].item()),
+                (
+                    ep.ip + &#34;:&#34; + str(ep.port)
+                    if ep.is_serving
+                    else &#34;[yellow]none[/yellow]&#34;
+                ),
+                f&#34;{ep.hotkey[:14]}...{ep.hotkey[-6:]}&#34;,
+                f&#34;{ep.coldkey[:14]}...{ep.coldkey[-6:]}&#34;
+            ]
+            total_stake += metagraph.total_stake[uid]
+            total_rank += metagraph.ranks[uid]
+            total_validator_trust += metagraph.validator_trust[uid]
+            total_trust += metagraph.trust[uid]
+            total_consensus += metagraph.consensus[uid]
+            total_incentive += metagraph.incentive[uid]
+            total_dividends += metagraph.dividends[uid]
+            total_emission += int(metagraph.emission[uid] * 1000000000)
+            TABLE_DATA.append(row)
+        total_neurons = len(metagraph.uids)
+        table = Table(show_footer=False)
+        table.title = &#34;[white]Metagraph: net: {}:{}, block: {}, N: {}/{}, stake: {}, issuance: {}, difficulty: {}&#34;.format(
+            cwtensor.network,
+            metagraph.netuid,
+            metagraph.block.item(),
+            sum(metagraph.active.tolist()),
+            metagraph.n.item(),
+            Balance.from_gboot(total_stake),
+            total_issuance,
+            difficulty,
+        )
+        table.add_column(
+            &#34;[overline white]UID&#34;,
+            str(total_neurons),
+            footer_style=&#34;overline white&#34;,
+            style=&#34;yellow&#34;,
+        )
+        table.add_column(
+            f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
+            f&#34;{cwtensor.giga_token_symbol}{total_stake:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]RANK&#34;,
+            f&#34;{total_rank:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]TRUST&#34;,
+            f&#34;{total_trust:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]CONSENSUS&#34;,
+            f&#34;{total_consensus:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]INCENTIVE&#34;,
+            f&#34;{total_incentive:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]DIVIDENDS&#34;,
+            f&#34;{total_dividends:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]EMISSION(\u03C1)&#34;,
+            f&#34;\u03C1{int(total_emission)}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]VTRUST&#34;,
+            f&#34;{total_validator_trust:.5f}&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]VAL&#34;, justify=&#34;right&#34;, style=&#34;green&#34;, no_wrap=True
+        )
+        table.add_column(&#34;[overline white]UPDATED&#34;, justify=&#34;right&#34;, no_wrap=True)
+        table.add_column(
+            &#34;[overline white]ACTIVE&#34;, justify=&#34;right&#34;, style=&#34;green&#34;, no_wrap=True
+        )
+        table.add_column(
+            &#34;[overline white]AXON&#34;, justify=&#34;left&#34;, style=&#34;dim blue&#34;, no_wrap=True
+        )
+        table.add_column(&#34;[overline white]HOTKEY&#34;, style=&#34;dim blue&#34;, no_wrap=False)
+        table.add_column(&#34;[overline white]COLDKEY&#34;, style=&#34;dim purple&#34;, no_wrap=False)
+        table.show_footer = True
+
+        for row in TABLE_DATA:
+            table.add_row(*row)
+        table.box = None
+        table.pad_edge = False
+        table.width = None
+        console.print(table)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        metagraph_parser = parser.add_parser(
+            &#34;metagraph&#34;, help=&#34;&#34;&#34;View a subnet metagraph information.&#34;&#34;&#34;
+        )
+        metagraph_parser.add_argument(
+            &#34;--netuid&#34;,
+            dest=&#34;netuid&#34;,
+            type=int,
+            help=&#34;&#34;&#34;Set the netuid to get the metagraph of&#34;&#34;&#34;,
+            default=False,
+        )
+        metagraph_parser.add_argument(
+            &#34;--no_prompt&#34;,
+            dest=&#34;no_prompt&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+            default=False,
+        )
+
+        cybertensor.cwtensor.add_args(metagraph_parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.metagraph.MetagraphCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.metagraph.MetagraphCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.metagraph.MetagraphCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prints an entire metagraph.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.metagraph.MetagraphCommand" href="#cybertensor.commands.metagraph.MetagraphCommand">MetagraphCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.metagraph.MetagraphCommand.add_args" href="#cybertensor.commands.metagraph.MetagraphCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.metagraph.MetagraphCommand.check_config" href="#cybertensor.commands.metagraph.MetagraphCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.metagraph.MetagraphCommand.run" href="#cybertensor.commands.metagraph.MetagraphCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

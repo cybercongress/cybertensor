@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.unstake API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.unstake</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.unstake.UnStakeCommand"><code class="flex name class">
+<span>class <span class="ident">UnStakeCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'remove' command to unstake GBOOT tokens from one or more hotkeys and transfer them back to the user's coldkey on the Cybertensor network.
+This command is used to withdraw tokens previously staked to different hotkeys.</p>
+<p>Usage:
+Users can specify the amount to unstake, the hotkeys to unstake from (either by name or address),
+and whether to unstake from all hotkeys. The command checks for sufficient stake and prompts for confirmation before proceeding with the unstaking process.</p>
+<p>Optional arguments:
+- &ndash;all (bool): When set, unstakes all staked tokens from the specified hotkeys.
+- &ndash;amount (float): The amount of GBOOT tokens to unstake.
+- &ndash;hotkey_address (str): The address of the hotkey to unstake from.
+- &ndash;max_stake (float): Sets the maximum amount of GBOOT to remain staked in each hotkey.
+- &ndash;hotkeys (list): Specifies hotkeys by name or address to unstake from.
+- &ndash;all_hotkeys (bool): When set, unstakes from all hotkeys associated with the wallet, excluding any specified in &ndash;hotkeys.</p>
+<p>The command prompts for confirmation before executing the unstaking operation.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli stake remove --amount 100 --hotkeys hk1,hk2
+</code></pre>
+<p>Note:
+This command is important for users who wish to reallocate their stakes or withdraw them from the network.
+It allows for flexible management of token stakes across different neurons (hotkeys) on the network.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnStakeCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;remove&#39; command to unstake GBOOT tokens from one or more hotkeys and transfer them back to the user&#39;s coldkey on the Cybertensor network.
+    This command is used to withdraw tokens previously staked to different hotkeys.
+
+    Usage:
+    Users can specify the amount to unstake, the hotkeys to unstake from (either by name or address),
+    and whether to unstake from all hotkeys. The command checks for sufficient stake and prompts for confirmation before proceeding with the unstaking process.
+
+    Optional arguments:
+    - --all (bool): When set, unstakes all staked tokens from the specified hotkeys.
+    - --amount (float): The amount of GBOOT tokens to unstake.
+    - --hotkey_address (str): The address of the hotkey to unstake from.
+    - --max_stake (float): Sets the maximum amount of GBOOT to remain staked in each hotkey.
+    - --hotkeys (list): Specifies hotkeys by name or address to unstake from.
+    - --all_hotkeys (bool): When set, unstakes from all hotkeys associated with the wallet, excluding any specified in --hotkeys.
+
+    The command prompts for confirmation before executing the unstaking operation.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli stake remove --amount 100 --hotkeys hk1,hk2
+
+    Note:
+    This command is important for users who wish to reallocate their stakes or withdraw them from the network.
+    It allows for flexible management of token stakes across different neurons (hotkeys) on the network.
+    &#34;&#34;&#34;
+
+    @classmethod
+    def check_config(cls, config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if (
+            not config.get(&#34;hotkey_address&#34;, d=None)
+            and not config.is_set(&#34;wallet.hotkey&#34;)
+            and not config.no_prompt
+            and not config.get(&#34;all_hotkeys&#34;)
+            and not config.get(&#34;hotkeys&#34;)
+        ):
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        # Get amount.
+        if (
+            not config.get(&#34;hotkey_address&#34;)
+            and not config.get(&#34;amount&#34;)
+            and not config.get(&#34;unstake_all&#34;)
+            and not config.get(&#34;max_stake&#34;)
+        ):
+            hotkeys: str = &#34;&#34;
+            if config.get(&#34;all_hotkeys&#34;):
+                hotkeys = &#34;all hotkeys&#34;
+            elif config.get(&#34;hotkeys&#34;):
+                hotkeys = str(config.hotkeys).replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;)
+            else:
+                hotkeys = str(config.wallet.hotkey)
+            amount = Prompt.ask(
+                f&#34;Enter {cybertensor.__giga_boot_symbol__} amount to unstake from [bold]{hotkeys}[/bold]&#34;
+            )
+            config.unstake_all = False
+            try:
+                config.amount = float(amount)
+            except ValueError:
+                console.print(
+                    f&#34;:cross_mark:[red] Invalid {cybertensor.__giga_boot_symbol__} amount[/red] [bold white]{amount}[/bold white]&#34;
+                )
+                sys.exit()
+
+    @staticmethod
+    def add_args(command_parser):
+        unstake_parser = command_parser.add_parser(
+            &#34;remove&#34;,
+            help=&#34;&#34;&#34;Remove stake from the specified hotkey into the coldkey balance.&#34;&#34;&#34;,
+        )
+        unstake_parser.add_argument(
+            &#34;--all&#34;, dest=&#34;unstake_all&#34;, action=&#34;store_true&#34;, default=False
+        )
+        unstake_parser.add_argument(
+            &#34;--amount&#34;, dest=&#34;amount&#34;, type=float, required=False
+        )
+        unstake_parser.add_argument(
+            &#34;--hotkey_address&#34;, dest=&#34;hotkey_address&#34;, type=str, required=False
+        )
+        unstake_parser.add_argument(
+            &#34;--max_stake&#34;,
+            dest=&#34;max_stake&#34;,
+            type=float,
+            required=False,
+            action=&#34;store&#34;,
+            default=None,
+            help=&#34;&#34;&#34;Specify the maximum amount of GBOOT to have staked in each hotkey.&#34;&#34;&#34;,
+        )
+        unstake_parser.add_argument(
+            &#34;--hotkeys&#34;,
+            &#34;--exclude_hotkeys&#34;,
+            &#34;--wallet.hotkeys&#34;,
+            &#34;--wallet.exclude_hotkeys&#34;,
+            required=False,
+            action=&#34;store&#34;,
+            default=[],
+            type=str,
+            nargs=&#34;*&#34;,
+            help=&#34;&#34;&#34;Specify the hotkeys by name or address. (e.g. hk1 hk2 hk3)&#34;&#34;&#34;,
+        )
+        unstake_parser.add_argument(
+            &#34;--all_hotkeys&#34;,
+            &#34;--wallet.all_hotkeys&#34;,
+            required=False,
+            action=&#34;store_true&#34;,
+            default=False,
+            help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
+        )
+        Wallet.add_args(unstake_parser)
+        cybertensor.cwtensor.add_args(unstake_parser)
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Unstake token of amount from hotkey(s).&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            UnStakeCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        config = cli.config.copy()
+        wallet = Wallet(config=config)
+
+        # Get the hotkey_names (if any) and the hotkeys.
+        hotkeys_to_unstake_from: List[Tuple[Optional[str], str]] = []
+        if cli.config.get(&#34;hotkey_address&#34;):
+            # Stake to specific hotkey.
+            hotkeys_to_unstake_from = [(None, cli.config.get(&#34;hotkey_address&#34;))]
+        elif cli.config.get(&#34;all_hotkeys&#34;):
+            # Stake to all hotkeys.
+            all_hotkeys: List[Wallet] = get_hotkey_wallets_for_wallet(
+                wallet=wallet
+            )
+            # Get the hotkeys to exclude. (d)efault to no exclusions.
+            hotkeys_to_exclude: List[str] = cli.config.get(&#34;hotkeys&#34;, d=[])
+            # Exclude hotkeys that are specified.
+            hotkeys_to_unstake_from = [
+                (wallet.hotkey_str, wallet.hotkey.address)
+                for wallet in all_hotkeys
+                if wallet.hotkey_str not in hotkeys_to_exclude
+            ]  # definitely wallets
+
+        elif cli.config.get(&#34;hotkeys&#34;):
+            # Stake to specific hotkeys.
+            for hotkey_or_hotkey_name in cli.config.get(&#34;hotkeys&#34;):
+                if cybertensor.utils.is_valid_address(hotkey_or_hotkey_name):
+                    # If the hotkey is a valid address, we add it to the list.
+                    hotkeys_to_unstake_from.append((None, hotkey_or_hotkey_name))
+                else:
+                    # If the hotkey is not a valid address, we assume it is a hotkey name.
+                    #  We then get the hotkey from the wallet and add it to the list.
+                    wallet_ = Wallet(
+                        config=cli.config, hotkey=hotkey_or_hotkey_name
+                    )
+                    hotkeys_to_unstake_from.append(
+                        (wallet_.hotkey_str, wallet_.hotkey.address)
+                    )
+        elif cli.config.wallet.get(&#34;hotkey&#34;):
+            # Only cli.config.wallet.hotkey is specified.
+            #  so we stake to that single hotkey.
+            hotkey_or_name = cli.config.wallet.get(&#34;hotkey&#34;)
+            if cybertensor.utils.is_valid_address(hotkey_or_name):
+                hotkeys_to_unstake_from = [(None, hotkey_or_name)]
+            else:
+                # Hotkey is not a valid address, so we assume it is a hotkey name.
+                wallet_ = Wallet(
+                    config=cli.config, hotkey=hotkey_or_name
+                )
+                hotkeys_to_unstake_from = [
+                    (wallet_.hotkey_str, wallet_.hotkey.address)
+                ]
+        else:
+            # Only cli.config.wallet.hotkey is specified.
+            #  so we stake to that single hotkey.
+            assert cli.config.wallet.hotkey is not None
+            hotkeys_to_unstake_from = [
+                (None, Wallet(config=cli.config).hotkey.address)
+            ]
+
+        final_hotkeys: List[Tuple[str, str]] = []
+        final_amounts: List[Union[float, Balance]] = []
+        for hotkey in tqdm(hotkeys_to_unstake_from):
+            hotkey: Tuple[Optional[str], str]  # (hotkey_name (or None), hotkey)
+            unstake_amount_gigaboot: float = cli.config.get(
+                &#34;amount&#34;
+            )  # The amount specified to unstake.
+            hotkey_stake: Balance = cwtensor.get_stake_for_coldkey_and_hotkey(
+                hotkey=hotkey[1], coldkey=wallet.coldkeypub.address
+            )
+            if unstake_amount_gigaboot is None:
+                unstake_amount_gigaboot = hotkey_stake.gboot
+            if cli.config.get(&#34;max_stake&#34;):
+                # Get the current stake of the hotkey from this coldkey.
+                unstake_amount_gigaboot: float = hotkey_stake.gboot - cli.config.get(
+                    &#34;max_stake&#34;
+                )
+                cli.config.amount = unstake_amount_gigaboot
+                if unstake_amount_gigaboot &lt; 0:
+                    # Skip if max_stake is greater than current stake.
+                    continue
+            else:
+                if unstake_amount_gigaboot is not None:
+                    # There is a specified amount to unstake.
+                    if unstake_amount_gigaboot &gt; hotkey_stake.gboot:
+                        # Skip if the specified amount is greater than the current stake.
+                        continue
+
+            final_amounts.append(unstake_amount_gigaboot)
+            final_hotkeys.append(hotkey)  # add both the name and the address.
+
+        if len(final_hotkeys) == 0:
+            # No hotkeys to unstake from.
+            console.print(
+                &#34;Not enough stake to unstake from any hotkeys or max_stake is more than current stake.&#34;
+            )
+            return None
+
+        # Ask to unstake
+        if not cli.config.no_prompt:
+            if not Confirm.ask(
+                f&#34;Do you want to unstake from the following keys to {wallet.name}:\n&#34;
+                + &#34;&#34;.join(
+                    [
+                        f&#34;    [bold white]- {hotkey[0] + &#39;:&#39; if hotkey[0] else &#39;&#39;}{hotkey[1]}: &#34;
+                        f&#34;{f&#39;{amount} {cwtensor.giga_token_symbol}&#39; if amount else &#39;All&#39;}[/bold white]\n&#34;
+                        for hotkey, amount in zip(final_hotkeys, final_amounts)
+                    ]
+                )
+            ):
+                return None
+
+        if len(final_hotkeys) == 1:
+            # do regular unstake
+            return cwtensor.unstake(
+                wallet=wallet,
+                hotkey=final_hotkeys[0][1],
+                amount=None if cli.config.get(&#34;unstake_all&#34;) else final_amounts[0],
+                wait_for_finalization=True,
+                prompt=not cli.config.no_prompt,
+            )
+
+        cwtensor.unstake_multiple(
+            wallet=wallet,
+            hotkeys=[hotkey for _, hotkey in final_hotkeys],
+            amounts=None if cli.config.get(&#34;unstake_all&#34;) else final_amounts,
+            wait_for_finalization=True,
+            prompt=False,
+        )</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.unstake.UnStakeCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>command_parser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.unstake.UnStakeCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.unstake.UnStakeCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Unstake token of amount from hotkey(s).</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.unstake.UnStakeCommand" href="#cybertensor.commands.unstake.UnStakeCommand">UnStakeCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.unstake.UnStakeCommand.add_args" href="#cybertensor.commands.unstake.UnStakeCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.unstake.UnStakeCommand.check_config" href="#cybertensor.commands.unstake.UnStakeCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.unstake.UnStakeCommand.run" href="#cybertensor.commands.unstake.UnStakeCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

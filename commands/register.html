@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.register API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.register</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.register.PowRegisterCommand"><code class="flex name class">
+<span>class <span class="ident">PowRegisterCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'pow_register' command to register a neuron on the cybertensor network using Proof of Work (PoW).
+This method is an alternative registration process that leverages computational work for securing a neuron's place on the network.</p>
+<p>Usage:
+The command starts by verifying the existence of the specified subnet. If the subnet does not exist, it terminates with an error message.
+On successful verification, the PoW registration process is initiated, which requires solving computational puzzles.</p>
+<p>Optional arguments:
+- &ndash;netuid (int): The netuid for the subnet on which to serve the neuron. Mandatory for specifying the target subnet.
+- &ndash;pow_register.num_processes (int): The number of processors to use for PoW registration. Defaults to the system's default setting.
+- &ndash;pow_register.update_interval (int): The number of nonces to process before checking for the next block during registration.
+Affects the frequency of update checks.
+- &ndash;pow_register.no_output_in_place (bool): When set, disables the output of registration statistics in place. Useful for cleaner logs.
+- &ndash;pow_register.verbose (bool): Enables verbose output of registration statistics for detailed information.
+- &ndash;pow_register.cuda.use_cuda (bool): Enables the use of CUDA for GPU-accelerated PoW calculations. Requires a CUDA-compatible GPU.
+- &ndash;pow_register.cuda.no_cuda (bool): Disables the use of CUDA, defaulting to CPU-based calculations.
+- &ndash;pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
+- &ndash;pow_register.cuda.tpb (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.</p>
+<p>The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
+</code></pre>
+<p>Note:
+This command is suited for users with adequate computational resources to participate in PoW registration. It requires a sound understanding
+of the network's operations and PoW mechanics. Users should ensure their systems meet the necessary hardware and software requirements,
+particularly when opting for CUDA-based GPU acceleration.</p>
+<p>This command may be disabled according on the subnet owner's directive. For example, on netuid 1 this is permanently disabled.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PowRegisterCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;pow_register&#39; command to register a neuron on the cybertensor network using Proof of Work (PoW).
+    This method is an alternative registration process that leverages computational work for securing a neuron&#39;s place on the network.
+
+    Usage:
+    The command starts by verifying the existence of the specified subnet. If the subnet does not exist, it terminates with an error message.
+    On successful verification, the PoW registration process is initiated, which requires solving computational puzzles.
+
+    Optional arguments:
+    - --netuid (int): The netuid for the subnet on which to serve the neuron. Mandatory for specifying the target subnet.
+    - --pow_register.num_processes (int): The number of processors to use for PoW registration. Defaults to the system&#39;s default setting.
+    - --pow_register.update_interval (int): The number of nonces to process before checking for the next block during registration.
+      Affects the frequency of update checks.
+    - --pow_register.no_output_in_place (bool): When set, disables the output of registration statistics in place. Useful for cleaner logs.
+    - --pow_register.verbose (bool): Enables verbose output of registration statistics for detailed information.
+    - --pow_register.cuda.use_cuda (bool): Enables the use of CUDA for GPU-accelerated PoW calculations. Requires a CUDA-compatible GPU.
+    - --pow_register.cuda.no_cuda (bool): Disables the use of CUDA, defaulting to CPU-based calculations.
+    - --pow_register.cuda.dev_id (int): Specifies the CUDA device ID, useful for systems with multiple CUDA-compatible GPUs.
+    - --pow_register.cuda.tpb (int): Sets the number of Threads Per Block for CUDA operations, affecting the GPU calculation dynamics.
+
+    The command also supports additional wallet and cwtensor arguments, enabling further customization of the registration process.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets pow_register --netuid 1 --pow_register.num_processes 4 --cuda.use_cuda
+
+    Note:
+    This command is suited for users with adequate computational resources to participate in PoW registration. It requires a sound understanding
+    of the network&#39;s operations and PoW mechanics. Users should ensure their systems meet the necessary hardware and software requirements,
+    particularly when opting for CUDA-based GPU acceleration.
+
+    This command may be disabled according on the subnet owner&#39;s directive. For example, on netuid 1 this is permanently disabled.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Register neuron.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            PowRegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        wallet = Wallet(config=cli.config)
+
+        # Verify subnet exists
+        if not cwtensor.subnet_exists(netuid=cli.config.netuid):
+            console.print(
+                f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
+            )
+            sys.exit(1)
+
+        cwtensor.register(
+            wallet=wallet,
+            netuid=cli.config.netuid,
+            prompt=not cli.config.no_prompt,
+            tpb=cli.config.pow_register.cuda.get(&#34;tpb&#34;, None),
+            update_interval=cli.config.pow_register.get(&#34;update_interval&#34;, None),
+            num_processes=cli.config.pow_register.get(&#34;num_processes&#34;, None),
+            cuda=cli.config.pow_register.cuda.get(
+                &#34;use_cuda&#34;, defaults.pow_register.cuda.use_cuda
+            ),
+            dev_id=cli.config.pow_register.cuda.get(&#34;dev_id&#34;, None),
+            output_in_place=cli.config.pow_register.get(
+                &#34;output_in_place&#34;, defaults.pow_register.output_in_place
+            ),
+            log_verbose=cli.config.pow_register.get(
+                &#34;verbose&#34;, defaults.pow_register.verbose
+            ),
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        register_parser = parser.add_parser(
+            &#34;pow_register&#34;, help=&#34;&#34;&#34;Register a wallet to a network using PoW.&#34;&#34;&#34;
+        )
+        register_parser.add_argument(
+            &#34;--netuid&#34;,
+            type=int,
+            help=&#34;netuid for subnet to serve this neuron on&#34;,
+            default=argparse.SUPPRESS,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.num_processes&#34;,
+            &#34;-n&#34;,
+            dest=&#34;pow_register.num_processes&#34;,
+            help=&#34;Number of processors to use for POW registration&#34;,
+            type=int,
+            default=defaults.pow_register.num_processes,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.update_interval&#34;,
+            &#34;--pow_register.cuda.update_interval&#34;,
+            &#34;--cuda.update_interval&#34;,
+            &#34;-u&#34;,
+            help=&#34;The number of nonces to process before checking for next block during registration&#34;,
+            type=int,
+            default=defaults.pow_register.update_interval,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.no_output_in_place&#34;,
+            &#34;--no_output_in_place&#34;,
+            dest=&#34;pow_register.output_in_place&#34;,
+            help=&#34;Whether to not ouput the registration statistics in-place. Set flag to disable output in-place.&#34;,
+            action=&#34;store_false&#34;,
+            required=False,
+            default=defaults.pow_register.output_in_place,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.verbose&#34;,
+            help=&#34;Whether to ouput the registration statistics verbosely.&#34;,
+            action=&#34;store_true&#34;,
+            required=False,
+            default=defaults.pow_register.verbose,
+        )
+
+        ## Registration args for CUDA registration.
+        register_parser.add_argument(
+            &#34;--pow_register.cuda.use_cuda&#34;,
+            &#34;--cuda&#34;,
+            &#34;--cuda.use_cuda&#34;,
+            dest=&#34;pow_register.cuda.use_cuda&#34;,
+            default=defaults.pow_register.cuda.use_cuda,
+            help=&#34;&#34;&#34;Set flag to use CUDA to register.&#34;&#34;&#34;,
+            action=&#34;store_true&#34;,
+            required=False,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.cuda.no_cuda&#34;,
+            &#34;--no_cuda&#34;,
+            &#34;--cuda.no_cuda&#34;,
+            dest=&#34;pow_register.cuda.use_cuda&#34;,
+            default=not defaults.pow_register.cuda.use_cuda,
+            help=&#34;&#34;&#34;Set flag to not use CUDA for registration&#34;&#34;&#34;,
+            action=&#34;store_false&#34;,
+            required=False,
+        )
+
+        register_parser.add_argument(
+            &#34;--pow_register.cuda.dev_id&#34;,
+            &#34;--cuda.dev_id&#34;,
+            type=int,
+            nargs=&#34;+&#34;,
+            default=defaults.pow_register.cuda.dev_id,
+            help=&#34;&#34;&#34;Set the CUDA device id(s). Goes by the order of speed. (i.e. 0 is the fastest).&#34;&#34;&#34;,
+            required=False,
+        )
+        register_parser.add_argument(
+            &#34;--pow_register.cuda.tpb&#34;,
+            &#34;--cuda.tpb&#34;,
+            type=int,
+            default=defaults.pow_register.cuda.tpb,
+            help=&#34;&#34;&#34;Set the number of Threads Per Block for CUDA.&#34;&#34;&#34;,
+            required=False,
+        )
+
+        Wallet.add_args(register_parser)
+        cybertensor.cwtensor.add_args(register_parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        # if (
+        #     not config.is_set(&#34;cwtensor.network&#34;)
+        #     and not config.no_prompt
+        # ):
+        #     config.cwtensor.network = Prompt.ask(
+        #         &#34;Enter cwtensor network&#34;,
+        #         choices=cybertensor.__networks__,
+        #         default=defaults.cwtensor.network,
+        #     )
+        #     _, network_config, contract_address = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+        #         config.cwtensor.network
+        #     )
+        #     config.cwtensor.network_config = network_config
+        #     config.cwtensor.contract_address = contract_address
+
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config))  # , log_verbose=False)
+
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.no_prompt:
+            check_for_cuda_reg_config(config)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.register.PowRegisterCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.PowRegisterCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.PowRegisterCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register neuron.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.register.RegisterCommand"><code class="flex name class">
+<span>class <span class="ident">RegisterCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'register' command to register a neuron on the cybertensor network by recycling some GBOOT (the network's native token).
+This command is used to add a new neuron to a specified subnet within the network, contributing to the decentralization and robustness of cybertensor.</p>
+<p>Usage:
+Before registering, the command checks if the specified subnet exists and whether the user's balance is sufficient to cover the registration cost.
+The registration cost is determined by the current recycle amount for the specified subnet. If the balance is insufficient or the subnet does not exist,
+the command will exit with an appropriate error message.</p>
+<p>If the preconditions are met, and the user confirms the transaction (if 'no_prompt' is not set), the command proceeds to register the neuron by burning the required amount of GBOOT.</p>
+<p>The command structure includes:
+- Verification of subnet existence.
+- Checking the user's balance against the current recycle amount for the subnet.
+- User confirmation prompt for proceeding with registration.
+- Execution of the registration process.</p>
+<p>Columns Displayed in the Confirmation Prompt:
+- Balance: The current balance of the user's wallet in GBOOT.
+- Cost to Register: The required amount of GBOOT needed to register on the specified subnet.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets register --netuid 1
+</code></pre>
+<p>Note:
+This command is critical for users who wish to contribute a new neuron to the network. It requires careful consideration of the subnet selection and
+an understanding of the registration costs. Users should ensure their wallet is sufficiently funded before attempting to register a neuron.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegisterCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;register&#39; command to register a neuron on the cybertensor network by recycling some GBOOT (the network&#39;s native token).
+    This command is used to add a new neuron to a specified subnet within the network, contributing to the decentralization and robustness of cybertensor.
+
+    Usage:
+    Before registering, the command checks if the specified subnet exists and whether the user&#39;s balance is sufficient to cover the registration cost.
+    The registration cost is determined by the current recycle amount for the specified subnet. If the balance is insufficient or the subnet does not exist,
+    the command will exit with an appropriate error message.
+
+    If the preconditions are met, and the user confirms the transaction (if &#39;no_prompt&#39; is not set), the command proceeds to register the neuron by burning the required amount of GBOOT.
+
+    The command structure includes:
+    - Verification of subnet existence.
+    - Checking the user&#39;s balance against the current recycle amount for the subnet.
+    - User confirmation prompt for proceeding with registration.
+    - Execution of the registration process.
+
+    Columns Displayed in the Confirmation Prompt:
+    - Balance: The current balance of the user&#39;s wallet in GBOOT.
+    - Cost to Register: The required amount of GBOOT needed to register on the specified subnet.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets register --netuid 1
+
+    Note:
+    This command is critical for users who wish to contribute a new neuron to the network. It requires careful consideration of the subnet selection and
+    an understanding of the registration costs. Users should ensure their wallet is sufficiently funded before attempting to register a neuron.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        r&#34;&#34;&#34;Register neuron by recycling some GBOOT.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        wallet = Wallet(config=cli.config)
+
+        # Verify subnet exists
+        if not cwtensor.subnet_exists(netuid=cli.config.netuid):
+            console.print(
+                f&#34;[red]Subnet {cli.config.netuid} does not exist[/red]&#34;
+            )
+            sys.exit(1)
+
+        # Check current recycle amount
+        current_recycle = cwtensor.recycle(netuid=cli.config.netuid)
+        balance = cwtensor.get_balance(wallet.coldkeypub.address)
+
+        # Check balance is sufficient
+        if balance &lt; current_recycle:
+            console.print(
+                f&#34;[red]Insufficient balance {balance} to register neuron. Current recycle is {current_recycle}[/red]&#34;
+            )
+            sys.exit(1)
+
+        if not cli.config.no_prompt:
+            if (
+                Confirm.ask(
+                    f&#34;Your balance is: [bold green]{balance}[/bold green]\n&#34;
+                    f&#34;The cost to register by recycle is [bold red]{current_recycle}[/bold red]\n&#34;
+                    f&#34;Do you want to continue?&#34;,
+                    default=False,
+                )
+                is False
+            ):
+                sys.exit(1)
+
+        cwtensor.burned_register(
+            wallet=wallet, netuid=cli.config.netuid, prompt=not cli.config.no_prompt
+        )
+
+    @classmethod
+    def check_config(cls, config: &#34;Config&#34;):
+        check_netuid_set(config, cwtensor=cybertensor.cwtensor(config=config, log_verbose=False))
+
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+    @classmethod
+    def add_args(cls, parser: argparse.ArgumentParser):
+        register_parser = parser.add_parser(
+            &#34;register&#34;, help=&#34;&#34;&#34;Register a wallet to a network.&#34;&#34;&#34;
+        )
+        register_parser.add_argument(
+            &#34;--netuid&#34;,
+            type=int,
+            help=&#34;netuid for subnet to serve this neuron on&#34;,
+            default=argparse.SUPPRESS,
+        )
+
+        Wallet.add_args(register_parser)
+        cybertensor.cwtensor.add_args(register_parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.register.RegisterCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.RegisterCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.RegisterCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register neuron by recycling some GBOOT.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand"><code class="flex name class">
+<span>class <span class="ident">SwapHotkeyCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SwapHotkeyCommand:
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        try:
+            cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            SwapHotkeyCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        r&#34;&#34;&#34;Swap your hotkey for all registered axons on the network.&#34;&#34;&#34;
+        wallet = cybertensor.wallet(config=cli.config)
+
+        # This creates an unnecessary amount of extra data, but simplifies implementation.
+        new_config = deepcopy(cli.config)
+        new_config.wallet.hotkey = new_config.wallet.hotkey_b
+        new_wallet = cybertensor.wallet(config=new_config)
+
+        cwtensor.swap_hotkey(
+            wallet=wallet,
+            new_wallet=new_wallet,
+            wait_for_finalization=False,
+            prompt=False,
+        )
+        
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        swap_hotkey_parser = parser.add_parser(
+            &#34;swap_hotkey&#34;, help=&#34;&#34;&#34;Swap your associated hotkey.&#34;&#34;&#34;
+        )
+
+        swap_hotkey_parser.add_argument(
+            &#34;--wallet.hotkey_b&#34;,
+            type=str,
+            default=defaults.wallet.hotkey,
+            help=&#34;&#34;&#34;Name of the new hotkey&#34;&#34;&#34;,
+            required=False,
+        )
+
+        cybertensor.wallet.add_args(swap_hotkey_parser)
+        cybertensor.cwtensor.add_args(swap_hotkey_parser)
+
+    @staticmethod
+    def check_config(config: &#34;cybertensor.config&#34;):
+        if (
+            not config.is_set(&#34;cwtensor.network&#34;)
+            and not config.is_set(&#34;cwtensor.chain_endpoint&#34;)
+            and not config.no_prompt
+        ):
+            config.cwtensor.network = Prompt.ask(
+                &#34;Enter cwtensor network&#34;,
+                choices=cybertensor.__networks__,
+                default=defaults.cwtensor.network,
+            )
+            _, endpoint = cybertensor.cwtensor.determine_chain_endpoint_and_network(
+                config.cwtensor.network
+            )
+            config.cwtensor.chain_endpoint = endpoint
+
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter old hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.is_set(&#34;wallet.hotkey_b&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter new hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey_b = str(hotkey)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.register.SwapHotkeyCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Swap your hotkey for all registered axons on the network.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.register.PowRegisterCommand" href="#cybertensor.commands.register.PowRegisterCommand">PowRegisterCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.register.PowRegisterCommand.add_args" href="#cybertensor.commands.register.PowRegisterCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.register.PowRegisterCommand.check_config" href="#cybertensor.commands.register.PowRegisterCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.register.PowRegisterCommand.run" href="#cybertensor.commands.register.PowRegisterCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.register.RegisterCommand" href="#cybertensor.commands.register.RegisterCommand">RegisterCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.register.RegisterCommand.add_args" href="#cybertensor.commands.register.RegisterCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.register.RegisterCommand.check_config" href="#cybertensor.commands.register.RegisterCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.register.RegisterCommand.run" href="#cybertensor.commands.register.RegisterCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.register.SwapHotkeyCommand" href="#cybertensor.commands.register.SwapHotkeyCommand">SwapHotkeyCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.add_args" href="#cybertensor.commands.register.SwapHotkeyCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.check_config" href="#cybertensor.commands.register.SwapHotkeyCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.register.SwapHotkeyCommand.run" href="#cybertensor.commands.register.SwapHotkeyCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

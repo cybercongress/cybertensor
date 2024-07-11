@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.synapse API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.synapse</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.synapse.cast_float"><code class="name flex">
+<span>def <span class="ident">cast_float</span></span>(<span>raw: str) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a string to a float, if the string is not <code>None</code>.
+This function attempts to convert a string to a float. If the string is <code>None</code>, it simply returns <code>None</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>raw</code></strong> :&ensp;<code>str</code></dt>
+<dd>The string to convert.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code> or <code>None</code></dt>
+<dd>The converted float, or <code>None</code> if the input was <code>None</code>.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.cast_int"><code class="name flex">
+<span>def <span class="ident">cast_int</span></span>(<span>raw: str) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a string to an integer, if the string is not <code>None</code>.</p>
+<p>This function attempts to convert a string to an integer. If the string is <code>None</code>,
+it simply returns <code>None</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>raw</code></strong> :&ensp;<code>str</code></dt>
+<dd>The string to convert.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code> or <code>None</code></dt>
+<dd>The converted integer, or <code>None</code> if the input was <code>None</code>.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.get_size"><code class="name flex">
+<span>def <span class="ident">get_size</span></span>(<span>obj, seen=None) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Recursively finds size of objects.</p>
+<p>This function traverses every item of a given object and sums their sizes to compute the total size.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>obj</code></strong> :&ensp;<code>any type</code></dt>
+<dd>The object to get the size of.</dd>
+<dt><strong><code>seen</code></strong> :&ensp;<code>set</code></dt>
+<dd>Set of object ids that have been calculated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The total size of the object.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.synapse.Synapse"><code class="flex name class">
+<span>class <span class="ident">Synapse</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents a Synapse in the cybertensor network, serving as a communication schema between neurons (nodes).</p>
+<p>Synapses ensure the format and correctness of transmission tensors according to the cybertensor protocol.
+Each Synapse type is tailored for a specific machine learning (ML) task, following unique compression and
+communication processes. This helps maintain sanitized, correct, and useful information flow across the network.</p>
+<p>The Synapse class encompasses essential network properties such as HTTP route names, timeouts, request sizes, and
+terminal information. It also includes methods for serialization, deserialization, attribute setting, and hash
+computation, ensuring secure and efficient data exchange in the network.</p>
+<p>The class includes Pydantic validators and root validators to enforce data integrity and format. Additionally,
+properties like <code>is_success</code>, <code>is_failure</code>, <code>is_timeout</code>, etc., provide convenient status checks based on
+dendrite responses.</p>
+<p>Think of cybertensor Synapses as glorified pydantic wrappers that have been designed to be used in a distributed
+network. They provide a standardized way to communicate between neurons, and are the primary mechanism for
+communication between neurons in cybertensor.</p>
+<p>Key Features:</p>
+<ol>
+<li>
+<p>HTTP Route Name (<code>name</code> attribute):
+Enables the identification and proper routing of requests within the network. Essential for users
+defining custom routes for specific machine learning tasks.</p>
+</li>
+<li>
+<p>Query Timeout (<code>timeout</code> attribute):
+Determines the maximum duration allowed for a query, ensuring timely responses and network
+efficiency. Crucial for users to manage network latency and response times, particularly in
+time-sensitive applications.</p>
+</li>
+<li>
+<p>Request Sizes (<code>total_size</code>, <code>header_size</code> attributes):
+Keeps track of the size of request bodies and headers, ensuring efficient data transmission without
+overloading the network. Important for users to monitor and optimize the data payload, especially
+in bandwidth-constrained environments.</p>
+</li>
+<li>
+<p>Terminal Information (<code>dendrite</code>, <code>axon</code> attributes):
+Stores information about the dendrite (receiving end) and axon (sending end), facilitating communication
+between nodes. Users can access detailed information about the communication endpoints, aiding in
+debugging and network analysis.</p>
+</li>
+<li>
+<p>Body Hash Computation (<code>computed_body_hash</code>, <code>required_hash_fields</code>):
+Ensures data integrity and security by computing hashes of transmitted data. Provides users with a
+mechanism to verify data integrity and detect any tampering during transmission.</p>
+</li>
+<li>
+<p>Serialization and Deserialization Methods:
+Facilitates the conversion of Synapse objects to and from a format suitable for network transmission.
+Essential for users who need to customize data formats for specific machine learning models or tasks.</p>
+</li>
+<li>
+<p>Status Check Properties (<code>is_success</code>, <code>is_failure</code>, <code>is_timeout</code>, etc.):
+Provides quick and easy methods to check the status of a request, improving error handling and
+response management. Users can efficiently handle different outcomes of network requests, enhancing
+the robustness of their applications.</p>
+</li>
+</ol>
+<p>Example usage::</p>
+<pre><code># Creating a Synapse instance with default values
+synapse = Synapse()
+
+# Setting properties and input
+synapse.timeout = 15.0
+synapse.name = "MySynapse"
+# Not setting fields that are not defined in your synapse class will result in an error, e.g.:
+synapse.dummy_input = 1 # This will raise an error because dummy_input is not defined in the Synapse class
+
+# Get a dictionary of headers and body from the synapse instance
+synapse_dict = synapse.json()
+
+# Get a dictionary of headers from the synapse instance
+headers = synapse.to_headers()
+
+# Reconstruct the synapse from headers using the classmethod 'from_headers'
+synapse = Synapse.from_headers(headers)
+
+# Deserialize synapse after receiving it over the network, controlled by &lt;code&gt;deserialize&lt;/code&gt; method
+deserialized_synapse = synapse.deserialize()
+
+# Checking the status of the request
+if synapse.is_success:
+    print("Request succeeded")
+
+# Checking and setting the status of the request
+print(synapse.axon.status_code)
+synapse.axon.status_code = 408 # Timeout
+</code></pre>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>HTTP route name, set on :func:<code>axon.attach</code>.</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>float</code></dt>
+<dd>Total query length, set by the dendrite terminal.</dd>
+<dt><strong><code>total_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total size of request body in bytes.</dd>
+<dt><strong><code>header_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>Size of request header in bytes.</dd>
+<dt><strong><code>dendrite</code></strong> :&ensp;<code><a title="cybertensor.synapse.TerminalInfo" href="#cybertensor.synapse.TerminalInfo">TerminalInfo</a></code></dt>
+<dd>Information about the dendrite terminal.</dd>
+<dt><strong><code>axon</code></strong> :&ensp;<code><a title="cybertensor.synapse.TerminalInfo" href="#cybertensor.synapse.TerminalInfo">TerminalInfo</a></code></dt>
+<dd>Information about the axon terminal.</dd>
+<dt><strong><code>computed_body_hash</code></strong> :&ensp;<code>str</code></dt>
+<dd>Computed hash of the request body.</dd>
+<dt><strong><code>required_hash_fields</code></strong> :&ensp;<code>List[str]</code></dt>
+<dd>Fields required to compute the body hash.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p>deserialize: Custom deserialization logic for subclasses.
+<strong>setattr</strong>: Override method to make <code>required_hash_fields</code> read-only.
+get_total_size: Calculates and returns the total size of the object.
+to_headers: Constructs a dictionary of headers from instance properties.
+body_hash: Computes a SHA3-256 hash of the serialized body.
+parse_headers_to_inputs: Parses headers to construct an inputs dictionary.
+from_headers: Creates an instance from a headers dictionary.</p>
+<p>This class is a cornerstone in the cybertensor framework, providing the necessary tools for secure, efficient, and
+standardized communication in a decentralized environment.</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Synapse(pydantic.BaseModel):
+    &#34;&#34;&#34;
+    Represents a Synapse in the cybertensor network, serving as a communication schema between neurons (nodes).
+
+    Synapses ensure the format and correctness of transmission tensors according to the cybertensor protocol.
+    Each Synapse type is tailored for a specific machine learning (ML) task, following unique compression and
+    communication processes. This helps maintain sanitized, correct, and useful information flow across the network.
+
+    The Synapse class encompasses essential network properties such as HTTP route names, timeouts, request sizes, and
+    terminal information. It also includes methods for serialization, deserialization, attribute setting, and hash
+    computation, ensuring secure and efficient data exchange in the network.
+
+    The class includes Pydantic validators and root validators to enforce data integrity and format. Additionally,
+    properties like ``is_success``, ``is_failure``, ``is_timeout``, etc., provide convenient status checks based on
+    dendrite responses.
+
+    Think of cybertensor Synapses as glorified pydantic wrappers that have been designed to be used in a distributed
+    network. They provide a standardized way to communicate between neurons, and are the primary mechanism for
+    communication between neurons in cybertensor.
+
+    Key Features:
+
+    1. HTTP Route Name (``name`` attribute):
+        Enables the identification and proper routing of requests within the network. Essential for users
+        defining custom routes for specific machine learning tasks.
+
+    2. Query Timeout (``timeout`` attribute):
+        Determines the maximum duration allowed for a query, ensuring timely responses and network
+        efficiency. Crucial for users to manage network latency and response times, particularly in
+        time-sensitive applications.
+
+    3. Request Sizes (``total_size``, ``header_size`` attributes):
+        Keeps track of the size of request bodies and headers, ensuring efficient data transmission without
+        overloading the network. Important for users to monitor and optimize the data payload, especially
+        in bandwidth-constrained environments.
+
+    4. Terminal Information (``dendrite``, ``axon`` attributes):
+        Stores information about the dendrite (receiving end) and axon (sending end), facilitating communication
+        between nodes. Users can access detailed information about the communication endpoints, aiding in
+        debugging and network analysis.
+
+    5. Body Hash Computation (``computed_body_hash``, ``required_hash_fields``):
+        Ensures data integrity and security by computing hashes of transmitted data. Provides users with a
+        mechanism to verify data integrity and detect any tampering during transmission.
+
+    6. Serialization and Deserialization Methods:
+        Facilitates the conversion of Synapse objects to and from a format suitable for network transmission.
+        Essential for users who need to customize data formats for specific machine learning models or tasks.
+
+    7. Status Check Properties (``is_success``, ``is_failure``, ``is_timeout``, etc.):
+        Provides quick and easy methods to check the status of a request, improving error handling and
+        response management. Users can efficiently handle different outcomes of network requests, enhancing
+        the robustness of their applications.
+
+    Example usage::
+
+        # Creating a Synapse instance with default values
+        synapse = Synapse()
+
+        # Setting properties and input
+        synapse.timeout = 15.0
+        synapse.name = &#34;MySynapse&#34;
+        # Not setting fields that are not defined in your synapse class will result in an error, e.g.:
+        synapse.dummy_input = 1 # This will raise an error because dummy_input is not defined in the Synapse class
+
+        # Get a dictionary of headers and body from the synapse instance
+        synapse_dict = synapse.json()
+
+        # Get a dictionary of headers from the synapse instance
+        headers = synapse.to_headers()
+
+        # Reconstruct the synapse from headers using the classmethod &#39;from_headers&#39;
+        synapse = Synapse.from_headers(headers)
+
+        # Deserialize synapse after receiving it over the network, controlled by `deserialize` method
+        deserialized_synapse = synapse.deserialize()
+
+        # Checking the status of the request
+        if synapse.is_success:
+            print(&#34;Request succeeded&#34;)
+
+        # Checking and setting the status of the request
+        print(synapse.axon.status_code)
+        synapse.axon.status_code = 408 # Timeout
+
+    Args:
+        name (str): HTTP route name, set on :func:`axon.attach`.
+        timeout (float): Total query length, set by the dendrite terminal.
+        total_size (int): Total size of request body in bytes.
+        header_size (int): Size of request header in bytes.
+        dendrite (TerminalInfo): Information about the dendrite terminal.
+        axon (TerminalInfo): Information about the axon terminal.
+        computed_body_hash (str): Computed hash of the request body.
+        required_hash_fields (List[str]): Fields required to compute the body hash.
+
+    Methods:
+        deserialize: Custom deserialization logic for subclasses.
+        __setattr__: Override method to make ``required_hash_fields`` read-only.
+        get_total_size: Calculates and returns the total size of the object.
+        to_headers: Constructs a dictionary of headers from instance properties.
+        body_hash: Computes a SHA3-256 hash of the serialized body.
+        parse_headers_to_inputs: Parses headers to construct an inputs dictionary.
+        from_headers: Creates an instance from a headers dictionary.
+
+    This class is a cornerstone in the cybertensor framework, providing the necessary tools for secure, efficient, and
+    standardized communication in a decentralized environment.
+    &#34;&#34;&#34;
+    class Config:
+        validate_assignment = True
+
+    def deserialize(self) -&gt; &#34;Synapse&#34;:
+        &#34;&#34;&#34;
+        Deserializes the Synapse object.
+
+        This method is intended to be overridden by subclasses for custom deserialization logic.
+        In the context of the Synapse superclass, this method simply returns the instance itself.
+        When inheriting from this class, subclasses should provide their own implementation for
+        deserialization if specific deserialization behavior is desired.
+
+        By default, if a subclass does not provide its own implementation of this method, the
+        Synapse&#39;s deserialize method will be used, returning the object instance as-is.
+
+        In its default form, this method simply returns the instance of the Synapse itself without any modifications.
+        Subclasses of Synapse can override this method to add specific deserialization behaviors, such as converting
+        serialized data back into complex object types or performing additional data integrity checks.
+
+        Example::
+            class CustomSynapse(Synapse):
+                additional_data: str
+                def deserialize(self) -&gt; &#34;CustomSynapse&#34;:
+                    # Custom deserialization logic
+                    # For example, decoding a base64 encoded string in &#39;additional_data&#39;
+                    if self.additional_data:
+                        self.additional_data = base64.b64decode(self.additional_data).decode(&#39;utf-8&#39;)
+                    return self
+            serialized_data = &#39;{&#34;additional_data&#34;: &#34;SGVsbG8gV29ybGQ=&#34;}&#39;  # Base64 for &#39;Hello World&#39;
+            custom_synapse = CustomSynapse.parse_raw(serialized_data)
+            deserialized_synapse = custom_synapse.deserialize()
+            # deserialized_synapse.additional_data would now be &#39;Hello World&#39;
+
+        Returns:
+            Synapse: The deserialized Synapse object. In this default implementation, it returns the object itself.
+        &#34;&#34;&#34;
+        return self
+
+    @pydantic.root_validator(pre=True)
+    def set_name_type(cls, values) -&gt; dict:
+        values[&#34;name&#34;] = cls.__name__  # type: ignore
+        return values
+
+    # Defines the http route name which is set on axon.attach( callable( request: RequestName ))
+    name: Optional[str] = pydantic.Field(
+        title=&#34;name&#34;,
+        description=&#34;Defines the http route name which is set on axon.attach( callable( request: RequestName ))&#34;,
+        examples=&#34;Forward&#34;,
+        allow_mutation=True,
+        default=None,
+        repr=False,
+    )
+
+    # The call timeout, set by the dendrite terminal.
+    timeout: Optional[float] = pydantic.Field(
+        title=&#34;timeout&#34;,
+        description=&#34;Defines the total query length.&#34;,
+        examples=12.0,
+        default=12.0,
+        allow_mutation=True,
+        repr=False,
+    )
+    _extract_timeout = pydantic.validator(&#34;timeout&#34;, pre=True, allow_reuse=True)(
+        cast_float
+    )
+
+    # The call timeout, set by the dendrite terminal.
+    total_size: Optional[int] = pydantic.Field(
+        title=&#34;total_size&#34;,
+        description=&#34;Total size of request body in bytes.&#34;,
+        examples=1000,
+        default=0,
+        allow_mutation=True,
+        repr=False,
+    )
+    _extract_total_size = pydantic.validator(&#34;total_size&#34;, pre=True, allow_reuse=True)(
+        cast_int
+    )
+
+    # The call timeout, set by the dendrite terminal.
+    header_size: Optional[int] = pydantic.Field(
+        title=&#34;header_size&#34;,
+        description=&#34;Size of request header in bytes.&#34;,
+        examples=1000,
+        default=0,
+        allow_mutation=True,
+        repr=False,
+    )
+    _extract_header_size = pydantic.validator(
+        &#34;header_size&#34;, pre=True, allow_reuse=True
+    )(cast_int)
+
+    # The dendrite Terminal Information.
+    dendrite: Optional[TerminalInfo] = pydantic.Field(
+        title=&#34;dendrite&#34;,
+        description=&#34;Dendrite Terminal Information&#34;,
+        examples=&#34;cybertensor.TerminalInfo&#34;,
+        default=TerminalInfo(),
+        allow_mutation=True,
+        repr=False,
+    )
+
+    # A axon terminal information
+    axon: Optional[TerminalInfo] = pydantic.Field(
+        title=&#34;axon&#34;,
+        description=&#34;Axon Terminal Information&#34;,
+        examples=&#34;cybertensor.TerminalInfo&#34;,
+        default=TerminalInfo(),
+        allow_mutation=True,
+        repr=False,
+    )
+
+    computed_body_hash: Optional[str] = pydantic.Field(
+        title=&#34;computed_body_hash&#34;,
+        description=&#34;The computed body hash of the request.&#34;,
+        examples=&#34;0x0813029319030129u4120u10841824y0182u091u230912u&#34;,
+        default=&#34;&#34;,
+        allow_mutation=False,
+        repr=False,
+    )
+
+    required_hash_fields: Optional[List[str]] = pydantic.Field(
+        title=&#34;required_hash_fields&#34;,
+        description=&#34;The list of required fields to compute the body hash.&#34;,
+        examples=[&#34;roles&#34;, &#34;messages&#34;],
+        default=[],
+        allow_mutation=False,
+        repr=False,
+    )
+
+    def __setattr__(self, name: str, value: Any):
+        &#34;&#34;&#34;
+        Override the :func:`__setattr__` method to make the ``required_hash_fields`` property read-only.
+        This is a security mechanism such that the ``required_hash_fields`` property cannot be
+        overridden by the user or malicious code.
+        &#34;&#34;&#34;
+        if name == &#34;body_hash&#34;:
+            raise AttributeError(
+                &#34;body_hash property is read-only and cannot be overridden.&#34;
+            )
+        super().__setattr__(name, value)
+
+    def get_total_size(self) -&gt; int:
+        &#34;&#34;&#34;
+        Get the total size of the current object.
+
+        This method first calculates the size of the current object, then assigns it
+        to the instance variable :func:`self.total_size` and finally returns this value.
+
+        Returns:
+            int: The total size of the current object.
+        &#34;&#34;&#34;
+        self.total_size = get_size(self)
+        return self.total_size
+
+    @property
+    def is_success(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the dendrite&#39;s status code indicates success.
+
+        This method returns ``True`` if the status code of the dendrite is ``200``,
+        which typically represents a successful HTTP request.
+
+        Returns:
+            bool: ``True`` if dendrite&#39;s status code is 200, ``False`` otherwise.
+        &#34;&#34;&#34;
+        return self.dendrite is not None and self.dendrite.status_code == 200
+
+    @property
+    def is_failure(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the dendrite&#39;s status code indicates failure.
+
+        This method returns ``True`` if the status code of the dendrite is not ``200``,
+        which would mean the HTTP request was not successful.
+
+        Returns:
+            bool: ``True`` if dendrite&#39;s status code is not ``200``, ``False`` otherwise.
+        &#34;&#34;&#34;
+        return self.dendrite is not None and self.dendrite.status_code != 200
+
+    @property
+    def is_timeout(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the dendrite&#39;s status code indicates a timeout.
+
+        This method returns ``True`` if the status code of the dendrite is ``408``,
+        which is the HTTP status code for a request timeout.
+
+        Returns:
+            bool: ``True`` if dendrite&#39;s status code is ``408``, ``False`` otherwise.
+        &#34;&#34;&#34;
+        return self.dendrite is not None and self.dendrite.status_code == 408
+
+    @property
+    def is_blacklist(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the dendrite&#39;s status code indicates a blacklisted request.
+
+        This method returns ``True`` if the status code of the dendrite is ``403``,
+        which is the HTTP status code for a forbidden request.
+
+        Returns:
+            bool: ``True`` if dendrite&#39;s status code is ``403``, ``False`` otherwise.
+        &#34;&#34;&#34;
+        return self.dendrite is not None and self.dendrite.status_code == 403
+
+    @property
+    def failed_verification(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the dendrite&#39;s status code indicates failed verification.
+
+        This method returns ``True`` if the status code of the dendrite is ``401``,
+        which is the HTTP status code for unauthorized access.
+
+        Returns:
+            bool: ``True`` if dendrite&#39;s status code is ``401``, ``False`` otherwise.
+        &#34;&#34;&#34;
+        return self.dendrite is not None and self.dendrite.status_code == 401
+
+    def to_headers(self) -&gt; dict:
+        &#34;&#34;&#34;
+        Converts the state of a Synapse instance into a dictionary of HTTP headers.
+        This method is essential for packaging Synapse data for network transmission in the cybertensor framework,
+        ensuring that each key aspect of the Synapse is represented in a format suitable for HTTP communication.
+        Process:
+        1. Basic Information: It starts by including the ``name`` and ``timeout`` of the Synapse, which are fundamental
+            for identifying the query and managing its lifespan on the network.
+        2. Complex Objects: The method serializes the ``axon`` and ``dendrite`` objects, if present, into strings.
+            This serialization is crucial for preserving the state and structure of these objects over the network.
+        3. Encoding: Non-optional complex objects are serialized and encoded in base64, making them safe for HTTP transport.
+        4. Size Metrics: The method calculates and adds the size of headers and the total object size, providing
+            valuable information for network bandwidth management.
+        Example Usage::
+            synapse = Synapse(name=&#34;ExampleSynapse&#34;, timeout=30)
+            headers = synapse.to_headers()
+            # headers now contains a dictionary representing the Synapse instance
+        Returns:
+            dict: A dictionary containing key-value pairs representing the Synapse&#39;s properties, suitable for HTTP
+                communication.
+        &#34;&#34;&#34;
+        # Initializing headers with &#39;name&#39; and &#39;timeout&#39;
+        headers = {&#34;name&#34;: self.name, &#34;timeout&#34;: str(self.timeout)}
+
+        # Adding headers for &#39;axon&#39; and &#39;dendrite&#39; if they are not None
+        if self.axon:
+            headers.update(
+                {
+                    f&#34;bt_header_axon_{k}&#34;: str(v)
+                    for k, v in self.axon.dict().items()
+                    if v is not None
+                }
+            )
+        if self.dendrite:
+            headers.update(
+                {
+                    f&#34;bt_header_dendrite_{k}&#34;: str(v)
+                    for k, v in self.dendrite.dict().items()
+                    if v is not None
+                }
+            )
+
+        # Getting the fields of the instance
+        instance_fields = self.dict()
+
+        # Iterating over the fields of the instance
+        for field, value in instance_fields.items():
+            # If the object is not optional, serializing it, encoding it, and adding it to the headers
+            required = schema([self.__class__])[&#34;definitions&#34;][self.name].get(
+                &#34;required&#34;
+            )
+
+            # Skipping the field if it&#39;s already in the headers or its value is None
+            if field in headers or value is None:
+                continue
+
+            elif required and field in required:
+                try:
+                    # create an empty (dummy) instance of type(value) to pass pydantic validation on the axon side
+                    serialized_value = json.dumps(value.__class__.__call__())
+                    encoded_value = base64.b64encode(serialized_value.encode()).decode(
+                        &#34;utf-8&#34;
+                    )
+                    headers[f&#34;bt_header_input_obj_{field}&#34;] = encoded_value
+                except TypeError as e:
+                    raise ValueError(
+                        f&#34;Error serializing {field} with value {value}. Objects must be json serializable.&#34;
+                    ) from e
+
+        # Adding the size of the headers and the total size to the headers
+        headers[&#34;header_size&#34;] = str(sys.getsizeof(headers))
+        headers[&#34;total_size&#34;] = str(self.get_total_size())
+        headers[&#34;computed_body_hash&#34;] = self.body_hash
+
+        return headers
+
+    @property
+    def body_hash(self) -&gt; str:
+        &#34;&#34;&#34;
+        Computes a SHA3-256 hash of the serialized body of the Synapse instance.
+        This hash is used to
+        ensure the data integrity and security of the Synapse instance when it&#39;s transmitted across the
+        network. It is a crucial feature for verifying that the data received is the same as the data sent.
+        Process:
+        1. Iterates over each required field as specified in ``required_fields_hash``.
+        2. Concatenates the string representation of these fields.
+        3. Applies SHA3-256 hashing to the concatenated string to produce a unique fingerprint of the data.
+        Example::
+            synapse = Synapse(name=&#34;ExampleRoute&#34;, timeout=10)
+            hash_value = synapse.body_hash
+            # hash_value is the SHA3-256 hash of the serialized body of the Synapse instance
+        Returns:
+            str: The SHA3-256 hash as a hexadecimal string, providing a fingerprint of the Synapse instance&#39;s data for
+                integrity checks.
+        &#34;&#34;&#34;
+        # Hash the body for verification
+        hashes = []
+
+        # Getting the fields of the instance
+        instance_fields = self.dict()
+
+        for field, value in instance_fields.items():
+            # If the field is required in the subclass schema, hash and add it.
+            if (
+                    self.required_hash_fields is not None
+                    and field in self.required_hash_fields
+            ):
+                hashes.append(cybertensor.utils.hash(str(value)))
+
+        # Hash and return the hashes that have been concatenated
+        return cybertensor.utils.hash(&#34;&#34;.join(hashes))
+
+    @classmethod
+    def parse_headers_to_inputs(cls, headers: dict) -&gt; dict:
+        &#34;&#34;&#34;
+        Interprets and transforms a given dictionary of headers into a structured dictionary, facilitating the
+        reconstruction of Synapse objects.
+        This method is essential for parsing network-transmitted data back into a Synapse instance, ensuring data
+        consistency and integrity.
+        Process:
+        1. Separates headers into categories based on prefixes (``axon``, ``dendrite``, etc.).
+        2. Decodes and deserializes ``input_obj`` headers into their original objects.
+        3. Assigns simple fields directly from the headers to the input dictionary.
+        Example::
+            received_headers = {
+                &#39;bt_header_axon_address&#39;: &#39;127.0.0.1&#39;,
+                &#39;bt_header_dendrite_port&#39;: &#39;8080&#39;,
+                # Other headers...
+            }
+            inputs = Synapse.parse_headers_to_inputs(received_headers)
+            # inputs now contains a structured representation of Synapse properties based on the headers
+        Note:
+            This is handled automatically when calling :func:`Synapse.from_headers(headers)` and does not need to be
+            called directly.
+        Args:
+            headers (dict): The headers dictionary to parse.
+        Returns:
+            dict: A structured dictionary representing the inputs for constructing a Synapse instance.
+        &#34;&#34;&#34;
+
+        # Initialize the input dictionary with empty sub-dictionaries for &#39;axon&#39; and &#39;dendrite&#39;
+        inputs_dict = {&#34;axon&#34;: {}, &#34;dendrite&#34;: {}}
+
+        # Iterate over each item in the headers
+        for key, value in headers.items():
+            # Handle &#39;axon&#39; headers
+            if &#34;bt_header_axon_&#34; in key:
+                try:
+                    new_key = key.split(&#34;bt_header_axon_&#34;)[1]
+                    inputs_dict[&#34;axon&#34;][new_key] = value
+                except Exception as e:
+                    cybertensor.logging.error(
+                        f&#34;Error while parsing &#39;axon&#39; header {key}: {e}&#34;
+                    )
+                    continue
+            # Handle &#39;dendrite&#39; headers
+            elif &#34;bt_header_dendrite_&#34; in key:
+                try:
+                    new_key = key.split(&#34;bt_header_dendrite_&#34;)[1]
+                    inputs_dict[&#34;dendrite&#34;][new_key] = value
+                except Exception as e:
+                    cybertensor.logging.error(
+                        f&#34;Error while parsing &#39;dendrite&#39; header {key}: {e}&#34;
+                    )
+                    continue
+            # Handle &#39;input_obj&#39; headers
+            elif &#34;bt_header_input_obj&#34; in key:
+                try:
+                    new_key = key.split(&#34;bt_header_input_obj_&#34;)[1]
+                    # Skip if the key already exists in the dictionary
+                    if new_key in inputs_dict:
+                        continue
+                    # Decode and load the serialized object
+                    inputs_dict[new_key] = json.loads(
+                        base64.b64decode(value.encode()).decode(&#34;utf-8&#34;)
+                    )
+                except json.JSONDecodeError as e:
+                    cybertensor.logging.error(
+                        f&#34;Error while json decoding &#39;input_obj&#39; header {key}: {e}&#34;
+                    )
+                    continue
+                except Exception as e:
+                    cybertensor.logging.error(
+                        f&#34;Error while parsing &#39;input_obj&#39; header {key}: {e}&#34;
+                    )
+                    continue
+            else:
+                pass  # TODO: log unexpected keys
+
+        # Assign the remaining known headers directly
+        inputs_dict[&#34;timeout&#34;] = headers.get(&#34;timeout&#34;, None)
+        inputs_dict[&#34;name&#34;] = headers.get(&#34;name&#34;, None)
+        inputs_dict[&#34;header_size&#34;] = headers.get(&#34;header_size&#34;, None)
+        inputs_dict[&#34;total_size&#34;] = headers.get(&#34;total_size&#34;, None)
+        inputs_dict[&#34;computed_body_hash&#34;] = headers.get(&#34;computed_body_hash&#34;, None)
+
+        return inputs_dict
+
+    @classmethod
+    def from_headers(cls, headers: dict) -&gt; &#34;Synapse&#34;:
+        &#34;&#34;&#34;
+        Constructs a new Synapse instance from a given headers dictionary, enabling the re-creation of the Synapse&#39;s 
+        state as it was prior to network transmission.
+        This method is a key part of the deserialization process in the cybertensor network, allowing nodes to accurately 
+        reconstruct Synapse objects from received data.
+        
+        Example::
+            received_headers = {
+                &#39;bt_header_axon_address&#39;: &#39;127.0.0.1&#39;,
+                &#39;bt_header_dendrite_port&#39;: &#39;8080&#39;,
+                # Other headers...
+            }
+            synapse = Synapse.from_headers(received_headers)
+            # synapse is a new Synapse instance reconstructed from the received headers
+            
+        Args:
+            headers (dict): The dictionary of headers containing serialized Synapse information.
+        Returns:
+            Synapse: A new instance of Synapse, reconstructed from the parsed header information, replicating
+                the original instance&#39;s state.
+        &#34;&#34;&#34;
+
+        # Get the inputs dictionary from the headers
+        input_dict = cls.parse_headers_to_inputs(headers)
+
+        # Use the dictionary unpacking operator to pass the inputs to the class constructor
+        synapse = cls(**input_dict)
+
+        return synapse</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.stream.StreamingSynapse" href="stream.html#cybertensor.stream.StreamingSynapse">StreamingSynapse</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.synapse.Synapse.Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.axon"><code class="name">var <span class="ident">axon</span> : Optional[<a title="cybertensor.synapse.TerminalInfo" href="#cybertensor.synapse.TerminalInfo">TerminalInfo</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.computed_body_hash"><code class="name">var <span class="ident">computed_body_hash</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.dendrite"><code class="name">var <span class="ident">dendrite</span> : Optional[<a title="cybertensor.synapse.TerminalInfo" href="#cybertensor.synapse.TerminalInfo">TerminalInfo</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.header_size"><code class="name">var <span class="ident">header_size</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.required_hash_fields"><code class="name">var <span class="ident">required_hash_fields</span> : Optional[List[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.timeout"><code class="name">var <span class="ident">timeout</span> : Optional[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.total_size"><code class="name">var <span class="ident">total_size</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.synapse.Synapse.from_headers"><code class="name flex">
+<span>def <span class="ident">from_headers</span></span>(<span>headers: dict) ‑> <a title="cybertensor.synapse.Synapse" href="#cybertensor.synapse.Synapse">Synapse</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Constructs a new Synapse instance from a given headers dictionary, enabling the re-creation of the Synapse's
+state as it was prior to network transmission.
+This method is a key part of the deserialization process in the cybertensor network, allowing nodes to accurately
+reconstruct Synapse objects from received data.</p>
+<p>Example::
+received_headers = {
+'bt_header_axon_address': '127.0.0.1',
+'bt_header_dendrite_port': '8080',
+# Other headers&hellip;
+}
+synapse = Synapse.from_headers(received_headers)
+# synapse is a new Synapse instance reconstructed from the received headers</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>headers</code></strong> :&ensp;<code>dict</code></dt>
+<dd>The dictionary of headers containing serialized Synapse information.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.synapse.Synapse" href="#cybertensor.synapse.Synapse">Synapse</a></code></dt>
+<dd>A new instance of Synapse, reconstructed from the parsed header information, replicating
+the original instance's state.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.parse_headers_to_inputs"><code class="name flex">
+<span>def <span class="ident">parse_headers_to_inputs</span></span>(<span>headers: dict) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Interprets and transforms a given dictionary of headers into a structured dictionary, facilitating the
+reconstruction of Synapse objects.
+This method is essential for parsing network-transmitted data back into a Synapse instance, ensuring data
+consistency and integrity.
+Process:
+1. Separates headers into categories based on prefixes (<code>axon</code>, <code>dendrite</code>, etc.).
+2. Decodes and deserializes <code>input_obj</code> headers into their original objects.
+3. Assigns simple fields directly from the headers to the input dictionary.
+Example::
+received_headers = {
+'bt_header_axon_address': '127.0.0.1',
+'bt_header_dendrite_port': '8080',
+# Other headers&hellip;
+}
+inputs = Synapse.parse_headers_to_inputs(received_headers)
+# inputs now contains a structured representation of Synapse properties based on the headers</p>
+<h2 id="note">Note</h2>
+<p>This is handled automatically when calling :func:<code><a title="cybertensor.synapse.Synapse.from_headers" href="#cybertensor.synapse.Synapse.from_headers">Synapse.from_headers()</a>(headers)</code> and does not need to be
+called directly.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>headers</code></strong> :&ensp;<code>dict</code></dt>
+<dd>The headers dictionary to parse.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>A structured dictionary representing the inputs for constructing a Synapse instance.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.set_name_type"><code class="name flex">
+<span>def <span class="ident">set_name_type</span></span>(<span>values) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.synapse.Synapse.body_hash"><code class="name">prop <span class="ident">body_hash</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Computes a SHA3-256 hash of the serialized body of the Synapse instance.
+This hash is used to
+ensure the data integrity and security of the Synapse instance when it's transmitted across the
+network. It is a crucial feature for verifying that the data received is the same as the data sent.
+Process:
+1. Iterates over each required field as specified in <code>required_fields_hash</code>.
+2. Concatenates the string representation of these fields.
+3. Applies SHA3-256 hashing to the concatenated string to produce a unique fingerprint of the data.
+Example::
+synapse = Synapse(name="ExampleRoute", timeout=10)
+hash_value = synapse.body_hash
+# hash_value is the SHA3-256 hash of the serialized body of the Synapse instance</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The SHA3-256 hash as a hexadecimal string, providing a fingerprint of the Synapse instance's data for
+integrity checks.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def body_hash(self) -&gt; str:
+    &#34;&#34;&#34;
+    Computes a SHA3-256 hash of the serialized body of the Synapse instance.
+    This hash is used to
+    ensure the data integrity and security of the Synapse instance when it&#39;s transmitted across the
+    network. It is a crucial feature for verifying that the data received is the same as the data sent.
+    Process:
+    1. Iterates over each required field as specified in ``required_fields_hash``.
+    2. Concatenates the string representation of these fields.
+    3. Applies SHA3-256 hashing to the concatenated string to produce a unique fingerprint of the data.
+    Example::
+        synapse = Synapse(name=&#34;ExampleRoute&#34;, timeout=10)
+        hash_value = synapse.body_hash
+        # hash_value is the SHA3-256 hash of the serialized body of the Synapse instance
+    Returns:
+        str: The SHA3-256 hash as a hexadecimal string, providing a fingerprint of the Synapse instance&#39;s data for
+            integrity checks.
+    &#34;&#34;&#34;
+    # Hash the body for verification
+    hashes = []
+
+    # Getting the fields of the instance
+    instance_fields = self.dict()
+
+    for field, value in instance_fields.items():
+        # If the field is required in the subclass schema, hash and add it.
+        if (
+                self.required_hash_fields is not None
+                and field in self.required_hash_fields
+        ):
+            hashes.append(cybertensor.utils.hash(str(value)))
+
+    # Hash and return the hashes that have been concatenated
+    return cybertensor.utils.hash(&#34;&#34;.join(hashes))</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.synapse.Synapse.failed_verification"><code class="name">prop <span class="ident">failed_verification</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Checks if the dendrite's status code indicates failed verification.</p>
+<p>This method returns <code>True</code> if the status code of the dendrite is <code>401</code>,
+which is the HTTP status code for unauthorized access.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if dendrite's status code is <code>401</code>, <code>False</code> otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def failed_verification(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the dendrite&#39;s status code indicates failed verification.
+
+    This method returns ``True`` if the status code of the dendrite is ``401``,
+    which is the HTTP status code for unauthorized access.
+
+    Returns:
+        bool: ``True`` if dendrite&#39;s status code is ``401``, ``False`` otherwise.
+    &#34;&#34;&#34;
+    return self.dendrite is not None and self.dendrite.status_code == 401</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.synapse.Synapse.is_blacklist"><code class="name">prop <span class="ident">is_blacklist</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Checks if the dendrite's status code indicates a blacklisted request.</p>
+<p>This method returns <code>True</code> if the status code of the dendrite is <code>403</code>,
+which is the HTTP status code for a forbidden request.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if dendrite's status code is <code>403</code>, <code>False</code> otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_blacklist(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the dendrite&#39;s status code indicates a blacklisted request.
+
+    This method returns ``True`` if the status code of the dendrite is ``403``,
+    which is the HTTP status code for a forbidden request.
+
+    Returns:
+        bool: ``True`` if dendrite&#39;s status code is ``403``, ``False`` otherwise.
+    &#34;&#34;&#34;
+    return self.dendrite is not None and self.dendrite.status_code == 403</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.synapse.Synapse.is_failure"><code class="name">prop <span class="ident">is_failure</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Checks if the dendrite's status code indicates failure.</p>
+<p>This method returns <code>True</code> if the status code of the dendrite is not <code>200</code>,
+which would mean the HTTP request was not successful.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if dendrite's status code is not <code>200</code>, <code>False</code> otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_failure(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the dendrite&#39;s status code indicates failure.
+
+    This method returns ``True`` if the status code of the dendrite is not ``200``,
+    which would mean the HTTP request was not successful.
+
+    Returns:
+        bool: ``True`` if dendrite&#39;s status code is not ``200``, ``False`` otherwise.
+    &#34;&#34;&#34;
+    return self.dendrite is not None and self.dendrite.status_code != 200</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.synapse.Synapse.is_success"><code class="name">prop <span class="ident">is_success</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Checks if the dendrite's status code indicates success.</p>
+<p>This method returns <code>True</code> if the status code of the dendrite is <code>200</code>,
+which typically represents a successful HTTP request.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if dendrite's status code is 200, <code>False</code> otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_success(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the dendrite&#39;s status code indicates success.
+
+    This method returns ``True`` if the status code of the dendrite is ``200``,
+    which typically represents a successful HTTP request.
+
+    Returns:
+        bool: ``True`` if dendrite&#39;s status code is 200, ``False`` otherwise.
+    &#34;&#34;&#34;
+    return self.dendrite is not None and self.dendrite.status_code == 200</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.synapse.Synapse.is_timeout"><code class="name">prop <span class="ident">is_timeout</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Checks if the dendrite's status code indicates a timeout.</p>
+<p>This method returns <code>True</code> if the status code of the dendrite is <code>408</code>,
+which is the HTTP status code for a request timeout.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if dendrite's status code is <code>408</code>, <code>False</code> otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_timeout(self) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the dendrite&#39;s status code indicates a timeout.
+
+    This method returns ``True`` if the status code of the dendrite is ``408``,
+    which is the HTTP status code for a request timeout.
+
+    Returns:
+        bool: ``True`` if dendrite&#39;s status code is ``408``, ``False`` otherwise.
+    &#34;&#34;&#34;
+    return self.dendrite is not None and self.dendrite.status_code == 408</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.synapse.Synapse.deserialize"><code class="name flex">
+<span>def <span class="ident">deserialize</span></span>(<span>self) ‑> <a title="cybertensor.synapse.Synapse" href="#cybertensor.synapse.Synapse">Synapse</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Deserializes the Synapse object.</p>
+<p>This method is intended to be overridden by subclasses for custom deserialization logic.
+In the context of the Synapse superclass, this method simply returns the instance itself.
+When inheriting from this class, subclasses should provide their own implementation for
+deserialization if specific deserialization behavior is desired.</p>
+<p>By default, if a subclass does not provide its own implementation of this method, the
+Synapse's deserialize method will be used, returning the object instance as-is.</p>
+<p>In its default form, this method simply returns the instance of the Synapse itself without any modifications.
+Subclasses of Synapse can override this method to add specific deserialization behaviors, such as converting
+serialized data back into complex object types or performing additional data integrity checks.</p>
+<p>Example::
+class CustomSynapse(Synapse):
+additional_data: str
+def deserialize(self) -&gt; "CustomSynapse":
+# Custom deserialization logic
+# For example, decoding a base64 encoded string in 'additional_data'
+if self.additional_data:
+self.additional_data = base64.b64decode(self.additional_data).decode('utf-8')
+return self
+serialized_data = '{"additional_data": "SGVsbG8gV29ybGQ="}'
+# Base64 for 'Hello World'
+custom_synapse = CustomSynapse.parse_raw(serialized_data)
+deserialized_synapse = custom_synapse.deserialize()
+# deserialized_synapse.additional_data would now be 'Hello World'</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.synapse.Synapse" href="#cybertensor.synapse.Synapse">Synapse</a></code></dt>
+<dd>The deserialized Synapse object. In this default implementation, it returns the object itself.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.get_total_size"><code class="name flex">
+<span>def <span class="ident">get_total_size</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the total size of the current object.</p>
+<p>This method first calculates the size of the current object, then assigns it
+to the instance variable :func:<code>self.total_size</code> and finally returns this value.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The total size of the current object.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.synapse.Synapse.to_headers"><code class="name flex">
+<span>def <span class="ident">to_headers</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts the state of a Synapse instance into a dictionary of HTTP headers.
+This method is essential for packaging Synapse data for network transmission in the cybertensor framework,
+ensuring that each key aspect of the Synapse is represented in a format suitable for HTTP communication.
+Process:
+1. Basic Information: It starts by including the <code>name</code> and <code>timeout</code> of the Synapse, which are fundamental
+for identifying the query and managing its lifespan on the network.
+2. Complex Objects: The method serializes the <code>axon</code> and <code>dendrite</code> objects, if present, into strings.
+This serialization is crucial for preserving the state and structure of these objects over the network.
+3. Encoding: Non-optional complex objects are serialized and encoded in base64, making them safe for HTTP transport.
+4. Size Metrics: The method calculates and adds the size of headers and the total object size, providing
+valuable information for network bandwidth management.
+Example Usage::
+synapse = Synapse(name="ExampleSynapse", timeout=30)
+headers = synapse.to_headers()
+# headers now contains a dictionary representing the Synapse instance</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>A dictionary containing key-value pairs representing the Synapse's properties, suitable for HTTP
+communication.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo"><code class="flex name class">
+<span>class <span class="ident">TerminalInfo</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TerminalInfo encapsulates detailed information about a network synapse (node) involved in a communication process.</p>
+<p>This class serves as a metadata carrier, providing essential details about the state and configuration of a terminal
+during network interactions. This is a crucial class in the cybertensor framework.</p>
+<p>The TerminalInfo class contains information such as HTTP status codes and messages, processing times,
+IP addresses, ports, cybertensor version numbers, and unique identifiers. These details are vital for
+maintaining network reliability, security, and efficient data flow within the cybertensor network.</p>
+<p>This class includes Pydantic validators and root validators to enforce data integrity and format. It is
+designed to be used natively within Synapses, so that you will not need to call this directly, but rather
+is used as a helper class for Synapses.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>status_code</code></strong> :&ensp;<code>int</code></dt>
+<dd>HTTP status code indicating the result of a network request. Essential for identifying the
+outcome of network interactions.</dd>
+<dt><strong><code>status_message</code></strong> :&ensp;<code>str</code></dt>
+<dd>Descriptive message associated with the status code, providing additional context about
+the request's result.</dd>
+<dt><strong><code>process_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>Time taken by the terminal to process the call, important for performance monitoring and
+optimization.</dd>
+<dt><strong><code>ip</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the terminal, crucial for network routing and data transmission.</dd>
+<dt><strong><code>port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Network port used by the terminal, key for establishing network connections.</dd>
+<dt><strong><code>version</code></strong> :&ensp;<code>int</code></dt>
+<dd>cybertensor version running on the terminal, ensuring compatibility between different nodes in
+the network.</dd>
+<dt><strong><code>nonce</code></strong> :&ensp;<code>int</code></dt>
+<dd>Unique, monotonically increasing number for each terminal, aiding in identifying and ordering
+network interactions.</dd>
+<dt><strong><code>uuid</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier for the terminal, fundamental for network security and identification.</dd>
+<dt><strong><code>hotkey</code></strong> :&ensp;<code>str</code></dt>
+<dd>Encoded hotkey string of the terminal wallet, important for transaction and identity verification
+in the network.</dd>
+<dt><strong><code>signature</code></strong> :&ensp;<code>str</code></dt>
+<dd>Digital signature verifying the tuple of nonce, axon_hotkey, dendrite_hotkey, and uuid,
+critical for ensuring data authenticity and security.</dd>
+</dl>
+<p>Usage::</p>
+<pre><code># Creating a TerminalInfo instance
+terminal_info = TerminalInfo(
+    status_code=200,
+    status_message="Success",
+    process_time=0.1,
+    ip="198.123.23.1",
+    port=9282,
+    version=111,
+    nonce=111111,
+    uuid="5ecbd69c-1cec-11ee-b0dc-e29ce36fec1a",
+    hotkey="pussy1tqhv59nmdwls2263gtwc86swgte20mtsqvhtrd",
+    signature="0x657a43695079644639586631434c4570593844337262684432436e3776503741495870626e656f4d6e4878426e566d61464854347274686142313155377865376d4f4e385057587856523746567a5169442f6d5757513d3d",
+    pubkey="AmET/9CWsKo3TWCg2zsaldtdgr2MLug4/yZQfxQiZafJ"
+)
+
+# Accessing TerminalInfo attributes
+ip_address = terminal_info.ip
+processing_duration = terminal_info.process_time
+
+# TerminalInfo can be used to monitor and verify network interactions, ensuring proper communication and
+# security within the cybertensor network.
+</code></pre>
+<p>TerminalInfo plays a pivotal role in providing transparency and control over network operations, making it an
+indispensable tool for developers and users interacting with the cybertensor ecosystem.</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TerminalInfo(pydantic.BaseModel):
+    &#34;&#34;&#34;
+    TerminalInfo encapsulates detailed information about a network synapse (node) involved in a communication process.
+
+    This class serves as a metadata carrier, providing essential details about the state and configuration of a terminal
+    during network interactions. This is a crucial class in the cybertensor framework.
+
+    The TerminalInfo class contains information such as HTTP status codes and messages, processing times,
+    IP addresses, ports, cybertensor version numbers, and unique identifiers. These details are vital for
+    maintaining network reliability, security, and efficient data flow within the cybertensor network.
+
+    This class includes Pydantic validators and root validators to enforce data integrity and format. It is
+    designed to be used natively within Synapses, so that you will not need to call this directly, but rather
+    is used as a helper class for Synapses.
+
+    Args:
+        status_code (int): HTTP status code indicating the result of a network request. Essential for identifying the
+            outcome of network interactions.
+        status_message (str): Descriptive message associated with the status code, providing additional context about
+            the request&#39;s result.
+        process_time (float): Time taken by the terminal to process the call, important for performance monitoring and
+            optimization.
+        ip (str): IP address of the terminal, crucial for network routing and data transmission.
+        port (int): Network port used by the terminal, key for establishing network connections.
+        version (int): cybertensor version running on the terminal, ensuring compatibility between different nodes in
+            the network.
+        nonce (int): Unique, monotonically increasing number for each terminal, aiding in identifying and ordering
+            network interactions.
+        uuid (str): Unique identifier for the terminal, fundamental for network security and identification.
+        hotkey (str): Encoded hotkey string of the terminal wallet, important for transaction and identity verification
+            in the network.
+        signature (str): Digital signature verifying the tuple of nonce, axon_hotkey, dendrite_hotkey, and uuid,
+            critical for ensuring data authenticity and security.
+
+    Usage::
+
+        # Creating a TerminalInfo instance
+        terminal_info = TerminalInfo(
+            status_code=200,
+            status_message=&#34;Success&#34;,
+            process_time=0.1,
+            ip=&#34;198.123.23.1&#34;,
+            port=9282,
+            version=111,
+            nonce=111111,
+            uuid=&#34;5ecbd69c-1cec-11ee-b0dc-e29ce36fec1a&#34;,
+            hotkey=&#34;pussy1tqhv59nmdwls2263gtwc86swgte20mtsqvhtrd&#34;,
+            signature=&#34;0x657a43695079644639586631434c4570593844337262684432436e3776503741495870626e656f4d6e4878426e566d61464854347274686142313155377865376d4f4e385057587856523746567a5169442f6d5757513d3d&#34;,
+            pubkey=&#34;AmET/9CWsKo3TWCg2zsaldtdgr2MLug4/yZQfxQiZafJ&#34;
+        )
+
+        # Accessing TerminalInfo attributes
+        ip_address = terminal_info.ip
+        processing_duration = terminal_info.process_time
+
+        # TerminalInfo can be used to monitor and verify network interactions, ensuring proper communication and
+        # security within the cybertensor network.
+
+    TerminalInfo plays a pivotal role in providing transparency and control over network operations, making it an
+    indispensable tool for developers and users interacting with the cybertensor ecosystem.
+    &#34;&#34;&#34;
+    class Config:
+        validate_assignment = True
+
+    # The HTTP status code from: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    status_code: Optional[int] = pydantic.Field(
+        title=&#34;status_code&#34;,
+        description=&#34;The HTTP status code from: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status&#34;,
+        examples=200,
+        default=None,
+        allow_mutation=True,
+    )
+    _extract_status_code = pydantic.validator(
+        &#34;status_code&#34;, pre=True, allow_reuse=True
+    )(cast_int)
+
+    # The HTTP status code from: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    status_message: Optional[str] = pydantic.Field(
+        title=&#34;status_message&#34;,
+        description=&#34;The status_message associated with the status_code&#34;,
+        examples=&#34;Success&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+
+    # Process time on this terminal side of call
+    process_time: Optional[float] = pydantic.Field(
+        title=&#34;process_time&#34;,
+        description=&#34;Process time on this terminal side of call&#34;,
+        examples=0.1,
+        default=None,
+        allow_mutation=True,
+    )
+    _extract_process_time = pydantic.validator(
+        &#34;process_time&#34;, pre=True, allow_reuse=True
+    )(cast_float)
+
+    # The terminal ip.
+    ip: Optional[str] = pydantic.Field(
+        title=&#34;ip&#34;,
+        description=&#34;The ip of the axon receiving the request.&#34;,
+        examples=&#34;198.123.23.1&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+
+    # The host port of the terminal.
+    port: Optional[int] = pydantic.Field(
+        title=&#34;port&#34;,
+        description=&#34;The port of the terminal.&#34;,
+        examples=&#34;9282&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+    _extract_port = pydantic.validator(&#34;port&#34;, pre=True, allow_reuse=True)(cast_int)
+
+    # The cybertensor version on the terminal as an int.
+    version: Optional[int] = pydantic.Field(
+        title=&#34;version&#34;,
+        description=&#34;The cybertensor version on the axon as str(int)&#34;,
+        examples=111,
+        default=None,
+        allow_mutation=True,
+    )
+    _extract_version = pydantic.validator(&#34;version&#34;, pre=True, allow_reuse=True)(
+        cast_int
+    )
+
+    # A unique monotonically increasing integer nonce associate with the terminal
+    nonce: Optional[int] = pydantic.Field(
+        title=&#34;nonce&#34;,
+        description=&#34;A unique monotonically increasing integer nonce associate with the terminal generated from time.monotonic_ns()&#34;,
+        examples=111111,
+        default=None,
+        allow_mutation=True,
+    )
+    _extract_nonce = pydantic.validator(&#34;nonce&#34;, pre=True, allow_reuse=True)(cast_int)
+
+    # A unique identifier associated with the terminal, set on the axon side.
+    uuid: Optional[str] = pydantic.Field(
+        title=&#34;uuid&#34;,
+        description=&#34;A unique identifier associated with the terminal&#34;,
+        examples=&#34;5ecbd69c-1cec-11ee-b0dc-e29ce36fec1a&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+
+    # The cybertensor version on the terminal as an int.
+    hotkey: Optional[str] = pydantic.Field(
+        title=&#34;hotkey&#34;,
+        description=&#34;The hotkey string of the terminal wallet.&#34;,
+        examples=&#34;pussy1tqhv59nmdwls2263gtwc86swgte20mtsqvhtrd&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+
+    # A signature verifying the tuple (axon_nonce, axon_hotkey, dendrite_hotkey, axon_uuid)
+    signature: Optional[str] = pydantic.Field(
+        title=&#34;signature&#34;,
+        description=&#34;A signature verifying the tuple (nonce, axon_hotkey, dendrite_hotkey, uuid)&#34;,
+        examples=&#34;0x657a43695079644639586631434c4570593844337262684432436e3776503741495870626e656f4d6e4878426e566d61464854347274686142313155377865376d4f4e385057587856523746567a5169442f6d5757513d3d&#34;,
+        default=None,
+        allow_mutation=True,
+    )
+
+    # The cybertensor version on the terminal as an int.
+    pubkey: Optional[str] = pydantic.Field(
+        title=&#34;pubkey&#34;,
+        description=&#34;The hotkey pubkey string of the terminal wallet.&#34;,
+        examples=&#34;AmET/9CWsKo3TWCg2zsaldtdgr2MLug4/yZQfxQiZafJ&#34;,
+        default=None,
+        allow_mutation=True,
+    )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.synapse.TerminalInfo.Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.hotkey"><code class="name">var <span class="ident">hotkey</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.ip"><code class="name">var <span class="ident">ip</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.nonce"><code class="name">var <span class="ident">nonce</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.port"><code class="name">var <span class="ident">port</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.process_time"><code class="name">var <span class="ident">process_time</span> : Optional[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.pubkey"><code class="name">var <span class="ident">pubkey</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.signature"><code class="name">var <span class="ident">signature</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.status_code"><code class="name">var <span class="ident">status_code</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.status_message"><code class="name">var <span class="ident">status_message</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.uuid"><code class="name">var <span class="ident">uuid</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.synapse.TerminalInfo.version"><code class="name">var <span class="ident">version</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.synapse.cast_float" href="#cybertensor.synapse.cast_float">cast_float</a></code></li>
+<li><code><a title="cybertensor.synapse.cast_int" href="#cybertensor.synapse.cast_int">cast_int</a></code></li>
+<li><code><a title="cybertensor.synapse.get_size" href="#cybertensor.synapse.get_size">get_size</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.synapse.Synapse" href="#cybertensor.synapse.Synapse">Synapse</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.synapse.Synapse.Config" href="#cybertensor.synapse.Synapse.Config">Config</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.axon" href="#cybertensor.synapse.Synapse.axon">axon</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.body_hash" href="#cybertensor.synapse.Synapse.body_hash">body_hash</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.computed_body_hash" href="#cybertensor.synapse.Synapse.computed_body_hash">computed_body_hash</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.dendrite" href="#cybertensor.synapse.Synapse.dendrite">dendrite</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.deserialize" href="#cybertensor.synapse.Synapse.deserialize">deserialize</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.failed_verification" href="#cybertensor.synapse.Synapse.failed_verification">failed_verification</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.from_headers" href="#cybertensor.synapse.Synapse.from_headers">from_headers</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.get_total_size" href="#cybertensor.synapse.Synapse.get_total_size">get_total_size</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.header_size" href="#cybertensor.synapse.Synapse.header_size">header_size</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_blacklist" href="#cybertensor.synapse.Synapse.is_blacklist">is_blacklist</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_failure" href="#cybertensor.synapse.Synapse.is_failure">is_failure</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_success" href="#cybertensor.synapse.Synapse.is_success">is_success</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_timeout" href="#cybertensor.synapse.Synapse.is_timeout">is_timeout</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.name" href="#cybertensor.synapse.Synapse.name">name</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.parse_headers_to_inputs" href="#cybertensor.synapse.Synapse.parse_headers_to_inputs">parse_headers_to_inputs</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.required_hash_fields" href="#cybertensor.synapse.Synapse.required_hash_fields">required_hash_fields</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.set_name_type" href="#cybertensor.synapse.Synapse.set_name_type">set_name_type</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.timeout" href="#cybertensor.synapse.Synapse.timeout">timeout</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.to_headers" href="#cybertensor.synapse.Synapse.to_headers">to_headers</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.total_size" href="#cybertensor.synapse.Synapse.total_size">total_size</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.synapse.TerminalInfo" href="#cybertensor.synapse.TerminalInfo">TerminalInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.synapse.TerminalInfo.Config" href="#cybertensor.synapse.TerminalInfo.Config">Config</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.hotkey" href="#cybertensor.synapse.TerminalInfo.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.ip" href="#cybertensor.synapse.TerminalInfo.ip">ip</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.nonce" href="#cybertensor.synapse.TerminalInfo.nonce">nonce</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.port" href="#cybertensor.synapse.TerminalInfo.port">port</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.process_time" href="#cybertensor.synapse.TerminalInfo.process_time">process_time</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.pubkey" href="#cybertensor.synapse.TerminalInfo.pubkey">pubkey</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.signature" href="#cybertensor.synapse.TerminalInfo.signature">signature</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.status_code" href="#cybertensor.synapse.TerminalInfo.status_code">status_code</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.status_message" href="#cybertensor.synapse.TerminalInfo.status_message">status_message</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.uuid" href="#cybertensor.synapse.TerminalInfo.uuid">uuid</a></code></li>
+<li><code><a title="cybertensor.synapse.TerminalInfo.version" href="#cybertensor.synapse.TerminalInfo.version">version</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

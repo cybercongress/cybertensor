@@ -1,0 +1,1830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.chain_data API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.chain_data</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.chain_data.AxonInfo"><code class="flex name class">
+<span>class <span class="ident">AxonInfo</span></span>
+<span>(</span><span>version: int, ip: str, port: int, ip_type: int, hotkey: str, coldkey: str, protocol: int = 4, placeholder1: int = 0, placeholder2: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>AxonInfo(version: int, ip: str, port: int, ip_type: int, hotkey: str, coldkey: str, protocol: int = 4, placeholder1: int = 0, placeholder2: int = 0)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class AxonInfo:
+    version: int
+    ip: str
+    port: int
+    ip_type: int
+    hotkey: str
+    coldkey: str
+    protocol: int = 4
+    placeholder1: int = 0
+    placeholder2: int = 0
+
+    @property
+    def is_serving(self) -&gt; bool:
+        &#34;&#34;&#34;True if the endpoint is serving.&#34;&#34;&#34;
+        if self.ip == &#34;0.0.0.0&#34;:
+            return False
+        else:
+            return True
+
+    def ip_str(self) -&gt; str:
+        &#34;&#34;&#34;Return the whole IP as string&#34;&#34;&#34;
+        return net.ip__str__(self.ip_type, self.ip, self.port)
+
+    def __eq__(self, other: &#34;AxonInfo&#34;):
+        if other is None:
+            return False
+        if (
+            self.version == other.version
+            and self.ip == other.ip
+            and self.port == other.port
+            and self.ip_type == other.ip_type
+            and self.coldkey == other.coldkey
+            and self.hotkey == other.hotkey
+        ):
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return &#34;AxonInfo( {}, {}, {}, {} )&#34;.format(
+            str(self.ip_str()), str(self.hotkey), str(self.coldkey), self.version
+        )
+
+    def __repr__(self):
+        return self.__str__()
+
+    def to_string(self) -&gt; str:
+        &#34;&#34;&#34;Converts the AxonInfo object to a string representation using JSON.&#34;&#34;&#34;
+        try:
+            return json.dumps(asdict(self))
+        except (TypeError, ValueError) as e:
+            cybertensor.logging.error(f&#34;Error converting AxonInfo to string: {e}&#34;)
+            return AxonInfo(0, &#34;&#34;, 0, 0, &#34;&#34;, &#34;&#34;).to_string()
+
+    @classmethod
+    def from_string(cls, s: str) -&gt; &#34;AxonInfo&#34;:
+        &#34;&#34;&#34;Creates an AxonInfo object from its string representation using JSON.&#34;&#34;&#34;
+        try:
+            data = json.loads(s)
+            return cls(**data)
+        except json.JSONDecodeError as e:
+            cybertensor.logging.error(f&#34;Error decoding JSON: {e}&#34;)
+        except TypeError as e:
+            cybertensor.logging.error(f&#34;Type error: {e}&#34;)
+        except ValueError as e:
+            cybertensor.logging.error(f&#34;Value error: {e}&#34;)
+        return AxonInfo(0, &#34;&#34;, 0, 0, &#34;&#34;, &#34;&#34;)
+
+    @classmethod
+    def from_neuron_info(cls, neuron_info: dict) -&gt; &#34;AxonInfo&#34;:
+        &#34;&#34;&#34;Converts a dictionary to an axon_info object.&#34;&#34;&#34;
+        return cls(
+            version=neuron_info[&#34;axon_info&#34;][&#34;version&#34;],
+            ip=net.int_to_ip(int(neuron_info[&#34;axon_info&#34;][&#34;ip&#34;])),
+            port=neuron_info[&#34;axon_info&#34;][&#34;port&#34;],
+            ip_type=neuron_info[&#34;axon_info&#34;][&#34;ip_type&#34;],
+            hotkey=neuron_info[&#34;hotkey&#34;],
+            coldkey=neuron_info[&#34;coldkey&#34;],
+        )
+
+    def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
+        r&#34;&#34;&#34;Returns a torch tensor of the subnet info.&#34;&#34;&#34;
+        return torch.nn.ParameterDict(self.__dict__)
+
+    @classmethod
+    def from_parameter_dict(
+        cls, parameter_dict: &#34;torch.nn.ParameterDict&#34;
+    ) -&gt; &#34;AxonInfo&#34;:
+        r&#34;&#34;&#34;Returns an axon_info object from a torch parameter_dict.&#34;&#34;&#34;
+        return cls(**dict(parameter_dict))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.AxonInfo.coldkey"><code class="name">var <span class="ident">coldkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.hotkey"><code class="name">var <span class="ident">hotkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.ip"><code class="name">var <span class="ident">ip</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.placeholder1"><code class="name">var <span class="ident">placeholder1</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.placeholder2"><code class="name">var <span class="ident">placeholder2</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.protocol"><code class="name">var <span class="ident">protocol</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.AxonInfo.from_neuron_info"><code class="name flex">
+<span>def <span class="ident">from_neuron_info</span></span>(<span>neuron_info: dict) ‑> <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a dictionary to an axon_info object.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.from_parameter_dict"><code class="name flex">
+<span>def <span class="ident">from_parameter_dict</span></span>(<span>parameter_dict: torch.nn.ParameterDict) ‑> <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns an axon_info object from a torch parameter_dict.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.from_string"><code class="name flex">
+<span>def <span class="ident">from_string</span></span>(<span>s: str) ‑> <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an AxonInfo object from its string representation using JSON.</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.AxonInfo.is_serving"><code class="name">prop <span class="ident">is_serving</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>True if the endpoint is serving.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_serving(self) -&gt; bool:
+    &#34;&#34;&#34;True if the endpoint is serving.&#34;&#34;&#34;
+    if self.ip == &#34;0.0.0.0&#34;:
+        return False
+    else:
+        return True</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.AxonInfo.ip_str"><code class="name flex">
+<span>def <span class="ident">ip_str</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the whole IP as string</p></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.to_parameter_dict"><code class="name flex">
+<span>def <span class="ident">to_parameter_dict</span></span>(<span>self) ‑> torch.nn.modules.container.ParameterDict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a torch tensor of the subnet info.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.AxonInfo.to_string"><code class="name flex">
+<span>def <span class="ident">to_string</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts the AxonInfo object to a string representation using JSON.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo"><code class="flex name class">
+<span>class <span class="ident">DelegateInfo</span></span>
+<span>(</span><span>hotkey: str, total_stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, nominators: List[Tuple[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]], owner: str, take: float, validator_permits: List[int], registrations: List[int], return_per_giga: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, total_daily_return: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for delegate info.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class DelegateInfo:
+    r&#34;&#34;&#34;
+    Dataclass for delegate info.
+    &#34;&#34;&#34;
+    hotkey: str  # Hotkey of delegate
+    total_stake: Balance  # Total stake of the delegate
+    nominators: List[
+        Tuple[str, Balance]
+    ]  # List of nominators of the delegate and their stake
+    owner: str  # Coldkey of owner
+    take: float  # Take of the delegate as a percentage
+    validator_permits: List[
+        int
+    ]  # List of subnets that the delegate is allowed to validate on
+    registrations: List[int]  # List of subnets that the delegate is registered on
+    return_per_giga: Balance  # Return per 1 gboot of the delegate over a day
+    total_daily_return: Balance  # Total daily return of the delegate
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Any) -&gt; &#34;DelegateInfo&#34;:
+        r&#34;&#34;&#34;Fixes the decoded values.&#34;&#34;&#34;
+
+        return cls(
+            hotkey=decoded[&#34;delegate&#34;],
+            owner=decoded[&#34;owner&#34;],
+            take=U16_NORMALIZED_FLOAT(decoded[&#34;take&#34;]),
+            nominators=[
+                (
+                    nom[0],
+                    Balance.from_boot(nom[1]),
+                )
+                for nom in decoded[&#34;nominators&#34;]
+            ],
+            total_stake=Balance.from_boot(
+                sum([nom[1] for nom in decoded[&#34;nominators&#34;]])
+            ),
+            validator_permits=decoded[&#34;validator_permits&#34;],
+            registrations=decoded[&#34;registrations&#34;],
+            return_per_giga=Balance.from_boot(int(decoded[&#34;return_per_giga&#34;][&#34;amount&#34;])),
+            total_daily_return=Balance.from_boot(int(decoded[&#34;total_daily_return&#34;][&#34;amount&#34;])),
+        )
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;DelegateInfo&#34;]:
+        r&#34;&#34;&#34;Returns a DelegateInfo object from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded = DelegateInfo.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;DelegateInfo&#34;]:
+        r&#34;&#34;&#34;Returns a list of DelegateInfo objects from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded = [DelegateInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+    @classmethod
+    def delegated_list_from_list_any(
+        cls, vec_any: List[Any]
+    ) -&gt; List[Tuple[&#34;DelegateInfo&#34;, Balance]]:
+        r&#34;&#34;&#34;Returns a list of Tuples of DelegateInfo objects, and Balance, from a ``vec_u8``.
+        This is the list of delegates that the user has delegated to, and the amount of stake delegated.
+        &#34;&#34;&#34;
+
+        decoded = [
+            (DelegateInfo.fix_decoded_values(d), Balance.from_boot(s))
+            for d, s in vec_any
+        ]
+
+        return decoded</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.DelegateInfo.hotkey"><code class="name">var <span class="ident">hotkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.nominators"><code class="name">var <span class="ident">nominators</span> : List[Tuple[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.owner"><code class="name">var <span class="ident">owner</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.registrations"><code class="name">var <span class="ident">registrations</span> : List[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.return_per_giga"><code class="name">var <span class="ident">return_per_giga</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.take"><code class="name">var <span class="ident">take</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.total_daily_return"><code class="name">var <span class="ident">total_daily_return</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.total_stake"><code class="name">var <span class="ident">total_stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.validator_permits"><code class="name">var <span class="ident">validator_permits</span> : List[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.DelegateInfo.delegated_list_from_list_any"><code class="name flex">
+<span>def <span class="ident">delegated_list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[Tuple[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of Tuples of DelegateInfo objects, and Balance, from a <code>vec_u8</code>.
+This is the list of delegates that the user has delegated to, and the amount of stake delegated.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>decoded: Any) ‑> <a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixes the decoded values.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a DelegateInfo object from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.DelegateInfo.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of DelegateInfo objects from a <code>vec_u8</code>.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo"><code class="flex name class">
+<span>class <span class="ident">IPInfo</span></span>
+<span>(</span><span>ip: str, ip_type: int, protocol: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for associated IP Info.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class IPInfo:
+    r&#34;&#34;&#34;
+    Dataclass for associated IP Info.
+    &#34;&#34;&#34;
+
+    ip: str
+    ip_type: int
+    protocol: int
+
+    def encode(self) -&gt; Dict[str, Any]:
+        r&#34;&#34;&#34;Returns a dictionary of the IPInfo object that can be encoded.&#34;&#34;&#34;
+        return {
+            &#34;ip&#34;: net.ip_to_int(
+                self.ip
+            ),  # IP type and protocol are encoded together as a u8
+            &#34;ip_type_and_protocol&#34;: ((self.ip_type &lt;&lt; 4) + self.protocol) &amp; 0xFF,
+        }
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;IPInfo&#34;]:
+        r&#34;&#34;&#34;Returns a IPInfo object from a ``vec_u8``.&#34;&#34;&#34;
+        if len(list_any) == 0:
+            return None
+
+        return IPInfo.fix_decoded_values(list_any)
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;IPInfo&#34;]:
+        r&#34;&#34;&#34;Returns a list of IPInfo objects from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded = [IPInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;IPInfo&#34;:
+        r&#34;&#34;&#34;Returns a SubnetInfo object from a decoded IPInfo dictionary.&#34;&#34;&#34;
+        return IPInfo(
+            ip=cybertensor.utils.networking.int_to_ip(decoded[&#34;ip&#34;]),
+            ip_type=decoded[&#34;ip_type_and_protocol&#34;] &gt;&gt; 4,
+            protocol=decoded[&#34;ip_type_and_protocol&#34;] &amp; 0xF,
+        )
+
+    def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
+        r&#34;&#34;&#34;Returns a torch tensor of the subnet info.&#34;&#34;&#34;
+        return torch.nn.ParameterDict(self.__dict__)
+
+    @classmethod
+    def from_parameter_dict(cls, parameter_dict: &#34;torch.nn.ParameterDict&#34;) -&gt; &#34;IPInfo&#34;:
+        r&#34;&#34;&#34;Returns a IPInfo object from a torch parameter_dict.&#34;&#34;&#34;
+        return cls(**dict(parameter_dict))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.IPInfo.ip"><code class="name">var <span class="ident">ip</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.protocol"><code class="name">var <span class="ident">protocol</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.IPInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>decoded: Dict) ‑> <a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a SubnetInfo object from a decoded IPInfo dictionary.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a IPInfo object from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.from_parameter_dict"><code class="name flex">
+<span>def <span class="ident">from_parameter_dict</span></span>(<span>parameter_dict: torch.nn.ParameterDict) ‑> <a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a IPInfo object from a torch parameter_dict.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of IPInfo objects from a <code>vec_u8</code>.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.IPInfo.encode"><code class="name flex">
+<span>def <span class="ident">encode</span></span>(<span>self) ‑> Dict[str, Any]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a dictionary of the IPInfo object that can be encoded.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.IPInfo.to_parameter_dict"><code class="name flex">
+<span>def <span class="ident">to_parameter_dict</span></span>(<span>self) ‑> torch.nn.modules.container.ParameterDict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a torch tensor of the subnet info.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo"><code class="flex name class">
+<span>class <span class="ident">NeuronInfo</span></span>
+<span>(</span><span>hotkey: str, coldkey: str, uid: int, netuid: int, active: int, stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, stake_dict: Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>], total_stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, rank: float, emission: float, incentive: float, consensus: float, trust: float, validator_trust: float, dividends: float, last_update: int, validator_permit: bool, weights: List[List[int]], bonds: List[List[int]], prometheus_info: <a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>, axon_info: <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>, pruning_score: int, is_null: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for neuron metadata.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class NeuronInfo:
+    r&#34;&#34;&#34;
+    Dataclass for neuron metadata.
+    &#34;&#34;&#34;
+    hotkey: str
+    coldkey: str
+    uid: int
+    netuid: int
+    active: int
+    stake: Balance
+    # mapping of coldkey to amount staked to this Neuron
+    stake_dict: Dict[str, Balance]
+    total_stake: Balance
+    rank: float
+    emission: float
+    incentive: float
+    consensus: float
+    trust: float
+    validator_trust: float
+    dividends: float
+    last_update: int
+    validator_permit: bool
+    weights: List[List[int]]
+    bonds: List[List[int]]
+    prometheus_info: &#34;PrometheusInfo&#34;
+    axon_info: &#34;AxonInfo&#34;
+    pruning_score: int
+    is_null: bool = False
+
+    @classmethod
+    def fix_decoded_values(cls, neuron_info_decoded: Any) -&gt; &#34;NeuronInfo&#34;:
+        r&#34;&#34;&#34;Fixes the values of the NeuronInfo object.&#34;&#34;&#34;
+        neuron_info_decoded[&#34;hotkey&#34;] = neuron_info_decoded[&#34;hotkey&#34;]
+        neuron_info_decoded[&#34;coldkey&#34;] = neuron_info_decoded[&#34;coldkey&#34;]
+        stake_dict = {
+            coldkey: Balance.from_boot(int(stake))
+            for coldkey, stake in neuron_info_decoded[&#34;stake&#34;]
+        }
+        neuron_info_decoded[&#34;stake_dict&#34;] = stake_dict
+        neuron_info_decoded[&#34;stake&#34;] = sum(stake_dict.values())
+        neuron_info_decoded[&#34;total_stake&#34;] = neuron_info_decoded[&#34;stake&#34;]
+        neuron_info_decoded[&#34;weights&#34;] = [
+            [int(weight[0]), int(weight[1])]
+            for weight in neuron_info_decoded[&#34;weights&#34;]
+        ]
+        neuron_info_decoded[&#34;bonds&#34;] = [
+            [int(bond[0]), int(bond[1])] for bond in neuron_info_decoded[&#34;bonds&#34;]
+        ]
+        neuron_info_decoded[&#34;rank&#34;] = U16_NORMALIZED_FLOAT(neuron_info_decoded[&#34;rank&#34;])
+        neuron_info_decoded[&#34;emission&#34;] = neuron_info_decoded[&#34;emission&#34;] / GIGA
+        neuron_info_decoded[&#34;incentive&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;incentive&#34;]
+        )
+        neuron_info_decoded[&#34;consensus&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;consensus&#34;]
+        )
+        neuron_info_decoded[&#34;trust&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;trust&#34;]
+        )
+        neuron_info_decoded[&#34;validator_trust&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;validator_trust&#34;]
+        )
+        neuron_info_decoded[&#34;dividends&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;dividends&#34;]
+        )
+        neuron_info_decoded[&#34;prometheus_info&#34;] = PrometheusInfo.fix_decoded_values(
+            neuron_info_decoded[&#34;prometheus_info&#34;]
+        )
+        neuron_info_decoded[&#34;axon_info&#34;] = AxonInfo.from_neuron_info(
+            neuron_info_decoded
+        )
+
+        return cls(**neuron_info_decoded)
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfo&#34;:
+        r&#34;&#34;&#34;Returns a NeuronInfo object from a ``vec_u8``.&#34;&#34;&#34;
+        if len(list_any) == 0:
+            return NeuronInfo._null_neuron()
+
+        decoded = NeuronInfo.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfo&#34;]:
+        r&#34;&#34;&#34;Returns a list of NeuronInfo objects from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded_list = [
+            NeuronInfo.fix_decoded_values(decoded) for decoded in vec_any
+        ]
+        return decoded_list
+
+    @staticmethod
+    def _null_neuron() -&gt; &#34;NeuronInfo&#34;:
+        neuron = NeuronInfo(
+            uid=0,
+            netuid=0,
+            active=0,
+            stake=Balance.from_boot(0),
+            stake_dict={},
+            total_stake=Balance.from_boot(0),
+            rank=0,
+            emission=0,
+            incentive=0,
+            consensus=0,
+            trust=0,
+            validator_trust=0,
+            dividends=0,
+            last_update=0,
+            validator_permit=False,
+            weights=[],
+            bonds=[],
+            prometheus_info=None,
+            axon_info=None,
+            is_null=True,
+            coldkey=&#34;000000000000000000000000000000000000000000000000&#34;,
+            hotkey=&#34;000000000000000000000000000000000000000000000000&#34;,
+            pruning_score=0,
+        )
+        return neuron
+
+    @classmethod
+    def from_weights_bonds_and_neuron_lite(
+        cls,
+        neuron_lite: &#34;NeuronInfoLite&#34;,
+        weights_as_dict: Dict[int, List[Tuple[int, int]]],
+        bonds_as_dict: Dict[int, List[Tuple[int, int]]],
+    ) -&gt; &#34;NeuronInfo&#34;:
+        n_dict = neuron_lite.__dict__
+        n_dict[&#34;weights&#34;] = weights_as_dict.get(neuron_lite.uid, [])
+        n_dict[&#34;bonds&#34;] = bonds_as_dict.get(neuron_lite.uid, [])
+
+        return cls(**n_dict)
+
+    @staticmethod
+    def _neuron_dict_to_namespace(neuron_dict) -&gt; &#34;NeuronInfo&#34;:
+        neuron = NeuronInfo(**neuron_dict)
+        neuron.stake_dict = {
+            hk: Balance.from_boot(stake) for hk, stake in neuron.stake.items()
+        }
+        neuron.stake = Balance.from_boot(neuron.total_stake)
+        neuron.total_stake = neuron.stake
+        neuron.rank = neuron.rank / U16_MAX
+        neuron.trust = neuron.trust / U16_MAX
+        neuron.consensus = neuron.consensus / U16_MAX
+        neuron.validator_trust = neuron.validator_trust / U16_MAX
+        neuron.incentive = neuron.incentive / U16_MAX
+        neuron.dividends = neuron.dividends / U16_MAX
+        neuron.emission = neuron.emission / GIGA
+
+        return neuron</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.NeuronInfo.active"><code class="name">var <span class="ident">active</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.axon_info"><code class="name">var <span class="ident">axon_info</span> : <a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.bonds"><code class="name">var <span class="ident">bonds</span> : List[List[int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.coldkey"><code class="name">var <span class="ident">coldkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.consensus"><code class="name">var <span class="ident">consensus</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.dividends"><code class="name">var <span class="ident">dividends</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.emission"><code class="name">var <span class="ident">emission</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.hotkey"><code class="name">var <span class="ident">hotkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.incentive"><code class="name">var <span class="ident">incentive</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.is_null"><code class="name">var <span class="ident">is_null</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.last_update"><code class="name">var <span class="ident">last_update</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.netuid"><code class="name">var <span class="ident">netuid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.prometheus_info"><code class="name">var <span class="ident">prometheus_info</span> : <a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.pruning_score"><code class="name">var <span class="ident">pruning_score</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.rank"><code class="name">var <span class="ident">rank</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.stake"><code class="name">var <span class="ident">stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.stake_dict"><code class="name">var <span class="ident">stake_dict</span> : Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.total_stake"><code class="name">var <span class="ident">total_stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.trust"><code class="name">var <span class="ident">trust</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.uid"><code class="name">var <span class="ident">uid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.validator_permit"><code class="name">var <span class="ident">validator_permit</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.validator_trust"><code class="name">var <span class="ident">validator_trust</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.weights"><code class="name">var <span class="ident">weights</span> : List[List[int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.NeuronInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>neuron_info_decoded: Any) ‑> <a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixes the values of the NeuronInfo object.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> <a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a NeuronInfo object from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.from_weights_bonds_and_neuron_lite"><code class="name flex">
+<span>def <span class="ident">from_weights_bonds_and_neuron_lite</span></span>(<span>neuron_lite: <a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a>, weights_as_dict: Dict[int, List[Tuple[int, int]]], bonds_as_dict: Dict[int, List[Tuple[int, int]]]) ‑> <a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfo.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of NeuronInfo objects from a <code>vec_u8</code>.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite"><code class="flex name class">
+<span>class <span class="ident">NeuronInfoLite</span></span>
+<span>(</span><span>hotkey: str, coldkey: str, uid: int, netuid: int, active: int, stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, stake_dict: Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>], total_stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, rank: float, emission: float, incentive: float, consensus: float, trust: float, validator_trust: float, dividends: float, last_update: int, validator_permit: bool, pruning_score: int, prometheus_info: Optional[ForwardRef('<a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>')] = None, axon_info: Optional[ForwardRef('<a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>')] = None, is_null: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for neuron metadata, but without the weights and bonds.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class NeuronInfoLite:
+    r&#34;&#34;&#34;
+    Dataclass for neuron metadata, but without the weights and bonds.
+    &#34;&#34;&#34;
+    hotkey: str
+    coldkey: str
+    uid: int
+    netuid: int
+    active: int
+    stake: Balance
+    # mapping of coldkey to amount staked to this Neuron
+    stake_dict: Dict[str, Balance]
+    total_stake: Balance
+    rank: float
+    emission: float
+    incentive: float
+    consensus: float
+    trust: float
+    validator_trust: float
+    dividends: float
+    last_update: int
+    validator_permit: bool
+    # weights: List[List[int]]
+    # bonds: List[List[int]] No weights or bonds in lite version
+    pruning_score: int
+    prometheus_info: Optional[&#34;PrometheusInfo&#34;] = None
+    axon_info: Optional[&#34;AxonInfo&#34;] = None
+    is_null: bool = False
+
+    @classmethod
+    def fix_decoded_values(cls, neuron_info_decoded: Any) -&gt; &#34;NeuronInfoLite&#34;:
+        r&#34;&#34;&#34;Fixes the values of the NeuronInfoLite object.&#34;&#34;&#34;
+        neuron_info_decoded[&#34;hotkey&#34;] = neuron_info_decoded[&#34;hotkey&#34;]
+        neuron_info_decoded[&#34;coldkey&#34;] = neuron_info_decoded[&#34;coldkey&#34;]
+        stake_dict = {
+            coldkey: Balance.from_boot(int(stake))
+            for coldkey, stake in neuron_info_decoded[&#34;stake&#34;]
+        }
+        neuron_info_decoded[&#34;stake_dict&#34;] = stake_dict
+        neuron_info_decoded[&#34;stake&#34;] = sum(stake_dict.values())
+        neuron_info_decoded[&#34;total_stake&#34;] = neuron_info_decoded[&#34;stake&#34;]
+        # Don&#39;t need weights and bonds in lite version
+        # neuron_info_decoded[&#39;weights&#39;] = [[int(weight[0]), int(weight[1])] for weight in neuron_info_decoded[&#39;weights&#39;]]
+        # neuron_info_decoded[&#39;bonds&#39;] = [[int(bond[0]), int(bond[1])] for bond in neuron_info_decoded[&#39;bonds&#39;]]
+        neuron_info_decoded[&#34;rank&#34;] = U16_NORMALIZED_FLOAT(neuron_info_decoded[&#34;rank&#34;])
+        neuron_info_decoded[&#34;emission&#34;] = neuron_info_decoded[&#34;emission&#34;] / GIGA
+        neuron_info_decoded[&#34;incentive&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;incentive&#34;]
+        )
+        neuron_info_decoded[&#34;consensus&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;consensus&#34;]
+        )
+        neuron_info_decoded[&#34;trust&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;trust&#34;]
+        )
+        neuron_info_decoded[&#34;validator_trust&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;validator_trust&#34;]
+        )
+        neuron_info_decoded[&#34;dividends&#34;] = U16_NORMALIZED_FLOAT(
+            neuron_info_decoded[&#34;dividends&#34;]
+        )
+        neuron_info_decoded[&#34;prometheus_info&#34;] = PrometheusInfo.fix_decoded_values(
+            neuron_info_decoded[&#34;prometheus_info&#34;]
+        )
+        neuron_info_decoded[&#34;axon_info&#34;] = AxonInfo.from_neuron_info(
+            neuron_info_decoded
+        )
+        return cls(**neuron_info_decoded)
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; &#34;NeuronInfoLite&#34;:
+        r&#34;&#34;&#34;Returns a NeuronInfoLite object from a ``vec_u8``.&#34;&#34;&#34;
+        if len(list_any) == 0:
+            return NeuronInfoLite._null_neuron()
+
+        decoded = NeuronInfoLite.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;NeuronInfoLite&#34;]:
+        r&#34;&#34;&#34;Returns a list of NeuronInfoLite objects from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded_list = [
+            NeuronInfoLite.fix_decoded_values(decoded) for decoded in vec_any
+        ]
+        return decoded_list
+
+    @staticmethod
+    def _null_neuron() -&gt; &#34;NeuronInfoLite&#34;:
+        neuron = NeuronInfoLite(
+            uid=0,
+            netuid=0,
+            active=0,
+            stake=Balance.from_boot(0),
+            stake_dict={},
+            total_stake=Balance.from_boot(0),
+            rank=0,
+            emission=0,
+            incentive=0,
+            consensus=0,
+            trust=0,
+            validator_trust=0,
+            dividends=0,
+            last_update=0,
+            validator_permit=False,
+            # weights = [], // No weights or bonds in lite version
+            # bonds = [],
+            prometheus_info=None,
+            axon_info=None,
+            is_null=True,
+            coldkey=&#34;000000000000000000000000000000000000000000000000&#34;,
+            hotkey=&#34;000000000000000000000000000000000000000000000000&#34;,
+            pruning_score=0,
+        )
+        return neuron
+
+    @staticmethod
+    def _neuron_dict_to_namespace(neuron_dict) -&gt; &#34;NeuronInfoLite&#34;:
+        neuron = NeuronInfoLite(**neuron_dict)
+        neuron.stake = Balance.from_boot(neuron.total_stake)
+        neuron.stake_dict = {
+            hk: Balance.from_boot(stake) for hk, stake in neuron.stake.items()
+        }
+        neuron.total_stake = neuron.stake
+        neuron.rank = neuron.rank / U16_MAX
+        neuron.trust = neuron.trust / U16_MAX
+        neuron.consensus = neuron.consensus / U16_MAX
+        neuron.validator_trust = neuron.validator_trust / U16_MAX
+        neuron.incentive = neuron.incentive / U16_MAX
+        neuron.dividends = neuron.dividends / U16_MAX
+        neuron.emission = neuron.emission / GIGA
+
+        return neuron</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.NeuronInfoLite.active"><code class="name">var <span class="ident">active</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.axon_info"><code class="name">var <span class="ident">axon_info</span> : Optional[<a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.coldkey"><code class="name">var <span class="ident">coldkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.consensus"><code class="name">var <span class="ident">consensus</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.dividends"><code class="name">var <span class="ident">dividends</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.emission"><code class="name">var <span class="ident">emission</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.hotkey"><code class="name">var <span class="ident">hotkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.incentive"><code class="name">var <span class="ident">incentive</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.is_null"><code class="name">var <span class="ident">is_null</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.last_update"><code class="name">var <span class="ident">last_update</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.netuid"><code class="name">var <span class="ident">netuid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.prometheus_info"><code class="name">var <span class="ident">prometheus_info</span> : Optional[<a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.pruning_score"><code class="name">var <span class="ident">pruning_score</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.rank"><code class="name">var <span class="ident">rank</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.stake"><code class="name">var <span class="ident">stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.stake_dict"><code class="name">var <span class="ident">stake_dict</span> : Dict[str, <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.total_stake"><code class="name">var <span class="ident">total_stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.trust"><code class="name">var <span class="ident">trust</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.uid"><code class="name">var <span class="ident">uid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.validator_permit"><code class="name">var <span class="ident">validator_permit</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.validator_trust"><code class="name">var <span class="ident">validator_trust</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.NeuronInfoLite.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>neuron_info_decoded: Any) ‑> <a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixes the values of the NeuronInfoLite object.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> <a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a NeuronInfoLite object from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.NeuronInfoLite.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of NeuronInfoLite objects from a <code>vec_u8</code>.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.PrometheusInfo"><code class="flex name class">
+<span>class <span class="ident">PrometheusInfo</span></span>
+<span>(</span><span>block: int, version: int, ip: str, port: int, ip_type: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for prometheus info.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PrometheusInfo:
+    r&#34;&#34;&#34;
+    Dataclass for prometheus info.
+    &#34;&#34;&#34;
+    block: int
+    version: int
+    ip: str
+    port: int
+    ip_type: int
+
+    @classmethod
+    def fix_decoded_values(cls, prometheus_info_decoded: Dict) -&gt; &#34;PrometheusInfo&#34;:
+        r&#34;&#34;&#34;Returns a PrometheusInfo object from a prometheus_info_decoded dictionary.&#34;&#34;&#34;
+        prometheus_info_decoded[&#34;ip&#34;] = net.int_to_ip(
+            int(prometheus_info_decoded[&#34;ip&#34;])
+        )
+
+        return cls(**prometheus_info_decoded)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.PrometheusInfo.block"><code class="name">var <span class="ident">block</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.PrometheusInfo.ip"><code class="name">var <span class="ident">ip</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.PrometheusInfo.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.PrometheusInfo.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.PrometheusInfo.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.PrometheusInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>prometheus_info_decoded: Dict) ‑> <a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a PrometheusInfo object from a prometheus_info_decoded dictionary.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo"><code class="flex name class">
+<span>class <span class="ident">StakeInfo</span></span>
+<span>(</span><span>hotkey: str, coldkey: str, stake: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for stake info.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class StakeInfo:
+    r&#34;&#34;&#34;
+    Dataclass for stake info.
+    &#34;&#34;&#34;
+    hotkey: str  # Hotkey address
+    coldkey: str  # Coldkey address
+    stake: Balance  # Stake for the hotkey-coldkey pair
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Any) -&gt; &#34;StakeInfo&#34;:
+        r&#34;&#34;&#34;Fixes the decoded values.&#34;&#34;&#34;
+
+        return cls(
+            hotkey=decoded[&#34;hotkey&#34;],
+            coldkey=decoded[&#34;coldkey&#34;],
+            stake=Balance.from_boot(decoded[&#34;stake&#34;]),
+        )
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;StakeInfo&#34;]:
+        r&#34;&#34;&#34;Returns a StakeInfo object from a ``vec_u8``.&#34;&#34;&#34;
+        if len(list_any) == 0:
+            return None
+
+        decoded = StakeInfo.fix_decoded_values(list_any)
+
+        return decoded
+
+    @classmethod
+    def list_of_tuple_from_list_any(
+        cls, vec_any: List[Any]
+    ) -&gt; Dict[str, List[&#34;StakeInfo&#34;]]:
+        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a vec_any.&#34;&#34;&#34;
+
+        stake_map = {
+            account_id: [
+                StakeInfo.fix_decoded_values(d) for d in stake_info
+            ]
+            for account_id, stake_info in vec_any
+        }
+
+        return stake_map
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;StakeInfo&#34;]:
+        r&#34;&#34;&#34;Returns a list of StakeInfo objects from a ``vec_u8``.&#34;&#34;&#34;
+
+        decoded = [StakeInfo.fix_decoded_values(d) for d in vec_any]
+
+        return decoded</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.StakeInfo.coldkey"><code class="name">var <span class="ident">coldkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo.hotkey"><code class="name">var <span class="ident">hotkey</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo.stake"><code class="name">var <span class="ident">stake</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.StakeInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>decoded: Any) ‑> <a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixes the decoded values.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a StakeInfo object from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of StakeInfo objects from a <code>vec_u8</code>.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.StakeInfo.list_of_tuple_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_of_tuple_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> Dict[str, List[<a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of StakeInfo objects from a vec_any.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters"><code class="flex name class">
+<span>class <span class="ident">SubnetHyperparameters</span></span>
+<span>(</span><span>rho: int, kappa: int, immunity_period: int, min_allowed_weights: int, max_weight_limit: float, tempo: int, min_difficulty: int, max_difficulty: int, weights_version: int, weights_rate_limit: int, adjustment_interval: int, activity_cutoff: int, registration_allowed: bool, target_regs_per_interval: int, min_burn: int, max_burn: int, bonds_moving_avg: int, max_regs_per_block: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for subnet hyperparameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SubnetHyperparameters:
+    r&#34;&#34;&#34;
+    Dataclass for subnet hyperparameters.
+    &#34;&#34;&#34;
+
+    rho: int
+    kappa: int
+    immunity_period: int
+    min_allowed_weights: int
+    max_weight_limit: float
+    tempo: int
+    min_difficulty: int
+    max_difficulty: int
+    weights_version: int
+    weights_rate_limit: int
+    adjustment_interval: int
+    activity_cutoff: int
+    registration_allowed: bool
+    target_regs_per_interval: int
+    min_burn: int
+    max_burn: int
+    bonds_moving_avg: int
+    max_regs_per_block: int
+    # serving_rate_limit: int
+    # max_validators: int
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetHyperparameters&#34;]:
+        if len(list_any) == 0:
+            return None
+
+        return SubnetHyperparameters.fix_decoded_values(list_any)
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;SubnetHyperparameters&#34;]:
+        # TODO check if this is correct if empty
+        decoded = [SubnetHyperparameters.fix_decoded_values(d) for d in vec_any]
+
+        return decoded
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;SubnetHyperparameters&#34;:
+        r&#34;&#34;&#34;Returns a SubnetInfo object from a decoded SubnetInfo dictionary.&#34;&#34;&#34;
+        return SubnetHyperparameters(
+            rho=decoded[&#34;rho&#34;],
+            kappa=decoded[&#34;kappa&#34;],
+            immunity_period=decoded[&#34;immunity_period&#34;],
+            min_allowed_weights=decoded[&#34;min_allowed_weights&#34;],
+            max_weight_limit=decoded[&#34;max_weights_limit&#34;],
+            tempo=decoded[&#34;tempo&#34;],
+            min_difficulty=decoded[&#34;min_difficulty&#34;],
+            max_difficulty=decoded[&#34;max_difficulty&#34;],
+            weights_version=decoded[&#34;weights_version&#34;],
+            weights_rate_limit=decoded[&#34;weights_rate_limit&#34;],
+            adjustment_interval=decoded[&#34;adjustment_interval&#34;],
+            activity_cutoff=decoded[&#34;activity_cutoff&#34;],
+            registration_allowed=decoded[&#34;registration_allowed&#34;],
+            target_regs_per_interval=decoded[&#34;target_regs_per_interval&#34;],
+            min_burn=decoded[&#34;min_burn&#34;],
+            max_burn=decoded[&#34;max_burn&#34;],
+            bonds_moving_avg=decoded[&#34;bonds_moving_avg&#34;],
+            max_regs_per_block=decoded[&#34;max_regs_per_block&#34;],
+            # max_validators=decoded[&#34;max_validators&#34;],
+            # serving_rate_limit=decoded[&#34;serving_rate_limit&#34;],
+        )
+
+    def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
+        r&#34;&#34;&#34;Returns a torch tensor of the subnet hyperparameters.&#34;&#34;&#34;
+        return torch.nn.ParameterDict(self.__dict__)
+
+    @classmethod
+    def from_parameter_dict(
+        cls, parameter_dict: &#34;torch.nn.ParameterDict&#34;
+    ) -&gt; &#34;SubnetInfo&#34;:
+        r&#34;&#34;&#34;Returns a SubnetHyperparameters object from a torch parameter_dict.&#34;&#34;&#34;
+        return cls(**dict(parameter_dict))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.activity_cutoff"><code class="name">var <span class="ident">activity_cutoff</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.adjustment_interval"><code class="name">var <span class="ident">adjustment_interval</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.bonds_moving_avg"><code class="name">var <span class="ident">bonds_moving_avg</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.immunity_period"><code class="name">var <span class="ident">immunity_period</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.kappa"><code class="name">var <span class="ident">kappa</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.max_burn"><code class="name">var <span class="ident">max_burn</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.max_difficulty"><code class="name">var <span class="ident">max_difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.max_regs_per_block"><code class="name">var <span class="ident">max_regs_per_block</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.max_weight_limit"><code class="name">var <span class="ident">max_weight_limit</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.min_allowed_weights"><code class="name">var <span class="ident">min_allowed_weights</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.min_burn"><code class="name">var <span class="ident">min_burn</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.min_difficulty"><code class="name">var <span class="ident">min_difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.registration_allowed"><code class="name">var <span class="ident">registration_allowed</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.rho"><code class="name">var <span class="ident">rho</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.target_regs_per_interval"><code class="name">var <span class="ident">target_regs_per_interval</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.tempo"><code class="name">var <span class="ident">tempo</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.weights_rate_limit"><code class="name">var <span class="ident">weights_rate_limit</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.weights_version"><code class="name">var <span class="ident">weights_version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>decoded: Dict) ‑> <a title="cybertensor.chain_data.SubnetHyperparameters" href="#cybertensor.chain_data.SubnetHyperparameters">SubnetHyperparameters</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a SubnetInfo object from a decoded SubnetInfo dictionary.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.SubnetHyperparameters" href="#cybertensor.chain_data.SubnetHyperparameters">SubnetHyperparameters</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.from_parameter_dict"><code class="name flex">
+<span>def <span class="ident">from_parameter_dict</span></span>(<span>parameter_dict: torch.nn.ParameterDict) ‑> <a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a SubnetHyperparameters object from a torch parameter_dict.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.SubnetHyperparameters" href="#cybertensor.chain_data.SubnetHyperparameters">SubnetHyperparameters</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetHyperparameters.to_parameter_dict"><code class="name flex">
+<span>def <span class="ident">to_parameter_dict</span></span>(<span>self) ‑> torch.nn.modules.container.ParameterDict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a torch tensor of the subnet hyperparameters.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo"><code class="flex name class">
+<span>class <span class="ident">SubnetInfo</span></span>
+<span>(</span><span>netuid: int, rho: int, kappa: int, difficulty: int, immunity_period: int, max_allowed_validators: int, min_allowed_weights: int, max_weight_limit: float, subnetwork_n: int, max_n: int, blocks_since_epoch: int, tempo: int, modality: int, emission_value: float, burn: <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>, owner: str, metadata: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataclass for subnet info.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SubnetInfo:
+    r&#34;&#34;&#34;
+    Dataclass for subnet info.
+    &#34;&#34;&#34;
+
+    netuid: int
+    rho: int
+    kappa: int
+    difficulty: int
+    immunity_period: int
+    max_allowed_validators: int
+    min_allowed_weights: int
+    max_weight_limit: float
+    subnetwork_n: int
+    max_n: int
+    blocks_since_epoch: int
+    tempo: int
+    modality: int
+    emission_value: float
+    burn: Balance
+    owner: str
+    metadata: str
+
+    @classmethod
+    def from_list_any(cls, list_any: List[Any]) -&gt; Optional[&#34;SubnetInfo&#34;]:
+        if len(list_any) == 0:
+            return None
+
+        return SubnetInfo.fix_decoded_values(list_any)
+
+    @classmethod
+    def list_from_list_any(cls, vec_any: List[Any]) -&gt; List[&#34;SubnetInfo&#34;]:
+        # TODO check if this is correct if empty
+        decoded = [SubnetInfo.fix_decoded_values(d) for d in vec_any if d is not None]
+
+        return decoded
+
+    @classmethod
+    def fix_decoded_values(cls, decoded: Dict) -&gt; &#34;SubnetInfo&#34;:
+        r&#34;&#34;&#34;Returns a SubnetInfo object from a decoded SubnetInfo dictionary.&#34;&#34;&#34;
+        return SubnetInfo(
+            netuid=decoded[&#34;netuid&#34;],
+            rho=decoded[&#34;rho&#34;],
+            kappa=decoded[&#34;kappa&#34;],
+            difficulty=decoded[&#34;difficulty&#34;],
+            immunity_period=decoded[&#34;immunity_period&#34;],
+            max_allowed_validators=decoded[&#34;max_allowed_validators&#34;],
+            min_allowed_weights=decoded[&#34;min_allowed_weights&#34;],
+            max_weight_limit=decoded[&#34;max_weights_limit&#34;],
+            subnetwork_n=decoded[&#34;subnetwork_n&#34;],
+            max_n=decoded[&#34;max_allowed_uids&#34;],
+            blocks_since_epoch=decoded[&#34;blocks_since_last_step&#34;],
+            tempo=decoded[&#34;tempo&#34;],
+            modality=decoded[&#34;network_modality&#34;],
+            emission_value=decoded[&#34;emission_values&#34;],
+            burn=Balance.from_boot(decoded[&#34;burn&#34;]),
+            owner=decoded[&#34;owner&#34;],
+            metadata=decoded[&#34;metadata&#34;],
+        )
+
+    def to_parameter_dict(self) -&gt; &#34;torch.nn.ParameterDict&#34;:
+        r&#34;&#34;&#34;Returns a torch tensor of the subnet info.&#34;&#34;&#34;
+        return torch.nn.ParameterDict(self.__dict__)
+
+    @classmethod
+    def from_parameter_dict(
+        cls, parameter_dict: &#34;torch.nn.ParameterDict&#34;
+    ) -&gt; &#34;SubnetInfo&#34;:
+        r&#34;&#34;&#34;Returns a SubnetInfo object from a torch parameter_dict.&#34;&#34;&#34;
+        return cls(**dict(parameter_dict))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetInfo.blocks_since_epoch"><code class="name">var <span class="ident">blocks_since_epoch</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.burn"><code class="name">var <span class="ident">burn</span> : <a title="cybertensor.utils.balance.Balance" href="utils/balance.html#cybertensor.utils.balance.Balance">Balance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.difficulty"><code class="name">var <span class="ident">difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.emission_value"><code class="name">var <span class="ident">emission_value</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.immunity_period"><code class="name">var <span class="ident">immunity_period</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.kappa"><code class="name">var <span class="ident">kappa</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.max_allowed_validators"><code class="name">var <span class="ident">max_allowed_validators</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.max_n"><code class="name">var <span class="ident">max_n</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.max_weight_limit"><code class="name">var <span class="ident">max_weight_limit</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.metadata"><code class="name">var <span class="ident">metadata</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.min_allowed_weights"><code class="name">var <span class="ident">min_allowed_weights</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.modality"><code class="name">var <span class="ident">modality</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.netuid"><code class="name">var <span class="ident">netuid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.owner"><code class="name">var <span class="ident">owner</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.rho"><code class="name">var <span class="ident">rho</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.subnetwork_n"><code class="name">var <span class="ident">subnetwork_n</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.tempo"><code class="name">var <span class="ident">tempo</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetInfo.fix_decoded_values"><code class="name flex">
+<span>def <span class="ident">fix_decoded_values</span></span>(<span>decoded: Dict) ‑> <a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a SubnetInfo object from a decoded SubnetInfo dictionary.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.from_list_any"><code class="name flex">
+<span>def <span class="ident">from_list_any</span></span>(<span>list_any: List[Any]) ‑> Optional[<a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.from_parameter_dict"><code class="name flex">
+<span>def <span class="ident">from_parameter_dict</span></span>(<span>parameter_dict: torch.nn.ParameterDict) ‑> <a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a SubnetInfo object from a torch parameter_dict.</p></div>
+</dd>
+<dt id="cybertensor.chain_data.SubnetInfo.list_from_list_any"><code class="name flex">
+<span>def <span class="ident">list_from_list_any</span></span>(<span>vec_any: List[Any]) ‑> List[<a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.chain_data.SubnetInfo.to_parameter_dict"><code class="name flex">
+<span>def <span class="ident">to_parameter_dict</span></span>(<span>self) ‑> torch.nn.modules.container.ParameterDict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a torch tensor of the subnet info.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.chain_data.AxonInfo" href="#cybertensor.chain_data.AxonInfo">AxonInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.chain_data.AxonInfo.coldkey" href="#cybertensor.chain_data.AxonInfo.coldkey">coldkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.from_neuron_info" href="#cybertensor.chain_data.AxonInfo.from_neuron_info">from_neuron_info</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.from_parameter_dict" href="#cybertensor.chain_data.AxonInfo.from_parameter_dict">from_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.from_string" href="#cybertensor.chain_data.AxonInfo.from_string">from_string</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.hotkey" href="#cybertensor.chain_data.AxonInfo.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.ip" href="#cybertensor.chain_data.AxonInfo.ip">ip</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.ip_str" href="#cybertensor.chain_data.AxonInfo.ip_str">ip_str</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.ip_type" href="#cybertensor.chain_data.AxonInfo.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.is_serving" href="#cybertensor.chain_data.AxonInfo.is_serving">is_serving</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.placeholder1" href="#cybertensor.chain_data.AxonInfo.placeholder1">placeholder1</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.placeholder2" href="#cybertensor.chain_data.AxonInfo.placeholder2">placeholder2</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.port" href="#cybertensor.chain_data.AxonInfo.port">port</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.protocol" href="#cybertensor.chain_data.AxonInfo.protocol">protocol</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.to_parameter_dict" href="#cybertensor.chain_data.AxonInfo.to_parameter_dict">to_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.to_string" href="#cybertensor.chain_data.AxonInfo.to_string">to_string</a></code></li>
+<li><code><a title="cybertensor.chain_data.AxonInfo.version" href="#cybertensor.chain_data.AxonInfo.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.DelegateInfo" href="#cybertensor.chain_data.DelegateInfo">DelegateInfo</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.chain_data.DelegateInfo.delegated_list_from_list_any" href="#cybertensor.chain_data.DelegateInfo.delegated_list_from_list_any">delegated_list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.fix_decoded_values" href="#cybertensor.chain_data.DelegateInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.from_list_any" href="#cybertensor.chain_data.DelegateInfo.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.hotkey" href="#cybertensor.chain_data.DelegateInfo.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.list_from_list_any" href="#cybertensor.chain_data.DelegateInfo.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.nominators" href="#cybertensor.chain_data.DelegateInfo.nominators">nominators</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.owner" href="#cybertensor.chain_data.DelegateInfo.owner">owner</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.registrations" href="#cybertensor.chain_data.DelegateInfo.registrations">registrations</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.return_per_giga" href="#cybertensor.chain_data.DelegateInfo.return_per_giga">return_per_giga</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.take" href="#cybertensor.chain_data.DelegateInfo.take">take</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.total_daily_return" href="#cybertensor.chain_data.DelegateInfo.total_daily_return">total_daily_return</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.total_stake" href="#cybertensor.chain_data.DelegateInfo.total_stake">total_stake</a></code></li>
+<li><code><a title="cybertensor.chain_data.DelegateInfo.validator_permits" href="#cybertensor.chain_data.DelegateInfo.validator_permits">validator_permits</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.IPInfo" href="#cybertensor.chain_data.IPInfo">IPInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.chain_data.IPInfo.encode" href="#cybertensor.chain_data.IPInfo.encode">encode</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.fix_decoded_values" href="#cybertensor.chain_data.IPInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.from_list_any" href="#cybertensor.chain_data.IPInfo.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.from_parameter_dict" href="#cybertensor.chain_data.IPInfo.from_parameter_dict">from_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.ip" href="#cybertensor.chain_data.IPInfo.ip">ip</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.ip_type" href="#cybertensor.chain_data.IPInfo.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.list_from_list_any" href="#cybertensor.chain_data.IPInfo.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.protocol" href="#cybertensor.chain_data.IPInfo.protocol">protocol</a></code></li>
+<li><code><a title="cybertensor.chain_data.IPInfo.to_parameter_dict" href="#cybertensor.chain_data.IPInfo.to_parameter_dict">to_parameter_dict</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.NeuronInfo" href="#cybertensor.chain_data.NeuronInfo">NeuronInfo</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.chain_data.NeuronInfo.active" href="#cybertensor.chain_data.NeuronInfo.active">active</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.axon_info" href="#cybertensor.chain_data.NeuronInfo.axon_info">axon_info</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.bonds" href="#cybertensor.chain_data.NeuronInfo.bonds">bonds</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.coldkey" href="#cybertensor.chain_data.NeuronInfo.coldkey">coldkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.consensus" href="#cybertensor.chain_data.NeuronInfo.consensus">consensus</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.dividends" href="#cybertensor.chain_data.NeuronInfo.dividends">dividends</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.emission" href="#cybertensor.chain_data.NeuronInfo.emission">emission</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.fix_decoded_values" href="#cybertensor.chain_data.NeuronInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.from_list_any" href="#cybertensor.chain_data.NeuronInfo.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.from_weights_bonds_and_neuron_lite" href="#cybertensor.chain_data.NeuronInfo.from_weights_bonds_and_neuron_lite">from_weights_bonds_and_neuron_lite</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.hotkey" href="#cybertensor.chain_data.NeuronInfo.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.incentive" href="#cybertensor.chain_data.NeuronInfo.incentive">incentive</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.is_null" href="#cybertensor.chain_data.NeuronInfo.is_null">is_null</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.last_update" href="#cybertensor.chain_data.NeuronInfo.last_update">last_update</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.list_from_list_any" href="#cybertensor.chain_data.NeuronInfo.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.netuid" href="#cybertensor.chain_data.NeuronInfo.netuid">netuid</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.prometheus_info" href="#cybertensor.chain_data.NeuronInfo.prometheus_info">prometheus_info</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.pruning_score" href="#cybertensor.chain_data.NeuronInfo.pruning_score">pruning_score</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.rank" href="#cybertensor.chain_data.NeuronInfo.rank">rank</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.stake" href="#cybertensor.chain_data.NeuronInfo.stake">stake</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.stake_dict" href="#cybertensor.chain_data.NeuronInfo.stake_dict">stake_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.total_stake" href="#cybertensor.chain_data.NeuronInfo.total_stake">total_stake</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.trust" href="#cybertensor.chain_data.NeuronInfo.trust">trust</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.uid" href="#cybertensor.chain_data.NeuronInfo.uid">uid</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.validator_permit" href="#cybertensor.chain_data.NeuronInfo.validator_permit">validator_permit</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.validator_trust" href="#cybertensor.chain_data.NeuronInfo.validator_trust">validator_trust</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfo.weights" href="#cybertensor.chain_data.NeuronInfo.weights">weights</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.NeuronInfoLite" href="#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.active" href="#cybertensor.chain_data.NeuronInfoLite.active">active</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.axon_info" href="#cybertensor.chain_data.NeuronInfoLite.axon_info">axon_info</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.coldkey" href="#cybertensor.chain_data.NeuronInfoLite.coldkey">coldkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.consensus" href="#cybertensor.chain_data.NeuronInfoLite.consensus">consensus</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.dividends" href="#cybertensor.chain_data.NeuronInfoLite.dividends">dividends</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.emission" href="#cybertensor.chain_data.NeuronInfoLite.emission">emission</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.fix_decoded_values" href="#cybertensor.chain_data.NeuronInfoLite.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.from_list_any" href="#cybertensor.chain_data.NeuronInfoLite.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.hotkey" href="#cybertensor.chain_data.NeuronInfoLite.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.incentive" href="#cybertensor.chain_data.NeuronInfoLite.incentive">incentive</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.is_null" href="#cybertensor.chain_data.NeuronInfoLite.is_null">is_null</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.last_update" href="#cybertensor.chain_data.NeuronInfoLite.last_update">last_update</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.list_from_list_any" href="#cybertensor.chain_data.NeuronInfoLite.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.netuid" href="#cybertensor.chain_data.NeuronInfoLite.netuid">netuid</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.prometheus_info" href="#cybertensor.chain_data.NeuronInfoLite.prometheus_info">prometheus_info</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.pruning_score" href="#cybertensor.chain_data.NeuronInfoLite.pruning_score">pruning_score</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.rank" href="#cybertensor.chain_data.NeuronInfoLite.rank">rank</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.stake" href="#cybertensor.chain_data.NeuronInfoLite.stake">stake</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.stake_dict" href="#cybertensor.chain_data.NeuronInfoLite.stake_dict">stake_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.total_stake" href="#cybertensor.chain_data.NeuronInfoLite.total_stake">total_stake</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.trust" href="#cybertensor.chain_data.NeuronInfoLite.trust">trust</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.uid" href="#cybertensor.chain_data.NeuronInfoLite.uid">uid</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.validator_permit" href="#cybertensor.chain_data.NeuronInfoLite.validator_permit">validator_permit</a></code></li>
+<li><code><a title="cybertensor.chain_data.NeuronInfoLite.validator_trust" href="#cybertensor.chain_data.NeuronInfoLite.validator_trust">validator_trust</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.PrometheusInfo" href="#cybertensor.chain_data.PrometheusInfo">PrometheusInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.block" href="#cybertensor.chain_data.PrometheusInfo.block">block</a></code></li>
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.fix_decoded_values" href="#cybertensor.chain_data.PrometheusInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.ip" href="#cybertensor.chain_data.PrometheusInfo.ip">ip</a></code></li>
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.ip_type" href="#cybertensor.chain_data.PrometheusInfo.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.port" href="#cybertensor.chain_data.PrometheusInfo.port">port</a></code></li>
+<li><code><a title="cybertensor.chain_data.PrometheusInfo.version" href="#cybertensor.chain_data.PrometheusInfo.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.StakeInfo" href="#cybertensor.chain_data.StakeInfo">StakeInfo</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.chain_data.StakeInfo.coldkey" href="#cybertensor.chain_data.StakeInfo.coldkey">coldkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.fix_decoded_values" href="#cybertensor.chain_data.StakeInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.from_list_any" href="#cybertensor.chain_data.StakeInfo.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.hotkey" href="#cybertensor.chain_data.StakeInfo.hotkey">hotkey</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.list_from_list_any" href="#cybertensor.chain_data.StakeInfo.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.list_of_tuple_from_list_any" href="#cybertensor.chain_data.StakeInfo.list_of_tuple_from_list_any">list_of_tuple_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.StakeInfo.stake" href="#cybertensor.chain_data.StakeInfo.stake">stake</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.SubnetHyperparameters" href="#cybertensor.chain_data.SubnetHyperparameters">SubnetHyperparameters</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.activity_cutoff" href="#cybertensor.chain_data.SubnetHyperparameters.activity_cutoff">activity_cutoff</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.adjustment_interval" href="#cybertensor.chain_data.SubnetHyperparameters.adjustment_interval">adjustment_interval</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.bonds_moving_avg" href="#cybertensor.chain_data.SubnetHyperparameters.bonds_moving_avg">bonds_moving_avg</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.fix_decoded_values" href="#cybertensor.chain_data.SubnetHyperparameters.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.from_list_any" href="#cybertensor.chain_data.SubnetHyperparameters.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.from_parameter_dict" href="#cybertensor.chain_data.SubnetHyperparameters.from_parameter_dict">from_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.immunity_period" href="#cybertensor.chain_data.SubnetHyperparameters.immunity_period">immunity_period</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.kappa" href="#cybertensor.chain_data.SubnetHyperparameters.kappa">kappa</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.list_from_list_any" href="#cybertensor.chain_data.SubnetHyperparameters.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.max_burn" href="#cybertensor.chain_data.SubnetHyperparameters.max_burn">max_burn</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.max_difficulty" href="#cybertensor.chain_data.SubnetHyperparameters.max_difficulty">max_difficulty</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.max_regs_per_block" href="#cybertensor.chain_data.SubnetHyperparameters.max_regs_per_block">max_regs_per_block</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.max_weight_limit" href="#cybertensor.chain_data.SubnetHyperparameters.max_weight_limit">max_weight_limit</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.min_allowed_weights" href="#cybertensor.chain_data.SubnetHyperparameters.min_allowed_weights">min_allowed_weights</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.min_burn" href="#cybertensor.chain_data.SubnetHyperparameters.min_burn">min_burn</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.min_difficulty" href="#cybertensor.chain_data.SubnetHyperparameters.min_difficulty">min_difficulty</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.registration_allowed" href="#cybertensor.chain_data.SubnetHyperparameters.registration_allowed">registration_allowed</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.rho" href="#cybertensor.chain_data.SubnetHyperparameters.rho">rho</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.target_regs_per_interval" href="#cybertensor.chain_data.SubnetHyperparameters.target_regs_per_interval">target_regs_per_interval</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.tempo" href="#cybertensor.chain_data.SubnetHyperparameters.tempo">tempo</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.to_parameter_dict" href="#cybertensor.chain_data.SubnetHyperparameters.to_parameter_dict">to_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.weights_rate_limit" href="#cybertensor.chain_data.SubnetHyperparameters.weights_rate_limit">weights_rate_limit</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetHyperparameters.weights_version" href="#cybertensor.chain_data.SubnetHyperparameters.weights_version">weights_version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.chain_data.SubnetInfo" href="#cybertensor.chain_data.SubnetInfo">SubnetInfo</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.chain_data.SubnetInfo.blocks_since_epoch" href="#cybertensor.chain_data.SubnetInfo.blocks_since_epoch">blocks_since_epoch</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.burn" href="#cybertensor.chain_data.SubnetInfo.burn">burn</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.difficulty" href="#cybertensor.chain_data.SubnetInfo.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.emission_value" href="#cybertensor.chain_data.SubnetInfo.emission_value">emission_value</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.fix_decoded_values" href="#cybertensor.chain_data.SubnetInfo.fix_decoded_values">fix_decoded_values</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.from_list_any" href="#cybertensor.chain_data.SubnetInfo.from_list_any">from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.from_parameter_dict" href="#cybertensor.chain_data.SubnetInfo.from_parameter_dict">from_parameter_dict</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.immunity_period" href="#cybertensor.chain_data.SubnetInfo.immunity_period">immunity_period</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.kappa" href="#cybertensor.chain_data.SubnetInfo.kappa">kappa</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.list_from_list_any" href="#cybertensor.chain_data.SubnetInfo.list_from_list_any">list_from_list_any</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.max_allowed_validators" href="#cybertensor.chain_data.SubnetInfo.max_allowed_validators">max_allowed_validators</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.max_n" href="#cybertensor.chain_data.SubnetInfo.max_n">max_n</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.max_weight_limit" href="#cybertensor.chain_data.SubnetInfo.max_weight_limit">max_weight_limit</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.metadata" href="#cybertensor.chain_data.SubnetInfo.metadata">metadata</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.min_allowed_weights" href="#cybertensor.chain_data.SubnetInfo.min_allowed_weights">min_allowed_weights</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.modality" href="#cybertensor.chain_data.SubnetInfo.modality">modality</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.netuid" href="#cybertensor.chain_data.SubnetInfo.netuid">netuid</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.owner" href="#cybertensor.chain_data.SubnetInfo.owner">owner</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.rho" href="#cybertensor.chain_data.SubnetInfo.rho">rho</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.subnetwork_n" href="#cybertensor.chain_data.SubnetInfo.subnetwork_n">subnetwork_n</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.tempo" href="#cybertensor.chain_data.SubnetInfo.tempo">tempo</a></code></li>
+<li><code><a title="cybertensor.chain_data.SubnetInfo.to_parameter_dict" href="#cybertensor.chain_data.SubnetInfo.to_parameter_dict">to_parameter_dict</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

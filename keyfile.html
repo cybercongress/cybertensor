@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.keyfile API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.keyfile</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.keyfile.ask_password_to_encrypt"><code class="name flex">
+<span>def <span class="ident">ask_password_to_encrypt</span></span>(<span>) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prompts the user to enter a password for key encryption.</p>
+<h2 id="returns">Returns</h2>
+<p>password (str): The valid password entered by the user.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.decrypt_keyfile_data"><code class="name flex">
+<span>def <span class="ident">decrypt_keyfile_data</span></span>(<span>keyfile_data: bytes, password: str = None, coldkey_name: Optional[str] = None) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decrypts the passed keyfile data using ansible vault.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The bytes to decrypt.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password used to decrypt the data. If <code>None</code>, asks for user input.</dd>
+<dt><strong><code>coldkey_name</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The name of the cold key. If provided, retrieves the password from environment variables.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>decrypted_data (bytes): The decrypted data.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file is corrupted or if the password is incorrect.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.deserialize_keypair_from_keyfile_data"><code class="name flex">
+<span>def <span class="ident">deserialize_keypair_from_keyfile_data</span></span>(<span>keyfile_data: bytes) ‑> <a title="cybertensor.keypair.Keypair" href="keypair.html#cybertensor.keypair.Keypair">Keypair</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Deserializes Keypair object from passed keyfile data.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The keyfile data as bytes to be loaded.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>keypair (Keypair): The Keypair loaded from bytes.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the passed bytes cannot construct a keypair object.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.encrypt_keyfile_data"><code class="name flex">
+<span>def <span class="ident">encrypt_keyfile_data</span></span>(<span>keyfile_data: bytes, password: str = None) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Encrypts the passed keyfile data using ansible vault.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The bytes to encrypt.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password used to encrypt the data. If <code>None</code>, asks for user input.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>encrypted_data (bytes): The encrypted data.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.get_coldkey_password_from_environment"><code class="name flex">
+<span>def <span class="ident">get_coldkey_password_from_environment</span></span>(<span>coldkey_name: str) ‑> Optional[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Retrieves the cold key password from the environment variables.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>coldkey_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the cold key.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>password (str): The password retrieved from the environment variables, or None if not found.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile_data_encryption_method"><code class="name flex">
+<span>def <span class="ident">keyfile_data_encryption_method</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns <code>True</code> if the keyfile data is encrypted.</p>
+<h2 id="args">Args</h2>
+<p>keyfile_data ( bytes, required ):
+Bytes to validate</p>
+<h2 id="returns">Returns</h2>
+<p>encryption_method (bool):
+<code>True</code> if data is encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile_data_is_encrypted"><code class="name flex">
+<span>def <span class="ident">keyfile_data_is_encrypted</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns <code>True</code> if the keyfile data is encrypted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The bytes to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>is_encrypted (bool): <code>True</code> if the data is encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile_data_is_encrypted_ansible"><code class="name flex">
+<span>def <span class="ident">keyfile_data_is_encrypted_ansible</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if the keyfile data is ansible encrypted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The bytes to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>is_ansible (bool): <code>True</code> if the data is ansible encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile_data_is_encrypted_legacy"><code class="name flex">
+<span>def <span class="ident">keyfile_data_is_encrypted_legacy</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if the keyfile data is legacy encrypted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keyfile_data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The bytes to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>is_legacy (bool): <code>True</code> if the data is legacy encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile_data_is_encrypted_nacl"><code class="name flex">
+<span>def <span class="ident">keyfile_data_is_encrypted_nacl</span></span>(<span>keyfile_data: bytes) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if the keyfile data is NaCl encrypted.</p>
+<h2 id="args">Args</h2>
+<p>keyfile_data ( bytes, required ):
+Bytes to validate</p>
+<h2 id="returns">Returns</h2>
+<p>is_nacl (bool):
+<code>True</code> if data is ansible encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.legacy_encrypt_keyfile_data"><code class="name flex">
+<span>def <span class="ident">legacy_encrypt_keyfile_data</span></span>(<span>keyfile_data: bytes, password: str = None) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.keyfile.serialized_keypair_to_keyfile_data"><code class="name flex">
+<span>def <span class="ident">serialized_keypair_to_keyfile_data</span></span>(<span>keypair: Keypair) ‑> bytes</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Serializes keypair object into keyfile data.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keypair</code></strong> :&ensp;<code>Keypair</code></dt>
+<dd>The keypair object to be serialized.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>data (bytes): Serialized keypair data.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.validate_password"><code class="name flex">
+<span>def <span class="ident">validate_password</span></span>(<span>password: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validates the password against a password policy.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code></dt>
+<dd>The password to verify.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>valid (bool): <code>True</code> if the password meets validity requirements.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.keyfile.Mockkeyfile"><code class="flex name class">
+<span>class <span class="ident">Mockkeyfile</span></span>
+<span>(</span><span>path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The Mockkeyfile is a mock object representing a keyfile that does not exist on the device.
+It is designed for use in testing scenarios and simulations where actual filesystem operations are not required.
+The keypair stored in the Mockkeyfile is treated as non-encrypted and the data is stored as a serialized string.</p>
+<p>Initializes a Mockkeyfile object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path of the mock keyfile.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Mockkeyfile:
+    &#34;&#34;&#34;
+    The Mockkeyfile is a mock object representing a keyfile that does not exist on the device.
+    It is designed for use in testing scenarios and simulations where actual filesystem operations are not required.
+    The keypair stored in the Mockkeyfile is treated as non-encrypted and the data is stored as a serialized string.
+    &#34;&#34;&#34;
+
+    def __init__(self, path: str):
+        &#34;&#34;&#34;
+        Initializes a Mockkeyfile object.
+
+        Args:
+            path (str): The path of the mock keyfile.
+        &#34;&#34;&#34;
+        self.path = path
+        self._mock_keypair = None
+        self._mock_data = None
+
+    def __str__(self):
+        &#34;&#34;&#34;
+        Returns a string representation of the Mockkeyfile. The representation will indicate if the
+        keyfile is empty, encrypted, or decrypted.
+
+        Returns:
+            str: The string representation of the Mockkeyfile.
+        &#34;&#34;&#34;
+        return f&#34;Mockkeyfile({self.path})&#34;
+
+    def __repr__(self):
+        &#34;&#34;&#34;
+        Returns a string representation of the Mockkeyfile, same as __str__().
+
+        Returns:
+            str: The string representation of the Mockkeyfile.
+        &#34;&#34;&#34;
+        return self.__str__()
+
+    @property
+    def keypair(self):
+        &#34;&#34;&#34;
+        Returns the mock keypair stored in the keyfile.
+
+        Returns:
+            Keypair: The mock keypair.
+        &#34;&#34;&#34;
+        return self._mock_keypair
+
+    @property
+    def data(self):
+        &#34;&#34;&#34;
+        Returns the serialized keypair data stored in the keyfile.
+
+        Returns:
+            bytes: The serialized keypair data.
+        &#34;&#34;&#34;
+        return self._mock_data
+
+    def set_keypair(self, keypair, encrypt=True, overwrite=False, password=None):
+        &#34;&#34;&#34;
+        Sets the mock keypair in the keyfile. The ``encrypt`` and ``overwrite`` parameters are ignored.
+
+        Args:
+            keypair (Keypair): The mock keypair to be set.
+            encrypt (bool, optional): Ignored in this context. Defaults to ``True``.
+            overwrite (bool, optional): Ignored in this context. Defaults to ``False``.
+            password (str, optional): Ignored in this context. Defaults to ``None``.
+        &#34;&#34;&#34;
+        self._mock_keypair = keypair
+        self._mock_data = None  # You may need to serialize the keypair here
+
+    def get_keypair(self, password=None):
+        &#34;&#34;&#34;
+        Returns the mock keypair stored in the keyfile. The `password` parameter is ignored.
+
+        Args:
+            password (str, optional): Ignored in this context. Defaults to ``None``.
+
+        Returns:
+            Keypair: The mock keypair stored in the keyfile.
+        &#34;&#34;&#34;
+        return self._mock_keypair
+
+    def make_dirs(self):
+        &#34;&#34;&#34;
+        Creates the directories for the mock keyfile. Does nothing in this class,
+        since no actual filesystem operations are needed.
+        &#34;&#34;&#34;
+        pass
+
+    def exists_on_device(self):
+        &#34;&#34;&#34;
+        Returns True indicating that the mock keyfile exists on the device (although
+        it is not created on the actual file system).
+
+        Returns:
+            bool: Always returns True for Mockkeyfile.
+        &#34;&#34;&#34;
+        return True
+
+    def is_readable(self):
+        &#34;&#34;&#34;
+        Returns True indicating that the mock keyfile is readable (although it is not
+        read from the actual file system).
+
+        Returns:
+            bool: Always returns True for Mockkeyfile.
+        &#34;&#34;&#34;
+        return True
+
+    def is_writable(self):
+        &#34;&#34;&#34;
+        Returns True indicating that the mock keyfile is writable (although it is not
+        written to the actual file system).
+
+        Returns:
+            bool: Always returns True for Mockkeyfile.
+        &#34;&#34;&#34;
+        return True
+
+    def is_encrypted(self):
+        &#34;&#34;&#34;
+        Returns False indicating that the mock keyfile is not encrypted.
+
+        Returns:
+            bool: Always returns False for Mockkeyfile.
+        &#34;&#34;&#34;
+        return False
+
+    def encrypt(self, password=None):
+        &#34;&#34;&#34;
+        Raises a ValueError since encryption is not supported for the mock keyfile.
+
+        Args:
+            password (str, optional): Ignored in this context. Defaults to ``None``.
+
+        Raises:
+            ValueError: Always raises this exception for Mockkeyfile.
+        &#34;&#34;&#34;
+        raise ValueError(&#34;Cannot encrypt a Mockkeyfile&#34;)
+
+    def decrypt(self, password=None):
+        &#34;&#34;&#34;
+        Returns without doing anything since the mock keyfile is not encrypted.
+
+        Args:
+            password (str, optional): Ignored in this context. Defaults to ``None``.
+        &#34;&#34;&#34;
+        pass
+
+    def check_and_update_encryption(self, no_prompt=None, print_result=False):
+        return</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.keyfile.Mockkeyfile.data"><code class="name">prop <span class="ident">data</span></code></dt>
+<dd>
+<div class="desc"><p>Returns the serialized keypair data stored in the keyfile.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bytes</code></dt>
+<dd>The serialized keypair data.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def data(self):
+    &#34;&#34;&#34;
+    Returns the serialized keypair data stored in the keyfile.
+
+    Returns:
+        bytes: The serialized keypair data.
+    &#34;&#34;&#34;
+    return self._mock_data</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.keypair"><code class="name">prop <span class="ident">keypair</span></code></dt>
+<dd>
+<div class="desc"><p>Returns the mock keypair stored in the keyfile.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Keypair</code></dt>
+<dd>The mock keypair.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def keypair(self):
+    &#34;&#34;&#34;
+    Returns the mock keypair stored in the keyfile.
+
+    Returns:
+        Keypair: The mock keypair.
+    &#34;&#34;&#34;
+    return self._mock_keypair</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.keyfile.Mockkeyfile.check_and_update_encryption"><code class="name flex">
+<span>def <span class="ident">check_and_update_encryption</span></span>(<span>self, no_prompt=None, print_result=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.decrypt"><code class="name flex">
+<span>def <span class="ident">decrypt</span></span>(<span>self, password=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns without doing anything since the mock keyfile is not encrypted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.encrypt"><code class="name flex">
+<span>def <span class="ident">encrypt</span></span>(<span>self, password=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raises a ValueError since encryption is not supported for the mock keyfile.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Always raises this exception for Mockkeyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.exists_on_device"><code class="name flex">
+<span>def <span class="ident">exists_on_device</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True indicating that the mock keyfile exists on the device (although
+it is not created on the actual file system).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Always returns True for Mockkeyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.get_keypair"><code class="name flex">
+<span>def <span class="ident">get_keypair</span></span>(<span>self, password=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the mock keypair stored in the keyfile. The <code>password</code> parameter is ignored.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Keypair</code></dt>
+<dd>The mock keypair stored in the keyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.is_encrypted"><code class="name flex">
+<span>def <span class="ident">is_encrypted</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns False indicating that the mock keyfile is not encrypted.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Always returns False for Mockkeyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.is_readable"><code class="name flex">
+<span>def <span class="ident">is_readable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True indicating that the mock keyfile is readable (although it is not
+read from the actual file system).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Always returns True for Mockkeyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.is_writable"><code class="name flex">
+<span>def <span class="ident">is_writable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True indicating that the mock keyfile is writable (although it is not
+written to the actual file system).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Always returns True for Mockkeyfile.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.make_dirs"><code class="name flex">
+<span>def <span class="ident">make_dirs</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates the directories for the mock keyfile. Does nothing in this class,
+since no actual filesystem operations are needed.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.Mockkeyfile.set_keypair"><code class="name flex">
+<span>def <span class="ident">set_keypair</span></span>(<span>self, keypair, encrypt=True, overwrite=False, password=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the mock keypair in the keyfile. The <code>encrypt</code> and <code>overwrite</code> parameters are ignored.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keypair</code></strong> :&ensp;<code>Keypair</code></dt>
+<dd>The mock keypair to be set.</dd>
+<dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>True</code>.</dd>
+<dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>False</code>.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Ignored in this context. Defaults to <code>None</code>.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.keyfile.keyfile"><code class="flex name class">
+<span>class <span class="ident">keyfile</span></span>
+<span>(</span><span>path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Defines an interface for a substrate interface keypair stored on device.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class keyfile:
+    &#34;&#34;&#34;Defines an interface for a substrate interface keypair stored on device.&#34;&#34;&#34;
+
+    def __init__(self, path: str):
+        self.path = os.path.expanduser(path)
+        self.name = Path(self.path).parent.stem
+
+    def __str__(self):
+        if not self.exists_on_device():
+            return &#34;keyfile (empty, {})&gt;&#34;.format(self.path)
+        if self.is_encrypted():
+            return &#34;Keyfile ({} encrypted, {})&gt;&#34;.format(
+                keyfile_data_encryption_method(self._read_keyfile_data_from_file()),
+                self.path,
+            )
+        else:
+            return &#34;keyfile (decrypted, {})&gt;&#34;.format(self.path)
+
+    def __repr__(self):
+        return self.__str__()
+
+    @property
+    def keypair(self) -&gt; &#34;Keypair&#34;:
+        &#34;&#34;&#34;Returns the keypair from path, decrypts data if the file is encrypted.
+        Returns:
+            keypair (Keypair): The keypair stored under the path.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
+        &#34;&#34;&#34;
+        return self.get_keypair()
+
+    @property
+    def data(self) -&gt; bytes:
+        &#34;&#34;&#34;Returns the keyfile data under path.
+        Returns:
+            keyfile_data (bytes): The keyfile data stored under the path.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, or writable.
+        &#34;&#34;&#34;
+        return self._read_keyfile_data_from_file()
+
+    @property
+    def keyfile_data(self) -&gt; bytes:
+        &#34;&#34;&#34;Returns the keyfile data under path.
+        Returns:
+            keyfile_data (bytes): The keyfile data stored under the path.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, or writable.
+        &#34;&#34;&#34;
+        return self._read_keyfile_data_from_file()
+
+    def set_keypair(
+        self,
+        keypair: &#34;Keypair&#34;,
+        encrypt: bool = True,
+        overwrite: bool = False,
+        password: str = None,
+    ):
+        &#34;&#34;&#34;Writes the keypair to the file and optionally encrypts data.
+        Args:
+            keypair (Keypair): The keypair to store under the path.
+            encrypt (bool, optional): If ``True``, encrypts the file under the path. Default is True.
+            overwrite (bool, optional): If ``True``, forces overwrite of the current file. Default is ``False``.
+            password (str, optional): The password used to encrypt the file. If ``None``, asks for user input.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, writable, or if the password is incorrect.
+        &#34;&#34;&#34;
+        self.make_dirs()
+        keyfile_data = serialized_keypair_to_keyfile_data(keypair)
+        if encrypt:
+            keyfile_data = encrypt_keyfile_data(keyfile_data, password)
+        self._write_keyfile_data_to_file(keyfile_data, overwrite=overwrite)
+
+    def get_keypair(self, password: str = None) -&gt; &#34;Keypair&#34;:
+        &#34;&#34;&#34;Returns the keypair from the path, decrypts data if the file is encrypted.
+        Args:
+            password (str, optional): The password used to decrypt the file. If ``None``, asks for user input.
+        Returns:
+            keypair (Keypair): The keypair stored under the path.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
+        &#34;&#34;&#34;
+        keyfile_data = self._read_keyfile_data_from_file()
+        if keyfile_data_is_encrypted(keyfile_data):
+            decrypted_keyfile_data = decrypt_keyfile_data(
+                keyfile_data, password, coldkey_name=self.name
+            )
+        else:
+            decrypted_keyfile_data = keyfile_data
+        return deserialize_keypair_from_keyfile_data(decrypted_keyfile_data)
+
+    def make_dirs(self):
+        &#34;&#34;&#34;Creates directories for the path if they do not exist.&#34;&#34;&#34;
+        directory = os.path.dirname(self.path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+    def exists_on_device(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the file exists on the device.
+        Returns:
+            on_device (bool): True if the file is on the device.
+        &#34;&#34;&#34;
+        if not os.path.isfile(self.path):
+            return False
+        return True
+
+    def is_readable(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the file under path is readable.
+        Returns:
+            readable (bool): True if the file is readable.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            return False
+        if not os.access(self.path, os.R_OK):
+            return False
+        return True
+
+    def is_writable(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the file under path is writable.
+        Returns:
+            writable (bool): True if the file is writable.
+        &#34;&#34;&#34;
+        if os.access(self.path, os.W_OK):
+            return True
+        return False
+
+    def is_encrypted(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the file under path is encrypted.
+        Returns:
+            encrypted (bool): True if the file is encrypted.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            return False
+        if not self.is_readable():
+            return False
+        return keyfile_data_is_encrypted(self._read_keyfile_data_from_file())
+
+    def _may_overwrite(self) -&gt; bool:
+        &#34;&#34;&#34;Asks the user if it&#39;s okay to overwrite the file.
+        Returns:
+            may_overwrite (bool): True if the user allows overwriting the file.
+        &#34;&#34;&#34;
+        choice = input(&#34;File {} already exists. Overwrite? (y/N) &#34;.format(self.path))
+        return choice == &#34;y&#34;
+
+    def check_and_update_encryption(
+        self, print_result: bool = True, no_prompt: bool = False
+    ):
+        &#34;&#34;&#34;Check the version of keyfile and update if needed.
+        Args:
+            print_result (bool):
+                Print the checking result or not.
+            no_prompt (bool):
+                Skip if no prompt.
+        Raises:
+            KeyFileError:
+                Raised if the file does not exists, is not readable, writable.
+        Returns:
+            result (bool):
+                return True if the keyfile is the most updated with nacl, else False.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            if print_result:
+                console.print(f&#34;Keyfile does not exist. {self.path}&#34;)
+            return False
+        if not self.is_readable():
+            if print_result:
+                console.print(f&#34;Keyfile is not redable. {self.path}&#34;)
+            return False
+        if not self.is_writable():
+            if print_result:
+                console.print(f&#34;Keyfile is not writable. {self.path}&#34;)
+            return False
+
+        update_keyfile = False
+        if not no_prompt:
+            keyfile_data = self._read_keyfile_data_from_file()
+
+            # If the key is not nacl encrypted.
+            if keyfile_data_is_encrypted(
+                keyfile_data
+            ) and not keyfile_data_is_encrypted_nacl(keyfile_data):
+                terminate = False
+                console.print(
+                    f&#34;You may update the keyfile to improve the security for storing your keys.\nWhile the key and the password stays the same, it would require providing your password once.\n:key:{self}\n&#34;
+                )
+                update_keyfile = Confirm.ask(&#34;Update keyfile?&#34;)
+                if update_keyfile:
+                    stored_mnemonic = False
+                    while not stored_mnemonic:
+                        console.print(
+                            f&#34;\nPlease make sure you have the mnemonic stored in case an error occurs during the transfer.&#34;,
+                            style=&#34;white on red&#34;,
+                        )
+                        stored_mnemonic = Confirm.ask(&#34;Have you stored the mnemonic?&#34;)
+                        if not stored_mnemonic and not Confirm.ask(
+                            &#34;You must proceed with a stored mnemonic, retry and continue this keyfile update?&#34;
+                        ):
+                            terminate = True
+                            break
+
+                    decrypted_keyfile_data = None
+                    while decrypted_keyfile_data is None and not terminate:
+                        try:
+                            password = getpass.getpass(
+                                &#34;\nEnter password to update keyfile: &#34;
+                            )
+                            decrypted_keyfile_data = decrypt_keyfile_data(
+                                keyfile_data, coldkey_name=self.name, password=password
+                            )
+                        except KeyFileError:
+                            if not Confirm.ask(
+                                &#34;Invalid password, retry and continue this keyfile update?&#34;
+                            ):
+                                terminate = True
+                                break
+
+                    if not terminate:
+                        encrypted_keyfile_data = encrypt_keyfile_data(
+                            decrypted_keyfile_data, password=password
+                        )
+                        self._write_keyfile_data_to_file(
+                            encrypted_keyfile_data, overwrite=True
+                        )
+
+        if print_result or update_keyfile:
+            keyfile_data = self._read_keyfile_data_from_file()
+            if not keyfile_data_is_encrypted(keyfile_data):
+                if print_result:
+                    console.print(
+                        f&#34;\nKeyfile is not encrypted. \n:key: {self}&#34;
+                    )
+                return False
+            elif keyfile_data_is_encrypted_nacl(keyfile_data):
+                if print_result:
+                    console.print(
+                        f&#34;\n:white_heavy_check_mark: Keyfile is updated. \n:key: {self}&#34;
+                    )
+                return True
+            else:
+                if print_result:
+                    console.print(
+                        f&#39;\n:cross_mark: Keyfile is outdated, please update with &#34;ctcli wallet update&#34; \n:key: {self}&#39;
+                    )
+                return False
+        return False
+
+    def encrypt(self, password: str = None):
+        &#34;&#34;&#34;Encrypts the file under the path.
+        Args:
+            password (str, optional): The password for encryption. If ``None``, asks for user input.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, or writable.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            raise KeyFileError(
+                &#34;Keyfile at: {} does not exist&#34;.format(self.path)
+            )
+        if not self.is_readable():
+            raise KeyFileError(
+                &#34;Keyfile at: {} is not readable&#34;.format(self.path)
+            )
+        if not self.is_writable():
+            raise KeyFileError(
+                &#34;Keyfile at: {} is not writable&#34;.format(self.path)
+            )
+        keyfile_data = self._read_keyfile_data_from_file()
+        if not keyfile_data_is_encrypted(keyfile_data):
+            as_keypair = deserialize_keypair_from_keyfile_data(keyfile_data)
+            keyfile_data = serialized_keypair_to_keyfile_data(as_keypair)
+            keyfile_data = encrypt_keyfile_data(keyfile_data, password)
+        self._write_keyfile_data_to_file(keyfile_data, overwrite=True)
+
+    def decrypt(self, password: str = None):
+        &#34;&#34;&#34;Decrypts the file under the path.
+        Args:
+            password (str, optional): The password for decryption. If ``None``, asks for user input.
+        Raises:
+            KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            raise KeyFileError(
+                &#34;Keyfile at: {} does not exist&#34;.format(self.path)
+            )
+        if not self.is_readable():
+            raise KeyFileError(
+                &#34;Keyfile at: {} is not readable&#34;.format(self.path)
+            )
+        if not self.is_writable():
+            raise KeyFileError(
+                &#34;Keyfile at: {} is not writable&#34;.format(self.path)
+            )
+        keyfile_data = self._read_keyfile_data_from_file()
+        if keyfile_data_is_encrypted(keyfile_data):
+            keyfile_data = decrypt_keyfile_data(
+                keyfile_data, password, coldkey_name=self.name
+            )
+        as_keypair = deserialize_keypair_from_keyfile_data(keyfile_data)
+        keyfile_data = serialized_keypair_to_keyfile_data(as_keypair)
+        self._write_keyfile_data_to_file(keyfile_data, overwrite=True)
+
+    def _read_keyfile_data_from_file(self) -&gt; bytes:
+        &#34;&#34;&#34;Reads the keyfile data from the file.
+        Returns:
+            keyfile_data (bytes): The keyfile data stored under the path.
+        Raises:
+            KeyFileError: Raised if the file does not exist or is not readable.
+        &#34;&#34;&#34;
+        if not self.exists_on_device():
+            raise KeyFileError(
+                &#34;Keyfile at: {} does not exist&#34;.format(self.path)
+            )
+        if not self.is_readable():
+            raise KeyFileError(
+                &#34;Keyfile at: {} is not readable&#34;.format(self.path)
+            )
+        with open(self.path, &#34;rb&#34;) as file:
+            data = file.read()
+        return data
+
+    def _write_keyfile_data_to_file(self, keyfile_data: bytes, overwrite: bool = False):
+        &#34;&#34;&#34;Writes the keyfile data to the file.
+        Args:
+            keyfile_data (bytes): The byte data to store under the path.
+            overwrite (bool, optional): If ``True``, overwrites the data without asking for permission from the user. 
+                Default is ``False``.
+        Raises:
+            KeyFileError: Raised if the file is not writable or the user responds No to the overwrite prompt.
+        &#34;&#34;&#34;
+        # Check overwrite.
+        if self.exists_on_device() and not overwrite:
+            if not self._may_overwrite():
+                raise KeyFileError(
+                    &#34;Keyfile at: {} is not writable&#34;.format(self.path)
+                )
+        with open(self.path, &#34;wb&#34;) as keyfile:
+            keyfile.write(keyfile_data)
+        # Set file permissions.
+        os.chmod(self.path, stat.S_IRUSR | stat.S_IWUSR)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.mock.keyfile_mock.MockKeyfile" href="mock/keyfile_mock.html#cybertensor.mock.keyfile_mock.MockKeyfile">MockKeyfile</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.keyfile.keyfile.data"><code class="name">prop <span class="ident">data</span> : bytes</code></dt>
+<dd>
+<div class="desc"><p>Returns the keyfile data under path.</p>
+<h2 id="returns">Returns</h2>
+<p>keyfile_data (bytes): The keyfile data stored under the path.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, or writable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def data(self) -&gt; bytes:
+    &#34;&#34;&#34;Returns the keyfile data under path.
+    Returns:
+        keyfile_data (bytes): The keyfile data stored under the path.
+    Raises:
+        KeyFileError: Raised if the file does not exist, is not readable, or writable.
+    &#34;&#34;&#34;
+    return self._read_keyfile_data_from_file()</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.keyfile_data"><code class="name">prop <span class="ident">keyfile_data</span> : bytes</code></dt>
+<dd>
+<div class="desc"><p>Returns the keyfile data under path.</p>
+<h2 id="returns">Returns</h2>
+<p>keyfile_data (bytes): The keyfile data stored under the path.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, or writable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def keyfile_data(self) -&gt; bytes:
+    &#34;&#34;&#34;Returns the keyfile data under path.
+    Returns:
+        keyfile_data (bytes): The keyfile data stored under the path.
+    Raises:
+        KeyFileError: Raised if the file does not exist, is not readable, or writable.
+    &#34;&#34;&#34;
+    return self._read_keyfile_data_from_file()</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.keypair"><code class="name">prop <span class="ident">keypair</span> : Keypair</code></dt>
+<dd>
+<div class="desc"><p>Returns the keypair from path, decrypts data if the file is encrypted.</p>
+<h2 id="returns">Returns</h2>
+<p>keypair (Keypair): The keypair stored under the path.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def keypair(self) -&gt; &#34;Keypair&#34;:
+    &#34;&#34;&#34;Returns the keypair from path, decrypts data if the file is encrypted.
+    Returns:
+        keypair (Keypair): The keypair stored under the path.
+    Raises:
+        KeyFileError: Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.
+    &#34;&#34;&#34;
+    return self.get_keypair()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.keyfile.keyfile.check_and_update_encryption"><code class="name flex">
+<span>def <span class="ident">check_and_update_encryption</span></span>(<span>self, print_result: bool = True, no_prompt: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check the version of keyfile and update if needed.</p>
+<h2 id="args">Args</h2>
+<p>print_result (bool):
+Print the checking result or not.
+no_prompt (bool):
+Skip if no prompt.</p>
+<h2 id="raises">Raises</h2>
+<p>KeyFileError:
+Raised if the file does not exists, is not readable, writable.</p>
+<h2 id="returns">Returns</h2>
+<p>result (bool):
+return True if the keyfile is the most updated with nacl, else False.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.decrypt"><code class="name flex">
+<span>def <span class="ident">decrypt</span></span>(<span>self, password: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decrypts the file under the path.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password for decryption. If <code>None</code>, asks for user input.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.encrypt"><code class="name flex">
+<span>def <span class="ident">encrypt</span></span>(<span>self, password: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Encrypts the file under the path.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password for encryption. If <code>None</code>, asks for user input.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, or writable.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.exists_on_device"><code class="name flex">
+<span>def <span class="ident">exists_on_device</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the file exists on the device.</p>
+<h2 id="returns">Returns</h2>
+<p>on_device (bool): True if the file is on the device.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.get_keypair"><code class="name flex">
+<span>def <span class="ident">get_keypair</span></span>(<span>self, password: str = None) ‑> <a title="cybertensor.keypair.Keypair" href="keypair.html#cybertensor.keypair.Keypair">Keypair</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the keypair from the path, decrypts data if the file is encrypted.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password used to decrypt the file. If <code>None</code>, asks for user input.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>keypair (Keypair): The keypair stored under the path.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, writable, corrupted, or if the password is incorrect.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.is_encrypted"><code class="name flex">
+<span>def <span class="ident">is_encrypted</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the file under path is encrypted.</p>
+<h2 id="returns">Returns</h2>
+<p>encrypted (bool): True if the file is encrypted.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.is_readable"><code class="name flex">
+<span>def <span class="ident">is_readable</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the file under path is readable.</p>
+<h2 id="returns">Returns</h2>
+<p>readable (bool): True if the file is readable.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.is_writable"><code class="name flex">
+<span>def <span class="ident">is_writable</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the file under path is writable.</p>
+<h2 id="returns">Returns</h2>
+<p>writable (bool): True if the file is writable.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.make_dirs"><code class="name flex">
+<span>def <span class="ident">make_dirs</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates directories for the path if they do not exist.</p></div>
+</dd>
+<dt id="cybertensor.keyfile.keyfile.set_keypair"><code class="name flex">
+<span>def <span class="ident">set_keypair</span></span>(<span>self, keypair: Keypair, encrypt: bool = True, overwrite: bool = False, password: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Writes the keypair to the file and optionally encrypts data.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keypair</code></strong> :&ensp;<code>Keypair</code></dt>
+<dd>The keypair to store under the path.</dd>
+<dt><strong><code>encrypt</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If <code>True</code>, encrypts the file under the path. Default is True.</dd>
+<dt><strong><code>overwrite</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If <code>True</code>, forces overwrite of the current file. Default is <code>False</code>.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The password used to encrypt the file. If <code>None</code>, asks for user input.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyFileError</code></dt>
+<dd>Raised if the file does not exist, is not readable, writable, or if the password is incorrect.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.keyfile.ask_password_to_encrypt" href="#cybertensor.keyfile.ask_password_to_encrypt">ask_password_to_encrypt</a></code></li>
+<li><code><a title="cybertensor.keyfile.decrypt_keyfile_data" href="#cybertensor.keyfile.decrypt_keyfile_data">decrypt_keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.deserialize_keypair_from_keyfile_data" href="#cybertensor.keyfile.deserialize_keypair_from_keyfile_data">deserialize_keypair_from_keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.encrypt_keyfile_data" href="#cybertensor.keyfile.encrypt_keyfile_data">encrypt_keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.get_coldkey_password_from_environment" href="#cybertensor.keyfile.get_coldkey_password_from_environment">get_coldkey_password_from_environment</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile_data_encryption_method" href="#cybertensor.keyfile.keyfile_data_encryption_method">keyfile_data_encryption_method</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile_data_is_encrypted" href="#cybertensor.keyfile.keyfile_data_is_encrypted">keyfile_data_is_encrypted</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile_data_is_encrypted_ansible" href="#cybertensor.keyfile.keyfile_data_is_encrypted_ansible">keyfile_data_is_encrypted_ansible</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile_data_is_encrypted_legacy" href="#cybertensor.keyfile.keyfile_data_is_encrypted_legacy">keyfile_data_is_encrypted_legacy</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile_data_is_encrypted_nacl" href="#cybertensor.keyfile.keyfile_data_is_encrypted_nacl">keyfile_data_is_encrypted_nacl</a></code></li>
+<li><code><a title="cybertensor.keyfile.legacy_encrypt_keyfile_data" href="#cybertensor.keyfile.legacy_encrypt_keyfile_data">legacy_encrypt_keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.serialized_keypair_to_keyfile_data" href="#cybertensor.keyfile.serialized_keypair_to_keyfile_data">serialized_keypair_to_keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.validate_password" href="#cybertensor.keyfile.validate_password">validate_password</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.keyfile.Mockkeyfile" href="#cybertensor.keyfile.Mockkeyfile">Mockkeyfile</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.check_and_update_encryption" href="#cybertensor.keyfile.Mockkeyfile.check_and_update_encryption">check_and_update_encryption</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.data" href="#cybertensor.keyfile.Mockkeyfile.data">data</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.decrypt" href="#cybertensor.keyfile.Mockkeyfile.decrypt">decrypt</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.encrypt" href="#cybertensor.keyfile.Mockkeyfile.encrypt">encrypt</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.exists_on_device" href="#cybertensor.keyfile.Mockkeyfile.exists_on_device">exists_on_device</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.get_keypair" href="#cybertensor.keyfile.Mockkeyfile.get_keypair">get_keypair</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.is_encrypted" href="#cybertensor.keyfile.Mockkeyfile.is_encrypted">is_encrypted</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.is_readable" href="#cybertensor.keyfile.Mockkeyfile.is_readable">is_readable</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.is_writable" href="#cybertensor.keyfile.Mockkeyfile.is_writable">is_writable</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.keypair" href="#cybertensor.keyfile.Mockkeyfile.keypair">keypair</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.make_dirs" href="#cybertensor.keyfile.Mockkeyfile.make_dirs">make_dirs</a></code></li>
+<li><code><a title="cybertensor.keyfile.Mockkeyfile.set_keypair" href="#cybertensor.keyfile.Mockkeyfile.set_keypair">set_keypair</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.keyfile.keyfile" href="#cybertensor.keyfile.keyfile">keyfile</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.keyfile.keyfile.check_and_update_encryption" href="#cybertensor.keyfile.keyfile.check_and_update_encryption">check_and_update_encryption</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.data" href="#cybertensor.keyfile.keyfile.data">data</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.decrypt" href="#cybertensor.keyfile.keyfile.decrypt">decrypt</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.encrypt" href="#cybertensor.keyfile.keyfile.encrypt">encrypt</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.exists_on_device" href="#cybertensor.keyfile.keyfile.exists_on_device">exists_on_device</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.get_keypair" href="#cybertensor.keyfile.keyfile.get_keypair">get_keypair</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.is_encrypted" href="#cybertensor.keyfile.keyfile.is_encrypted">is_encrypted</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.is_readable" href="#cybertensor.keyfile.keyfile.is_readable">is_readable</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.is_writable" href="#cybertensor.keyfile.keyfile.is_writable">is_writable</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.keyfile_data" href="#cybertensor.keyfile.keyfile.keyfile_data">keyfile_data</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.keypair" href="#cybertensor.keyfile.keyfile.keypair">keypair</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.make_dirs" href="#cybertensor.keyfile.keyfile.make_dirs">make_dirs</a></code></li>
+<li><code><a title="cybertensor.keyfile.keyfile.set_keypair" href="#cybertensor.keyfile.keyfile.set_keypair">set_keypair</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

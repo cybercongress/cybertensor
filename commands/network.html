@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.network API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.network</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.network.RegisterSubnetworkCommand"><code class="flex name class">
+<span>class <span class="ident">RegisterSubnetworkCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'register_subnetwork' command to register a new subnetwork on the cybertensor network.
+This command facilitates the creation and registration of a subnetwork, which involves interaction with the user's
+wallet and the cybertensor cw-tensor. It ensures that the user has the necessary credentials and configurations
+to successfully register a new subnetwork.</p>
+<p>Usage:
+Upon invocation, the command performs several key steps to register a subnetwork:
+1. It copies the user's current configuration settings.
+2. It accesses the user's wallet using the provided configuration.
+3. It initializes the cybertensor cw-tensor object with the user's configuration.
+4. It then calls the <code>register_subnetwork</code> function of the cw-tensor object, passing the user's wallet and a prompt
+setting based on the user's configuration.</p>
+<p>If the user's configuration does not specify a wallet name and 'no_prompt' is not set, the command will prompt
+the user to enter a wallet name. This name is then used in the registration process.</p>
+<p>The command structure includes:
+- Copying the user's configuration.
+- Accessing and preparing the user's wallet.
+- Initializing the cybertensor cw-tensor.
+- Registering the subnetwork with the necessary credentials.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets create
+</code></pre>
+<p>Note:
+This command is intended for advanced users of the Cybertensor network who wish to contribute by adding new subnetworks.
+It requires a clear understanding of the network's functioning and the roles of subnetworks. Users should ensure
+that they have secured their wallet and are aware of the implications of adding a new subnetwork to the cybertensor
+ecosystem.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegisterSubnetworkCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;register_subnetwork&#39; command to register a new subnetwork on the cybertensor network.
+    This command facilitates the creation and registration of a subnetwork, which involves interaction with the user&#39;s
+    wallet and the cybertensor cw-tensor. It ensures that the user has the necessary credentials and configurations
+    to successfully register a new subnetwork.
+
+    Usage:
+    Upon invocation, the command performs several key steps to register a subnetwork:
+    1. It copies the user&#39;s current configuration settings.
+    2. It accesses the user&#39;s wallet using the provided configuration.
+    3. It initializes the cybertensor cw-tensor object with the user&#39;s configuration.
+    4. It then calls the `register_subnetwork` function of the cw-tensor object, passing the user&#39;s wallet and a prompt
+    setting based on the user&#39;s configuration.
+
+    If the user&#39;s configuration does not specify a wallet name and &#39;no_prompt&#39; is not set, the command will prompt
+    the user to enter a wallet name. This name is then used in the registration process.
+
+    The command structure includes:
+    - Copying the user&#39;s configuration.
+    - Accessing and preparing the user&#39;s wallet.
+    - Initializing the cybertensor cw-tensor.
+    - Registering the subnetwork with the necessary credentials.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets create
+
+    Note:
+    This command is intended for advanced users of the Cybertensor network who wish to contribute by adding new subnetworks.
+    It requires a clear understanding of the network&#39;s functioning and the roles of subnetworks. Users should ensure
+    that they have secured their wallet and are aware of the implications of adding a new subnetwork to the cybertensor
+    ecosystem.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Register a subnetwork&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RegisterSubnetworkCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        config = cli.config.copy()
+        wallet = Wallet(config=cli.config)
+        cwtensor = cybertensor.cwtensor(config=config)
+        # Call register command.
+        success = cwtensor.register_subnetwork(
+            wallet=wallet,
+            prompt=not cli.config.no_prompt,
+        )
+        # if success and not cli.config.no_prompt:
+        #     # Prompt for user to set identity.
+        #     do_set_identity = Prompt.ask(
+        #         f&#34;Subnetwork registered successfully. Would you like to set your identity? [y/n]&#34;,
+        #         choices=[&#34;y&#34;, &#34;n&#34;],
+        #     )
+        #
+        #     if do_set_identity.lower() == &#34;y&#34;:
+        #         cwtensor.close()
+        #         config = cli.config.copy()
+        #         SetIdentityCommand.check_config(config)
+        #         cli.config = config
+        #         SetIdentityCommand.run(cli)
+
+    @classmethod
+    def check_config(cls, config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+    @classmethod
+    def add_args(cls, parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;create&#34;,
+            help=&#34;&#34;&#34;Create a new cybertensor subnetwork on this chain.&#34;&#34;&#34;,
+        )
+
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.RegisterSubnetworkCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.RegisterSubnetworkCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.RegisterSubnetworkCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a subnetwork</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetHyperparamsCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetGetHyperparamsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'get' command to retrieve the hyperparameters of a specific subnet on the Cybertensor network.
+This command is similar to the 'hyperparameters' command but may be used in different contexts within the CLI.</p>
+<p>Usage:
+The command connects to the Cybertensor network, queries the specified subnet, and returns a detailed list
+of all its hyperparameters. This includes crucial operational parameters that determine the subnet's
+performance and interaction within the network.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli sudo get --netuid 1
+</code></pre>
+<p>Subnet Hyperparameters - NETUID: 1 - space-pussy
+HYPERPARAMETER
+VALUE
+rho
+10
+kappa
+32767
+immunity_period
+7200
+min_allowed_weights
+8
+max_weight_limit
+455
+tempo
+99
+min_difficulty
+1000000000000000000
+max_difficulty
+1000000000000000000
+weights_version
+2013
+weights_rate_limit
+100
+adjustment_interval
+112
+activity_cutoff
+5000
+registration_allowed
+True
+target_regs_per_interval
+2
+min_burn
+1000000000
+max_burn
+100000000000
+bonds_moving_avg
+900000
+max_regs_per_block
+1</p>
+<p>Note:
+Users need to provide the netuid of the subnet whose hyperparameters they wish to view. This command is
+designed for informational purposes and does not alter any network settings or configurations.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetGetHyperparamsCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;get&#39; command to retrieve the hyperparameters of a specific subnet on the Cybertensor network.
+    This command is similar to the &#39;hyperparameters&#39; command but may be used in different contexts within the CLI.
+
+    Usage:
+    The command connects to the Cybertensor network, queries the specified subnet, and returns a detailed list
+    of all its hyperparameters. This includes crucial operational parameters that determine the subnet&#39;s
+    performance and interaction within the network.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli sudo get --netuid 1
+
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
+    HYPERPARAMETER            VALUE
+    rho                       10
+    kappa                     32767
+    immunity_period           7200
+    min_allowed_weights       8
+    max_weight_limit          455
+    tempo                     99
+    min_difficulty            1000000000000000000
+    max_difficulty            1000000000000000000
+    weights_version           2013
+    weights_rate_limit        100
+    adjustment_interval       112
+    activity_cutoff           5000
+    registration_allowed      True
+    target_regs_per_interval  2
+    min_burn                  1000000000
+    max_burn                  100000000000
+    bonds_moving_avg          900000
+    max_regs_per_block        1
+
+    Note:
+    Users need to provide the netuid of the subnet whose hyperparameters they wish to view. This command is
+    designed for informational purposes and does not alter any network settings or configurations.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;View hyperparameters of a subnetwork.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetGetHyperparamsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        subnet: cybertensor.SubnetHyperparameters = cwtensor.get_subnet_hyperparameters(
+            cli.config.netuid
+        )
+
+        table = Table(
+            show_footer=True,
+            width=cli.config.get(&#34;width&#34;, None),
+            pad_edge=True,
+            box=None,
+            show_edge=True,
+        )
+        table.title = &#34;[white]Subnet Hyperparameters - NETUID: {} - {}&#34;.format(
+            cli.config.netuid, cwtensor.network
+        )
+        table.add_column(&#34;[overline white]HYPERPARAMETER&#34;, style=&#34;white&#34;)
+        table.add_column(&#34;[overline white]VALUE&#34;, style=&#34;green&#34;)
+
+        for param in subnet.__dict__:
+            table.add_row(param, str(subnet.__dict__[param]))
+
+        console.print(table)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config))
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(&#34;get&#34;, help=&#34;&#34;&#34;View subnet hyperparameters&#34;&#34;&#34;)
+        parser.add_argument(
+            &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
+        )
+        parser.add_argument(
+            &#34;--no_prompt&#34;,
+            dest=&#34;no_prompt&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+            default=False,
+        )
+        cybertensor.cwtensor.add_args(parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetGetHyperparamsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetHyperparamsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetHyperparamsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>View hyperparameters of a subnetwork.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetWeightsCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetGetWeightsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'get_weights' command to retrieve the weights set for the subnet network on the Cybertensor network.
+This command provides visibility into how operator responsibilities and rewards are distributed among
+various operators.</p>
+<p>Usage:
+The command outputs a table listing the weights assigned to each operator within the subnet.
+This information is crucial for understanding the current influence and reward distribution among the operators.</p>
+<p>Optional arguments:
+- None. The command fetches weight information based on the cwtensor configuration.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnet get_weights
+</code></pre>
+<pre><code>                                    Subnet Operators Weights
+</code></pre>
+<p>UIDS
+0
+1
+2
+3
+4
+5
+8
+9
+11
+13
+18
+19
+1
+100.00%
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+2
+-
+40.00%
+5.00%
+10.00%
+10.00%
+10.00%
+10.00%
+5.00%
+-
+-
+10.00%
+-
+3
+-
+-
+25.00%
+-
+25.00%
+-
+25.00%
+-
+-
+-
+25.00%
+-
+4
+-
+-
+7.00%
+7.00%
+20.00%
+20.00%
+20.00%
+-
+6.00%
+-
+20.00%
+-
+5
+-
+20.00%
+-
+10.00%
+15.00%
+15.00%
+15.00%
+5.00%
+-
+-
+10.00%
+10.00%
+6
+-
+-
+-
+-
+10.00%
+10.00%
+25.00%
+25.00%
+-
+-
+30.00%
+-
+7
+-
+60.00%
+-
+-
+20.00%
+-
+-
+-
+20.00%
+-
+-
+-
+8
+-
+49.35%
+-
+7.18%
+13.59%
+21.14%
+1.53%
+0.12%
+7.06%
+0.03%
+-
+-
+9
+100.00%
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+&hellip;</p>
+<p>Note:
+This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
+It offers transparency into how network rewards and responsibilities are allocated across different operators.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetGetWeightsCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;get_weights&#39; command to retrieve the weights set for the subnet network on the Cybertensor network.
+    This command provides visibility into how operator responsibilities and rewards are distributed among
+    various operators.
+
+    Usage:
+    The command outputs a table listing the weights assigned to each operator within the subnet.
+    This information is crucial for understanding the current influence and reward distribution among the operators.
+
+    Optional arguments:
+    - None. The command fetches weight information based on the cwtensor configuration.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnet get_weights
+
+                                            Subnet Operators Weights
+    UIDS        0        1        2       3        4        5       8        9       11     13      18       19
+    1    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    2          -   40.00%    5.00%  10.00%   10.00%   10.00%  10.00%    5.00%        -      -  10.00%        -
+    3          -        -   25.00%       -   25.00%        -  25.00%        -        -      -  25.00%        -
+    4          -        -    7.00%   7.00%   20.00%   20.00%  20.00%        -    6.00%      -  20.00%        -
+    5          -   20.00%        -  10.00%   15.00%   15.00%  15.00%    5.00%        -      -  10.00%   10.00%
+    6          -        -        -       -   10.00%   10.00%  25.00%   25.00%        -      -  30.00%        -
+    7          -   60.00%        -       -   20.00%        -       -        -   20.00%      -       -        -
+    8          -   49.35%        -   7.18%   13.59%   21.14%   1.53%    0.12%    7.06%  0.03%       -        -
+    9    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    ...
+
+    Note:
+    This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
+    It offers transparency into how network rewards and responsibilities are allocated across different operators.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetGetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        weights = cwtensor.weights(cli.config.netuid)
+
+        table = Table(show_footer=False)
+        table.title = &#34;[white]Subnet Operators Weights&#34;
+        table.add_column(
+            &#34;[white]UIDS&#34;,
+            header_style=&#34;overline white&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;rgb(50,163,219)&#34;,
+            no_wrap=True,
+        )
+
+        # TODO refactor netuids to uids, copy-pasted from root command code, need refactoring with attention to naming
+        uid_to_weights = {}
+        netuids = set()
+        for matrix in weights:
+            [uid, weights_data] = matrix
+
+            if not len(weights_data):
+                uid_to_weights[uid] = {}
+                normalized_weights = []
+            else:
+                normalized_weights = np.array(weights_data)[:, 1] / max(
+                    np.sum(weights_data, axis=0)[1], 1
+                )
+
+            for weight_data, normalized_weight in zip(weights_data, normalized_weights):
+                [netuid, _] = weight_data
+                netuids.add(netuid)
+                if uid not in uid_to_weights:
+                    uid_to_weights[uid] = {}
+
+                uid_to_weights[uid][netuid] = normalized_weight
+
+        for netuid in netuids:
+            table.add_column(
+                f&#34;[white]{netuid}&#34;,
+                header_style=&#34;overline white&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+
+        for uid in uid_to_weights:
+            row = [str(uid)]
+
+            uid_weights = uid_to_weights[uid]
+            for netuid in netuids:
+                if netuid in uid_weights:
+                    normalized_weight = uid_weights[netuid]
+                    row.append(&#34;{:0.2f}%&#34;.format(normalized_weight * 100))
+                else:
+                    row.append(&#34;-&#34;)
+            table.add_row(*row)
+
+        table.show_footer = True
+
+        table.box = None
+        table.pad_edge = False
+        table.width = None
+        console.print(table)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;get_weights&#34;, help=&#34;&#34;&#34;Get weights for subnet network.&#34;&#34;&#34;
+        )
+        parser.add_argument(
+            &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
+        )
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetGetWeightsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetWeightsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetGetWeightsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get weights for root network.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetHyperparamsCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetHyperparamsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'hyperparameters' command to view the current hyperparameters of a specific subnet on
+the Cybertensor network. This command is useful for users who wish to understand the configuration and
+operational parameters of a particular subnet.</p>
+<p>Usage:
+Upon invocation, the command fetches and displays a list of all hyperparameters for the specified subnet.
+These include settings like tempo, emission rates, and other critical network parameters that define
+the subnet's behavior.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets hyperparameters --netuid 1
+</code></pre>
+<p>Subnet Hyperparameters - NETUID: 1 - space-pussy
+HYPERPARAMETER
+VALUE
+rho
+10
+kappa
+32767
+immunity_period
+7200
+min_allowed_weights
+8
+max_weight_limit
+455
+tempo
+99
+min_difficulty
+1000000000000000000
+max_difficulty
+1000000000000000000
+weights_version
+2013
+weights_rate_limit
+100
+adjustment_interval
+112
+activity_cutoff
+5000
+registration_allowed
+True
+target_regs_per_interval
+2
+min_burn
+1000000000
+max_burn
+100000000000
+bonds_moving_avg
+900000
+max_regs_per_block
+1</p>
+<p>Note:
+The user must specify the subnet identifier (netuid) for which they want to view the hyperparameters.
+This command is read-only and does not modify the network state or configurations.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetHyperparamsCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;hyperparameters&#39; command to view the current hyperparameters of a specific subnet on
+    the Cybertensor network. This command is useful for users who wish to understand the configuration and
+    operational parameters of a particular subnet.
+
+    Usage:
+    Upon invocation, the command fetches and displays a list of all hyperparameters for the specified subnet.
+    These include settings like tempo, emission rates, and other critical network parameters that define
+    the subnet&#39;s behavior.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets hyperparameters --netuid 1
+
+    Subnet Hyperparameters - NETUID: 1 - space-pussy
+    HYPERPARAMETER            VALUE
+    rho                       10
+    kappa                     32767
+    immunity_period           7200
+    min_allowed_weights       8
+    max_weight_limit          455
+    tempo                     99
+    min_difficulty            1000000000000000000
+    max_difficulty            1000000000000000000
+    weights_version           2013
+    weights_rate_limit        100
+    adjustment_interval       112
+    activity_cutoff           5000
+    registration_allowed      True
+    target_regs_per_interval  2
+    min_burn                  1000000000
+    max_burn                  100000000000
+    bonds_moving_avg          900000
+    max_regs_per_block        1
+
+    Note:
+    The user must specify the subnet identifier (netuid) for which they want to view the hyperparameters.
+    This command is read-only and does not modify the network state or configurations.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;View hyperparameters of a subnetwork.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetHyperparamsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        subnet: cybertensor.SubnetHyperparameters = cwtensor.get_subnet_hyperparameters(
+            cli.config.netuid
+        )
+
+        table = Table(
+            show_footer=True,
+            width=cli.config.get(&#34;width&#34;, None),
+            pad_edge=True,
+            box=None,
+            show_edge=True,
+        )
+        table.title = &#34;[white]Subnet Hyperparameters - NETUID: {} - {}&#34;.format(
+            cli.config.netuid, cwtensor.network
+        )
+        table.add_column(&#34;[overline white]HYPERPARAMETER&#34;, style=&#34;bold white&#34;)
+        table.add_column(&#34;[overline white]VALUE&#34;, style=&#34;green&#34;)
+
+        for param in subnet.__dict__:
+            table.add_row(&#34;  &#34; + param, str(subnet.__dict__[param]))
+
+        console.print(table)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config, log_verbose=False))
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;hyperparameters&#34;, help=&#34;&#34;&#34;View subnet hyperparameters&#34;&#34;&#34;
+        )
+        parser.add_argument(
+            &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
+        )
+        parser.add_argument(
+            &#34;--no_prompt&#34;,
+            dest=&#34;no_prompt&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;Set true to avoid prompting the user.&#34;&#34;&#34;,
+            default=False,
+        )
+        cybertensor.cwtensor.add_args(parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetHyperparamsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetHyperparamsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetHyperparamsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>View hyperparameters of a subnetwork.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetListCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetListCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'list' command to list all subnets and their detailed information on the Cybertensor network.
+This command is designed to provide users with comprehensive information about each subnet within the
+network, including its unique identifier (netuid), the number of neurons, maximum neuron capacity,
+emission rate, tempo, recycle register cost (burn), proof of work (PoW) difficulty, and the name or
+address of the subnet owner.</p>
+<p>Usage:
+Upon invocation, the command performs the following actions:
+1. It initializes the Cybertensor cwtensor object with the user's configuration.
+2. It retrieves a list of all subnets in the network along with their detailed information.
+3. The command compiles this data into a table format, displaying key information about each subnet.</p>
+<p>In addition to the basic subnet details, the command also fetches delegate information to provide the
+name of the subnet owner where available. If the owner's name is not available, the owner's
+address is displayed.</p>
+<p>The command structure includes:
+- Initializing the Cybertensor cwtensor and retrieving subnet information.
+- Calculating the total number of neurons across all subnets.
+- Constructing a table that includes columns for NETUID, N (current neurons), MAX_N (maximum neurons),
+EMISSION, TEMPO, BURN, POW (proof of work difficulty), and SUDO (owner's name or address).
+- Displaying the table with a footer that summarizes the total number of subnets and neurons.</p>
+<p>Example usage:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>ctcli subnets list</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Note:
+This command is particularly useful for users seeking an overview of the Cybertensor network's structure
+and the distribution of its resources and ownership information for each subnet.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetListCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;list&#39; command to list all subnets and their detailed information on the Cybertensor network.
+    This command is designed to provide users with comprehensive information about each subnet within the
+    network, including its unique identifier (netuid), the number of neurons, maximum neuron capacity,
+    emission rate, tempo, recycle register cost (burn), proof of work (PoW) difficulty, and the name or
+ address of the subnet owner.
+
+    Usage:
+    Upon invocation, the command performs the following actions:
+    1. It initializes the Cybertensor cwtensor object with the user&#39;s configuration.
+    2. It retrieves a list of all subnets in the network along with their detailed information.
+    3. The command compiles this data into a table format, displaying key information about each subnet.
+
+    In addition to the basic subnet details, the command also fetches delegate information to provide the
+    name of the subnet owner where available. If the owner&#39;s name is not available, the owner&#39;s
+    address is displayed.
+
+    The command structure includes:
+    - Initializing the Cybertensor cwtensor and retrieving subnet information.
+    - Calculating the total number of neurons across all subnets.
+    - Constructing a table that includes columns for NETUID, N (current neurons), MAX_N (maximum neurons),
+        EMISSION, TEMPO, BURN, POW (proof of work difficulty), and SUDO (owner&#39;s name or address).
+    - Displaying the table with a footer that summarizes the total number of subnets and neurons.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets list
+
+    Note:
+    This command is particularly useful for users seeking an overview of the Cybertensor network&#39;s structure
+    and the distribution of its resources and ownership information for each subnet.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;List all subnet netuids in the network.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetListCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        rows = []
+        total_neurons = 0
+        # TODO revisist
+        # delegate_info: Optional[Dict[str, DelegatesDetails]] = get_delegates_details(
+        #     url=cybertensor.__delegates_details_url__
+        # )
+
+        delegate_info: Optional[Dict[str, DelegatesDetails]] = cwtensor.get_delegates()
+
+        for subnet in subnets:
+            total_neurons += subnet.max_n
+            rows.append(
+                (
+                    str(subnet.netuid),
+                    str(subnet.subnetwork_n),
+                    str(cybertensor.utils.formatting.millify(subnet.max_n)),
+                    f&#34;{subnet.emission_value / cybertensor.utils.GIGA * 100:0.2f}%&#34;,
+                    str(subnet.tempo),
+                    f&#34;{subnet.burn!s:8.8}&#34;,
+                    str(cybertensor.utils.formatting.millify(subnet.difficulty)),
+                    # TODO revisit
+                    # f&#34;{delegate_info[subnet.owner_ss58].name if subnet.owner_ss58 in delegate_info else subnet.owner_ss58}&#34;,
+                    f&#34;{delegate_info[subnet.owner].owner if subnet.owner in delegate_info else subnet.owner}&#34;,
+                    f&#34;{subnet.metadata}&#34;,
+                )
+            )
+        table = Table(
+            show_footer=True,
+            width=cli.config.get(&#34;width&#34;, None),
+            pad_edge=True,
+            box=None,
+            show_edge=True,
+        )
+        table.title = &#34;[white]Subnets - {}&#34;.format(cwtensor.network)
+        table.add_column(
+            &#34;[overline white]NETUID&#34;,
+            str(len(subnets)),
+            footer_style=&#34;overline white&#34;,
+            style=&#34;bold green&#34;,
+            justify=&#34;center&#34;,
+        )
+        table.add_column(
+            &#34;[overline white]N&#34;,
+            str(total_neurons),
+            footer_style=&#34;overline white&#34;,
+            style=&#34;green&#34;,
+            justify=&#34;center&#34;,
+        )
+        table.add_column(&#34;[overline white]MAX_N&#34;, style=&#34;white&#34;, justify=&#34;center&#34;)
+        table.add_column(&#34;[overline white]EMISSION&#34;, style=&#34;white&#34;, justify=&#34;center&#34;)
+        table.add_column(&#34;[overline white]TEMPO&#34;, style=&#34;white&#34;, justify=&#34;center&#34;)
+        table.add_column(&#34;[overline white]RECYCLE&#34;, style=&#34;white&#34;, justify=&#34;center&#34;)
+        table.add_column(&#34;[overline white]POW&#34;, style=&#34;white&#34;, justify=&#34;center&#34;)
+        table.add_column(&#34;[overline white]SUDO&#34;, style=&#34;white&#34;)
+        table.add_column(&#34;[overline white]METADATA&#34;, style=&#34;white&#34;)
+        for row in rows:
+            table.add_row(*row)
+        console.print(table)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        pass
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        list_subnets_parser = parser.add_parser(
+            &#34;list&#34;, help=&#34;&#34;&#34;List all subnets on the network&#34;&#34;&#34;
+        )
+        cybertensor.cwtensor.add_args(list_subnets_parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetListCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetListCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetListCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>List all subnet netuids in the network.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetLockCostCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetLockCostCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'lock_cost' command to view the locking cost required for creating a new subnetwork on the Cybertensor network. This command is designed to provide users with the current cost of registering a new subnetwork, which is a critical piece of information for anyone considering expanding the network's infrastructure.</p>
+<p>The current implementation anneals the cost of creating a subnet over a period of two days. If the cost is unappealing currently, check back in a day or two to see if it has reached an amenble level.</p>
+<p>Usage:
+Upon invocation, the command performs the following operations:
+1. It copies the user's current Cybertensor configuration.
+2. It initializes the Cybertensor cwtensor object with this configuration.
+3. It then retrieves the subnet lock cost using the <code>get_subnet_burn_cost()</code> method from the cwtensor object.
+4. The cost is displayed to the user in a readable format, indicating the amount of cryptocurrency required to lock for registering a new subnetwork.</p>
+<p>In case of any errors during the process (e.g., network issues, configuration problems), the command will catch these exceptions and inform the user that it failed to retrieve the lock cost, along with the specific error encountered.</p>
+<p>The command structure includes:
+- Copying and using the user's configuration for Cybertensor.
+- Retrieving the current subnet lock cost from the Cybertensor network.
+- Displaying the cost in a user-friendly manner.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnets lock_cost
+</code></pre>
+<p>Note:
+This command is particularly useful for users who are planning to contribute to the Cybertensor network by adding new subnetworks. Understanding the lock cost is essential for these users to make informed decisions about their potential contributions and investments in the network.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetLockCostCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;lock_cost&#39; command to view the locking cost required for creating a new subnetwork on the Cybertensor network. This command is designed to provide users with the current cost of registering a new subnetwork, which is a critical piece of information for anyone considering expanding the network&#39;s infrastructure.
+
+    The current implementation anneals the cost of creating a subnet over a period of two days. If the cost is unappealing currently, check back in a day or two to see if it has reached an amenble level.
+
+    Usage:
+    Upon invocation, the command performs the following operations:
+    1. It copies the user&#39;s current Cybertensor configuration.
+    2. It initializes the Cybertensor cwtensor object with this configuration.
+    3. It then retrieves the subnet lock cost using the `get_subnet_burn_cost()` method from the cwtensor object.
+    4. The cost is displayed to the user in a readable format, indicating the amount of cryptocurrency required to lock for registering a new subnetwork.
+
+    In case of any errors during the process (e.g., network issues, configuration problems), the command will catch these exceptions and inform the user that it failed to retrieve the lock cost, along with the specific error encountered.
+
+    The command structure includes:
+    - Copying and using the user&#39;s configuration for Cybertensor.
+    - Retrieving the current subnet lock cost from the Cybertensor network.
+    - Displaying the cost in a user-friendly manner.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnets lock_cost
+
+    Note:
+    This command is particularly useful for users who are planning to contribute to the Cybertensor network by adding new subnetworks. Understanding the lock cost is essential for these users to make informed decisions about their potential contributions and investments in the network.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;View locking cost of creating a new subnetwork&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetLockCostCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        config = cli.config.copy()
+        try:
+            console.print(
+                f&#34;Subnet lock cost: [green]{cybertensor.Balance( cwtensor.get_subnet_burn_cost() )}[/green]&#34;
+            )
+        except Exception as e:
+            console.print(
+                f&#34;Subnet lock cost: [red]Failed to get subnet lock cost[/red]&#34;
+                f&#34;Error: {e}&#34;
+            )
+
+    @classmethod
+    def check_config(cls, config: &#34;Config&#34;):
+        pass
+
+    @classmethod
+    def add_args(cls, parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;lock_cost&#34;,
+            help=&#34;&#34;&#34; Return the lock cost to register a subnet&#34;&#34;&#34;,
+        )
+
+        cybertensor.cwtensor.add_args(parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetLockCostCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetLockCostCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetLockCostCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>View locking cost of creating a new subnetwork</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSetWeightsCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetSetWeightsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Optional arguments:
+- &ndash;uids (str): A comma-separated list of uids for which weights are to be set.
+- &ndash;weights (str): Corresponding weights for the specified netuids, in comma-separated format.
+- &ndash;netuid (str): Corresponding subnet for which weights are to be set.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli subnet weights --uids 0,1,2 --weights 0.3,0.3,0.4
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetSetWeightsCommand:
+    &#34;&#34;&#34;
+    Optional arguments:
+    - --uids (str): A comma-separated list of uids for which weights are to be set.
+    - --weights (str): Corresponding weights for the specified netuids, in comma-separated format.
+    - --netuid (str): Corresponding subnet for which weights are to be set.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli subnet weights --uids 0,1,2 --weights 0.3,0.3,0.4
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Set weights for subnetwork.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetSetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        wallet = Wallet(config=cli.config)
+        # Get values if not set.
+        example_uids = range(3)
+        if not cli.config.is_set(&#34;uids&#34;):
+            example = &#34;, &#34;.join(map(str, example_uids)) + &#34; ...&#34;
+            cli.config.uids = Prompt.ask(f&#34;Enter uids (e.g. {example})&#34;)
+
+        if not cli.config.is_set(&#34;weights&#34;):
+            example = (
+                &#34;, &#34;.join(
+                    map(str, [&#34;{:.2f}&#34;.format(float(1 / len(example_uids))) for _ in example_uids])
+                )
+                + &#34; ...&#34;
+            )
+            cli.config.weights = Prompt.ask(f&#34;Enter weights (e.g. {example})&#34;)
+
+        # Parse from string
+        uids = torch.tensor(
+            list(map(int, re.split(r&#34;[ ,]+&#34;, cli.config.uids))), dtype=torch.long
+        )
+        weights = torch.tensor(
+            list(map(float, re.split(r&#34;[ ,]+&#34;, cli.config.weights))),
+            dtype=torch.float32,
+        )
+
+        # Run the set weights operation.
+        cwtensor.set_weights(
+            wallet=wallet,
+            netuid=cli.config.netuid,
+            uids=uids,
+            weights=weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(&#34;weights&#34;, help=&#34;&#34;&#34;Set weights for subnet.&#34;&#34;&#34;)
+        parser.add_argument(&#34;--uids&#34;, dest=&#34;uids&#34;, type=str, required=False)
+        parser.add_argument(&#34;--weights&#34;, dest=&#34;weights&#34;, type=str, required=False)
+        parser.add_argument(
+            &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
+        )
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config))</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetSetWeightsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSetWeightsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSetWeightsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set weights for subnetwork.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSudoCommand"><code class="flex name class">
+<span>class <span class="ident">SubnetSudoCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'set' command to set hyperparameters for a specific subnet on the Cybertensor network.
+This command allows subnet owners to modify various hyperparameters of theirs subnet, such as its tempo,
+emission rates, and other network-specific settings.</p>
+<p>Usage:
+The command first prompts the user to enter the hyperparameter they wish to change and its new value.
+It then uses the user's wallet and configuration settings to authenticate and send the hyperparameter update
+to the specified subnet.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli sudo set --netuid 1 --param immunity_period --value 5000
+</code></pre>
+<p>Note:
+This command requires the user to specify the subnet identifier (netuid) and both the hyperparameter
+and its new value. It is intended for advanced users who are familiar with the network's functioning
+and the impact of changing these parameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubnetSudoCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;set&#39; command to set hyperparameters for a specific subnet on the Cybertensor network.
+    This command allows subnet owners to modify various hyperparameters of theirs subnet, such as its tempo,
+    emission rates, and other network-specific settings.
+
+    Usage:
+    The command first prompts the user to enter the hyperparameter they wish to change and its new value.
+    It then uses the user&#39;s wallet and configuration settings to authenticate and send the hyperparameter update
+    to the specified subnet.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli sudo set --netuid 1 --param immunity_period --value 5000
+
+    Note:
+    This command requires the user to specify the subnet identifier (netuid) and both the hyperparameter
+    and its new value. It is intended for advanced users who are familiar with the network&#39;s functioning
+    and the impact of changing these parameters.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Set subnet hyperparameters.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            SubnetSudoCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        wallet = Wallet(config=cli.config)
+        print(&#34;\n&#34;)
+        SubnetHyperparamsCommand.run(cli)
+        if not cli.config.is_set(&#34;param&#34;) and not cli.config.no_prompt:
+            param = Prompt.ask(&#34;Enter hyperparameter&#34;, choices=HYPERPARAMS)
+            cli.config.param = str(param)
+        if not cli.config.is_set(&#34;value&#34;) and not cli.config.no_prompt:
+            value = Prompt.ask(&#34;Enter new value&#34;)
+            cli.config.value = value
+
+        if (
+            cli.config.param == &#34;network_registration_allowed&#34;
+            or cli.config.param == &#34;network_pow_registration_allowed&#34;
+        ):
+            cli.config.value = True if cli.config.value.lower() == &#34;true&#34; else False
+
+        cwtensor.set_hyperparameter(
+            wallet,
+            netuid=cli.config.netuid,
+            parameter=cli.config.param,
+            value=cli.config.value,
+            prompt=not cli.config.no_prompt,
+        )
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            check_netuid_set(config, cybertensor.cwtensor(config=config, log_verbose=False))
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(&#34;set&#34;, help=&#34;&#34;&#34;Set hyperparameters for a subnet&#34;&#34;&#34;)
+        parser.add_argument(
+            &#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False, default=False
+        )
+        parser.add_argument(&#34;--param&#34;, dest=&#34;param&#34;, type=str, required=False)
+        parser.add_argument(&#34;--value&#34;, dest=&#34;value&#34;, type=str, required=False)
+
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.network.SubnetSudoCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSudoCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.network.SubnetSudoCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set subnet hyperparameters.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.network.RegisterSubnetworkCommand" href="#cybertensor.commands.network.RegisterSubnetworkCommand">RegisterSubnetworkCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.RegisterSubnetworkCommand.add_args" href="#cybertensor.commands.network.RegisterSubnetworkCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.RegisterSubnetworkCommand.check_config" href="#cybertensor.commands.network.RegisterSubnetworkCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.RegisterSubnetworkCommand.run" href="#cybertensor.commands.network.RegisterSubnetworkCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetGetHyperparamsCommand" href="#cybertensor.commands.network.SubnetGetHyperparamsCommand">SubnetGetHyperparamsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetGetHyperparamsCommand.add_args" href="#cybertensor.commands.network.SubnetGetHyperparamsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetGetHyperparamsCommand.check_config" href="#cybertensor.commands.network.SubnetGetHyperparamsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetGetHyperparamsCommand.run" href="#cybertensor.commands.network.SubnetGetHyperparamsCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetGetWeightsCommand" href="#cybertensor.commands.network.SubnetGetWeightsCommand">SubnetGetWeightsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetGetWeightsCommand.add_args" href="#cybertensor.commands.network.SubnetGetWeightsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetGetWeightsCommand.check_config" href="#cybertensor.commands.network.SubnetGetWeightsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetGetWeightsCommand.run" href="#cybertensor.commands.network.SubnetGetWeightsCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetHyperparamsCommand" href="#cybertensor.commands.network.SubnetHyperparamsCommand">SubnetHyperparamsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetHyperparamsCommand.add_args" href="#cybertensor.commands.network.SubnetHyperparamsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetHyperparamsCommand.check_config" href="#cybertensor.commands.network.SubnetHyperparamsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetHyperparamsCommand.run" href="#cybertensor.commands.network.SubnetHyperparamsCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetListCommand" href="#cybertensor.commands.network.SubnetListCommand">SubnetListCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetListCommand.add_args" href="#cybertensor.commands.network.SubnetListCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetListCommand.check_config" href="#cybertensor.commands.network.SubnetListCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetListCommand.run" href="#cybertensor.commands.network.SubnetListCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetLockCostCommand" href="#cybertensor.commands.network.SubnetLockCostCommand">SubnetLockCostCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetLockCostCommand.add_args" href="#cybertensor.commands.network.SubnetLockCostCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetLockCostCommand.check_config" href="#cybertensor.commands.network.SubnetLockCostCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetLockCostCommand.run" href="#cybertensor.commands.network.SubnetLockCostCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetSetWeightsCommand" href="#cybertensor.commands.network.SubnetSetWeightsCommand">SubnetSetWeightsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetSetWeightsCommand.add_args" href="#cybertensor.commands.network.SubnetSetWeightsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetSetWeightsCommand.check_config" href="#cybertensor.commands.network.SubnetSetWeightsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetSetWeightsCommand.run" href="#cybertensor.commands.network.SubnetSetWeightsCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.network.SubnetSudoCommand" href="#cybertensor.commands.network.SubnetSudoCommand">SubnetSudoCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.network.SubnetSudoCommand.add_args" href="#cybertensor.commands.network.SubnetSudoCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetSudoCommand.check_config" href="#cybertensor.commands.network.SubnetSudoCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.network.SubnetSudoCommand.run" href="#cybertensor.commands.network.SubnetSudoCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.errors API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.errors</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.errors.BlacklistedException"><code class="flex name class">
+<span>class <span class="ident">BlacklistedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request is blacklisted.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BlacklistedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is blacklisted.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.ChainConnectionError"><code class="flex name class">
+<span>class <span class="ident">ChainConnectionError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error for any chain connection related errors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChainConnectionError(ChainError):
+    r&#34;&#34;&#34;Error for any chain connection related errors.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.ChainError"><code class="flex name class">
+<span>class <span class="ident">ChainError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base error for any chain related errors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChainError(BaseException):
+    r&#34;&#34;&#34;Base error for any chain related errors.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainConnectionError" href="#cybertensor.errors.ChainConnectionError">ChainConnectionError</a></li>
+<li><a title="cybertensor.errors.ChainQueryError" href="#cybertensor.errors.ChainQueryError">ChainQueryError</a></li>
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.ChainQueryError"><code class="flex name class">
+<span>class <span class="ident">ChainQueryError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error for any chain query related errors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChainQueryError(ChainError):
+    r&#34;&#34;&#34;Error for any chain query related errors.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.ChainTransactionError"><code class="flex name class">
+<span>class <span class="ident">ChainTransactionError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error for any chain transaction related errors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChainTransactionError(ChainError):
+    r&#34;&#34;&#34;Error for any chain transaction related errors.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.IdentityError" href="#cybertensor.errors.IdentityError">IdentityError</a></li>
+<li><a title="cybertensor.errors.MetadataError" href="#cybertensor.errors.MetadataError">MetadataError</a></li>
+<li><a title="cybertensor.errors.NominationError" href="#cybertensor.errors.NominationError">NominationError</a></li>
+<li><a title="cybertensor.errors.NotRegisteredError" href="#cybertensor.errors.NotRegisteredError">NotRegisteredError</a></li>
+<li><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></li>
+<li><a title="cybertensor.errors.RegistrationError" href="#cybertensor.errors.RegistrationError">RegistrationError</a></li>
+<li><a title="cybertensor.errors.StakeError" href="#cybertensor.errors.StakeError">StakeError</a></li>
+<li><a title="cybertensor.errors.TransferError" href="#cybertensor.errors.TransferError">TransferError</a></li>
+<li><a title="cybertensor.errors.UnstakeError" href="#cybertensor.errors.UnstakeError">UnstakeError</a></li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.ConfigurationError"><code class="flex name class">
+<span>class <span class="ident">ConfigurationError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a private key is not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConfigurationError(Exception):
+    r&#34;&#34;&#34;Error raised when a private key is not found.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.IdentityError"><code class="flex name class">
+<span>class <span class="ident">IdentityError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when an identity transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IdentityError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when an identity transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.InternalServerError"><code class="flex name class">
+<span>class <span class="ident">InternalServerError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the requested function fails on the server. Indicates a server error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InternalServerError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function fails on the server. Indicates a server error.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.InvalidRequestNameError"><code class="flex name class">
+<span>class <span class="ident">InvalidRequestNameError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request name is invalid. Usually indicates a broken URL.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InvalidRequestNameError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is invalid. Usually indicates a broken URL.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.KeyFileError"><code class="flex name class">
+<span>class <span class="ident">KeyFileError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class KeyFileError(Exception):
+    r&#34;&#34;&#34;Error thrown when the keyfile is corrupt, non-writable, non-readable or the password used to decrypt is invalid.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.MetadataError"><code class="flex name class">
+<span>class <span class="ident">MetadataError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when metadata commitment transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MetadataError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when metadata commitment transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NominationError"><code class="flex name class">
+<span>class <span class="ident">NominationError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a nomination transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NominationError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a nomination transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NotDelegateError"><code class="flex name class">
+<span>class <span class="ident">NotDelegateError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a hotkey you are trying to stake to is not a delegate.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotDelegateError(StakeError):
+    r&#34;&#34;&#34;Error raised when a hotkey you are trying to stake to is not a delegate.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.StakeError" href="#cybertensor.errors.StakeError">StakeError</a></li>
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NotRegisteredError"><code class="flex name class">
+<span>class <span class="ident">NotRegisteredError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a neuron is not registered, and the transaction requires it to be.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotRegisteredError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a neuron is not registered, and the transaction requires it to be.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NotSetWeightError"><code class="flex name class">
+<span>class <span class="ident">NotSetWeightError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a hotkey you are trying to set weight is not set.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotSetWeightError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a hotkey you are trying to set weight is not set.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.NotVerifiedException"><code class="flex name class">
+<span>class <span class="ident">NotVerifiedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request is not verified.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotVerifiedException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request is not verified.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.PostProcessException"><code class="flex name class">
+<span>class <span class="ident">PostProcessException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the response headers cannot be updated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PostProcessException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the response headers cannot be updated.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.PriorityException"><code class="flex name class">
+<span>class <span class="ident">PriorityException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request priority is not met.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PriorityException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request priority is not met.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.RegistrationError"><code class="flex name class">
+<span>class <span class="ident">RegistrationError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a neuron registration transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegistrationError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a neuron registration transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.RunException"><code class="flex name class">
+<span>class <span class="ident">RunException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the requested function cannot be executed. Indicates a server error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunException(Exception):
+    r&#34;&#34;&#34;This exception is raised when the requested function cannot be executed. Indicates a server error.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.StakeError"><code class="flex name class">
+<span>class <span class="ident">StakeError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a stake transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StakeError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a stake transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.NotDelegateError" href="#cybertensor.errors.NotDelegateError">NotDelegateError</a></li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.SynapseDendriteNoneException"><code class="flex name class">
+<span>class <span class="ident">SynapseDendriteNoneException</span></span>
+<span>(</span><span>message='Synapse Dendrite is None')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SynapseDendriteNoneException(Exception):
+    def __init__(self, message=&#34;Synapse Dendrite is None&#34;):
+        self.message = message
+        super().__init__(self.message)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.SynapseParsingError"><code class="flex name class">
+<span>class <span class="ident">SynapseParsingError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request headers are unable to be parsed into the synapse type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SynapseParsingError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request headers are unable to be parsed into the synapse type.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.TransferError"><code class="flex name class">
+<span>class <span class="ident">TransferError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when a transfer transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransferError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when a transfer transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.UnknownSynapseError"><code class="flex name class">
+<span>class <span class="ident">UnknownSynapseError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This exception is raised when the request name is not found in the Axon's forward_fns dictionary.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnknownSynapseError(Exception):
+    r&#34;&#34;&#34;This exception is raised when the request name is not found in the Axon&#39;s forward_fns dictionary.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.errors.UnstakeError"><code class="flex name class">
+<span>class <span class="ident">UnstakeError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error raised when an unstake transaction fails.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnstakeError(ChainTransactionError):
+    r&#34;&#34;&#34;Error raised when an unstake transaction fails.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></li>
+<li><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.errors.BlacklistedException" href="#cybertensor.errors.BlacklistedException">BlacklistedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.ChainConnectionError" href="#cybertensor.errors.ChainConnectionError">ChainConnectionError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.ChainError" href="#cybertensor.errors.ChainError">ChainError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.ChainQueryError" href="#cybertensor.errors.ChainQueryError">ChainQueryError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.ChainTransactionError" href="#cybertensor.errors.ChainTransactionError">ChainTransactionError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.ConfigurationError" href="#cybertensor.errors.ConfigurationError">ConfigurationError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.IdentityError" href="#cybertensor.errors.IdentityError">IdentityError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.InternalServerError" href="#cybertensor.errors.InternalServerError">InternalServerError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.InvalidRequestNameError" href="#cybertensor.errors.InvalidRequestNameError">InvalidRequestNameError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.KeyFileError" href="#cybertensor.errors.KeyFileError">KeyFileError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.MetadataError" href="#cybertensor.errors.MetadataError">MetadataError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NominationError" href="#cybertensor.errors.NominationError">NominationError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NotDelegateError" href="#cybertensor.errors.NotDelegateError">NotDelegateError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NotRegisteredError" href="#cybertensor.errors.NotRegisteredError">NotRegisteredError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NotSetWeightError" href="#cybertensor.errors.NotSetWeightError">NotSetWeightError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.NotVerifiedException" href="#cybertensor.errors.NotVerifiedException">NotVerifiedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.PostProcessException" href="#cybertensor.errors.PostProcessException">PostProcessException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.PriorityException" href="#cybertensor.errors.PriorityException">PriorityException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.RegistrationError" href="#cybertensor.errors.RegistrationError">RegistrationError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.RunException" href="#cybertensor.errors.RunException">RunException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.StakeError" href="#cybertensor.errors.StakeError">StakeError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.SynapseDendriteNoneException" href="#cybertensor.errors.SynapseDendriteNoneException">SynapseDendriteNoneException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.SynapseParsingError" href="#cybertensor.errors.SynapseParsingError">SynapseParsingError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.TransferError" href="#cybertensor.errors.TransferError">TransferError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.UnknownSynapseError" href="#cybertensor.errors.UnknownSynapseError">UnknownSynapseError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.errors.UnstakeError" href="#cybertensor.errors.UnstakeError">UnstakeError</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

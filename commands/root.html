@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.root API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.root</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.root.RootGetWeightsCommand"><code class="flex name class">
+<span>class <span class="ident">RootGetWeightsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'get_weights' command to retrieve the weights set for the root network on the Cybertensor network.
+This command provides visibility into how network responsibilities and rewards are distributed among various subnets.</p>
+<p>Usage:
+The command outputs a table listing the weights assigned to each subnet within the root network.
+This information is crucial for understanding the current influence and reward distribution among the subnets.</p>
+<p>Optional arguments:
+- None. The command fetches weight information based on the cwtensor configuration.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli root get_weights
+</code></pre>
+<pre><code>                                    Root Network Weights
+</code></pre>
+<p>UID
+0
+1
+2
+3
+4
+5
+8
+9
+11
+13
+18
+19
+1
+100.00%
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+2
+-
+40.00%
+5.00%
+10.00%
+10.00%
+10.00%
+10.00%
+5.00%
+-
+-
+10.00%
+-
+3
+-
+-
+25.00%
+-
+25.00%
+-
+25.00%
+-
+-
+-
+25.00%
+-
+4
+-
+-
+7.00%
+7.00%
+20.00%
+20.00%
+20.00%
+-
+6.00%
+-
+20.00%
+-
+5
+-
+20.00%
+-
+10.00%
+15.00%
+15.00%
+15.00%
+5.00%
+-
+-
+10.00%
+10.00%
+6
+-
+-
+-
+-
+10.00%
+10.00%
+25.00%
+25.00%
+-
+-
+30.00%
+-
+7
+-
+60.00%
+-
+-
+20.00%
+-
+-
+-
+20.00%
+-
+-
+-
+8
+-
+49.35%
+-
+7.18%
+13.59%
+21.14%
+1.53%
+0.12%
+7.06%
+0.03%
+-
+-
+9
+100.00%
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+&hellip;</p>
+<p>Note:
+This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
+It offers transparency into how network rewards and responsibilities are allocated across different subnets.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootGetWeightsCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;get_weights&#39; command to retrieve the weights set for the root network on the Cybertensor network.
+    This command provides visibility into how network responsibilities and rewards are distributed among various subnets.
+
+    Usage:
+    The command outputs a table listing the weights assigned to each subnet within the root network.
+    This information is crucial for understanding the current influence and reward distribution among the subnets.
+
+    Optional arguments:
+    - None. The command fetches weight information based on the cwtensor configuration.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli root get_weights
+
+                                            Root Network Weights
+    UID        0        1        2       3        4        5       8        9       11     13      18       19
+    1    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    2          -   40.00%    5.00%  10.00%   10.00%   10.00%  10.00%    5.00%        -      -  10.00%        -
+    3          -        -   25.00%       -   25.00%        -  25.00%        -        -      -  25.00%        -
+    4          -        -    7.00%   7.00%   20.00%   20.00%  20.00%        -    6.00%      -  20.00%        -
+    5          -   20.00%        -  10.00%   15.00%   15.00%  15.00%    5.00%        -      -  10.00%   10.00%
+    6          -        -        -       -   10.00%   10.00%  25.00%   25.00%        -      -  30.00%        -
+    7          -   60.00%        -       -   20.00%        -       -        -   20.00%      -       -        -
+    8          -   49.35%        -   7.18%   13.59%   21.14%   1.53%    0.12%    7.06%  0.03%       -        -
+    9    100.00%        -        -       -        -        -       -        -        -      -       -        -
+    ...
+
+    Note:
+    This command is essential for users interested in the governance and operational dynamics of the Cybertensor network.
+    It offers transparency into how network rewards and responsibilities are allocated across different subnets.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootGetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        weights = cwtensor.weights(0)
+
+        table = Table(show_footer=False)
+        table.title = &#34;[white]Root Network Weights&#34;
+        table.add_column(
+            &#34;[white]UID&#34;,
+            header_style=&#34;overline white&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;rgb(50,163,219)&#34;,
+            no_wrap=True,
+        )
+
+        uid_to_weights = {}
+        netuids = set()
+        for matrix in weights:
+            [uid, weights_data] = matrix
+
+            if not len(weights_data):
+                uid_to_weights[uid] = {}
+                normalized_weights = []
+            else:
+                normalized_weights = np.array(weights_data)[:, 1] / max(
+                    np.sum(weights_data, axis=0)[1], 1
+                )
+
+            for weight_data, normalized_weight in zip(weights_data, normalized_weights):
+                [netuid, _] = weight_data
+                netuids.add(netuid)
+                if uid not in uid_to_weights:
+                    uid_to_weights[uid] = {}
+
+                uid_to_weights[uid][netuid] = normalized_weight
+
+        for netuid in netuids:
+            table.add_column(
+                f&#34;[white]{netuid}&#34;,
+                header_style=&#34;overline white&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+
+        for uid in uid_to_weights:
+            row = [str(uid)]
+
+            uid_weights = uid_to_weights[uid]
+            for netuid in netuids:
+                if netuid in uid_weights:
+                    normalized_weight = uid_weights[netuid]
+                    row.append(&#34;{:0.2f}%&#34;.format(normalized_weight * 100))
+                else:
+                    row.append(&#34;-&#34;)
+            table.add_row(*row)
+
+        table.show_footer = True
+
+        table.box = None
+        table.pad_edge = False
+        table.width = None
+        console.print(table)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;get_weights&#34;, help=&#34;&#34;&#34;Get weights for root network.&#34;&#34;&#34;
+        )
+
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        pass</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootGetWeightsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootGetWeightsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootGetWeightsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get weights for root network.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.root.RootList"><code class="flex name class">
+<span>class <span class="ident">RootList</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'list' command to display the members of the root network on the Cybertensor network.
+This command provides an overview of the neurons that constitute the network's foundational layer.</p>
+<p>Usage:
+Upon execution, the command fetches and lists the neurons in the root network, showing their unique identifiers (UIDs), names, addresses, stakes,
+and whether they are part of the senate (network governance body).</p>
+<p>Optional arguments:
+- None. The command uses the cwtensor configuration to retrieve data.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli root list
+</code></pre>
+<p>UID
+NAME
+ADDRESS
+STAKE(τ)
+SENATOR
+0
+5CaCUPsSSdKWcMJbmdmJdnWVa15fJQuz5HsSGgVdZffpHAUa
+27086.37070
+Yes
+1
+RaoK9
+5GmaAk7frPXnAxjbQvXcoEzMGZfkrDee76eGmKoB3wxUburE
+520.24199
+No
+2
+Openτensor Foundaτion
+5F4tQyWrhfGVcNhoqeiNsR6KjD4wMZ2kfhLj4oHYuyHbZAc3
+1275437.45895
+Yes
+3
+RoundTable21
+5FFApaS75bv5pJHfAp2FVLBj9ZaXuFDjEypsaBNc1wCfe52v
+84718.42095
+Yes
+4
+5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN
+168897.40859
+Yes
+5
+Rizzo
+5CXRfP2ekFhe62r7q3vppRajJmGhTi7vwvb2yr79jveZ282w
+53383.34400
+No
+6
+τaosτaτs and BitAPAI
+5Hddm3iBFD2GLT5ik7LZnT3XJUnRnN8PoeCFgGQgawUVKNm8
+646944.73569
+Yes
+&hellip;</p>
+<p>Note:
+This command is useful for users interested in understanding the composition and governance structure of the Cybertensor network's root layer.
+It provides insights into which neurons hold significant influence and responsibility within the network.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootList:
+    &#34;&#34;&#34;
+    Executes the &#39;list&#39; command to display the members of the root network on the Cybertensor network.
+    This command provides an overview of the neurons that constitute the network&#39;s foundational layer.
+
+    Usage:
+    Upon execution, the command fetches and lists the neurons in the root network, showing their unique identifiers (UIDs), names, addresses, stakes,
+    and whether they are part of the senate (network governance body).
+
+    Optional arguments:
+    - None. The command uses the cwtensor configuration to retrieve data.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli root list
+
+    UID  NAME                             ADDRESS                                                STAKE(τ)  SENATOR
+    0                                     5CaCUPsSSdKWcMJbmdmJdnWVa15fJQuz5HsSGgVdZffpHAUa    27086.37070  Yes
+    1    RaoK9                            5GmaAk7frPXnAxjbQvXcoEzMGZfkrDee76eGmKoB3wxUburE      520.24199  No
+    2    Openτensor Foundaτion            5F4tQyWrhfGVcNhoqeiNsR6KjD4wMZ2kfhLj4oHYuyHbZAc3  1275437.45895  Yes
+    3    RoundTable21                     5FFApaS75bv5pJHfAp2FVLBj9ZaXuFDjEypsaBNc1wCfe52v    84718.42095  Yes
+    4                                     5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN   168897.40859  Yes
+    5    Rizzo                            5CXRfP2ekFhe62r7q3vppRajJmGhTi7vwvb2yr79jveZ282w    53383.34400  No
+    6    τaosτaτs and BitAPAI             5Hddm3iBFD2GLT5ik7LZnT3XJUnRnN8PoeCFgGQgawUVKNm8   646944.73569  Yes
+    ...
+
+    Note:
+    This command is useful for users interested in understanding the composition and governance structure of the Cybertensor network&#39;s root layer.
+    It provides insights into which neurons hold significant influence and responsibility within the network.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;List the root network&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootList._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        console.print(
+            &#34;:satellite: Syncing with chain: [white]{}[/white] ...&#34;.format(
+                cwtensor.network
+            )
+        )
+
+        # TODO back to this
+        # senate_members = cwtensor.get_senate_members()
+        senate_members = []
+
+        root_neurons: typing.List[cybertensor.NeuronInfoLite] = cwtensor.neurons_lite(
+            netuid=0
+        )
+
+        # TODO revisit
+        # delegate_info: Optional[Dict[str, DelegatesDetails]] = get_delegates_details(
+        #     url=cybertensor.__delegates_details_url__
+        # )
+
+        delegate_info: Optional[Dict[str, DelegatesDetails]
+        ] = cwtensor.get_delegates()
+
+        table = Table(show_footer=False)
+        table.title = &#34;[white]Root Network&#34;
+        table.add_column(
+            &#34;[overline white]UID&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;rgb(50,163,219)&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]NAME&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;rgb(50,163,219)&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]ADDRESS&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;yellow&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
+            footer_style=&#34;overline white&#34;,
+            justify=&#34;right&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.add_column(
+            &#34;[overline white]SENATOR&#34;,
+            footer_style=&#34;overline white&#34;,
+            style=&#34;green&#34;,
+            no_wrap=True,
+        )
+        table.show_footer = True
+
+        for neuron_data in root_neurons:
+            table.add_row(
+                str(neuron_data.uid),
+                # TODO revisit
+                # delegate_info[neuron_data.hotkey].name
+                (
+                    delegate_info[neuron_data.hotkey].name
+                    if neuron_data.hotkey in delegate_info
+                    else &#34;&#34;
+                ),
+                neuron_data.hotkey,
+                &#34;{:.5f}&#34;.format(
+                    float(cwtensor.get_total_stake_for_hotkey(neuron_data.hotkey))
+                ),
+                &#34;Yes&#34; if neuron_data.hotkey in senate_members else &#34;No&#34;,
+            )
+
+        table.box = None
+        table.pad_edge = False
+        table.width = None
+        console.print(table)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(&#34;list&#34;, help=&#34;&#34;&#34;List the root network&#34;&#34;&#34;)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        pass</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootList.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootList.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootList.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>List the root network</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.root.RootRegisterCommand"><code class="flex name class">
+<span>class <span class="ident">RootRegisterCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'register' command to register a wallet to the root network of the Cybertensor network.
+This command is used to formally acknowledge a wallet's participation in the network's root layer.</p>
+<p>Usage:
+The command registers the user's wallet with the root network, which is a crucial step for participating in network governance and other advanced functions.</p>
+<p>Optional arguments:
+- None. The command primarily uses the wallet and cwtensor configurations.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli root register
+</code></pre>
+<p>Note:
+This command is important for users seeking to engage deeply with the Cybertensor network, particularly in aspects related to network governance and decision-making.
+It is a straightforward process but requires the user to have an initialized and configured wallet.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootRegisterCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;register&#39; command to register a wallet to the root network of the Cybertensor network.
+    This command is used to formally acknowledge a wallet&#39;s participation in the network&#39;s root layer.
+
+    Usage:
+    The command registers the user&#39;s wallet with the root network, which is a crucial step for participating in network governance and other advanced functions.
+
+    Optional arguments:
+    - None. The command primarily uses the wallet and cwtensor configurations.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli root register
+
+    Note:
+    This command is important for users seeking to engage deeply with the Cybertensor network, particularly in aspects related to network governance and decision-making.
+    It is a straightforward process but requires the user to have an initialized and configured wallet.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Register to root network.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootRegisterCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+
+        wallet = Wallet(config=cli.config)
+
+        cwtensor.root_register(wallet=wallet, prompt=not cli.config.no_prompt)
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;register&#34;, help=&#34;&#34;&#34;Register a wallet to the root network.&#34;&#34;&#34;
+        )
+
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootRegisterCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootRegisterCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootRegisterCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register to root network.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.root.RootSetBoostCommand"><code class="flex name class">
+<span>class <span class="ident">RootSetBoostCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the <code>boost</code> command to boost the weights for a specific subnet within the root network on the cybertensor network.</p>
+<h2 id="usage">Usage</h2>
+<p>The command allows boosting the weights for different subnets within the root network.</p>
+<p>Optional arguments:
+- <code>--netuid</code> (int): A single netuid for which weights are to be boosted.
+- <code>--increase</code> (float): The corresponding increase in the weight for this subnet.</p>
+<p>Example usage::</p>
+<pre><code>$ ctcli root boost --netuid 1 --increase 0.01
+
+Enter netuid (e.g. 1): 1
+Enter amount (e.g. 0.01): 0.1
+Boosting weight for subnet: 1 by amount: 0.1
+
+Normalized weights:
+        tensor([
+        0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -&gt; tensor([0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+    )
+
+Do you want to set the following root weights?:
+weights: tensor([
+        0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+        18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+        36, 37, 38, 39, 40])? [y/n]: y
+True None
+✅ Finalized
+⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootSetBoostCommand:
+    &#34;&#34;&#34;
+    Executes the ``boost`` command to boost the weights for a specific subnet within the root network on the cybertensor network.
+
+    Usage:
+        The command allows boosting the weights for different subnets within the root network.
+
+    Optional arguments:
+        - ``--netuid`` (int): A single netuid for which weights are to be boosted.
+        - ``--increase`` (float): The corresponding increase in the weight for this subnet.
+
+    Example usage::
+
+        $ ctcli root boost --netuid 1 --increase 0.01
+
+        Enter netuid (e.g. 1): 1
+        Enter amount (e.g. 0.01): 0.1
+        Boosting weight for subnet: 1 by amount: 0.1
+
+        Normalized weights:
+                tensor([
+                0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -&gt; tensor([0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+            )
+
+        Do you want to set the following root weights?:
+        weights: tensor([
+                0.0000, 0.5455, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.4545, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+        uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40])? [y/n]: y
+        True None
+        ✅ Finalized
+        ⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        r&#34;&#34;&#34;Set weights for root network.&#34;&#34;&#34;
+        try:
+            cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            RootSetBoostCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        r&#34;&#34;&#34;Set weights for root network.&#34;&#34;&#34;
+        wallet = cybertensor.Wallet(config=cli.config)
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        root = cwtensor.metagraph(0, lite=False)
+        try:
+            my_uid = root.hotkeys.index(wallet.hotkey.address)
+        except ValueError:
+            cybertensor.__console__.print(
+                &#34;Wallet hotkey: {} not found in root metagraph&#34;.format(wallet.hotkey)
+            )
+            exit()
+        my_weights = root.weights[my_uid]
+        prev_weight = my_weights[cli.config.netuid]
+        new_weight = prev_weight + cli.config.amount
+
+        cybertensor.__console__.print(
+            f&#34;Boosting weight for netuid {cli.config.netuid} from {prev_weight} -&gt; {new_weight}&#34;
+        )
+        my_weights[cli.config.netuid] = new_weight
+        all_netuids = torch.tensor(list(range(len(my_weights))))
+
+        cybertensor.__console__.print(&#34;Setting root weights...&#34;)
+        cwtensor.root_set_weights(
+            wallet=wallet,
+            netuids=all_netuids,
+            weights=my_weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;boost&#34;, help=&#34;&#34;&#34;Boost weight for a specific subnet by increase amount.&#34;&#34;&#34;
+        )
+        parser.add_argument(&#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False)
+        parser.add_argument(&#34;--increase&#34;, dest=&#34;amount&#34;, type=float, required=False)
+
+        cybertensor.Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;cybertensor.config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            config.netuid = int(Prompt.ask(f&#34;Enter netuid (e.g. 1)&#34;))
+        if not config.is_set(&#34;amount&#34;) and not config.no_prompt:
+            config.amount = float(Prompt.ask(f&#34;Enter amount (e.g. 0.01)&#34;))</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootSetBoostCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetBoostCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetBoostCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set weights for root network.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.root.RootSetSlashCommand"><code class="flex name class">
+<span>class <span class="ident">RootSetSlashCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the <code>slash</code> command to decrease the weights for a specific subnet within the root network on the cybertensor network.</p>
+<h2 id="usage">Usage</h2>
+<p>The command allows slashing (decreasing) the weights for different subnets within the root network.</p>
+<p>Optional arguments:
+- <code>--netuid</code> (int): A single netuid for which weights are to be slashed.
+- <code>--decrease</code> (float): The corresponding decrease in the weight for this subnet.</p>
+<p>Example usage::</p>
+<pre><code>$ ctcli root slash --netuid 1 --decrease 0.01
+
+Enter netuid (e.g. 1): 1
+Enter decrease amount (e.g. 0.01): 0.2
+Slashing weight for subnet: 1 by amount: 0.2
+
+Normalized weights:
+        tensor([
+        0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -&gt; tensor([
+        0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+    )
+
+Do you want to set the following root weights?:
+weights: tensor([
+        0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+        0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+        18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+        36, 37, 38, 39, 40])? [y/n]: y
+⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootSetSlashCommand:
+    &#34;&#34;&#34;
+    Executes the ``slash`` command to decrease the weights for a specific subnet within the root network on the cybertensor network.
+
+    Usage:
+        The command allows slashing (decreasing) the weights for different subnets within the root network.
+
+    Optional arguments:
+        - ``--netuid`` (int): A single netuid for which weights are to be slashed.
+        - ``--decrease`` (float): The corresponding decrease in the weight for this subnet.
+
+    Example usage::
+
+        $ ctcli root slash --netuid 1 --decrease 0.01
+
+        Enter netuid (e.g. 1): 1
+        Enter decrease amount (e.g. 0.01): 0.2
+        Slashing weight for subnet: 1 by amount: 0.2
+
+        Normalized weights:
+                tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]) -&gt; tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000]
+            )
+
+        Do you want to set the following root weights?:
+        weights: tensor([
+                0.0000, 0.4318, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.5682, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+                0.0000, 0.0000, 0.0000, 0.0000, 0.0000])
+        uids: tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40])? [y/n]: y
+        ⠙ 📡 Setting root weights on test ...2023-11-28 22:09:14.001 |     SUCCESS      | Set weights                   Finalized: True
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;):
+        &#34;&#34;&#34;Set weights for root network with decreased values.&#34;&#34;&#34;
+        try:
+            cwtensor: &#34;cybertensor.cwtensor&#34; = cybertensor.cwtensor(
+                config=cli.config, log_verbose=False
+            )
+            RootSetSlashCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        wallet = cybertensor.Wallet(config=cli.config)
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        cybertensor.__console__.print(
+            &#34;Slashing weight for subnet: {} by amount: {}&#34;.format(
+                cli.config.netuid, cli.config.amount
+            )
+        )
+        root = cwtensor.metagraph(0, lite=False)
+        try:
+            my_uid = root.hotkeys.index(wallet.hotkey.address)
+        except ValueError:
+            cybertensor.__console__.print(
+                &#34;Wallet hotkey: {} not found in root metagraph&#34;.format(wallet.hotkey)
+            )
+            exit()
+        my_weights = root.weights[my_uid]
+        my_weights[cli.config.netuid] -= cli.config.amount
+        my_weights[my_weights &lt; 0] = 0  # Ensure weights don&#39;t go negative
+        all_netuids = torch.tensor(list(range(len(my_weights))))
+
+        cwtensor.root_set_weights(
+            wallet=wallet,
+            netuids=all_netuids,
+            weights=my_weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(
+            &#34;slash&#34;, help=&#34;&#34;&#34;Slash weight for a specific subnet by decrease amount.&#34;&#34;&#34;
+        )
+        parser.add_argument(&#34;--netuid&#34;, dest=&#34;netuid&#34;, type=int, required=False)
+        parser.add_argument(&#34;--decrease&#34;, dest=&#34;amount&#34;, type=float, required=False)
+
+        cybertensor.wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;cybertensor.config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)
+        if not config.is_set(&#34;netuid&#34;) and not config.no_prompt:
+            config.netuid = int(Prompt.ask(f&#34;Enter netuid (e.g. 1)&#34;))
+        if not config.is_set(&#34;amount&#34;) and not config.no_prompt:
+            config.amount = float(Prompt.ask(f&#34;Enter decrease amount (e.g. 0.01)&#34;))</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootSetSlashCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetSlashCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: <a title="cybertensor.config" href="../config.html">cybertensor.config</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetSlashCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set weights for root network with decreased values.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.commands.root.RootSetWeightsCommand"><code class="flex name class">
+<span>class <span class="ident">RootSetWeightsCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'weights' command to set the weights for the root network on the Cybertensor network.
+This command is used by network senators to influence the distribution of network rewards and responsibilities.</p>
+<p>Usage:
+The command allows setting weights for different subnets within the root network.
+Users need to specify the netuids (network unique identifiers) and corresponding weights they wish to assign.</p>
+<p>Optional arguments:
+- &ndash;netuids (str): A comma-separated list of netuids for which weights are to be set.
+- &ndash;weights (str): Corresponding weights for the specified netuids, in comma-separated format.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli root weights --netuids 1,2,3 --weights 0.3,0.3,0.4
+</code></pre>
+<p>Note:
+This command is particularly important for network senators and requires a comprehensive understanding of the network's dynamics.
+It is a powerful tool that directly impacts the network's operational mechanics and reward distribution.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RootSetWeightsCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;weights&#39; command to set the weights for the root network on the Cybertensor network.
+    This command is used by network senators to influence the distribution of network rewards and responsibilities.
+
+    Usage:
+    The command allows setting weights for different subnets within the root network.
+    Users need to specify the netuids (network unique identifiers) and corresponding weights they wish to assign.
+
+    Optional arguments:
+    - --netuids (str): A comma-separated list of netuids for which weights are to be set.
+    - --weights (str): Corresponding weights for the specified netuids, in comma-separated format.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli root weights --netuids 1,2,3 --weights 0.3,0.3,0.4
+
+    Note:
+    This command is particularly important for network senators and requires a comprehensive understanding of the network&#39;s dynamics.
+    It is a powerful tool that directly impacts the network&#39;s operational mechanics and reward distribution.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;) -&gt; None:
+        r&#34;&#34;&#34;Set weights for root network.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            RootSetWeightsCommand._run(cli, cwtensor)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;):
+        wallet = Wallet(config=cli.config)
+        subnets: List[cybertensor.SubnetInfo] = cwtensor.get_all_subnets_info()
+
+        # Get values if not set.
+        if not cli.config.is_set(&#34;netuids&#34;):
+            example = (
+                &#34;, &#34;.join(map(str, [subnet.netuid for subnet in subnets][:3])) + &#34; ...&#34;
+            )
+            cli.config.netuids = Prompt.ask(f&#34;Enter netuids (e.g. {example})&#34;)
+
+        if not cli.config.is_set(&#34;weights&#34;):
+            example = (
+                &#34;, &#34;.join(
+                    map(
+                        str,
+                        [
+                            &#34;{:.2f}&#34;.format(float(1 / len(subnets)))
+                            for subnet in subnets
+                        ][:3],
+                    )
+                )
+                + &#34; ...&#34;
+            )
+            cli.config.weights = Prompt.ask(f&#34;Enter weights (e.g. {example})&#34;)
+
+        # Parse from string
+        netuids = torch.tensor(
+            list(map(int, re.split(r&#34;[ ,]+&#34;, cli.config.netuids))), dtype=torch.long
+        )
+        weights = torch.tensor(
+            list(map(float, re.split(r&#34;[ ,]+&#34;, cli.config.weights))),
+            dtype=torch.float32,
+        )
+
+        # Run the set weights operation.
+        cwtensor.root_set_weights(
+            wallet=wallet,
+            netuids=netuids,
+            weights=weights,
+            version_key=0,
+            prompt=not cli.config.no_prompt,
+            wait_for_finalization=True,
+        )
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        parser = parser.add_parser(&#34;weights&#34;, help=&#34;&#34;&#34;Set weights for root network.&#34;&#34;&#34;)
+        parser.add_argument(&#34;--netuids&#34;, dest=&#34;netuids&#34;, type=str, required=False)
+        parser.add_argument(&#34;--weights&#34;, dest=&#34;weights&#34;, type=str, required=False)
+
+        Wallet.add_args(parser)
+        cybertensor.cwtensor.add_args(parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if not config.is_set(&#34;wallet.name&#34;) and not config.no_prompt:
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if not config.is_set(&#34;wallet.hotkey&#34;) and not config.no_prompt:
+            hotkey = Prompt.ask(&#34;Enter hotkey name&#34;, default=defaults.wallet.hotkey)
+            config.wallet.hotkey = str(hotkey)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.root.RootSetWeightsCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetWeightsCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.root.RootSetWeightsCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set weights for root network.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootGetWeightsCommand" href="#cybertensor.commands.root.RootGetWeightsCommand">RootGetWeightsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootGetWeightsCommand.add_args" href="#cybertensor.commands.root.RootGetWeightsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootGetWeightsCommand.check_config" href="#cybertensor.commands.root.RootGetWeightsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootGetWeightsCommand.run" href="#cybertensor.commands.root.RootGetWeightsCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootList" href="#cybertensor.commands.root.RootList">RootList</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootList.add_args" href="#cybertensor.commands.root.RootList.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootList.check_config" href="#cybertensor.commands.root.RootList.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootList.run" href="#cybertensor.commands.root.RootList.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootRegisterCommand" href="#cybertensor.commands.root.RootRegisterCommand">RootRegisterCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootRegisterCommand.add_args" href="#cybertensor.commands.root.RootRegisterCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootRegisterCommand.check_config" href="#cybertensor.commands.root.RootRegisterCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootRegisterCommand.run" href="#cybertensor.commands.root.RootRegisterCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootSetBoostCommand" href="#cybertensor.commands.root.RootSetBoostCommand">RootSetBoostCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootSetBoostCommand.add_args" href="#cybertensor.commands.root.RootSetBoostCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetBoostCommand.check_config" href="#cybertensor.commands.root.RootSetBoostCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetBoostCommand.run" href="#cybertensor.commands.root.RootSetBoostCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootSetSlashCommand" href="#cybertensor.commands.root.RootSetSlashCommand">RootSetSlashCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootSetSlashCommand.add_args" href="#cybertensor.commands.root.RootSetSlashCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetSlashCommand.check_config" href="#cybertensor.commands.root.RootSetSlashCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetSlashCommand.run" href="#cybertensor.commands.root.RootSetSlashCommand.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.commands.root.RootSetWeightsCommand" href="#cybertensor.commands.root.RootSetWeightsCommand">RootSetWeightsCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.root.RootSetWeightsCommand.add_args" href="#cybertensor.commands.root.RootSetWeightsCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetWeightsCommand.check_config" href="#cybertensor.commands.root.RootSetWeightsCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.root.RootSetWeightsCommand.run" href="#cybertensor.commands.root.RootSetWeightsCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

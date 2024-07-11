@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.ctlogging API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.ctlogging</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.ctlogging.logging"><code class="flex name class">
+<span>class <span class="ident">logging</span></span>
+<span>(</span><span>config: Optional[ForwardRef('Config')] = None, level: Optional[int] = None, debug: Optional[bool] = None, trace: Optional[bool] = None, record_log: Optional[bool] = None, logging_dir: Optional[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Standardized logging for cybertensor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class logging:
+    &#34;&#34;&#34;Standardized logging for cybertensor.&#34;&#34;&#34;
+
+    __has_been_inited__: bool = False
+    __debug_on__: bool = False
+    __trace_on__: bool = False
+    __std_sink__: int = None
+    __file_sink__: int = None
+    __off__: bool = False
+
+    @classmethod
+    def off(cls):
+        &#34;&#34;&#34;Turn off all logging output.&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        cls.__off__ = True
+
+        for handler_id in list(logger._core.handlers):
+            logger.remove(handler_id)
+
+    @classmethod
+    def on(cls):
+        &#34;&#34;&#34;Turn on logging output by re-adding the sinks.&#34;&#34;&#34;
+        if cls.__off__:
+            cls.__off__ = False
+
+            cls.__std_sink__ = logger.add(
+                sys.stdout,
+                level=0,
+                filter=cls.log_filter,
+                colorize=True,
+                enqueue=True,
+                backtrace=True,
+                diagnose=True,
+                format=cls.log_formatter,
+            )
+
+            # Check if logging to file was originally enabled and re-add the file sink
+            if cls.__file_sink__ is not None:
+                config = cls.config()
+                filepath = config.logging.logging_dir + &#34;/logs.log&#34;
+                cls.__file_sink__ = logger.add(
+                    filepath,
+                    filter=cls.log_save_filter,
+                    enqueue=True,
+                    backtrace=True,
+                    diagnose=True,
+                    format=cls.log_save_formatter,
+                    rotation=&#34;25 MB&#34;,
+                    retention=&#34;10 days&#34;,
+                )
+
+            cls.set_debug(cls.__debug_on__)
+            cls.set_trace(cls.__trace_on__)
+
+    def __new__(
+        cls,
+        config: Optional[&#34;Config&#34;] = None,
+        level: Optional[int] = None,
+        debug: Optional[bool] = None,
+        trace: Optional[bool] = None,
+        record_log: Optional[bool] = None,
+        logging_dir: Optional[str] = None,
+    ):
+        r&#34;&#34;&#34;Instantiate cybertensor logging system backend.
+        Args:
+            config (Config, optional):
+                cybertensor.logging.config()
+            level (int, optional):
+                logger level in numeric value.
+            debug (bool, optional):
+                Turn on debug.
+            trace (bool, optional):
+                Turn on trace.
+            record_log (bool, optional):
+                If ``True``, logs are saved to logging dir.
+            logging_dir (str, optional):
+                Directory where logs are sunk.
+        &#34;&#34;&#34;
+
+        cls.__has_been_inited__ = True
+
+        if config is None:
+            config = logging.config()
+        config = copy.deepcopy(config)
+        config.logging.debug = debug if debug is not None else config.logging.debug
+        config.logging.trace = trace if trace is not None else config.logging.trace
+        config.logging.level = (
+            level if level is not None else config.logging.level if config.logging.level is not None else 20
+        )
+        config.logging.record_log = (
+            record_log if record_log is not None else config.logging.record_log
+        )
+        config.logging.logging_dir = (
+            logging_dir if logging_dir is not None else config.logging.logging_dir
+        )
+
+        # Remove default sink.
+        try:
+            logger.remove(0)
+        except Exception:
+            pass
+
+        # Optionally Remove other sinks.
+        if cls.__std_sink__ is not None:
+            logger.remove(cls.__std_sink__)
+        if cls.__file_sink__ is not None:
+            logger.remove(cls.__file_sink__)
+
+        # Add filtered sys.stdout.
+        cls.__std_sink__ = logger.add(
+            sys.stdout,
+            level=config.logging.level,
+            filter=cls.log_filter,
+            colorize=True,
+            enqueue=True,
+            backtrace=True,
+            diagnose=True,
+            format=cls.log_formatter,
+        )
+
+        cls.set_debug(config.logging.debug)
+        cls.set_trace(config.logging.trace)
+
+        # ---- Setup logging to root ----
+        if config.logging.record_log:
+            filepath = config.logging.logging_dir + &#34;/logs.log&#34;
+            cls.__file_sink__ = logger.add(
+                filepath,
+                filter=cls.log_save_filter,
+                enqueue=True,
+                backtrace=True,
+                diagnose=True,
+                format=cls.log_save_formatter,
+                rotation=&#34;25 MB&#34;,
+                retention=&#34;10 days&#34;,
+            )
+
+    @classmethod
+    def config(cls):
+        &#34;&#34;&#34;Get config from the argument parser.
+
+        Return:
+            Config object
+        &#34;&#34;&#34;
+        parser = argparse.ArgumentParser()
+        logging.add_args(parser)
+        return Config(parser, args=[])
+
+    @classmethod
+    def help(cls):
+        &#34;&#34;&#34;Print help to stdout&#34;&#34;&#34;
+        parser = argparse.ArgumentParser()
+        cls.add_args(parser)
+        print(cls.__new__.__doc__)
+        parser.print_help()
+
+    @classmethod
+    def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
+        &#34;&#34;&#34;Accept specific arguments fro parser&#34;&#34;&#34;
+        prefix_str = &#34;&#34; if prefix is None else prefix + &#34;.&#34;
+        try:
+            default_logging_debug = os.getenv(&#34;CT_LOGGING_DEBUG&#34;) or False
+            default_logging_trace = os.getenv(&#34;CT_LOGGING_TRACE&#34;) or False
+            default_logging_record_log = os.getenv(&#34;CT_LOGGING_RECORD_LOG&#34;) or False
+            default_logging_logging_dir = (
+                os.getenv(&#34;CT_LOGGING_LOGGING_DIR&#34;) or &#34;~/.cybertensor/miners&#34;
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.debug&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor debugging information.&#34;&#34;&#34;,
+                default=default_logging_debug,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.trace&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Turn on cybertensor trace level information.&#34;&#34;&#34;,
+                default=default_logging_trace,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.level&#34;,
+                type=int,
+                help=&#34;&#34;&#34;The default logging level in numeric values.&#34;&#34;&#34;,
+                default=None,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.record_log&#34;,
+                action=&#34;store_true&#34;,
+                help=&#34;&#34;&#34;Turns on logging to file.&#34;&#34;&#34;,
+                default=default_logging_record_log,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;logging.logging_dir&#34;,
+                type=str,
+                help=&#34;&#34;&#34;Logging default root directory.&#34;&#34;&#34;,
+                default=default_logging_logging_dir,
+            )
+        except argparse.ArgumentError:
+            # re-parsing arguments.
+            pass
+
+    @classmethod
+    def check_config(cls, config: &#34;Config&#34;):
+        &#34;&#34;&#34;Check config&#34;&#34;&#34;
+        assert config.logging
+
+    @classmethod
+    def set_debug(cls, debug_on: bool = True):
+        &#34;&#34;&#34;Set debug for the specific cls class&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        cls.__debug_on__ = debug_on
+
+    @classmethod
+    def set_trace(cls, trace_on: bool = True):
+        &#34;&#34;&#34;Set trace back for the specific cls class&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        cls.__trace_on__ = trace_on
+
+    @classmethod
+    def get_level(cls) -&gt; int:
+        return 5 if cls.__trace_on__ else 10 if cls.__debug_on__ else 20
+
+    @classmethod
+    def log_filter(cls, record):
+        &#34;&#34;&#34;Filter out debug log if debug is not on&#34;&#34;&#34;
+        if cls.get_level() &lt;= record[&#34;level&#34;].no:
+            return True
+        else:
+            return False
+
+    @classmethod
+    def log_save_filter(cls, record):
+        if cls.get_level() &lt; record[&#34;level&#34;].no:
+            return True
+        else:
+            return False
+
+    @classmethod
+    def log_formatter(cls, record):
+        &#34;&#34;&#34;Log with different format according to record[&#39;extra&#39;]&#34;&#34;&#34;
+        return &#34;&lt;blue&gt;{time:YYYY-MM-DD HH:mm:ss.SSS}&lt;/blue&gt; | &lt;level&gt;{level: ^16}&lt;/level&gt; | {message}\n&#34;
+
+    @classmethod
+    def log_save_formatter(cls, record):
+        if cls.__trace_on__:
+            return &#34;{time:YYYY-MM-DD HH:mm:ss.SSS} | &lt;level&gt;{level: ^16}&lt;/level&gt; | &lt;cyan&gt;{name}&lt;/cyan&gt;:&lt;cyan&gt;{function}&lt;/cyan&gt;:&lt;cyan&gt;{line}&lt;/cyan&gt; | {message}\n&#34;
+        else:
+            return &#34;{time:YYYY-MM-DD HH:mm:ss.SSS} | &lt;level&gt;{level: ^16}&lt;/level&gt; | {message}\n&#34;
+
+    @classmethod
+    def _format(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Format logging message&#34;&#34;&#34;
+        if isinstance(prefix, torch.Tensor):
+            prefix = prefix.detach()
+        if sufix is not None:
+            if isinstance(sufix, torch.Tensor):
+                sufix = &#34;shape: {}&#34;.format(str(sufix.shape)) + &#34; data: {}&#34;.format(
+                    str(sufix.detach())
+                )
+            else:
+                sufix = &#34;{}&#34;.format(str(sufix))
+        else:
+            sufix = &#34;&#34;
+        log_msg = str(prefix).ljust(30) + str(sufix)
+        return _remove_loguru_ansi_directive(log_msg)
+
+    @classmethod
+    def success(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Success logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.success(cls._format(prefix, sufix))
+
+    @classmethod
+    def warning(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Warning logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.warning(cls._format(prefix, sufix))
+
+    @classmethod
+    def error(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Error logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.error(cls._format(prefix, sufix))
+
+    @classmethod
+    def info(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Info logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.info(cls._format(prefix, sufix))
+
+    @classmethod
+    def debug(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Info logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.debug(cls._format(prefix, sufix))
+
+    @classmethod
+    def trace(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Info logging&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.trace(cls._format(prefix, sufix))
+
+    @classmethod
+    def exception(cls, prefix: object, sufix: object = None):
+        &#34;&#34;&#34;Exception logging with traceback&#34;&#34;&#34;
+        if not cls.__has_been_inited__:
+            cls()
+        logger.exception(cls._format(prefix, sufix))</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.ctlogging.logging.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser, prefix: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accept specific arguments fro parser</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check config</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.config"><code class="name flex">
+<span>def <span class="ident">config</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get config from the argument parser.</p>
+<h2 id="return">Return</h2>
+<p>Config object</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.debug"><code class="name flex">
+<span>def <span class="ident">debug</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Info logging</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.error"><code class="name flex">
+<span>def <span class="ident">error</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Error logging</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.exception"><code class="name flex">
+<span>def <span class="ident">exception</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Exception logging with traceback</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.get_level"><code class="name flex">
+<span>def <span class="ident">get_level</span></span>(<span>) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.help"><code class="name flex">
+<span>def <span class="ident">help</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Print help to stdout</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.info"><code class="name flex">
+<span>def <span class="ident">info</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Info logging</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.log_filter"><code class="name flex">
+<span>def <span class="ident">log_filter</span></span>(<span>record)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Filter out debug log if debug is not on</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.log_formatter"><code class="name flex">
+<span>def <span class="ident">log_formatter</span></span>(<span>record)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Log with different format according to record['extra']</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.log_save_filter"><code class="name flex">
+<span>def <span class="ident">log_save_filter</span></span>(<span>record)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.log_save_formatter"><code class="name flex">
+<span>def <span class="ident">log_save_formatter</span></span>(<span>record)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.off"><code class="name flex">
+<span>def <span class="ident">off</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Turn off all logging output.</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.on"><code class="name flex">
+<span>def <span class="ident">on</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Turn on logging output by re-adding the sinks.</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.set_debug"><code class="name flex">
+<span>def <span class="ident">set_debug</span></span>(<span>debug_on: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set debug for the specific cls class</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.set_trace"><code class="name flex">
+<span>def <span class="ident">set_trace</span></span>(<span>trace_on: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set trace back for the specific cls class</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.success"><code class="name flex">
+<span>def <span class="ident">success</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Success logging</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.trace"><code class="name flex">
+<span>def <span class="ident">trace</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Info logging</p></div>
+</dd>
+<dt id="cybertensor.ctlogging.logging.warning"><code class="name flex">
+<span>def <span class="ident">warning</span></span>(<span>prefix: object, sufix: object = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Warning logging</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.ctlogging.logging" href="#cybertensor.ctlogging.logging">logging</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.ctlogging.logging.add_args" href="#cybertensor.ctlogging.logging.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.check_config" href="#cybertensor.ctlogging.logging.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.config" href="#cybertensor.ctlogging.logging.config">config</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.debug" href="#cybertensor.ctlogging.logging.debug">debug</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.error" href="#cybertensor.ctlogging.logging.error">error</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.exception" href="#cybertensor.ctlogging.logging.exception">exception</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.get_level" href="#cybertensor.ctlogging.logging.get_level">get_level</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.help" href="#cybertensor.ctlogging.logging.help">help</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.info" href="#cybertensor.ctlogging.logging.info">info</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.log_filter" href="#cybertensor.ctlogging.logging.log_filter">log_filter</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.log_formatter" href="#cybertensor.ctlogging.logging.log_formatter">log_formatter</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.log_save_filter" href="#cybertensor.ctlogging.logging.log_save_filter">log_save_filter</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.log_save_formatter" href="#cybertensor.ctlogging.logging.log_save_formatter">log_save_formatter</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.off" href="#cybertensor.ctlogging.logging.off">off</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.on" href="#cybertensor.ctlogging.logging.on">on</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.set_debug" href="#cybertensor.ctlogging.logging.set_debug">set_debug</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.set_trace" href="#cybertensor.ctlogging.logging.set_trace">set_trace</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.success" href="#cybertensor.ctlogging.logging.success">success</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.trace" href="#cybertensor.ctlogging.logging.trace">trace</a></code></li>
+<li><code><a title="cybertensor.ctlogging.logging.warning" href="#cybertensor.ctlogging.logging.warning">warning</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.utils.registration API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.utils.registration</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.utils.registration.create_pow"><code class="name flex">
+<span>def <span class="ident">create_pow</span></span>(<span>cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>, wallet: <a title="cybertensor.wallet.Wallet" href="../wallet.html#cybertensor.wallet.Wallet">Wallet</a>, netuid: int, output_in_place: bool = True, cuda: bool = False, dev_id: Union[List[int], int] = 0, tpb: int = 256, num_processes: int = None, update_interval: int = None, log_verbose: bool = False) ‑> Optional[Dict[str, Any]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a proof of work for the given cwtensor and wallet.</p>
+<h2 id="args">Args</h2>
+<p>cwtensor (:obj:<code><a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a></code>, <code>required</code>):
+The cwtensor to create a proof of work for.
+wallet (:obj:<code>Wallet.wallet</code>, <code>required</code>):
+The wallet to create a proof of work for.
+netuid (:obj:<code>int</code>, <code>required</code>):
+The netuid for the subnet to create a proof of work for.
+output_in_place (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>True</code>):
+If true, prints the progress of the proof of work to the console
+in-place. Meaning the progress is printed on the same lines.
+cuda (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>False</code>):
+If true, uses CUDA to solve the proof of work.
+dev_id (:obj:<code>Union[List[int], int]</code>, <code>optional</code>, defaults to :obj:<code>0</code>):
+The CUDA device id(s) to use. If cuda is true and dev_id is a list,
+then multiple CUDA devices will be used to solve the proof of work.
+tpb (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>256</code>):
+The number of threads per block to use when solving the proof of work.
+Should be a multiple of 32.
+num_processes (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>None</code>):
+The number of processes to use when solving the proof of work.
+If None, then the number of processes is equal to the number of
+CPU cores.
+update_interval (:obj:<code>int</code>, <code>optional</code>, defaults to :obj:<code>None</code>):
+The number of nonces to run before checking for a new block.
+log_verbose (:obj:<code>bool</code>, <code>optional</code>, defaults to :obj:<code>False</code>):
+If true, prints the progress of the proof of work more verbosely.</p>
+<h2 id="returns">Returns</h2>
+<p>:obj:<code>Optional[Dict[str, Any]]</code>: The proof of work solution or None if
+the wallet is already registered or there is a different error.</p>
+<h2 id="raises">Raises</h2>
+<p>:obj:<code>ValueError</code>: If the subnet does not exist.</p></div>
+</dd>
+<dt id="cybertensor.utils.registration.get_cpu_count"><code class="name flex">
+<span>def <span class="ident">get_cpu_count</span></span>(<span>) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.utils.registration.CUDAException"><code class="flex name class">
+<span>class <span class="ident">CUDAException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An exception raised when an error occurs in the CUDA environment.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CUDAException(Exception):
+    &#34;&#34;&#34;An exception raised when an error occurs in the CUDA environment.&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution"><code class="flex name class">
+<span>class <span class="ident">POWSolution</span></span>
+<span>(</span><span>nonce: int, block_number: int, difficulty: int, seal: bytes)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A solution to the registration PoW problem.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class POWSolution:
+    &#34;&#34;&#34;A solution to the registration PoW problem.&#34;&#34;&#34;
+
+    nonce: int
+    block_number: int
+    difficulty: int
+    seal: bytes
+
+    def is_stale(self, cwtensor: &#34;cybertensor.cwtensor&#34;) -&gt; bool:
+        &#34;&#34;&#34;Returns True if the POW is stale.
+        This means the block the POW is solved for is within 3 blocks of the current block.
+        &#34;&#34;&#34;
+        return self.block_number &lt; cwtensor.get_current_block() - 3</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.POWSolution.block_number"><code class="name">var <span class="ident">block_number</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.difficulty"><code class="name">var <span class="ident">difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.nonce"><code class="name">var <span class="ident">nonce</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.POWSolution.seal"><code class="name">var <span class="ident">seal</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.utils.registration.POWSolution.is_stale"><code class="name flex">
+<span>def <span class="ident">is_stale</span></span>(<span>self, cwtensor: <a title="cybertensor.cwtensor" href="../cwtensor.html">cybertensor.cwtensor</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if the POW is stale.
+This means the block the POW is solved for is within 3 blocks of the current block.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics"><code class="flex name class">
+<span>class <span class="ident">RegistrationStatistics</span></span>
+<span>(</span><span>time_spent_total: float, rounds_total: int, time_average: float, time_spent: float, hash_rate_perpetual: float, hash_rate: float, difficulty: int, block_number: int, block_hash: bytes)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Statistics for a registration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class RegistrationStatistics:
+    &#34;&#34;&#34;Statistics for a registration.&#34;&#34;&#34;
+
+    time_spent_total: float
+    rounds_total: int
+    time_average: float
+    time_spent: float
+    hash_rate_perpetual: float
+    hash_rate: float
+    difficulty: int
+    block_number: int
+    block_hash: bytes</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.block_hash"><code class="name">var <span class="ident">block_hash</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.block_number"><code class="name">var <span class="ident">block_number</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.difficulty"><code class="name">var <span class="ident">difficulty</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.hash_rate"><code class="name">var <span class="ident">hash_rate</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual"><code class="name">var <span class="ident">hash_rate_perpetual</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.rounds_total"><code class="name">var <span class="ident">rounds_total</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_average"><code class="name">var <span class="ident">time_average</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_spent"><code class="name">var <span class="ident">time_spent</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatistics.time_spent_total"><code class="name">var <span class="ident">time_spent_total</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger"><code class="flex name class">
+<span>class <span class="ident">RegistrationStatisticsLogger</span></span>
+<span>(</span><span>console: rich.console.Console, output_in_place: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Logs statistics for a registration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegistrationStatisticsLogger:
+    &#34;&#34;&#34;Logs statistics for a registration.&#34;&#34;&#34;
+
+    console: rich_console.Console
+    status: Optional[rich_status.Status]
+
+    def __init__(
+        self, console: rich_console.Console, output_in_place: bool = True
+    ) -&gt; None:
+        self.console = console
+
+        if output_in_place:
+            self.status = self.console.status(&#34;Solving&#34;)
+        else:
+            self.status = None
+
+    def start(self) -&gt; None:
+        if self.status is not None:
+            self.status.start()
+
+    def stop(self) -&gt; None:
+        if self.status is not None:
+            self.status.stop()
+
+    def get_status_message(
+        cls, stats: RegistrationStatistics, verbose: bool = False
+    ) -&gt; str:
+        message = (
+            &#34;Solving\n&#34;
+            + f&#34;Time Spent (total): [bold white]{timedelta(seconds=stats.time_spent_total)}[/bold white]\n&#34;
+            + (
+                f&#34;Time Spent This Round: {timedelta(seconds=stats.time_spent)}\n&#34;
+                + f&#34;Time Spent Average: {timedelta(seconds=stats.time_average)}\n&#34;
+                if verbose
+                else &#34;&#34;
+            )
+            + f&#34;Registration Difficulty: [bold white]{millify(stats.difficulty)}[/bold white]\n&#34;
+            + f&#34;Iters (Inst/Perp): [bold white]{get_human_readable(stats.hash_rate, &#39;H&#39;)}/s / &#34;
+            + f&#34;{get_human_readable(stats.hash_rate_perpetual, &#39;H&#39;)}/s[/bold white]\n&#34;
+            + f&#34;Block Number: [bold white]{stats.block_number}[/bold white]\n&#34;
+            + f&#34;Block Hash: [bold white]{stats.block_hash.encode(&#39;utf-8&#39;)}[/bold white]\n&#34;
+        )
+        return message
+
+    def update(self, stats: RegistrationStatistics, verbose: bool = False) -&gt; None:
+        if self.status is not None:
+            self.status.update(self.get_status_message(stats, verbose=verbose))
+        else:
+            self.console.log(self.get_status_message(stats, verbose=verbose))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.console"><code class="name">var <span class="ident">console</span> : rich.console.Console</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.status"><code class="name">var <span class="ident">status</span> : Optional[rich.status.Status]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message"><code class="name flex">
+<span>def <span class="ident">get_status_message</span></span>(<span>cls, stats: <a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a>, verbose: bool = False) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.start"><code class="name flex">
+<span>def <span class="ident">start</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.stop"><code class="name flex">
+<span>def <span class="ident">stop</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.utils.registration.RegistrationStatisticsLogger.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, stats: <a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a>, verbose: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.utils" href="index.html">cybertensor.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.utils.registration.create_pow" href="#cybertensor.utils.registration.create_pow">create_pow</a></code></li>
+<li><code><a title="cybertensor.utils.registration.get_cpu_count" href="#cybertensor.utils.registration.get_cpu_count">get_cpu_count</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.utils.registration.CUDAException" href="#cybertensor.utils.registration.CUDAException">CUDAException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.POWSolution" href="#cybertensor.utils.registration.POWSolution">POWSolution</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.utils.registration.POWSolution.block_number" href="#cybertensor.utils.registration.POWSolution.block_number">block_number</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.difficulty" href="#cybertensor.utils.registration.POWSolution.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.is_stale" href="#cybertensor.utils.registration.POWSolution.is_stale">is_stale</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.nonce" href="#cybertensor.utils.registration.POWSolution.nonce">nonce</a></code></li>
+<li><code><a title="cybertensor.utils.registration.POWSolution.seal" href="#cybertensor.utils.registration.POWSolution.seal">seal</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.RegistrationStatistics" href="#cybertensor.utils.registration.RegistrationStatistics">RegistrationStatistics</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.block_hash" href="#cybertensor.utils.registration.RegistrationStatistics.block_hash">block_hash</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.block_number" href="#cybertensor.utils.registration.RegistrationStatistics.block_number">block_number</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.difficulty" href="#cybertensor.utils.registration.RegistrationStatistics.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.hash_rate" href="#cybertensor.utils.registration.RegistrationStatistics.hash_rate">hash_rate</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual" href="#cybertensor.utils.registration.RegistrationStatistics.hash_rate_perpetual">hash_rate_perpetual</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.rounds_total" href="#cybertensor.utils.registration.RegistrationStatistics.rounds_total">rounds_total</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_average" href="#cybertensor.utils.registration.RegistrationStatistics.time_average">time_average</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_spent" href="#cybertensor.utils.registration.RegistrationStatistics.time_spent">time_spent</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatistics.time_spent_total" href="#cybertensor.utils.registration.RegistrationStatistics.time_spent_total">time_spent_total</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger" href="#cybertensor.utils.registration.RegistrationStatisticsLogger">RegistrationStatisticsLogger</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.console" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.console">console</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.get_status_message">get_status_message</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.start" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.start">start</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.status" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.status">status</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.stop" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.stop">stop</a></code></li>
+<li><code><a title="cybertensor.utils.registration.RegistrationStatisticsLogger.update" href="#cybertensor.utils.registration.RegistrationStatisticsLogger.update">update</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

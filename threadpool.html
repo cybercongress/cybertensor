@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.threadpool API documentation</title>
+<meta name="description" content="Implements `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.threadpool</code></h1>
+</header>
+<section id="section-intro">
+<p>Implements <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_.</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.threadpool.BrokenThreadPool"><code class="flex name class">
+<span>class <span class="ident">BrokenThreadPool</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raised when a worker thread in a <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_ failed initializing.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BrokenThreadPool(_base.BrokenExecutor):
+    &#34;&#34;&#34;
+    Raised when a worker thread in a `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ failed initializing.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>concurrent.futures._base.BrokenExecutor</li>
+<li>builtins.RuntimeError</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor"><code class="flex name class">
+<span>class <span class="ident">PriorityThreadPoolExecutor</span></span>
+<span>(</span><span>maxsize=-1, max_workers=None, thread_name_prefix='', initializer=None, initargs=())</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base threadpool executor with a priority queue</p>
+<p>Initializes a new <code>ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;</code>_ instance.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>max_workers</code></strong></dt>
+<dd>The maximum number of threads that can be used to
+execute the given calls.</dd>
+<dt><strong><code>thread_name_prefix</code></strong></dt>
+<dd>An optional name prefix to give our threads.</dd>
+<dt><strong><code>initializer</code></strong></dt>
+<dd>An callable used to initialize worker threads.</dd>
+<dt><strong><code>initargs</code></strong></dt>
+<dd>A tuple of arguments to pass to the initializer.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PriorityThreadPoolExecutor(_base.Executor):
+    &#34;&#34;&#34;Base threadpool executor with a priority queue&#34;&#34;&#34;
+
+    # Used to assign unique thread names when thread_name_prefix is not supplied.
+    _counter = itertools.count().__next__
+
+    def __init__(
+        self,
+        maxsize=-1,
+        max_workers=None,
+        thread_name_prefix=&#34;&#34;,
+        initializer=None,
+        initargs=(),
+    ):
+        &#34;&#34;&#34;
+        Initializes a new `ThreadPoolExecutor &lt;https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor&gt;`_ instance.
+        Args:
+            max_workers: The maximum number of threads that can be used to
+                execute the given calls.
+            thread_name_prefix: An optional name prefix to give our threads.
+            initializer: An callable used to initialize worker threads.
+            initargs: A tuple of arguments to pass to the initializer.
+        &#34;&#34;&#34;
+        if max_workers is None:
+            # Use this number because ThreadPoolExecutor is often
+            # used to overlap I/O instead of CPU work.
+            max_workers = (os.cpu_count() or 1) * 5
+        if max_workers &lt;= 0:
+            raise ValueError(&#34;max_workers must be greater than 0&#34;)
+
+        if initializer is not None and not callable(initializer):
+            raise TypeError(&#34;initializer must be a callable&#34;)
+
+        self._max_workers = max_workers
+        self._work_queue = queue.PriorityQueue(maxsize=maxsize)
+        self._idle_semaphore = threading.Semaphore(0)
+        self._threads = set()
+        self._broken = False
+        self._shutdown = False
+        self._shutdown_lock = threading.Lock()
+        self._thread_name_prefix = thread_name_prefix or (
+            &#34;ThreadPoolExecutor-%d&#34; % self._counter()
+        )
+        self._initializer = initializer
+        self._initargs = initargs
+
+    @classmethod
+    def add_args(cls, parser: argparse.ArgumentParser, prefix: str = None):
+        &#34;&#34;&#34;Accept specific arguments from parser&#34;&#34;&#34;
+        prefix_str = &#34;&#34; if prefix is None else prefix + &#34;.&#34;
+        try:
+            default_max_workers = (
+                os.getenv(&#34;BT_PRIORITY_MAX_WORKERS&#34;)
+                if os.getenv(&#34;BT_PRIORITY_MAX_WORKERS&#34;) is not None
+                else 5
+            )
+            default_maxsize = (
+                os.getenv(&#34;BT_PRIORITY_MAXSIZE&#34;)
+                if os.getenv(&#34;BT_PRIORITY_MAXSIZE&#34;) is not None
+                else 10
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;priority.max_workers&#34;,
+                type=int,
+                help=&#34;&#34;&#34;maximum number of threads in thread pool&#34;&#34;&#34;,
+                default=default_max_workers,
+            )
+            parser.add_argument(
+                &#34;--&#34; + prefix_str + &#34;priority.maxsize&#34;,
+                type=int,
+                help=&#34;&#34;&#34;maximum size of tasks in priority queue&#34;&#34;&#34;,
+                default=default_maxsize,
+            )
+        except argparse.ArgumentError:
+            # re-parsing arguments.
+            pass
+
+    @classmethod
+    def config(cls) -&gt; &#34;Config&#34;:
+        &#34;&#34;&#34;
+        Get config from the argument parser
+
+        Return: Config object
+        &#34;&#34;&#34;
+        parser = argparse.ArgumentParser()
+        PriorityThreadPoolExecutor.add_args(parser)
+        return Config(parser, args=[])
+
+    @property
+    def is_empty(self):
+        return self._work_queue.empty()
+
+    def submit(self, fn: Callable, *args, **kwargs) -&gt; _base.Future:
+        with self._shutdown_lock:
+            if self._broken:
+                raise BrokenThreadPool(self._broken)
+
+            if self._shutdown:
+                raise RuntimeError(&#34;cannot schedule new futures after shutdown&#34;)
+            if _shutdown:
+                raise RuntimeError(
+                    &#34;cannot schedule new futures after &#34; &#34;interpreter shutdown&#34;
+                )
+
+            priority = kwargs.get(&#34;priority&#34;, random.randint(0, 1000000))
+            if priority == 0:
+                priority = random.randint(1, 100)
+            eplison = random.uniform(0, 0.01) * priority
+            start_time = time.time()
+            if &#34;priority&#34; in kwargs:
+                del kwargs[&#34;priority&#34;]
+
+            f = _base.Future()
+            w = _WorkItem(f, fn, start_time, args, kwargs)
+            self._work_queue.put((-float(priority + eplison), w), block=False)
+            self._adjust_thread_count()
+            return f
+
+    submit.__doc__ = _base.Executor.submit.__doc__
+
+    def _adjust_thread_count(self):
+        # if idle threads are available, don&#39;t spin new threads
+        if self._idle_semaphore.acquire(timeout=0):
+            return
+
+        # When the executor gets lost, the weakref callback will wake up
+        # the worker threads.
+        def weakref_cb(_, q=self._work_queue):
+            q.put(NULL_ENTRY)
+
+        num_threads = len(self._threads)
+        if num_threads &lt; self._max_workers:
+            thread_name = &#34;%s_%d&#34; % (self._thread_name_prefix or self, num_threads)
+            t = threading.Thread(
+                name=thread_name,
+                target=_worker,
+                args=(
+                    weakref.ref(self, weakref_cb),
+                    self._work_queue,
+                    self._initializer,
+                    self._initargs,
+                ),
+            )
+            t.daemon = True
+            t.start()
+            self._threads.add(t)
+            _threads_queues[t] = self._work_queue
+
+    def _initializer_failed(self):
+        with self._shutdown_lock:
+            self._broken = (
+                &#34;A thread initializer failed, the thread pool &#34; &#34;is not usable anymore&#34;
+            )
+            # Drain work queue and mark pending futures failed
+            while True:
+                try:
+                    work_item = self._work_queue.get_nowait()
+                except queue.Empty:
+                    break
+                if work_item is not None:
+                    work_item.future.set_exception(BrokenThreadPool(self._broken))
+
+    def shutdown(self, wait: bool = True):
+        with self._shutdown_lock:
+            self._shutdown = True
+            self._work_queue.put(NULL_ENTRY)
+
+        if wait:
+            for t in self._threads:
+                try:
+                    t.join(timeout=2)
+                except Exception:
+                    pass
+
+    shutdown.__doc__ = _base.Executor.shutdown.__doc__</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>concurrent.futures._base.Executor</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser, prefix: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accept specific arguments from parser</p></div>
+</dd>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.config"><code class="name flex">
+<span>def <span class="ident">config</span></span>(<span>) ‑> <a title="cybertensor.config.Config" href="config.html#cybertensor.config.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get config from the argument parser</p>
+<p>Return: Config object</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.is_empty"><code class="name">prop <span class="ident">is_empty</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_empty(self):
+    return self._work_queue.empty()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.shutdown"><code class="name flex">
+<span>def <span class="ident">shutdown</span></span>(<span>self, wait: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clean-up the resources associated with the Executor.</p>
+<p>It is safe to call this method several times. Otherwise, no other
+methods can be called after this one.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>wait</code></strong></dt>
+<dd>If True then shutdown will not return until all running
+futures have finished executing and the resources used by the
+executor have been reclaimed.</dd>
+<dt><strong><code>cancel_futures</code></strong></dt>
+<dd>If True then shutdown will cancel all pending
+futures. Futures that are completed or running will not be
+cancelled.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.threadpool.PriorityThreadPoolExecutor.submit"><code class="name flex">
+<span>def <span class="ident">submit</span></span>(<span>self, fn: Callable, *args, **kwargs) ‑> concurrent.futures._base.Future</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Submits a callable to be executed with the given arguments.</p>
+<p>Schedules the callable to be executed as fn(<em>args, </em>*kwargs) and returns
+a Future instance representing the execution of the callable.</p>
+<h2 id="returns">Returns</h2>
+<p>A Future representing the given call.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.threadpool.BrokenThreadPool" href="#cybertensor.threadpool.BrokenThreadPool">BrokenThreadPool</a></code></h4>
+</li>
+<li>
+<h4><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor" href="#cybertensor.threadpool.PriorityThreadPoolExecutor">PriorityThreadPoolExecutor</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor.add_args" href="#cybertensor.threadpool.PriorityThreadPoolExecutor.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor.config" href="#cybertensor.threadpool.PriorityThreadPoolExecutor.config">config</a></code></li>
+<li><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor.is_empty" href="#cybertensor.threadpool.PriorityThreadPoolExecutor.is_empty">is_empty</a></code></li>
+<li><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor.shutdown" href="#cybertensor.threadpool.PriorityThreadPoolExecutor.shutdown">shutdown</a></code></li>
+<li><code><a title="cybertensor.threadpool.PriorityThreadPoolExecutor.submit" href="#cybertensor.threadpool.PriorityThreadPoolExecutor.submit">submit</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

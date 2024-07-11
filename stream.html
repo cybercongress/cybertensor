@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.stream API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.stream</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.stream.BTStreamingResponseModel"><code class="flex name class">
+<span>class <span class="ident">BTStreamingResponseModel</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:func:<code><a title="cybertensor.stream.BTStreamingResponseModel" href="#cybertensor.stream.BTStreamingResponseModel">BTStreamingResponseModel</a></code> is a Pydantic model that encapsulates the token streamer callable for Pydantic validation.
+It is used within the :func:<code><a title="cybertensor.stream.StreamingSynapse" href="#cybertensor.stream.StreamingSynapse">StreamingSynapse</a></code> class to create a :func:<code>BTStreamingResponse</code> object,
+which is responsible for handling the streaming of tokens.</p>
+<p>The token streamer is a callable that takes a send function and returns an awaitable. It is responsible for generating
+the content of the streaming response, typically by processing tokens and sending them to the client.</p>
+<p>This model ensures that the token streamer conforms to the expected signature and provides a clear interface for
+passing the token streamer to the BTStreamingResponse class.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>token_streamer</code></strong></dt>
+<dd>Callable[[Send], Awaitable[None]]
+The token streamer callable, which takes a send function (provided by the ASGI server) and returns an awaitable.
+It is responsible for generating the content of the streaming response.</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BTStreamingResponseModel(BaseModel):
+    &#34;&#34;&#34;
+    :func:`BTStreamingResponseModel` is a Pydantic model that encapsulates the token streamer callable for Pydantic validation.
+    It is used within the :func:`StreamingSynapse` class to create a :func:`BTStreamingResponse` object,
+    which is responsible for handling the streaming of tokens.
+
+    The token streamer is a callable that takes a send function and returns an awaitable. It is responsible for generating
+    the content of the streaming response, typically by processing tokens and sending them to the client.
+
+    This model ensures that the token streamer conforms to the expected signature and provides a clear interface for
+    passing the token streamer to the BTStreamingResponse class.
+
+    Attributes:
+        token_streamer: Callable[[Send], Awaitable[None]]
+            The token streamer callable, which takes a send function (provided by the ASGI server) and returns an awaitable.
+            It is responsible for generating the content of the streaming response.
+    &#34;&#34;&#34;
+
+    token_streamer: Callable[[Send], Awaitable[None]]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.stream.BTStreamingResponseModel.token_streamer"><code class="name">var <span class="ident">token_streamer</span> : Callable[[Callable[[MutableMapping[str, Any]], Awaitable[None]]], Awaitable[None]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.stream.StreamingSynapse"><code class="flex name class">
+<span>class <span class="ident">StreamingSynapse</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The :func:<code><a title="cybertensor.stream.StreamingSynapse" href="#cybertensor.stream.StreamingSynapse">StreamingSynapse</a></code> class is designed to be subclassed for handling streaming responses in the Cybertensor network.
+It provides abstract methods that must be implemented by the subclass to deserialize, process streaming responses,
+and extract JSON data. It also includes a method to create a streaming response object.</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StreamingSynapse(Synapse, ABC):
+    &#34;&#34;&#34;
+    The :func:`StreamingSynapse` class is designed to be subclassed for handling streaming responses in the Cybertensor network.
+    It provides abstract methods that must be implemented by the subclass to deserialize, process streaming responses,
+    and extract JSON data. It also includes a method to create a streaming response object.
+    &#34;&#34;&#34;
+
+    class Config:
+        validate_assignment = True
+
+    class BTStreamingResponse(_StreamingResponse):
+        &#34;&#34;&#34;
+        :func:`BTStreamingResponse` is a specialized subclass of the Starlette StreamingResponse designed to handle the streaming
+        of tokens within the Cybertensor network. It is used internally by the :func:`StreamingSynapse` class to manage the response
+        streaming process, including sending headers and calling the token streamer provided by the subclass.
+
+        This class is not intended to be directly instantiated or modified by developers subclassing StreamingSynapse.
+        Instead, it is used by the :func:`create_streaming_response` method to create a response object based on the token streamer
+        provided by the subclass.
+        &#34;&#34;&#34;
+
+        def __init__(self, model: BTStreamingResponseModel, **kwargs):
+            &#34;&#34;&#34;
+            Initializes the BTStreamingResponse with the given token streamer model.
+
+            Args:
+                model: A BTStreamingResponseModel instance containing the token streamer callable, which is responsible
+                    for generating the content of the response.
+                **kwargs: Additional keyword arguments passed to the parent StreamingResponse class.
+            &#34;&#34;&#34;
+            super().__init__(content=iter(()), **kwargs)
+            self.token_streamer = model.token_streamer
+
+        async def stream_response(self, send: Send):
+            &#34;&#34;&#34;
+            Asynchronously streams the response by sending headers and calling the token streamer.
+
+            This method is responsible for initiating the response by sending the appropriate headers, including the
+            content type for event-streaming. It then calls the token streamer to generate the content and sends the
+            response body to the client.
+
+            Args:
+                send: A callable to send the response, provided by the ASGI server.
+            &#34;&#34;&#34;
+            headers = [(b&#34;content-type&#34;, b&#34;text/event-stream&#34;)] + self.raw_headers
+
+            await send(
+                {&#34;type&#34;: &#34;http.response.start&#34;, &#34;status&#34;: 200, &#34;headers&#34;: headers}
+            )
+
+            await self.token_streamer(send)
+
+            await send({&#34;type&#34;: &#34;http.response.body&#34;, &#34;body&#34;: b&#34;&#34;, &#34;more_body&#34;: False})
+
+        async def __call__(self, scope: Scope, receive: Receive, send: Send):
+            &#34;&#34;&#34;
+            Asynchronously calls the :func:`stream_response` method, allowing the BTStreamingResponse object to be used as an ASGI
+            application.
+
+            This method is part of the ASGI interface and is called by the ASGI server to handle the request and send the
+            response. It delegates to the :func:`stream_response` method to perform the actual streaming process.
+
+            Args:
+                scope: The scope of the request, containing information about the client, server, and request itself.
+                receive: A callable to receive the request, provided by the ASGI server.
+                send: A callable to send the response, provided by the ASGI server.
+            &#34;&#34;&#34;
+            await self.stream_response(send)
+
+    @abstractmethod
+    async def process_streaming_response(self, response: ClientResponse):
+        &#34;&#34;&#34;
+        Abstract method that must be implemented by the subclass.
+        This method should provide logic to handle the streaming response, such as parsing and accumulating data.
+        It is called as the response is being streamed from the network, and should be implemented to handle the specific
+        streaming data format and requirements of the subclass.
+
+        Args:
+            response: The response object to be processed, typically containing chunks of data.
+        &#34;&#34;&#34;
+        ...
+
+    @abstractmethod
+    def extract_response_json(self, response: ClientResponse) -&gt; dict:
+        &#34;&#34;&#34;
+        Abstract method that must be implemented by the subclass.
+        This method should provide logic to extract JSON data from the response, including headers and content.
+        It is called after the response has been processed and is responsible for retrieving structured data
+        that can be used by the application.
+
+        Args:
+            response: The response object from which to extract JSON data.
+        &#34;&#34;&#34;
+        ...
+
+    def create_streaming_response(
+        self, token_streamer: Callable[[Send], Awaitable[None]]
+    ) -&gt; BTStreamingResponse:
+        &#34;&#34;&#34;
+        Creates a streaming response using the provided token streamer.
+        This method can be used by the subclass to create a response object that can be sent back to the client.
+        The token streamer should be implemented to generate the content of the response according to the specific
+        requirements of the subclass.
+
+        Args:
+            token_streamer: A callable that takes a send function and returns an awaitable. It&#39;s responsible for generating the content of the response.
+
+        Returns:
+            BTStreamingResponse: The streaming response object, ready to be sent to the client.
+        &#34;&#34;&#34;
+        model_instance = BTStreamingResponseModel(token_streamer=token_streamer)
+
+        return self.BTStreamingResponse(model_instance)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a></li>
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.stream.StreamingSynapse.BTStreamingResponse"><code class="name">var <span class="ident">BTStreamingResponse</span></code></dt>
+<dd>
+<div class="desc"><p>:func:<code>BTStreamingResponse</code> is a specialized subclass of the Starlette StreamingResponse designed to handle the streaming
+of tokens within the Cybertensor network. It is used internally by the :func:<code><a title="cybertensor.stream.StreamingSynapse" href="#cybertensor.stream.StreamingSynapse">StreamingSynapse</a></code> class to manage the response
+streaming process, including sending headers and calling the token streamer provided by the subclass.</p>
+<p>This class is not intended to be directly instantiated or modified by developers subclassing StreamingSynapse.
+Instead, it is used by the :func:<code>create_streaming_response</code> method to create a response object based on the token streamer
+provided by the subclass.</p></div>
+</dd>
+<dt id="cybertensor.stream.StreamingSynapse.Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.stream.StreamingSynapse.create_streaming_response"><code class="name flex">
+<span>def <span class="ident">create_streaming_response</span></span>(<span>self, token_streamer: Callable[[Callable[[MutableMapping[str, Any]], Awaitable[None]]], Awaitable[None]]) ‑> <a title="cybertensor.stream.StreamingSynapse.BTStreamingResponse" href="#cybertensor.stream.StreamingSynapse.BTStreamingResponse">StreamingSynapse.BTStreamingResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a streaming response using the provided token streamer.
+This method can be used by the subclass to create a response object that can be sent back to the client.
+The token streamer should be implemented to generate the content of the response according to the specific
+requirements of the subclass.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>token_streamer</code></strong></dt>
+<dd>A callable that takes a send function and returns an awaitable. It's responsible for generating the content of the response.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>BTStreamingResponse</code></dt>
+<dd>The streaming response object, ready to be sent to the client.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.stream.StreamingSynapse.extract_response_json"><code class="name flex">
+<span>def <span class="ident">extract_response_json</span></span>(<span>self, response: aiohttp.client_reqrep.ClientResponse) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract method that must be implemented by the subclass.
+This method should provide logic to extract JSON data from the response, including headers and content.
+It is called after the response has been processed and is responsible for retrieving structured data
+that can be used by the application.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong></dt>
+<dd>The response object from which to extract JSON data.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.stream.StreamingSynapse.process_streaming_response"><code class="name flex">
+<span>async def <span class="ident">process_streaming_response</span></span>(<span>self, response: aiohttp.client_reqrep.ClientResponse)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract method that must be implemented by the subclass.
+This method should provide logic to handle the streaming response, such as parsing and accumulating data.
+It is called as the response is being streamed from the network, and should be implemented to handle the specific
+streaming data format and requirements of the subclass.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong></dt>
+<dd>The response object to be processed, typically containing chunks of data.</dd>
+</dl></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="cybertensor.synapse.Synapse" href="synapse.html#cybertensor.synapse.Synapse">Synapse</a></b></code>:
+<ul class="hlist">
+<li><code><a title="cybertensor.synapse.Synapse.body_hash" href="synapse.html#cybertensor.synapse.Synapse.body_hash">body_hash</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.deserialize" href="synapse.html#cybertensor.synapse.Synapse.deserialize">deserialize</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.failed_verification" href="synapse.html#cybertensor.synapse.Synapse.failed_verification">failed_verification</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.from_headers" href="synapse.html#cybertensor.synapse.Synapse.from_headers">from_headers</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.get_total_size" href="synapse.html#cybertensor.synapse.Synapse.get_total_size">get_total_size</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_blacklist" href="synapse.html#cybertensor.synapse.Synapse.is_blacklist">is_blacklist</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_failure" href="synapse.html#cybertensor.synapse.Synapse.is_failure">is_failure</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_success" href="synapse.html#cybertensor.synapse.Synapse.is_success">is_success</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.is_timeout" href="synapse.html#cybertensor.synapse.Synapse.is_timeout">is_timeout</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.parse_headers_to_inputs" href="synapse.html#cybertensor.synapse.Synapse.parse_headers_to_inputs">parse_headers_to_inputs</a></code></li>
+<li><code><a title="cybertensor.synapse.Synapse.to_headers" href="synapse.html#cybertensor.synapse.Synapse.to_headers">to_headers</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.stream.BTStreamingResponseModel" href="#cybertensor.stream.BTStreamingResponseModel">BTStreamingResponseModel</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.stream.BTStreamingResponseModel.token_streamer" href="#cybertensor.stream.BTStreamingResponseModel.token_streamer">token_streamer</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.stream.StreamingSynapse" href="#cybertensor.stream.StreamingSynapse">StreamingSynapse</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.stream.StreamingSynapse.BTStreamingResponse" href="#cybertensor.stream.StreamingSynapse.BTStreamingResponse">BTStreamingResponse</a></code></li>
+<li><code><a title="cybertensor.stream.StreamingSynapse.Config" href="#cybertensor.stream.StreamingSynapse.Config">Config</a></code></li>
+<li><code><a title="cybertensor.stream.StreamingSynapse.create_streaming_response" href="#cybertensor.stream.StreamingSynapse.create_streaming_response">create_streaming_response</a></code></li>
+<li><code><a title="cybertensor.stream.StreamingSynapse.extract_response_json" href="#cybertensor.stream.StreamingSynapse.extract_response_json">extract_response_json</a></code></li>
+<li><code><a title="cybertensor.stream.StreamingSynapse.process_streaming_response" href="#cybertensor.stream.StreamingSynapse.process_streaming_response">process_streaming_response</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

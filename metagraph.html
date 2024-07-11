@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.metagraph API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.metagraph</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="cybertensor.metagraph.get_save_dir"><code class="name flex">
+<span>def <span class="ident">get_save_dir</span></span>(<span>network: str, netuid: int) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return directory path from network and netuid.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>network</code></strong> :&ensp;<code>str</code></dt>
+<dd>Network name.</dd>
+<dt><strong><code>netuid</code></strong> :&ensp;<code>int</code></dt>
+<dd>Network UID.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Directory path.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.metagraph.latest_block_path"><code class="name flex">
+<span>def <span class="ident">latest_block_path</span></span>(<span>dir_path: str) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the latest block path from the directory.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dir_path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directory path.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Latest block path.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.metagraph.metagraph"><code class="flex name class">
+<span>class <span class="ident">metagraph</span></span>
+<span>(</span><span>netuid: int, network: str = 'space-pussy', lite: bool = True, sync: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Metagraph class representing the neural network graph.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>netuid</code></strong> :&ensp;<code>int</code></dt>
+<dd>Network UID.</dd>
+<dt><strong><code>network</code></strong> :&ensp;<code>str</code></dt>
+<dd>Network name.</dd>
+<dt><strong><code>version</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Version of the network.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Number of neurons in the graph.</dd>
+<dt><strong><code>block</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Current block number.</dd>
+<dt><strong><code>stake</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Stake of the neurons.</dd>
+<dt><strong><code>total_stake</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Total stake of the neurons.</dd>
+<dt><strong><code>ranks</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Ranks of the neurons.</dd>
+<dt><strong><code>trust</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Trust values of the neurons.</dd>
+<dt><strong><code>consensus</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Consensus values of the neurons.</dd>
+<dt><strong><code>validator_trust</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Validator trust values of the neurons.</dd>
+<dt><strong><code>incentive</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Incentive values of the neurons.</dd>
+<dt><strong><code>emission</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Emission values of the neurons.</dd>
+<dt><strong><code>dividends</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Dividends of the neurons.</dd>
+<dt><strong><code>active</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Activation state of the neurons.</dd>
+<dt><strong><code>last_update</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Last update time of the neurons.</dd>
+<dt><strong><code>validator_permit</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Validator permit state of the neurons.</dd>
+<dt><strong><code>weights</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Weights of the neurons.</dd>
+<dt><strong><code>bonds</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>Bonds of the neurons.</dd>
+<dt><strong><code>uids</code></strong> :&ensp;<code>torch.nn.Parameter</code></dt>
+<dd>UID values of the neurons.</dd>
+<dt><strong><code>axons</code></strong> :&ensp;<code>List</code></dt>
+<dd>List of axon information for the neurons.</dd>
+</dl>
+<p>Initialize the metagraph object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>netuid</code></strong> :&ensp;<code>int</code></dt>
+<dd>Network UID.</dd>
+<dt><strong><code>network</code></strong> :&ensp;<code>str</code></dt>
+<dd>Network name.</dd>
+<dt><strong><code>lite</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to use lite version of the metagraph.</dd>
+<dt><strong><code>sync</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to synchronize the metagraph.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class metagraph(torch.nn.Module):
+    &#34;&#34;&#34;
+    Metagraph class representing the neural network graph.
+
+    Attributes:
+        netuid (int): Network UID.
+        network (str): Network name.
+        version (torch.nn.Parameter): Version of the network.
+        n (torch.nn.Parameter): Number of neurons in the graph.
+        block (torch.nn.Parameter): Current block number.
+        stake (torch.nn.Parameter): Stake of the neurons.
+        total_stake (torch.nn.Parameter): Total stake of the neurons.
+        ranks (torch.nn.Parameter): Ranks of the neurons.
+        trust (torch.nn.Parameter): Trust values of the neurons.
+        consensus (torch.nn.Parameter): Consensus values of the neurons.
+        validator_trust (torch.nn.Parameter): Validator trust values of the neurons.
+        incentive (torch.nn.Parameter): Incentive values of the neurons.
+        emission (torch.nn.Parameter): Emission values of the neurons.
+        dividends (torch.nn.Parameter): Dividends of the neurons.
+        active (torch.nn.Parameter): Activation state of the neurons.
+        last_update (torch.nn.Parameter): Last update time of the neurons.
+        validator_permit (torch.nn.Parameter): Validator permit state of the neurons.
+        weights (torch.nn.Parameter): Weights of the neurons.
+        bonds (torch.nn.Parameter): Bonds of the neurons.
+        uids (torch.nn.Parameter): UID values of the neurons.
+        axons (List): List of axon information for the neurons.
+    &#34;&#34;&#34;
+
+    @property
+    def S(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Total stake of the neurons.
+
+        Returns:
+            torch.FloatTensor: Total stake.
+        &#34;&#34;&#34;
+        return self.total_stake
+
+    @property
+    def R(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Ranks of the neurons.
+
+        Returns:
+            torch.FloatTensor: Ranks.
+        &#34;&#34;&#34;
+        return self.ranks
+
+    @property
+    def I(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Incentive values of the neurons.
+
+        Returns:
+            torch.FloatTensor: Incentive values.
+        &#34;&#34;&#34;
+        return self.incentive
+
+    @property
+    def E(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Emission values of the neurons.
+
+        Returns:
+            torch.FloatTensor: Emission values.
+        &#34;&#34;&#34;
+        return self.emission
+
+    @property
+    def C(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Consensus values of the neurons.
+
+        Returns:
+            torch.FloatTensor: Consensus values.
+        &#34;&#34;&#34;
+        return self.consensus
+
+    @property
+    def T(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Trust values of the neurons.
+
+        Returns:
+            torch.FloatTensor: Trust values.
+        &#34;&#34;&#34;
+        return self.trust
+
+    @property
+    def Tv(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Validator trust values of the neurons.
+
+        Returns:
+            torch.FloatTensor: Validator trust values.
+        &#34;&#34;&#34;
+        return self.validator_trust
+
+    @property
+    def D(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Dividends of the neurons.
+
+        Returns:
+            torch.FloatTensor: Dividends.
+        &#34;&#34;&#34;
+        return self.dividends
+
+    @property
+    def B(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Bonds of the neurons.
+
+        Returns:
+            torch.FloatTensor: Bonds.
+        &#34;&#34;&#34;
+        return self.bonds
+
+    @property
+    def W(self) -&gt; torch.FloatTensor:
+        &#34;&#34;&#34;
+        Weights of the neurons.
+
+        Returns:
+            torch.FloatTensor: Weights.
+        &#34;&#34;&#34;
+        return self.weights
+
+    @property
+    def hotkeys(self) -&gt; List[str]:
+        &#34;&#34;&#34;
+        List of hotkeys for the neurons.
+
+        Returns:
+            List[str]: List of hotkeys.
+        &#34;&#34;&#34;
+        return [axon.hotkey for axon in self.axons]
+
+    @property
+    def coldkeys(self) -&gt; List[str]:
+        &#34;&#34;&#34;
+        List of coldkeys for the neurons.
+
+        Returns:
+            List[str]: List of coldkeys.
+        &#34;&#34;&#34;
+        return [axon.coldkey for axon in self.axons]
+
+    @property
+    def addresses(self) -&gt; List[str]:
+        &#34;&#34;&#34;
+        List of IP addresses for the neurons.
+
+        Returns:
+            List[str]: List of IP addresses.
+        &#34;&#34;&#34;
+        return [axon.ip_str() for axon in self.axons]
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;
+        String representation of the metagraph.
+
+        Returns:
+            str: String representation.
+        &#34;&#34;&#34;
+        return &#34;metagraph(netuid:{}, n:{}, block:{}, network:{})&#34;.format(
+            self.netuid, self.n.item(), self.block.item(), self.network
+        )
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;
+        String representation of the metagraph.
+
+        Returns:
+            str: String representation.
+        &#34;&#34;&#34;
+        return self.__str__()
+
+    def metadata(self) -&gt; dict:
+        &#34;&#34;&#34;
+        Get the metadata of the metagraph.
+
+        Returns:
+            dict: Metadata dictionary.
+        &#34;&#34;&#34;
+        return {
+            &#34;netuid&#34;: self.netuid,
+            &#34;n&#34;: self.n.item(),
+            &#34;block&#34;: self.block.item(),
+            &#34;network&#34;: self.network,
+            &#34;version&#34;: cybertensor.__version__,
+        }
+
+    def __init__(
+        self, netuid: int, network: str = &#34;space-pussy&#34;, lite: bool = True, sync: bool = True
+    ) -&gt; &#34;metagraph&#34;:
+        &#34;&#34;&#34;
+        Initialize the metagraph object.
+
+        Args:
+            netuid (int): Network UID.
+            network (str): Network name.
+            lite (bool): Whether to use lite version of the metagraph.
+            sync (bool): Whether to synchronize the metagraph.
+        &#34;&#34;&#34;
+        super(metagraph, self).__init__()
+        self.netuid = netuid
+        self.network = network
+        self.version = torch.nn.Parameter(
+            torch.tensor([cybertensor.__version_as_int__], dtype=torch.int64),
+            requires_grad=False,
+        )
+        self.n = torch.nn.Parameter(
+            torch.tensor([0], dtype=torch.int64), requires_grad=False
+        )
+        self.block = torch.nn.Parameter(
+            torch.tensor([0], dtype=torch.int64), requires_grad=False
+        )
+        self.stake = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.total_stake = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.ranks = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.trust = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.consensus = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.validator_trust = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.incentive = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.emission = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.dividends = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.active = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.int64), requires_grad=False
+        )
+        self.last_update = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.int64), requires_grad=False
+        )
+        self.validator_permit = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.bool), requires_grad=False
+        )
+        self.weights = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.float32), requires_grad=False
+        )
+        self.bonds = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.int64), requires_grad=False
+        )
+        self.uids = torch.nn.Parameter(
+            torch.tensor([], dtype=torch.int64), requires_grad=False
+        )
+        self.axons = []
+        if sync:
+            self.sync(block=None, lite=lite)
+
+    def sync(
+        self,
+        block: Optional[int] = None,
+        lite: bool = True,
+        cwtensor: Optional[&#34;cybertensor.cwtensor&#34;] = None,
+    ) -&gt; &#34;metagraph&#34;:
+        &#34;&#34;&#34;
+        Initiates the synchronization process of the metagraph.
+
+        Args:
+            block (int, optional): Block number to sync. If None, the current block is used.
+            lite (bool): Whether to use lite version of the metagraph.
+            cwtensor (cybertensor.cwtensor, optional): cwtensor object to use for syncing.
+
+        Returns:
+            metagraph: Updated metagraph object.
+        &#34;&#34;&#34;
+        # Initialize cwtensor
+        cwtensor = self._initialize_cwtensor(cwtensor)
+
+        # Assign neurons based on &#39;lite&#39; flag
+        self._assign_neurons(block, lite, cwtensor)
+
+        # Set attributes for metagraph
+        self._set_metagraph_attributes(block, cwtensor)
+
+        # If not a &#39;lite&#39; version, compute and set weights and bonds for each neuron
+        if not lite:
+            self._set_weights_and_bonds(cwtensor=cwtensor)
+
+    def _initialize_cwtensor(self, cwtensor):
+        &#34;&#34;&#34;
+        Initializes the cwtensor to be used for syncing.
+
+        Args:
+            cwtensor: The cwtensor to initialize. If None, a new cwtensor is created.
+
+        Returns:
+            cwtensor: The initialized cwtensor.
+        &#34;&#34;&#34;
+        if not cwtensor:
+            # TODO: Check and test the initialization of the new cwtensor
+            cwtensor = cybertensor.cwtensor(network=self.network)
+        return cwtensor
+
+    def _assign_neurons(self, block, lite, cwtensor):
+        &#34;&#34;&#34;
+        Assigns neurons to the metagraph based on the &#39;lite&#39; flag.
+
+        Args:
+            block: The block number for which the neurons need to be assigned.
+            lite: Flag to decide the type of neurons to be assigned.
+            cwtensor: The cwtensor to use for syncing.
+
+        Returns:
+            None.
+        &#34;&#34;&#34;
+        # TODO: Check and test the conditions for assigning neurons
+        if lite:
+            self.neurons = cwtensor.neurons_lite(block=block, netuid=self.netuid)
+        else:
+            self.neurons = cwtensor.neurons(block=block, netuid=self.netuid)
+        self.lite = lite
+
+    def _set_metagraph_attributes(self, block, cwtensor):
+        &#34;&#34;&#34;
+        Sets attributes for the metagraph.
+
+        Args:
+            block: The block number for which the attributes need to be set.
+            cwtensor: The cwtensor to use for syncing.
+
+        Returns:
+            None.
+        &#34;&#34;&#34;
+        # TODO: Check and test the setting of each attribute
+        self.n = self._create_tensor(len(self.neurons), dtype=torch.int64)
+        self.version = self._create_tensor(
+            [cybertensor.__version_as_int__], dtype=torch.int64
+        )
+        self.block = self._create_tensor(
+            block if block else cwtensor.block, dtype=torch.int64
+        )
+        self.uids = self._create_tensor(
+            [neuron.uid for neuron in self.neurons], dtype=torch.int64
+        )
+        self.trust = self._create_tensor(
+            [neuron.trust for neuron in self.neurons], dtype=torch.float32
+        )
+        self.consensus = self._create_tensor(
+            [neuron.consensus for neuron in self.neurons], dtype=torch.float32
+        )
+        self.incentive = self._create_tensor(
+            [neuron.incentive for neuron in self.neurons], dtype=torch.float32
+        )
+        self.dividends = self._create_tensor(
+            [neuron.dividends for neuron in self.neurons], dtype=torch.float32
+        )
+        self.ranks = self._create_tensor(
+            [neuron.rank for neuron in self.neurons], dtype=torch.float32
+        )
+        self.emission = self._create_tensor(
+            [neuron.emission for neuron in self.neurons], dtype=torch.float32
+        )
+        self.active = self._create_tensor(
+            [neuron.active for neuron in self.neurons], dtype=torch.int64
+        )
+        self.last_update = self._create_tensor(
+            [neuron.last_update for neuron in self.neurons], dtype=torch.int64
+        )
+        self.validator_permit = self._create_tensor(
+            [neuron.validator_permit for neuron in self.neurons], dtype=torch.bool
+        )
+        self.validator_trust = self._create_tensor(
+            [neuron.validator_trust for neuron in self.neurons], dtype=torch.float32
+        )
+        self.total_stake = self._create_tensor(
+            [neuron.total_stake.gboot for neuron in self.neurons], dtype=torch.float32
+        )
+        self.stake = self._create_tensor(
+            [neuron.stake for neuron in self.neurons], dtype=torch.float32
+        )
+        self.axons = [n.axon_info for n in self.neurons]
+
+    def _create_tensor(self, data, dtype) -&gt; torch.nn.Parameter:
+        &#34;&#34;&#34;
+        Creates a tensor parameter with the given data and dtype.
+
+        Args:
+            data: The data to be included in the tensor.
+            dtype: The datatype for the tensor.
+
+        Returns:
+            A tensor parameter.
+        &#34;&#34;&#34;
+        # TODO: Check and test the creation of tensor
+        return torch.nn.Parameter(torch.tensor(data, dtype=dtype), requires_grad=False)
+
+    def _set_weights_and_bonds(self, cwtensor: cybertensor.cwtensor = None):
+        &#34;&#34;&#34;
+        Computes and sets weights and bonds for each neuron.
+
+        Returns:
+            None.
+        &#34;&#34;&#34;
+        # TODO: Check and test the computation of weights and bonds
+        if self.netuid == 0:
+            self.weights = self._process_root_weights(
+                [neuron.weights for neuron in self.neurons], &#34;weights&#34;, cwtensor
+            )
+        else:
+            self.weights = self._process_weights_or_bonds(
+                [neuron.weights for neuron in self.neurons], &#34;weights&#34;
+            )
+            self.bonds = self._process_weights_or_bonds(
+                [neuron.bonds for neuron in self.neurons], &#34;bonds&#34;
+            )
+
+    def _process_weights_or_bonds(self, data, attribute: str) -&gt; torch.nn.Parameter:
+        &#34;&#34;&#34;
+        Processes weights or bonds based on the given attribute.
+
+        Args:
+            data: The weights or bonds data to be processed.
+            attribute: The attribute to decide the type of processing (&#39;weights&#39; or &#39;bonds&#39;).
+
+        Returns:
+            The processed tensor parameter.
+        &#34;&#34;&#34;
+        data_array = []
+        for item in data:
+            if len(item) == 0:
+                data_array.append(torch.zeros(len(self.neurons)))
+            else:
+                uids, values = zip(*item)
+                # TODO: Validate and test the conversion of uids and values to tensor
+                if attribute == &#34;weights&#34;:
+                    data_array.append(
+                        cybertensor.utils.weight_utils.convert_weight_uids_and_vals_to_tensor(
+                            len(self.neurons), uids, values
+                        )
+                    )
+                else:
+                    data_array.append(
+                        cybertensor.utils.weight_utils.convert_bond_uids_and_vals_to_tensor(
+                            len(self.neurons), uids, values
+                        )
+                    )
+        tensor_param = (
+            torch.nn.Parameter(torch.stack(data_array), requires_grad=False)
+            if len(data_array)
+            else torch.nn.Parameter()
+        )
+        if len(data_array) == 0:
+            cybertensor.logging.warning(
+                f&#34;Empty {attribute}_array on metagraph.sync(). The &#39;{attribute}&#39; tensor is empty.&#34;
+            )
+        return tensor_param
+
+    def _process_root_weights(
+        self, data, attribute: str, cwtensor: cybertensor.cwtensor
+    ) -&gt; torch.nn.Parameter:
+        &#34;&#34;&#34;
+        Processes root weights based on the given attribute.
+
+        Args:
+            data: The weights or bonds data to be processed.
+            attribute: The attribute to decide the type of processing (&#39;weights&#39; or &#39;bonds&#39;).
+
+        Returns:
+            The processed tensor parameter.
+        &#34;&#34;&#34;
+        data_array = []
+        n_subnets = cwtensor.get_total_subnets()
+        subnets = cwtensor.get_subnets()
+        for item in data:
+            if len(item) == 0:
+                data_array.append(torch.zeros(n_subnets))
+            else:
+                uids, values = zip(*item)
+                # TODO: Validate and test the conversion of uids and values to tensor
+                data_array.append(
+                    cybertensor.utils.weight_utils.convert_root_weight_uids_and_vals_to_tensor(
+                        n_subnets, uids, values, subnets
+                    )
+                )
+
+        tensor_param = (
+            torch.nn.Parameter(torch.stack(data_array), requires_grad=False)
+            if len(data_array)
+            else torch.nn.Parameter()
+        )
+        if len(data_array) == 0:
+            cybertensor.logging.warning(
+                f&#34;Empty {attribute}_array on metagraph.sync(). The &#39;{attribute}&#39; tensor is empty.&#34;
+            )
+        return tensor_param
+
+    def save(self) -&gt; &#34;metagraph&#34;:
+        &#34;&#34;&#34;
+        Save the state of the metagraph object.
+
+        Returns:
+            metagraph: Updated metagraph object.
+        &#34;&#34;&#34;
+        save_directory = get_save_dir(self.network, self.netuid)
+        os.makedirs(save_directory, exist_ok=True)
+        graph_file = save_directory + f&#34;/block-{self.block.item()}.pt&#34;
+        state_dict = self.state_dict()
+        state_dict[&#34;axons&#34;] = self.axons
+        torch.save(state_dict, graph_file)
+        state_dict = torch.load(graph_file)
+        return self
+
+    def load(self) -&gt; &#34;metagraph&#34;:
+        &#34;&#34;&#34;
+        Load the state of the metagraph object.
+
+        Returns:
+            metagraph: Updated metagraph object.
+        &#34;&#34;&#34;
+        self.load_from_path(get_save_dir(self.network, self.netuid))
+
+    def load_from_path(self, dir_path: str) -&gt; &#34;metagraph&#34;:
+        &#34;&#34;&#34;
+        Load the state of the metagraph object from the specified path.
+
+        Args:
+            dir_path (str): Directory path.
+
+        Returns:
+            metagraph: Updated metagraph object.
+        &#34;&#34;&#34;
+        graph_file = latest_block_path(dir_path)
+        state_dict = torch.load(graph_file)
+        self.n = torch.nn.Parameter(state_dict[&#34;n&#34;], requires_grad=False)
+        self.block = torch.nn.Parameter(state_dict[&#34;block&#34;], requires_grad=False)
+        self.uids = torch.nn.Parameter(state_dict[&#34;uids&#34;], requires_grad=False)
+        self.stake = torch.nn.Parameter(state_dict[&#34;stake&#34;], requires_grad=False)
+        self.total_stake = torch.nn.Parameter(
+            state_dict[&#34;total_stake&#34;], requires_grad=False
+        )
+        self.ranks = torch.nn.Parameter(state_dict[&#34;ranks&#34;], requires_grad=False)
+        self.trust = torch.nn.Parameter(state_dict[&#34;trust&#34;], requires_grad=False)
+        self.consensus = torch.nn.Parameter(
+            state_dict[&#34;consensus&#34;], requires_grad=False
+        )
+        self.validator_trust = torch.nn.Parameter(
+            state_dict[&#34;validator_trust&#34;], requires_grad=False
+        )
+        self.incentive = torch.nn.Parameter(
+            state_dict[&#34;incentive&#34;], requires_grad=False
+        )
+        self.emission = torch.nn.Parameter(state_dict[&#34;emission&#34;], requires_grad=False)
+        self.dividends = torch.nn.Parameter(
+            state_dict[&#34;dividends&#34;], requires_grad=False
+        )
+        self.active = torch.nn.Parameter(state_dict[&#34;active&#34;], requires_grad=False)
+        self.last_update = torch.nn.Parameter(
+            state_dict[&#34;last_update&#34;], requires_grad=False
+        )
+        self.validator_permit = torch.nn.Parameter(
+            state_dict[&#34;validator_permit&#34;], requires_grad=False
+        )
+        self.uids = torch.nn.Parameter(state_dict[&#34;uids&#34;], requires_grad=False)
+        self.axons = state_dict[&#34;axons&#34;]
+        if &#34;weights&#34; in state_dict:
+            self.weights = torch.nn.Parameter(
+                state_dict[&#34;weights&#34;], requires_grad=False
+            )
+        if &#34;bonds&#34; in state_dict:
+            self.bonds = torch.nn.Parameter(state_dict[&#34;bonds&#34;], requires_grad=False)
+        return self</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.nn.modules.module.Module</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="cybertensor.metagraph.metagraph.B"><code class="name">prop <span class="ident">B</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Bonds of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Bonds.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def B(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Bonds of the neurons.
+
+    Returns:
+        torch.FloatTensor: Bonds.
+    &#34;&#34;&#34;
+    return self.bonds</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.C"><code class="name">prop <span class="ident">C</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Consensus values of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Consensus values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def C(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Consensus values of the neurons.
+
+    Returns:
+        torch.FloatTensor: Consensus values.
+    &#34;&#34;&#34;
+    return self.consensus</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.D"><code class="name">prop <span class="ident">D</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Dividends of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Dividends.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def D(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Dividends of the neurons.
+
+    Returns:
+        torch.FloatTensor: Dividends.
+    &#34;&#34;&#34;
+    return self.dividends</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.E"><code class="name">prop <span class="ident">E</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Emission values of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Emission values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def E(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Emission values of the neurons.
+
+    Returns:
+        torch.FloatTensor: Emission values.
+    &#34;&#34;&#34;
+    return self.emission</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.I"><code class="name">prop <span class="ident">I</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Incentive values of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Incentive values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def I(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Incentive values of the neurons.
+
+    Returns:
+        torch.FloatTensor: Incentive values.
+    &#34;&#34;&#34;
+    return self.incentive</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.R"><code class="name">prop <span class="ident">R</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Ranks of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Ranks.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def R(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Ranks of the neurons.
+
+    Returns:
+        torch.FloatTensor: Ranks.
+    &#34;&#34;&#34;
+    return self.ranks</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.S"><code class="name">prop <span class="ident">S</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Total stake of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Total stake.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def S(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Total stake of the neurons.
+
+    Returns:
+        torch.FloatTensor: Total stake.
+    &#34;&#34;&#34;
+    return self.total_stake</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.T"><code class="name">prop <span class="ident">T</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Trust values of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Trust values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def T(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Trust values of the neurons.
+
+    Returns:
+        torch.FloatTensor: Trust values.
+    &#34;&#34;&#34;
+    return self.trust</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.Tv"><code class="name">prop <span class="ident">Tv</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Validator trust values of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Validator trust values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def Tv(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Validator trust values of the neurons.
+
+    Returns:
+        torch.FloatTensor: Validator trust values.
+    &#34;&#34;&#34;
+    return self.validator_trust</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.W"><code class="name">prop <span class="ident">W</span> : torch.FloatTensor</code></dt>
+<dd>
+<div class="desc"><p>Weights of the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>torch.FloatTensor</code></dt>
+<dd>Weights.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def W(self) -&gt; torch.FloatTensor:
+    &#34;&#34;&#34;
+    Weights of the neurons.
+
+    Returns:
+        torch.FloatTensor: Weights.
+    &#34;&#34;&#34;
+    return self.weights</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.addresses"><code class="name">prop <span class="ident">addresses</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>List of IP addresses for the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[str]</code></dt>
+<dd>List of IP addresses.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def addresses(self) -&gt; List[str]:
+    &#34;&#34;&#34;
+    List of IP addresses for the neurons.
+
+    Returns:
+        List[str]: List of IP addresses.
+    &#34;&#34;&#34;
+    return [axon.ip_str() for axon in self.axons]</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.coldkeys"><code class="name">prop <span class="ident">coldkeys</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>List of coldkeys for the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[str]</code></dt>
+<dd>List of coldkeys.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def coldkeys(self) -&gt; List[str]:
+    &#34;&#34;&#34;
+    List of coldkeys for the neurons.
+
+    Returns:
+        List[str]: List of coldkeys.
+    &#34;&#34;&#34;
+    return [axon.coldkey for axon in self.axons]</code></pre>
+</details>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.hotkeys"><code class="name">prop <span class="ident">hotkeys</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>List of hotkeys for the neurons.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[str]</code></dt>
+<dd>List of hotkeys.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def hotkeys(self) -&gt; List[str]:
+    &#34;&#34;&#34;
+    List of hotkeys for the neurons.
+
+    Returns:
+        List[str]: List of hotkeys.
+    &#34;&#34;&#34;
+    return [axon.hotkey for axon in self.axons]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.metagraph.metagraph.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>self) ‑> <a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the state of the metagraph object.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></code></dt>
+<dd>Updated metagraph object.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.load_from_path"><code class="name flex">
+<span>def <span class="ident">load_from_path</span></span>(<span>self, dir_path: str) ‑> <a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the state of the metagraph object from the specified path.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dir_path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directory path.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></code></dt>
+<dd>Updated metagraph object.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.metadata"><code class="name flex">
+<span>def <span class="ident">metadata</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the metadata of the metagraph.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Metadata dictionary.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self) ‑> <a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Save the state of the metagraph object.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></code></dt>
+<dd>Updated metagraph object.</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.metagraph.metagraph.sync"><code class="name flex">
+<span>def <span class="ident">sync</span></span>(<span>self, block: Optional[int] = None, lite: bool = True, cwtensor: Optional[ForwardRef('<a title="cybertensor.cwtensor" href="cwtensor.html">cybertensor.cwtensor</a>')] = None) ‑> <a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initiates the synchronization process of the metagraph.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>block</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Block number to sync. If None, the current block is used.</dd>
+<dt><strong><code>lite</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to use lite version of the metagraph.</dd>
+<dt><strong><code>cwtensor</code></strong> :&ensp;<code><a title="cybertensor.cwtensor" href="cwtensor.html">cybertensor.cwtensor</a></code>, optional</dt>
+<dd>cwtensor object to use for syncing.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></code></dt>
+<dd>Updated metagraph object.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor" href="index.html">cybertensor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="cybertensor.metagraph.get_save_dir" href="#cybertensor.metagraph.get_save_dir">get_save_dir</a></code></li>
+<li><code><a title="cybertensor.metagraph.latest_block_path" href="#cybertensor.metagraph.latest_block_path">latest_block_path</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.metagraph.metagraph" href="#cybertensor.metagraph.metagraph">metagraph</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.metagraph.metagraph.B" href="#cybertensor.metagraph.metagraph.B">B</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.C" href="#cybertensor.metagraph.metagraph.C">C</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.D" href="#cybertensor.metagraph.metagraph.D">D</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.E" href="#cybertensor.metagraph.metagraph.E">E</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.I" href="#cybertensor.metagraph.metagraph.I">I</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.R" href="#cybertensor.metagraph.metagraph.R">R</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.S" href="#cybertensor.metagraph.metagraph.S">S</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.T" href="#cybertensor.metagraph.metagraph.T">T</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.Tv" href="#cybertensor.metagraph.metagraph.Tv">Tv</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.W" href="#cybertensor.metagraph.metagraph.W">W</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.addresses" href="#cybertensor.metagraph.metagraph.addresses">addresses</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.coldkeys" href="#cybertensor.metagraph.metagraph.coldkeys">coldkeys</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.hotkeys" href="#cybertensor.metagraph.metagraph.hotkeys">hotkeys</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.load" href="#cybertensor.metagraph.metagraph.load">load</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.load_from_path" href="#cybertensor.metagraph.metagraph.load_from_path">load_from_path</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.metadata" href="#cybertensor.metagraph.metagraph.metadata">metadata</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.save" href="#cybertensor.metagraph.metagraph.save">save</a></code></li>
+<li><code><a title="cybertensor.metagraph.metagraph.sync" href="#cybertensor.metagraph.metagraph.sync">sync</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

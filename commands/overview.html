@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.commands.overview API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.commands.overview</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.commands.overview.OverviewCommand"><code class="flex name class">
+<span>class <span class="ident">OverviewCommand</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes the 'overview' command to present a detailed overview of the user's registered accounts on the cybertensor network.
+This command compiles and displays comprehensive information about each neuron associated with the user's wallets,
+including both hotkeys and coldkeys. It is especially useful for users managing multiple accounts or seeking a summary
+of their network activities and stake distributions.</p>
+<p>Usage:
+The command offers various options to customize the output. Users can filter the displayed data by specific netuids,
+sort by different criteria, and choose to include all wallets in the user's configuration directory. The output is
+presented in a tabular format with the following columns:
+- COLDKEY: The address of the coldkey.
+- HOTKEY: The address of the hotkey.
+- UID: Unique identifier of the neuron.
+- ACTIVE: Indicates if the neuron is active.
+- STAKE(BOOT): Amount of stake in the neuron, in BOOT.
+- RANK: The rank of the neuron within the network.
+- TRUST: Trust score of the neuron.
+- CONSENSUS: Consensus score of the neuron.
+- INCENTIVE: Incentive score of the neuron.
+- DIVIDENDS: Dividends earned by the neuron.
+- EMISSION(p): Emission received by the neuron, in Rho.
+- VTRUST: Validator trust score of the neuron.
+- VPERMIT: Indicates if the neuron has a validator permit.
+- UPDATED: Time since last update.
+- AXON: IP address and port of the neuron.
+- HOTKEY: Human-readable representation of the hotkey.</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; ctcli wallet overview
+&gt;&gt;&gt; ctcli wallet overview --all --sort_by stake --sort_order descending
+</code></pre>
+<p>Note:
+This command is read-only and does not modify the network state or account configurations. It provides a quick and
+comprehensive view of the user's network presence, making it ideal for monitoring account status, stake distribution,
+and overall contribution to the cybertensor network.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OverviewCommand:
+    &#34;&#34;&#34;
+    Executes the &#39;overview&#39; command to present a detailed overview of the user&#39;s registered accounts on the cybertensor network.
+    This command compiles and displays comprehensive information about each neuron associated with the user&#39;s wallets,
+    including both hotkeys and coldkeys. It is especially useful for users managing multiple accounts or seeking a summary
+    of their network activities and stake distributions.
+
+    Usage:
+    The command offers various options to customize the output. Users can filter the displayed data by specific netuids,
+    sort by different criteria, and choose to include all wallets in the user&#39;s configuration directory. The output is
+    presented in a tabular format with the following columns:
+    - COLDKEY: The address of the coldkey.
+    - HOTKEY: The address of the hotkey.
+    - UID: Unique identifier of the neuron.
+    - ACTIVE: Indicates if the neuron is active.
+    - STAKE(BOOT): Amount of stake in the neuron, in BOOT.
+    - RANK: The rank of the neuron within the network.
+    - TRUST: Trust score of the neuron.
+    - CONSENSUS: Consensus score of the neuron.
+    - INCENTIVE: Incentive score of the neuron.
+    - DIVIDENDS: Dividends earned by the neuron.
+    - EMISSION(p): Emission received by the neuron, in Rho.
+    - VTRUST: Validator trust score of the neuron.
+    - VPERMIT: Indicates if the neuron has a validator permit.
+    - UPDATED: Time since last update.
+    - AXON: IP address and port of the neuron.
+    - HOTKEY: Human-readable representation of the hotkey.
+
+    Example usage:
+    &gt;&gt;&gt; ctcli wallet overview
+    &gt;&gt;&gt; ctcli wallet overview --all --sort_by stake --sort_order descending
+
+    Note:
+    This command is read-only and does not modify the network state or account configurations. It provides a quick and
+    comprehensive view of the user&#39;s network presence, making it ideal for monitoring account status, stake distribution,
+    and overall contribution to the cybertensor network.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def run(cli: &#34;cybertensor.cli&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
+        r&#34;&#34;&#34;Prints an overview for the wallet&#39;s colkey.&#34;&#34;&#34;
+        try:
+            cwtensor = cybertensor.cwtensor(config=cli.config, log_verbose=False)
+            OverviewCommand._run(cli, cwtensor, max_len_netuids=max_len_netuids, max_len_keys=max_len_keys)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+    @staticmethod
+    def _run(cli: &#34;cybertensor.cli&#34;, cwtensor: &#34;cybertensor.cwtensor&#34;, max_len_netuids: int = 5, max_len_keys: int = 5):
+        wallet = Wallet(config=cli.config)
+
+        all_hotkeys = []
+        total_balance = Balance(0)
+
+        # We are printing for every coldkey.
+        if cli.config.get(&#34;all&#34;, d=None):
+            cold_wallets = get_coldkey_wallets_for_path(cli.config.wallet.path)
+            for cold_wallet in tqdm(cold_wallets, desc=&#34;Pulling balances&#34;):
+                if (
+                    cold_wallet.coldkeypub_file.exists_on_device()
+                    and not cold_wallet.coldkeypub_file.is_encrypted()
+                ):
+                    total_balance = total_balance + cwtensor.get_balance(
+                        cold_wallet.coldkeypub.address
+                    )
+            all_hotkeys = get_all_wallets_for_path(cli.config.wallet.path)
+        else:
+            # We are only printing keys for a single coldkey
+            coldkey_wallet = Wallet(config=cli.config)
+            if (
+                coldkey_wallet.coldkeypub_file.exists_on_device()
+                and not coldkey_wallet.coldkeypub_file.is_encrypted()
+            ):
+                total_balance = cwtensor.get_balance(
+                    coldkey_wallet.coldkeypub.address
+                )
+            if not coldkey_wallet.coldkeypub_file.exists_on_device():
+                console.print(&#34;[bold red]No wallets found.&#34;)
+                return
+            all_hotkeys = get_hotkey_wallets_for_wallet(coldkey_wallet)
+
+        # We are printing for a select number of hotkeys from all_hotkeys.
+
+        if cli.config.get(&#34;hotkeys&#34;, []):
+            if not cli.config.get(&#34;all_hotkeys&#34;, False):
+                # We are only showing hotkeys that are specified.
+                all_hotkeys = [
+                    hotkey
+                    for hotkey in all_hotkeys
+                    if hotkey.hotkey_str in cli.config.hotkeys
+                ]
+            else:
+                # We are excluding the specified hotkeys from all_hotkeys.
+                all_hotkeys = [
+                    hotkey
+                    for hotkey in all_hotkeys
+                    if hotkey.hotkey_str not in cli.config.hotkeys
+                ]
+
+        # Check we have keys to display.
+        if len(all_hotkeys) == 0:
+            console.print(&#34;[red]No wallets found.[/red]&#34;)
+            return
+
+        # Pull neuron info for all keys.
+        neurons: Dict[str, List[cybertensor.NeuronInfoLite]] = {}
+        block = cwtensor.block
+
+        netuids = cwtensor.get_all_subnet_netuids()
+        netuids = filter_netuids_by_registered_hotkeys(
+            cli, cwtensor, netuids, all_hotkeys
+        )
+        cybertensor.logging.debug(f&#34;Netuids to check: {netuids}&#34;)
+
+        for netuid in netuids:
+            neurons[str(netuid)] = []
+
+        all_wallet_names = set([wallet.name for wallet in all_hotkeys])
+        all_coldkey_wallets = [
+            Wallet(name=wallet_name, path=cli.config.wallet.path) for wallet_name in all_wallet_names
+        ]
+
+        hotkey_coldkey_to_hotkey_wallet = {}
+        for hotkey_wallet in all_hotkeys:
+            if hotkey_wallet.hotkey.address not in hotkey_coldkey_to_hotkey_wallet:
+                hotkey_coldkey_to_hotkey_wallet[hotkey_wallet.hotkey.address] = {}
+
+            hotkey_coldkey_to_hotkey_wallet[hotkey_wallet.hotkey.address][
+                hotkey_wallet.coldkeypub.address
+            ] = hotkey_wallet
+
+        all_hotkey_addresses = list(hotkey_coldkey_to_hotkey_wallet.keys())
+        with console.status(
+            &#34;:satellite: Syncing with chain: [white]{}[/white] ...&#34;.format(
+                cli.config.cwtensor.get(
+                    &#34;network&#34;, defaults.cwtensor.network
+                )
+            )
+        ):
+
+            # Pull neuron info for all keys.
+            ## Max len(netuids) or 5 threads.
+
+            for netuid in netuids[:max_len_netuids]:
+                netuid, neurons_result, err_msg = \
+                    OverviewCommand._get_neurons_for_netuid((cli.config, netuid, all_hotkey_addresses))
+                if err_msg is not None:
+                    console.print(f&#34;netuid &#39;{netuid}&#39;: {err_msg}&#34;)
+                if len(neurons_result) == 0:
+                    # Remove netuid from overview if no neurons are found.
+                    netuids.remove(netuid)
+                    del neurons[str(netuid)]
+                else:
+                    # Add neurons to overview.
+                    neurons[str(netuid)] = neurons_result
+
+            total_coldkey_stake_from_metagraph = defaultdict(
+                lambda: Balance(0.0)
+            )
+            checked_hotkeys = set()
+            for neuron_list in neurons.values():
+                for neuron in neuron_list:
+                    if neuron.hotkey in checked_hotkeys:
+                        continue
+                    total_coldkey_stake_from_metagraph[
+                        neuron.coldkey
+                    ] += neuron.stake_dict[neuron.coldkey]
+                    checked_hotkeys.add(neuron.hotkey)
+
+            alerts_table = Table(show_header=True, header_style=&#34;bold magenta&#34;)
+            alerts_table.add_column(&#34;🥩 alert!&#34;)
+
+            coldkeys_to_check = []
+            for coldkey_wallet in all_coldkey_wallets:
+                # Check if we have any stake with hotkeys that are not registered.
+                total_coldkey_stake_from_chain = cwtensor.get_total_stake_for_coldkey(
+                    address=coldkey_wallet.coldkeypub.address
+                )
+                difference = (
+                    total_coldkey_stake_from_chain
+                    - total_coldkey_stake_from_metagraph[
+                        coldkey_wallet.coldkeypub.address
+                    ]
+                )
+                if difference == 0:
+                    continue  # We have all our stake registered.
+
+                coldkeys_to_check.append(coldkey_wallet)
+                alerts_table.add_row(
+                    &#34;Found {} stake with coldkey {} that is not registered.&#34;.format(
+                        difference, coldkey_wallet.coldkeypub.address
+                    )
+                )
+
+            if len(coldkeys_to_check) &gt; 0:
+                # We have some stake that is not with a registered hotkey.
+                if &#34;-1&#34; not in neurons:
+                    neurons[&#34;-1&#34;] = []
+
+            for coldkey_wallet in coldkeys_to_check:
+                coldkey_wallet, de_registered_stake, err_msg = \
+                    OverviewCommand._get_de_registered_stake_for_coldkey_wallet(
+                        (cli.config, all_hotkey_addresses, coldkey_wallet))
+
+                if err_msg is not None:
+                    console.print(err_msg)
+
+                if len(de_registered_stake) == 0:
+                    continue  # We have no de-registered stake with this coldkey.
+
+                de_registered_neurons = []
+                for hotkey_addr, our_stake in de_registered_stake:
+                    # Make a neuron info lite for this hotkey and coldkey.
+                    de_registered_neuron = cybertensor.NeuronInfoLite._null_neuron()
+                    de_registered_neuron.hotkey = hotkey_addr
+                    de_registered_neuron.coldkey = (
+                        coldkey_wallet.coldkeypub.address
+                    )
+                    de_registered_neuron.total_stake = Balance(our_stake)
+
+                    de_registered_neurons.append(de_registered_neuron)
+
+                    # Add this hotkey to the wallets dict
+                    wallet_ = Wallet(
+                        name=wallet.name,
+                    )
+                    wallet_.hotkey = hotkey_addr
+                    wallet.hotkey_str = hotkey_addr[:max_len_keys]  # Max length of 5 characters
+                    # Indicates a hotkey not on local machine but exists in stake_info obj on-chain
+                    if hotkey_coldkey_to_hotkey_wallet.get(hotkey_addr) is None:
+                        hotkey_coldkey_to_hotkey_wallet[hotkey_addr] = {}
+                    hotkey_coldkey_to_hotkey_wallet[hotkey_addr][
+                        coldkey_wallet.coldkeypub.address
+                    ] = wallet_
+
+                # Add neurons to overview.
+                neurons[&#34;-1&#34;].extend(de_registered_neurons)
+
+        # Setup outer table.
+        grid = Table.grid(pad_edge=False)
+
+        # If there are any alerts, add them to the grid
+        if len(alerts_table.rows) &gt; 0:
+            grid.add_row(alerts_table)
+
+        title: str = &#34;&#34;
+        if not cli.config.get(&#34;all&#34;, d=None):
+            title = &#34;[bold white italic]Wallet - {}:{}&#34;.format(
+                cli.config.wallet.name, wallet.coldkeypub.address
+            )
+        else:
+            title = &#34;[bold whit italic]All Wallets:&#34;
+
+        # Add title
+        grid.add_row(Align(title, vertical=&#34;middle&#34;, align=&#34;center&#34;))
+
+        # Generate rows per netuid
+        hotkeys_seen = set()
+        total_neurons = 0
+        total_stake = 0.0
+        for netuid in netuids:
+            subnet_tempo = cwtensor.tempo(netuid=netuid)
+            last_subnet = netuid == netuids[-1]
+            TABLE_DATA = []
+            total_rank = 0.0
+            total_trust = 0.0
+            total_consensus = 0.0
+            total_validator_trust = 0.0
+            total_incentive = 0.0
+            total_dividends = 0.0
+            total_emission = 0
+
+            for nn in neurons[str(netuid)]:
+                hotwallet = hotkey_coldkey_to_hotkey_wallet.get(nn.hotkey, {}).get(
+                    nn.coldkey, None
+                )
+                if not hotwallet:
+                    # Indicates a mismatch between what the chain says the coldkey
+                    # is for this hotkey and the local wallet coldkey-hotkey pair
+                    hotwallet = argparse.Namespace()
+                    hotwallet.name = nn.coldkey[:7]
+                    hotwallet.hotkey_str = nn.hotkey[:7]
+                nn: cybertensor.NeuronInfoLite
+                uid = nn.uid
+                active = nn.active
+                stake = nn.total_stake.gboot
+                rank = nn.rank
+                trust = nn.trust
+                consensus = nn.consensus
+                validator_trust = nn.validator_trust
+                incentive = nn.incentive
+                dividends = nn.dividends
+                emission = int(nn.emission / (subnet_tempo + 1) * 1e9)
+                last_update = int(block - nn.last_update)
+                validator_permit = nn.validator_permit
+                row = [
+                    hotwallet.name,
+                    hotwallet.hotkey_str,
+                    str(uid),
+                    str(active),
+                    &#34;{:.5f}&#34;.format(stake),
+                    &#34;{:.5f}&#34;.format(rank),
+                    &#34;{:.5f}&#34;.format(trust),
+                    &#34;{:.5f}&#34;.format(consensus),
+                    &#34;{:.5f}&#34;.format(incentive),
+                    &#34;{:.5f}&#34;.format(dividends),
+                    &#34;{:_}&#34;.format(emission),
+                    &#34;{:.5f}&#34;.format(validator_trust),
+                    &#34;*&#34; if validator_permit else &#34;&#34;,
+                    str(last_update),
+                    (
+                        cybertensor.utils.networking.int_to_ip(nn.axon_info.ip)
+                        + &#34;:&#34;
+                        + str(nn.axon_info.port)
+                        if nn.axon_info.port != 0
+                        else &#34;[yellow]none[/yellow]&#34;
+                    ),
+                    nn.hotkey,
+                ]
+
+                total_rank += rank
+                total_trust += trust
+                total_consensus += consensus
+                total_incentive += incentive
+                total_dividends += dividends
+                total_emission += emission
+                total_validator_trust += validator_trust
+
+                if not (nn.hotkey, nn.coldkey) in hotkeys_seen:
+                    # Don&#39;t double count stake on hotkey-coldkey pairs.
+                    hotkeys_seen.add((nn.hotkey, nn.coldkey))
+                    total_stake += stake
+
+                # netuid -1 are neurons that are de-registered.
+                if netuid != &#34;-1&#34;:
+                    total_neurons += 1
+
+                TABLE_DATA.append(row)
+
+            # Add subnet header
+            if netuid == &#34;-1&#34;:
+                grid.add_row(f&#34;Deregistered Neurons&#34;)
+            else:
+                grid.add_row(f&#34;Subnet: [bold white]{netuid}[/bold white]&#34;)
+
+            table = Table(
+                show_footer=False,
+                width=cli.config.get(&#34;width&#34;, None),
+                pad_edge=False,
+                box=None,
+            )
+            if last_subnet:
+                table.add_column(
+                    &#34;[overline white]COLDKEY&#34;,
+                    str(total_neurons),
+                    footer_style=&#34;overline white&#34;,
+                    style=&#34;bold white&#34;,
+                )
+                table.add_column(
+                    &#34;[overline white]HOTKEY&#34;,
+                    str(total_neurons),
+                    footer_style=&#34;overline white&#34;,
+                    style=&#34;white&#34;,
+                )
+            else:
+                # No footer for non-last subnet.
+                table.add_column(&#34;[overline white]COLDKEY&#34;, style=&#34;bold white&#34;)
+                table.add_column(&#34;[overline white]HOTKEY&#34;, style=&#34;white&#34;)
+            table.add_column(
+                &#34;[overline white]UID&#34;,
+                str(total_neurons),
+                footer_style=&#34;overline white&#34;,
+                style=&#34;yellow&#34;,
+            )
+            table.add_column(
+                &#34;[overline white]ACTIVE&#34;, justify=&#34;right&#34;, style=&#34;green&#34;, no_wrap=True
+            )
+            if last_subnet:
+                table.add_column(
+                    f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
+                    f&#34;{cwtensor.giga_token_symbol}{total_stake:.5f}&#34;,
+                    footer_style=&#34;overline white&#34;,
+                    justify=&#34;right&#34;,
+                    style=&#34;green&#34;,
+                    no_wrap=True,
+                )
+            else:
+                # No footer for non-last subnet.
+                table.add_column(
+                    f&#34;[overline white]STAKE({cwtensor.giga_token_symbol})&#34;,
+                    justify=&#34;right&#34;,
+                    style=&#34;green&#34;,
+                    no_wrap=True,
+                )
+            table.add_column(
+                &#34;[overline white]RANK&#34;,
+                f&#34;{total_rank:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                &#34;[overline white]TRUST&#34;,
+                f&#34;{total_trust:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                &#34;[overline white]CONSENSUS&#34;,
+                f&#34;{total_consensus:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                &#34;[overline white]INCENTIVE&#34;,
+                f&#34;{total_incentive:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                &#34;[overline white]DIVIDENDS&#34;,
+                f&#34;{total_dividends:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                f&#34;[overline white]EMISSION({cwtensor.giga_token_symbol})&#34;,
+                f&#34;{cwtensor.giga_token_symbol}{total_emission:_}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(
+                &#34;[overline white]VTRUST&#34;,
+                f&#34;{total_validator_trust:.5f}&#34;,
+                footer_style=&#34;overline white&#34;,
+                justify=&#34;right&#34;,
+                style=&#34;green&#34;,
+                no_wrap=True,
+            )
+            table.add_column(&#34;[overline white]VPERMIT&#34;, justify=&#34;right&#34;, no_wrap=True)
+            table.add_column(&#34;[overline white]UPDATED&#34;, justify=&#34;right&#34;, no_wrap=True)
+            table.add_column(
+                &#34;[overline white]AXON&#34;, justify=&#34;left&#34;, style=&#34;dim blue&#34;, no_wrap=True
+            )
+            table.add_column(
+                &#34;[overline white]HOTKEY&#34;, style=&#34;dim blue&#34;, no_wrap=False
+            )
+            table.show_footer = True
+
+            sort_by: Optional[str] = cli.config.get(&#34;sort_by&#34;, None)
+            sort_order: Optional[str] = cli.config.get(&#34;sort_order&#34;, None)
+
+            if sort_by is not None and sort_by != &#34;&#34;:
+                column_to_sort_by: int = 0
+                highest_matching_ratio: int = 0
+                sort_descending: bool = False  # Default sort_order to ascending
+
+                for index, column in zip(range(len(table.columns)), table.columns):
+                    # Fuzzy match the column name. Default to the first column.
+                    column_name = column.header.lower().replace(&#34;[overline white]&#34;, &#34;&#34;)
+                    match_ratio = fuzz.ratio(sort_by.lower(), column_name)
+                    # Finds the best matching column
+                    if match_ratio &gt; highest_matching_ratio:
+                        highest_matching_ratio = match_ratio
+                        column_to_sort_by = index
+
+                if sort_order.lower() in {&#34;desc&#34;, &#34;descending&#34;, &#34;reverse&#34;}:
+                    # Sort descending if the sort_order matches desc, descending, or reverse
+                    sort_descending = True
+
+                def overview_sort_function(row):
+                    data = row[column_to_sort_by]
+                    # Try to convert to number if possible
+                    try:
+                        data = float(data)
+                    except ValueError:
+                        pass
+                    return data
+
+                TABLE_DATA.sort(key=overview_sort_function, reverse=sort_descending)
+
+            for row in TABLE_DATA:
+                table.add_row(*row)
+
+            grid.add_row(table)
+
+        console.clear()
+
+        caption = f&#34;[italic][dim][white]Wallet balance: [green]{cwtensor.giga_token_symbol}{total_balance.gboot}&#34;
+        grid.add_row(Align(caption, vertical=&#34;middle&#34;, align=&#34;center&#34;))
+
+        # Print the entire table/grid
+        console.print(grid, width=cli.config.get(&#34;width&#34;, None))
+
+    @staticmethod
+    def _get_neurons_for_netuid(
+        args_tuple: Tuple[&#34;Config&#34;, int, List[str]]
+    ) -&gt; Tuple[int, List[&#34;cybertensor.NeuronInfoLite&#34;], Optional[str]]:
+        cwtensor_config, netuid, hot_wallets = args_tuple
+
+        result: List[&#34;cybertensor.NeuronInfoLite&#34;] = []
+
+        try:
+            cwtensor = cybertensor.cwtensor(config=cwtensor_config)  # , log_verbose=False)
+
+            all_neurons: List[&#34;cybertensor.NeuronInfoLite&#34;] = cwtensor.neurons_lite(
+                netuid=netuid
+            )
+            # Map the hotkeys to uids
+            hotkey_to_neurons = {n.hotkey: n.uid for n in all_neurons}
+            for hot_wallet_addr in hot_wallets:
+                uid = hotkey_to_neurons.get(hot_wallet_addr)
+                if uid is not None:
+                    nn = all_neurons[uid]
+                    result.append(nn)
+        except Exception as e:
+            return netuid, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+        return netuid, result, None
+
+    @staticmethod
+    def _get_de_registered_stake_for_coldkey_wallet(
+        args_tuple,
+    ) -&gt; Tuple[
+        &#34;Wallet&#34;, List[Tuple[str, &#34;Balance&#34;]], Optional[str]
+    ]:
+        cwtensor_config, all_hotkey_addresses, coldkey_wallet = args_tuple
+
+        # List of (hotkey_addr, our_stake) tuples.
+        result: List[Tuple[str, &#34;Balance&#34;]] = []
+
+        try:
+            cwtensor = cybertensor.cwtensor(config=cwtensor_config)
+
+            # Pull all stake for our coldkey
+            all_stake_info_for_coldkey = cwtensor.get_stake_info_for_coldkey(
+                coldkey=coldkey_wallet.coldkeypub.address
+            )
+
+            ## Filter out hotkeys that are in our wallets
+            ## Filter out hotkeys that are delegates.
+            def _filter_stake_info(stake_info: &#34;cybertensor.StakeInfo&#34;) -&gt; bool:
+                if stake_info.stake == 0:
+                    return False  # Skip hotkeys that we have no stake with.
+                if stake_info.hotkey in all_hotkey_addresses:
+                    return False  # Skip hotkeys that are in our wallets.
+                if cwtensor.is_hotkey_delegate(hotkey=stake_info.hotkey):
+                    return False  # Skip hotkeys that are delegates, they show up in ctcli my_delegates table.
+
+                return True
+
+            all_staked_hotkeys = filter(_filter_stake_info, all_stake_info_for_coldkey)
+            result = [
+                (
+                    stake_info.hotkey,
+                    stake_info.stake.gboot
+                )  # stake is a Balance object
+                for stake_info in all_staked_hotkeys
+            ]
+
+        except Exception as e:
+            return coldkey_wallet, [], &#34;Error: {}&#34;.format(e)
+        finally:
+            if &#34;cwtensor&#34; in locals():
+                cwtensor.close()
+                cybertensor.logging.debug(&#34;closing cwtensor connection&#34;)
+
+        return coldkey_wallet, result, None
+
+    @staticmethod
+    def add_args(parser: argparse.ArgumentParser):
+        overview_parser = parser.add_parser(
+            &#34;overview&#34;, help=&#34;&#34;&#34;Show registered account overview.&#34;&#34;&#34;
+        )
+        overview_parser.add_argument(
+            &#34;--all&#34;,
+            dest=&#34;all&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;&#34;&#34;View overview for all wallets.&#34;&#34;&#34;,
+            default=False,
+        )
+        overview_parser.add_argument(
+            &#34;--width&#34;,
+            dest=&#34;width&#34;,
+            action=&#34;store&#34;,
+            type=int,
+            help=&#34;&#34;&#34;Set the output width of the overview. Defaults to automatic width from terminal.&#34;&#34;&#34;,
+            default=None,
+        )
+        overview_parser.add_argument(
+            &#34;--sort_by&#34;,
+            &#34;--wallet.sort_by&#34;,
+            dest=&#34;sort_by&#34;,
+            required=False,
+            action=&#34;store&#34;,
+            default=&#34;&#34;,
+            type=str,
+            help=&#34;&#34;&#34;Sort the hotkeys by the specified column title (e.g. name, uid, axon).&#34;&#34;&#34;,
+        )
+        overview_parser.add_argument(
+            &#34;--sort_order&#34;,
+            &#34;--wallet.sort_order&#34;,
+            dest=&#34;sort_order&#34;,
+            required=False,
+            action=&#34;store&#34;,
+            default=&#34;ascending&#34;,
+            type=str,
+            help=&#34;&#34;&#34;Sort the hotkeys in the specified ordering. (ascending/asc or descending/desc/reverse)&#34;&#34;&#34;,
+        )
+        overview_parser.add_argument(
+            &#34;--hotkeys&#34;,
+            &#34;--exclude_hotkeys&#34;,
+            &#34;--wallet.hotkeys&#34;,
+            &#34;--wallet.exclude_hotkeys&#34;,
+            required=False,
+            action=&#34;store&#34;,
+            default=[],
+            type=str,
+            nargs=&#34;*&#34;,
+            help=&#34;&#34;&#34;Specify the hotkeys by name or address. (e.g. hk1 hk2 hk3)&#34;&#34;&#34;,
+        )
+        overview_parser.add_argument(
+            &#34;--all_hotkeys&#34;,
+            &#34;--wallet.all_hotkeys&#34;,
+            required=False,
+            action=&#34;store_true&#34;,
+            default=False,
+            help=&#34;&#34;&#34;To specify all hotkeys. Specifying hotkeys will exclude them from this all.&#34;&#34;&#34;,
+        )
+        overview_parser.add_argument(
+            &#34;--netuids&#34;,
+            dest=&#34;netuids&#34;,
+            type=int,
+            nargs=&#34;*&#34;,
+            help=&#34;&#34;&#34;Set the netuid(s) to filter by.&#34;&#34;&#34;,
+            default=None,
+        )
+        Wallet.add_args(overview_parser)
+        cybertensor.cwtensor.add_args(overview_parser)
+
+    @staticmethod
+    def check_config(config: &#34;Config&#34;):
+        if (
+            not config.is_set(&#34;wallet.name&#34;)
+            and not config.no_prompt
+            and not config.get(&#34;all&#34;, d=None)
+        ):
+            wallet_name = Prompt.ask(&#34;Enter wallet name&#34;, default=defaults.wallet.name)
+            config.wallet.name = str(wallet_name)
+
+        if config.netuids:
+            if not isinstance(config.netuids, list):
+                config.netuids = [int(config.netuids)]
+            else:
+                config.netuids = [int(netuid) for netuid in config.netuids]</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.commands.overview.OverviewCommand.add_args"><code class="name flex">
+<span>def <span class="ident">add_args</span></span>(<span>parser: argparse.ArgumentParser)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.overview.OverviewCommand.check_config"><code class="name flex">
+<span>def <span class="ident">check_config</span></span>(<span>config: Config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.commands.overview.OverviewCommand.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>cli: <a title="cybertensor.cli" href="../cli.html">cybertensor.cli</a>, max_len_netuids: int = 5, max_len_keys: int = 5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prints an overview for the wallet's colkey.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.commands" href="index.html">cybertensor.commands</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.commands.overview.OverviewCommand" href="#cybertensor.commands.overview.OverviewCommand">OverviewCommand</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.commands.overview.OverviewCommand.add_args" href="#cybertensor.commands.overview.OverviewCommand.add_args">add_args</a></code></li>
+<li><code><a title="cybertensor.commands.overview.OverviewCommand.check_config" href="#cybertensor.commands.overview.OverviewCommand.check_config">check_config</a></code></li>
+<li><code><a title="cybertensor.commands.overview.OverviewCommand.run" href="#cybertensor.commands.overview.OverviewCommand.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

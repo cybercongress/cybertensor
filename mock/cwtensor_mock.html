@@ -1,0 +1,2177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>cybertensor.mock.cwtensor_mock API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>cybertensor.mock.cwtensor_mock</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict"><code class="flex name class">
+<span>class <span class="ident">AxonInfoDict</span></span>
+<span>(</span><span>block: int, version: int, ip: int, port: int, ip_type: int, protocol: int, placeholder1: int, placeholder2: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>AxonInfoDict(block: int, version: int, ip: int, port: int, ip_type: int, protocol: int, placeholder1: int, placeholder2: int)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class AxonInfoDict(InfoDict):
+    block: int
+    version: int
+    ip: int  # integer representation of ip address
+    port: int
+    ip_type: int
+    protocol: int
+    placeholder1: int  # placeholder for future use
+    placeholder2: int
+
+    @classmethod
+    def default(cls):
+        return cls(
+            block=0,
+            version=0,
+            ip=0,
+            port=0,
+            ip_type=0,
+            protocol=0,
+            placeholder1=0,
+            placeholder2=0,
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.mock.cwtensor_mock.InfoDict" href="#cybertensor.mock.cwtensor_mock.InfoDict">InfoDict</a></li>
+<li>collections.abc.Mapping</li>
+<li>collections.abc.Collection</li>
+<li>collections.abc.Sized</li>
+<li>collections.abc.Iterable</li>
+<li>collections.abc.Container</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.block"><code class="name">var <span class="ident">block</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.ip"><code class="name">var <span class="ident">ip</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder1"><code class="name">var <span class="ident">placeholder1</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder2"><code class="name">var <span class="ident">placeholder2</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.protocol"><code class="name">var <span class="ident">protocol</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.AxonInfoDict.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams"><code class="flex name class">
+<span>class <span class="ident">AxonServeCallParams</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Axon serve chain call parameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AxonServeCallParams(TypedDict):
+    &#34;&#34;&#34;
+    Axon serve chain call parameters.
+    &#34;&#34;&#34;
+
+    version: int
+    ip: int
+    port: int
+    ip_type: int
+    netuid: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip"><code class="name">var <span class="ident">ip</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams.netuid"><code class="name">var <span class="ident">netuid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.AxonServeCallParams.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.InfoDict"><code class="flex name class">
+<span>class <span class="ident">InfoDict</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A Mapping is a generic container for associating key/value
+pairs.</p>
+<p>This class provides concrete generic implementations of all
+methods except for <strong>getitem</strong>, <strong>iter</strong>, and <strong>len</strong>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InfoDict(Mapping):
+    @classmethod
+    def default(cls):
+        raise NotImplementedError
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+    def __setitem__(self, key, value):
+        return setattr(self, key, value)
+
+    def __iter__(self):
+        return iter(self.__dict__)
+
+    def __len__(self):
+        return len(self.__dict__)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>collections.abc.Mapping</li>
+<li>collections.abc.Collection</li>
+<li>collections.abc.Sized</li>
+<li>collections.abc.Iterable</li>
+<li>collections.abc.Container</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict">AxonInfoDict</a></li>
+<li><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict">PrometheusInfoDict</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.InfoDict.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockChainState"><code class="flex name class">
+<span>class <span class="ident">MockChainState</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MockChainState(TypedDict):
+    System: MockSystemState
+    CwtensorModule: MockCwtensorState</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockChainState.CwtensorModule"><code class="name">var <span class="ident">CwtensorModule</span> : <a title="cybertensor.mock.cwtensor_mock.MockCwtensorState" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState">MockCwtensorState</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockChainState.System"><code class="name">var <span class="ident">System</span> : <a title="cybertensor.mock.cwtensor_mock.MockSystemState" href="#cybertensor.mock.cwtensor_mock.MockSystemState">MockSystemState</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor"><code class="flex name class">
+<span>class <span class="ident">MockCwtensor</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A Mock Cwtensor class for running tests.
+This should mock only methods that make queries to the chain.
+e.g. We mock <code>Cwtensor.query_cwtensor</code> instead of all query methods.</p>
+<p>This class will also store a local (mock) state of the chain.</p>
+<p>Initializes a cwtensor chain interface.</p>
+<h2 id="note">Note</h2>
+<p>Currently cwtensor defaults to the <code>space-pussy</code> network. This will change in a future release.</p>
+<p>We strongly encourage users to run their own local node whenever possible. This increases
+decentralization and resilience of the network. In a future release, bostrom will become the
+default and the fallback to <code>space-pussy</code> removed. Please plan ahead for this change. We will provide detailed
+instructions on how to run a local node in the documentation in a subsequent release.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>config (:obj:<code>Config</code>, <code>optional</code>):</dt>
+<dt>Configuration object for the cwtensor. If not provided, a default configuration is used.</dt>
+<dt>network (default='space-pussy', type=str, optional)</dt>
+<dt>The cwtensor network flag. The likely choices are:</dt>
+<dt>&ndash; bostrom (main network)</dt>
+<dt>&ndash; local (local running network)</dt>
+<dt>&ndash; space-pussy (space-pussy network)</dt>
+<dt><strong><code>_mock</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If set to <code>True</code>, uses a mocked connection for testing purposes.</dd>
+</dl>
+<p>This initialization sets up the connection to the specified network, allowing for various
+blockchain operations such as neuron registration, stake management, and setting weights.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MockCwtensor(cwtensor):
+    &#34;&#34;&#34;
+    A Mock Cwtensor class for running tests.
+    This should mock only methods that make queries to the chain.
+    e.g. We mock `Cwtensor.query_cwtensor` instead of all query methods.
+
+    This class will also store a local (mock) state of the chain.
+    &#34;&#34;&#34;
+
+    chain_state: MockChainState
+    block_number: int
+
+    @classmethod
+    def reset(cls) -&gt; None:
+        __GLOBAL_MOCK_STATE__.clear()
+
+        _ = cls()
+
+    def setup(self) -&gt; None:
+        if not hasattr(self, &#34;chain_state&#34;) or getattr(self, &#34;chain_state&#34;) is None:
+            self.chain_state = {
+                &#34;System&#34;: {&#34;Account&#34;: {}},
+                &#34;Balances&#34;: {&#34;ExistentialDeposit&#34;: {0: 500}},
+                &#34;CwtensorModule&#34;: {
+                    &#34;NetworksAdded&#34;: {},
+                    &#34;Rho&#34;: {},
+                    &#34;Kappa&#34;: {},
+                    &#34;Difficulty&#34;: {},
+                    &#34;ImmunityPeriod&#34;: {},
+                    &#34;ValidatorBatchSize&#34;: {},
+                    &#34;ValidatorSequenceLength&#34;: {},
+                    &#34;ValidatorEpochsPerReset&#34;: {},
+                    &#34;ValidatorEpochLength&#34;: {},
+                    &#34;MaxAllowedValidators&#34;: {},
+                    &#34;MinAllowedWeights&#34;: {},
+                    &#34;MaxWeightLimit&#34;: {},
+                    &#34;SynergyScalingLawPower&#34;: {},
+                    &#34;ScalingLawPower&#34;: {},
+                    &#34;SubnetworkN&#34;: {},
+                    &#34;MaxAllowedUids&#34;: {},
+                    &#34;NetworkModality&#34;: {},
+                    &#34;BlocksSinceLastStep&#34;: {},
+                    &#34;Tempo&#34;: {},
+                    &#34;NetworkConnect&#34;: {},
+                    &#34;EmissionValues&#34;: {},
+                    &#34;Burn&#34;: {},
+                    &#34;Active&#34;: {},
+                    &#34;Uids&#34;: {},
+                    &#34;Keys&#34;: {},
+                    &#34;Owner&#34;: {},
+                    &#34;IsNetworkMember&#34;: {},
+                    &#34;LastUpdate&#34;: {},
+                    &#34;Rank&#34;: {},
+                    &#34;Emission&#34;: {},
+                    &#34;Incentive&#34;: {},
+                    &#34;Consensus&#34;: {},
+                    &#34;Trust&#34;: {},
+                    &#34;ValidatorTrust&#34;: {},
+                    &#34;Dividends&#34;: {},
+                    &#34;PruningScores&#34;: {},
+                    &#34;ValidatorPermit&#34;: {},
+                    &#34;Weights&#34;: {},
+                    &#34;Bonds&#34;: {},
+                    &#34;Stake&#34;: {},
+                    &#34;TotalStake&#34;: {0: 0},
+                    &#34;TotalIssuance&#34;: {0: 0},
+                    &#34;TotalHotkeyStake&#34;: {},
+                    &#34;TotalColdkeyStake&#34;: {},
+                    &#34;TxRateLimit&#34;: {0: 0},  # No limit
+                    &#34;Delegates&#34;: {},
+                    &#34;Axons&#34;: {},
+                    &#34;Prometheus&#34;: {},
+                    &#34;SubnetOwner&#34;: {},
+                    &#34;Commits&#34;: {},
+                },
+            }
+
+            self.block_number = 0
+
+            self.network = &#34;mock&#34;
+            self.chain_endpoint = &#34;mock_endpoint&#34;
+            self.substrate = MagicMock()
+
+    def __init__(self, *args, **kwargs) -&gt; None:
+        self.__dict__ = __GLOBAL_MOCK_STATE__
+
+        if not hasattr(self, &#34;chain_state&#34;) or getattr(self, &#34;chain_state&#34;) is None:
+            self.setup()
+
+    def get_block_hash(self, block_id: int) -&gt; str:
+        return &#34;0x&#34; + sha256(str(block_id).encode()).hexdigest()[:64]
+
+    def create_subnet(self, netuid: int) -&gt; None:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            # Per Subnet
+            cwtensor_state[&#34;Rho&#34;][netuid] = {}
+            cwtensor_state[&#34;Rho&#34;][netuid][0] = 10
+            cwtensor_state[&#34;Kappa&#34;][netuid] = {}
+            cwtensor_state[&#34;Kappa&#34;][netuid][0] = 32_767
+            cwtensor_state[&#34;Difficulty&#34;][netuid] = {}
+            cwtensor_state[&#34;Difficulty&#34;][netuid][0] = 10_000_000
+            cwtensor_state[&#34;ImmunityPeriod&#34;][netuid] = {}
+            cwtensor_state[&#34;ImmunityPeriod&#34;][netuid][0] = 4096
+            cwtensor_state[&#34;ValidatorBatchSize&#34;][netuid] = {}
+            cwtensor_state[&#34;ValidatorBatchSize&#34;][netuid][0] = 32
+            cwtensor_state[&#34;ValidatorSequenceLength&#34;][netuid] = {}
+            cwtensor_state[&#34;ValidatorSequenceLength&#34;][netuid][0] = 256
+            cwtensor_state[&#34;ValidatorEpochsPerReset&#34;][netuid] = {}
+            cwtensor_state[&#34;ValidatorEpochsPerReset&#34;][netuid][0] = 60
+            cwtensor_state[&#34;ValidatorEpochLength&#34;][netuid] = {}
+            cwtensor_state[&#34;ValidatorEpochLength&#34;][netuid][0] = 100
+            cwtensor_state[&#34;MaxAllowedValidators&#34;][netuid] = {}
+            cwtensor_state[&#34;MaxAllowedValidators&#34;][netuid][0] = 128
+            cwtensor_state[&#34;MinAllowedWeights&#34;][netuid] = {}
+            cwtensor_state[&#34;MinAllowedWeights&#34;][netuid][0] = 1024
+            cwtensor_state[&#34;MaxWeightLimit&#34;][netuid] = {}
+            cwtensor_state[&#34;MaxWeightLimit&#34;][netuid][0] = 1_000
+            cwtensor_state[&#34;SynergyScalingLawPower&#34;][netuid] = {}
+            cwtensor_state[&#34;SynergyScalingLawPower&#34;][netuid][0] = 50
+            cwtensor_state[&#34;ScalingLawPower&#34;][netuid] = {}
+            cwtensor_state[&#34;ScalingLawPower&#34;][netuid][0] = 50
+            cwtensor_state[&#34;SubnetworkN&#34;][netuid] = {}
+            cwtensor_state[&#34;SubnetworkN&#34;][netuid][0] = 0
+            cwtensor_state[&#34;MaxAllowedUids&#34;][netuid] = {}
+            cwtensor_state[&#34;MaxAllowedUids&#34;][netuid][0] = 4096
+            cwtensor_state[&#34;NetworkModality&#34;][netuid] = {}
+            cwtensor_state[&#34;NetworkModality&#34;][netuid][0] = 0
+            cwtensor_state[&#34;BlocksSinceLastStep&#34;][netuid] = {}
+            cwtensor_state[&#34;BlocksSinceLastStep&#34;][netuid][0] = 0
+            cwtensor_state[&#34;Tempo&#34;][netuid] = {}
+            cwtensor_state[&#34;Tempo&#34;][netuid][0] = 99
+            # cwtensor_state[&#39;NetworkConnect&#39;][netuid] = {}
+            # cwtensor_state[&#39;NetworkConnect&#39;][netuid][0] = {}
+            cwtensor_state[&#34;EmissionValues&#34;][netuid] = {}
+            cwtensor_state[&#34;EmissionValues&#34;][netuid][0] = 0
+            cwtensor_state[&#34;Burn&#34;][netuid] = {}
+            cwtensor_state[&#34;Burn&#34;][netuid][0] = 0
+            cwtensor_state[&#34;Commits&#34;][netuid] = {}
+
+            # Per-UID/Hotkey
+
+            cwtensor_state[&#34;Uids&#34;][netuid] = {}
+            cwtensor_state[&#34;Keys&#34;][netuid] = {}
+            cwtensor_state[&#34;Owner&#34;][netuid] = {}
+
+            cwtensor_state[&#34;LastUpdate&#34;][netuid] = {}
+            cwtensor_state[&#34;Active&#34;][netuid] = {}
+            cwtensor_state[&#34;Rank&#34;][netuid] = {}
+            cwtensor_state[&#34;Emission&#34;][netuid] = {}
+            cwtensor_state[&#34;Incentive&#34;][netuid] = {}
+            cwtensor_state[&#34;Consensus&#34;][netuid] = {}
+            cwtensor_state[&#34;Trust&#34;][netuid] = {}
+            cwtensor_state[&#34;ValidatorTrust&#34;][netuid] = {}
+            cwtensor_state[&#34;Dividends&#34;][netuid] = {}
+            cwtensor_state[&#34;PruningScores&#34;][netuid] = {}
+            cwtensor_state[&#34;PruningScores&#34;][netuid][0] = {}
+            cwtensor_state[&#34;ValidatorPermit&#34;][netuid] = {}
+
+            cwtensor_state[&#34;Weights&#34;][netuid] = {}
+            cwtensor_state[&#34;Bonds&#34;][netuid] = {}
+
+            cwtensor_state[&#34;Axons&#34;][netuid] = {}
+            cwtensor_state[&#34;Prometheus&#34;][netuid] = {}
+
+            cwtensor_state[&#34;NetworksAdded&#34;][netuid] = {}
+            cwtensor_state[&#34;NetworksAdded&#34;][netuid][0] = True
+
+        else:
+            raise Exception(&#34;Subnet already exists&#34;)
+
+    def set_difficulty(self, netuid: int, difficulty: int) -&gt; None:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        cwtensor_state[&#34;Difficulty&#34;][netuid][self.block_number] = difficulty
+
+    def _register_neuron(self, netuid: int, hotkey: str, coldkey: str) -&gt; int:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        subnetwork_n = self._get_most_recent_storage(
+            cwtensor_state[&#34;SubnetworkN&#34;][netuid]
+        )
+
+        if subnetwork_n &gt; 0 and any(
+            self._get_most_recent_storage(cwtensor_state[&#34;Keys&#34;][netuid][uid]) == hotkey
+            for uid in range(subnetwork_n)
+        ):
+            # already_registered
+            raise Exception(&#34;Hotkey already registered&#34;)
+        else:
+            # Not found
+            if subnetwork_n &gt;= self._get_most_recent_storage(
+                cwtensor_state[&#34;MaxAllowedUids&#34;][netuid]
+            ):
+                # Subnet full, replace neuron randomly
+                uid = randint(0, subnetwork_n - 1)
+            else:
+                # Subnet not full, add new neuron
+                # Append as next uid and increment subnetwork_n
+                uid = subnetwork_n
+                cwtensor_state[&#34;SubnetworkN&#34;][netuid][self.block_number] = (
+                    subnetwork_n + 1
+                )
+
+            cwtensor_state[&#34;Stake&#34;][hotkey] = {}
+            cwtensor_state[&#34;Stake&#34;][hotkey][coldkey] = {}
+            cwtensor_state[&#34;Stake&#34;][hotkey][coldkey][self.block_number] = 0
+
+            cwtensor_state[&#34;Uids&#34;][netuid][hotkey] = {}
+            cwtensor_state[&#34;Uids&#34;][netuid][hotkey][self.block_number] = uid
+
+            cwtensor_state[&#34;Keys&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Keys&#34;][netuid][uid][self.block_number] = hotkey
+
+            cwtensor_state[&#34;Owner&#34;][hotkey] = {}
+            cwtensor_state[&#34;Owner&#34;][hotkey][self.block_number] = coldkey
+
+            cwtensor_state[&#34;Active&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Active&#34;][netuid][uid][self.block_number] = True
+
+            cwtensor_state[&#34;LastUpdate&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;LastUpdate&#34;][netuid][uid][
+                self.block_number
+            ] = self.block_number
+
+            cwtensor_state[&#34;Rank&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Rank&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;Emission&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Emission&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;Incentive&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Incentive&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;Consensus&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Consensus&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;Trust&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Trust&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;ValidatorTrust&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;ValidatorTrust&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;Dividends&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Dividends&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;PruningScores&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;PruningScores&#34;][netuid][uid][self.block_number] = 0.0
+
+            cwtensor_state[&#34;ValidatorPermit&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;ValidatorPermit&#34;][netuid][uid][self.block_number] = False
+
+            cwtensor_state[&#34;Weights&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Weights&#34;][netuid][uid][self.block_number] = []
+
+            cwtensor_state[&#34;Bonds&#34;][netuid][uid] = {}
+            cwtensor_state[&#34;Bonds&#34;][netuid][uid][self.block_number] = []
+
+            cwtensor_state[&#34;Axons&#34;][netuid][hotkey] = {}
+            cwtensor_state[&#34;Axons&#34;][netuid][hotkey][self.block_number] = {}
+
+            cwtensor_state[&#34;Prometheus&#34;][netuid][hotkey] = {}
+            cwtensor_state[&#34;Prometheus&#34;][netuid][hotkey][self.block_number] = {}
+
+            if hotkey not in cwtensor_state[&#34;IsNetworkMember&#34;]:
+                cwtensor_state[&#34;IsNetworkMember&#34;][hotkey] = {}
+            cwtensor_state[&#34;IsNetworkMember&#34;][hotkey][netuid] = {}
+            cwtensor_state[&#34;IsNetworkMember&#34;][hotkey][netuid][self.block_number] = True
+
+            return uid
+
+    @staticmethod
+    def _convert_to_balance(balance: Union[&#34;Balance&#34;, float, int]) -&gt; &#34;Balance&#34;:
+        if isinstance(balance, float):
+            balance = Balance.from_gboot(balance)
+
+        if isinstance(balance, int):
+            balance = Balance.from_boot(balance)
+
+        return balance
+
+    def force_register_neuron(
+        self,
+        netuid: int,
+        hotkey: str,
+        coldkey: str,
+        stake: Union[&#34;Balance&#34;, float, int] = Balance(0),
+        balance: Union[&#34;Balance&#34;, float, int] = Balance(0),
+    ) -&gt; int:
+        &#34;&#34;&#34;
+        Force register a neuron on the mock chain, returning the UID.
+        &#34;&#34;&#34;
+        stake = self._convert_to_balance(stake)
+        balance = self._convert_to_balance(balance)
+
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        uid = self._register_neuron(netuid=netuid, hotkey=hotkey, coldkey=coldkey)
+
+        cwtensor_state[&#34;TotalStake&#34;][self.block_number] = (
+            self._get_most_recent_storage(cwtensor_state[&#34;TotalStake&#34;]) + stake.boot
+        )
+        cwtensor_state[&#34;Stake&#34;][hotkey][coldkey][self.block_number] = stake.boot
+
+        if balance.boot &gt; 0:
+            self.force_set_balance(coldkey, balance)
+        self.force_set_balance(coldkey, balance)
+
+        return uid
+
+    def force_set_balance(
+        self, address: str, balance: Union[&#34;Balance&#34;, float, int] = Balance(0)
+    ) -&gt; Tuple[bool, Optional[str]]:
+        &#34;&#34;&#34;
+        Returns:
+            Tuple[bool, Optional[str]]: (success, err_msg)
+        &#34;&#34;&#34;
+        balance = self._convert_to_balance(balance)
+
+        if address not in self.chain_state[&#34;System&#34;][&#34;Account&#34;]:
+            self.chain_state[&#34;System&#34;][&#34;Account&#34;][address] = {
+                &#34;data&#34;: {&#34;free&#34;: {0: 0}}
+            }
+
+        old_balance = self.get_balance(address, self.block_number)
+        diff = balance.boot - old_balance.boot
+
+        # Update total issuance
+        self.chain_state[&#34;CwtensorModule&#34;][&#34;TotalIssuance&#34;][self.block_number] = (
+            self._get_most_recent_storage(
+                self.chain_state[&#34;CwtensorModule&#34;][&#34;TotalIssuance&#34;]
+            )
+            + diff
+        )
+
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][address] = {
+            &#34;data&#34;: {&#34;free&#34;: {self.block_number: balance.boot}}
+        }
+
+        return True, None
+
+    # Alias for force_set_balance
+    sudo_force_set_balance = force_set_balance
+
+    def do_block_step(self) -&gt; None:
+        self.block_number += 1
+
+        # Doesn&#39;t do epoch
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        for subnet in cwtensor_state[&#34;NetworksAdded&#34;]:
+            cwtensor_state[&#34;BlocksSinceLastStep&#34;][subnet][self.block_number] = (
+                self._get_most_recent_storage(
+                    cwtensor_state[&#34;BlocksSinceLastStep&#34;][subnet]
+                )
+                + 1
+            )
+
+    def _handle_type_default(self, name: str, params: List[object]) -&gt; object:
+        defaults_mapping = {
+            &#34;TotalStake&#34;: 0,
+            &#34;TotalHotkeyStake&#34;: 0,
+            &#34;TotalColdkeyStake&#34;: 0,
+            &#34;Stake&#34;: 0,
+        }
+
+        return defaults_mapping.get(name, None)
+
+    def commit(self, wallet: &#34;Wallet&#34;, netuid: int, data: str) -&gt; None:
+        uid = self.get_uid_for_hotkey_on_subnet(
+            hotkey=wallet.hotkey.address,
+            netuid=netuid,
+        )
+        if uid is None:
+            raise Exception(&#34;Neuron not found&#34;)
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        cwtensor_state[&#34;Commits&#34;][netuid].setdefault(self.block_number, {})[uid] = data
+
+    def get_commitment(self, netuid: int, uid: int, block: Optional[int] = None) -&gt; str:
+        if block and self.block_number &lt; block:
+            raise Exception(&#34;Cannot query block in the future&#34;)
+        block = block or self.block_number
+
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        return cwtensor_state[&#34;Commits&#34;][netuid][block][uid]
+
+    def query_cwtensor(
+        self,
+        name: str,
+        block: Optional[int] = None,
+        params: Optional[List[object]] = [],
+    ) -&gt; MockCwtensorValue:
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        state = self.chain_state[&#34;CwtensorModule&#34;][name]
+        if state is not None:
+            # Use prefix
+            if len(params) &gt; 0:
+                while state is not None and len(params) &gt; 0:
+                    state = state.get(params.pop(0), None)
+                    if state is None:
+                        return SimpleNamespace(
+                            value=self._handle_type_default(name, params)
+                        )
+
+            # Use block
+            state_at_block = state.get(block, None)
+            while state_at_block is None and block &gt; 0:
+                block -= 1
+                state_at_block = self.state.get(block, None)
+            if state_at_block is not None:
+                return SimpleNamespace(value=state_at_block)
+
+            return SimpleNamespace(value=self._handle_type_default(name, params))
+        else:
+            return SimpleNamespace(value=self._handle_type_default(name, params))
+
+    def query_map_cwtensor(
+        self,
+        name: str,
+        block: Optional[int] = None,
+        params: Optional[List[object]] = [],
+    ) -&gt; Optional[MockMapResult]:
+        &#34;&#34;&#34;
+        Note: Double map requires one param
+        &#34;&#34;&#34;
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        state = self.chain_state[&#34;CwtensorModule&#34;][name]
+        if state is not None:
+            # Use prefix
+            if len(params) &gt; 0:
+                while state is not None and len(params) &gt; 0:
+                    state = state.get(params.pop(0), None)
+                    if state is None:
+                        return MockMapResult([])
+
+            # Check if single map or double map
+            if len(state.keys()) == 0:
+                return MockMapResult([])
+
+            inner = list(state.values())[0]
+            # Should have at least one key
+            if len(inner.keys()) == 0:
+                raise Exception(&#34;Invalid state&#34;)
+
+            # Check if double map
+            if isinstance(list(inner.values())[0], dict):
+                # is double map
+                raise ChainQueryError(&#34;Double map requires one param&#34;)
+
+            # Iterate over each key and add value to list, max at block
+            records = []
+            for key in state:
+                result = self._get_most_recent_storage(state[key], block)
+                if result is None:
+                    continue  # Skip if no result for this key at `block` or earlier
+
+                records.append((key, result))
+
+            return MockMapResult(records)
+        else:
+            return MockMapResult([])
+
+    def query_constant(
+        self, module_name: str, constant_name: str, block: Optional[int] = None
+    ) -&gt; Optional[object]:
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        state = self.chain_state.get(module_name, None)
+        if state is not None:
+            if constant_name in state:
+                state = state[constant_name]
+            else:
+                return None
+
+            # Use block
+            state_at_block = self._get_most_recent_storage(state, block)
+            if state_at_block is not None:
+                return SimpleNamespace(value=state_at_block)
+
+            return state_at_block[&#34;data&#34;][&#34;free&#34;]  # Can be None
+        else:
+            return None
+
+    def get_current_block(self) -&gt; int:
+        return self.block_number
+
+    # ==== Balance RPC methods ====
+
+    def get_balance(self, address: str, block: int = None) -&gt; &#34;Balance&#34;:
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        state = self.chain_state[&#34;System&#34;][&#34;Account&#34;]
+        if state is not None:
+            if address in state:
+                state = state[address]
+            else:
+                return Balance(0)
+
+            # Use block
+            balance_state = state[&#34;data&#34;][&#34;free&#34;]
+            state_at_block = self._get_most_recent_storage(
+                balance_state, block
+            )  # Can be None
+            if state_at_block is not None:
+                bal_as_int = state_at_block
+                return Balance.from_boot(bal_as_int)
+            else:
+                return Balance(0)
+        else:
+            return Balance(0)
+
+    def get_balances(self, block: int = None) -&gt; Dict[str, &#34;Balance&#34;]:
+        balances = {}
+        for address in self.chain_state[&#34;System&#34;][&#34;Account&#34;]:
+            balances[address] = self.get_balance(address, block)
+
+        return balances
+
+    # ==== Neuron RPC methods ====
+
+    def neuron_for_uid(
+        self, uid: int, netuid: int, block: Optional[int] = None
+    ) -&gt; Optional[NeuronInfo]:
+        if uid is None:
+            return NeuronInfo._null_neuron()
+
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        if netuid not in self.chain_state[&#34;CwtensorModule&#34;][&#34;NetworksAdded&#34;]:
+            return None
+
+        neuron_info = self._neuron_subnet_exists(uid, netuid, block)
+        if neuron_info is None:
+            return None
+
+        else:
+            return neuron_info
+
+    def neurons(self, netuid: int, block: Optional[int] = None) -&gt; List[NeuronInfo]:
+        if netuid not in self.chain_state[&#34;CwtensorModule&#34;][&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        neurons = []
+        subnet_n = self._get_most_recent_storage(
+            self.chain_state[&#34;CwtensorModule&#34;][&#34;SubnetworkN&#34;][netuid], block
+        )
+        for uid in range(subnet_n):
+            neuron_info = self.neuron_for_uid(uid, netuid, block)
+            if neuron_info is not None:
+                neurons.append(neuron_info)
+
+        return neurons
+
+    @staticmethod
+    def _get_most_recent_storage(
+        storage: Dict[BlockNumber, Any], block_number: Optional[int] = None
+    ) -&gt; Any:
+        if block_number is None:
+            items = list(storage.items())
+            items.sort(key=lambda x: x[0], reverse=True)
+            if len(items) == 0:
+                return None
+
+            return items[0][1]
+
+        else:
+            while block_number &gt;= 0:
+                if block_number in storage:
+                    return storage[block_number]
+
+                block_number -= 1
+
+            return None
+
+    def _get_axon_info(
+        self, netuid: int, hotkey: str, block: Optional[int] = None
+    ) -&gt; AxonInfoDict:
+        # Axons [netuid][hotkey][block_number]
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;Axons&#34;]:
+            return AxonInfoDict.default()
+
+        if hotkey not in cwtensor_state[&#34;Axons&#34;][netuid]:
+            return AxonInfoDict.default()
+
+        result = self._get_most_recent_storage(
+            cwtensor_state[&#34;Axons&#34;][netuid][hotkey], block
+        )
+        if not result:
+            return AxonInfoDict.default()
+
+        return result
+
+    def _get_prometheus_info(
+        self, netuid: int, hotkey: str, block: Optional[int] = None
+    ) -&gt; PrometheusInfoDict:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;Prometheus&#34;]:
+            return PrometheusInfoDict.default()
+
+        if hotkey not in cwtensor_state[&#34;Prometheus&#34;][netuid]:
+            return PrometheusInfoDict.default()
+
+        result = self._get_most_recent_storage(
+            cwtensor_state[&#34;Prometheus&#34;][netuid][hotkey], block
+        )
+        if not result:
+            return PrometheusInfoDict.default()
+
+        return result
+
+    def _neuron_subnet_exists(
+        self, uid: int, netuid: int, block: Optional[int] = None
+    ) -&gt; Optional[NeuronInfo]:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            return None
+
+        if self._get_most_recent_storage(cwtensor_state[&#34;SubnetworkN&#34;][netuid]) &lt;= uid:
+            return None
+
+        hotkey = self._get_most_recent_storage(cwtensor_state[&#34;Keys&#34;][netuid][uid])
+        if hotkey is None:
+            return None
+
+        axon_info_ = self._get_axon_info(netuid, hotkey, block)
+
+        prometheus_info = self._get_prometheus_info(netuid, hotkey, block)
+
+        coldkey = self._get_most_recent_storage(cwtensor_state[&#34;Owner&#34;][hotkey], block)
+        active = self._get_most_recent_storage(
+            cwtensor_state[&#34;Active&#34;][netuid][uid], block
+        )
+        rank = self._get_most_recent_storage(cwtensor_state[&#34;Rank&#34;][netuid][uid], block)
+        emission = self._get_most_recent_storage(
+            cwtensor_state[&#34;Emission&#34;][netuid][uid], block
+        )
+        incentive = self._get_most_recent_storage(
+            cwtensor_state[&#34;Incentive&#34;][netuid][uid], block
+        )
+        consensus = self._get_most_recent_storage(
+            cwtensor_state[&#34;Consensus&#34;][netuid][uid], block
+        )
+        trust = self._get_most_recent_storage(
+            cwtensor_state[&#34;Trust&#34;][netuid][uid], block
+        )
+        validator_trust = self._get_most_recent_storage(
+            cwtensor_state[&#34;ValidatorTrust&#34;][netuid][uid], block
+        )
+        dividends = self._get_most_recent_storage(
+            cwtensor_state[&#34;Dividends&#34;][netuid][uid], block
+        )
+        pruning_score = self._get_most_recent_storage(
+            cwtensor_state[&#34;PruningScores&#34;][netuid][uid], block
+        )
+        last_update = self._get_most_recent_storage(
+            cwtensor_state[&#34;LastUpdate&#34;][netuid][uid], block
+        )
+        validator_permit = self._get_most_recent_storage(
+            cwtensor_state[&#34;ValidatorPermit&#34;][netuid][uid], block
+        )
+
+        weights = self._get_most_recent_storage(
+            cwtensor_state[&#34;Weights&#34;][netuid][uid], block
+        )
+        bonds = self._get_most_recent_storage(
+            cwtensor_state[&#34;Bonds&#34;][netuid][uid], block
+        )
+
+        stake_dict = {
+            coldkey: Balance.from_boot(
+                self._get_most_recent_storage(
+                    cwtensor_state[&#34;Stake&#34;][hotkey][coldkey], block
+                )
+            )
+            for coldkey in cwtensor_state[&#34;Stake&#34;][hotkey]
+        }
+
+        stake = sum(stake_dict.values())
+
+        weights = [[int(weight[0]), int(weight[1])] for weight in weights]
+        bonds = [[int(bond[0]), int(bond[1])] for bond in bonds]
+        rank = U16_NORMALIZED_FLOAT(rank)
+        emission = emission / GIGA
+        incentive = U16_NORMALIZED_FLOAT(incentive)
+        consensus = U16_NORMALIZED_FLOAT(consensus)
+        trust = U16_NORMALIZED_FLOAT(trust)
+        validator_trust = U16_NORMALIZED_FLOAT(validator_trust)
+        dividends = U16_NORMALIZED_FLOAT(dividends)
+        prometheus_info = PrometheusInfo.fix_decoded_values(prometheus_info)
+        axon_info_ = AxonInfo.from_neuron_info(
+            {&#34;hotkey&#34;: hotkey, &#34;coldkey&#34;: coldkey, &#34;axon_info&#34;: axon_info_}
+        )
+
+        neuron_info = NeuronInfo(
+            hotkey=hotkey,
+            coldkey=coldkey,
+            uid=uid,
+            netuid=netuid,
+            active=active,
+            rank=rank,
+            emission=emission,
+            incentive=incentive,
+            consensus=consensus,
+            trust=trust,
+            validator_trust=validator_trust,
+            dividends=dividends,
+            pruning_score=pruning_score,
+            last_update=last_update,
+            validator_permit=validator_permit,
+            stake=stake,
+            stake_dict=stake_dict,
+            total_stake=stake,
+            prometheus_info=prometheus_info,
+            axon_info=axon_info_,
+            weights=weights,
+            bonds=bonds,
+            is_null=False,
+        )
+
+        return neuron_info
+
+    def neuron_for_uid_lite(
+        self, uid: int, netuid: int, block: Optional[int] = None
+    ) -&gt; Optional[NeuronInfoLite]:
+        if block:
+            if self.block_number &lt; block:
+                raise Exception(&#34;Cannot query block in the future&#34;)
+
+        else:
+            block = self.block_number
+
+        if netuid not in self.chain_state[&#34;CwtensorModule&#34;][&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        neuron_info = self._neuron_subnet_exists(uid, netuid, block)
+        if neuron_info is None:
+            return None
+
+        else:
+            neuron_info_dict = neuron_info.__dict__
+            del neuron_info
+            del neuron_info_dict[&#34;weights&#34;]
+            del neuron_info_dict[&#34;bonds&#34;]
+
+            neuron_info_lite = NeuronInfoLite(**neuron_info_dict)
+            return neuron_info_lite
+
+    def neurons_lite(
+        self, netuid: int, block: Optional[int] = None
+    ) -&gt; List[NeuronInfoLite]:
+        if netuid not in self.chain_state[&#34;CwtensorModule&#34;][&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        neurons = []
+        subnet_n = self._get_most_recent_storage(
+            self.chain_state[&#34;CwtensorModule&#34;][&#34;SubnetworkN&#34;][netuid]
+        )
+        for uid in range(subnet_n):
+            neuron_info = self.neuron_for_uid_lite(uid, netuid, block)
+            if neuron_info is not None:
+                neurons.append(neuron_info)
+
+        return neurons
+
+    # Extrinsics
+    def _do_delegation(
+        self,
+        wallet: &#34;Wallet&#34;,
+        delegate: str,
+        amount: &#34;Balance&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; bool:
+        # Check if delegate
+        if not self.is_hotkey_delegate(hotkey=delegate):
+            raise Exception(&#34;Not a delegate&#34;)
+
+        # do stake
+        success = self._do_stake(
+            wallet=wallet,
+            hotkey=delegate,
+            amount=amount,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+        return success
+
+    def _do_undelegation(
+        self,
+        wallet: &#34;Wallet&#34;,
+        delegate: str,
+        amount: &#34;Balance&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; bool:
+        # Check if delegate
+        if not self.is_hotkey_delegate(hotkey=delegate):
+            raise Exception(&#34;Not a delegate&#34;)
+
+        # do unstake
+        self._do_unstake(
+            wallet=wallet,
+            hotkey=delegate,
+            amount=amount,
+            wait_for_finalization=wait_for_finalization,
+        )
+
+    def _do_nominate(
+        self,
+        wallet: &#34;Wallet&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; bool:
+        hotkey = wallet.hotkey.address
+        coldkey = wallet.coldkeypub.address
+
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if self.is_hotkey_delegate(hotkey=hotkey):
+            return True
+
+        else:
+            cwtensor_state[&#34;Delegates&#34;][hotkey] = {}
+            cwtensor_state[&#34;Delegates&#34;][hotkey][
+                self.block_number
+            ] = 0.18  # Constant for now
+
+            return True
+
+    def get_transfer_fee(
+        self, wallet: &#34;Wallet&#34;, dest: str, value: Union[&#34;Balance&#34;, float, int]
+    ) -&gt; &#34;Balance&#34;:
+        return Balance(700)
+
+    def _do_transfer(
+        self,
+        wallet: &#34;Wallet&#34;,
+        dest: str,
+        transfer_balance: &#34;Balance&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; Tuple[bool, Optional[str], Optional[str]]:
+        bal = self.get_balance(wallet.coldkeypub.address)
+        dest_bal = self.get_balance(dest)
+        transfer_fee = self.get_transfer_fee(wallet, dest, transfer_balance)
+
+        existential_deposit = self.get_existential_deposit()
+
+        if bal &lt; transfer_balance + existential_deposit + transfer_fee:
+            raise Exception(&#34;Insufficient balance&#34;)
+
+        # Remove from the free balance
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][wallet.coldkeypub.address][&#34;data&#34;][
+            &#34;free&#34;
+        ][self.block_number] = (bal - transfer_balance - transfer_fee).boot
+
+        # Add to the free balance
+        if dest not in self.chain_state[&#34;System&#34;][&#34;Account&#34;]:
+            self.chain_state[&#34;System&#34;][&#34;Account&#34;][dest] = {&#34;data&#34;: {&#34;free&#34;: {}}}
+
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][dest][&#34;data&#34;][&#34;free&#34;][
+            self.block_number
+        ] = (dest_bal + transfer_balance).boot
+
+        return True, None, None
+
+    def _do_pow_register(
+        self,
+        netuid: int,
+        wallet: &#34;Wallet&#34;,
+        pow_result: &#34;POWSolution&#34;,
+        wait_for_finalization: bool = True,
+    ) -&gt; Tuple[bool, Optional[str]]:
+        # Assume pow result is valid
+
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        self._register_neuron(
+            netuid=netuid,
+            hotkey=wallet.hotkey.address,
+            coldkey=wallet.coldkeypub.address,
+        )
+
+        return True, None
+
+    def _do_burned_register(
+        self,
+        netuid: int,
+        wallet: &#34;Wallet&#34;,
+        wait_for_finalization: bool = True,
+    ) -&gt; Tuple[bool, Optional[str]]:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        if netuid not in cwtensor_state[&#34;NetworksAdded&#34;]:
+            raise Exception(&#34;Subnet does not exist&#34;)
+
+        bal = self.get_balance(wallet.coldkeypub.address)
+        burn = self.recycle(netuid=netuid)
+        existential_deposit = self.get_existential_deposit()
+
+        if bal &lt; burn + existential_deposit:
+            raise Exception(&#34;Insufficient funds&#34;)
+
+        self._register_neuron(
+            netuid=netuid,
+            hotkey=wallet.hotkey.address,
+            coldkey=wallet.coldkeypub.address,
+        )
+
+        # Burn the funds
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][wallet.coldkeypub.address][&#34;data&#34;][
+            &#34;free&#34;
+        ][self.block_number] = (bal - burn).boot
+
+        return True, None
+
+    def _do_stake(
+        self,
+        wallet: &#34;Wallet&#34;,
+        hotkey: str,
+        amount: &#34;Balance&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; bool:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+
+        bal = self.get_balance(wallet.coldkeypub.address)
+        curr_stake = self.get_stake_for_coldkey_and_hotkey(
+            hotkey=hotkey, coldkey=wallet.coldkeypub.address
+        )
+        if curr_stake is None:
+            curr_stake = Balance(0)
+        existential_deposit = self.get_existential_deposit()
+
+        if bal &lt; amount + existential_deposit:
+            raise Exception(&#34;Insufficient funds&#34;)
+
+        stake_state = cwtensor_state[&#34;Stake&#34;]
+
+        # Stake the funds
+        if not hotkey in stake_state:
+            stake_state[hotkey] = {}
+        if not wallet.coldkeypub.address in stake_state[hotkey]:
+            stake_state[hotkey][wallet.coldkeypub.address] = {}
+
+        stake_state[hotkey][wallet.coldkeypub.address][
+            self.block_number
+        ] = amount.boot
+
+        # Add to total_stake storage
+        cwtensor_state[&#34;TotalStake&#34;][self.block_number] = (
+            self._get_most_recent_storage(cwtensor_state[&#34;TotalStake&#34;]) + amount.boot
+        )
+
+        total_hotkey_stake_state = cwtensor_state[&#34;TotalHotkeyStake&#34;]
+        if not hotkey in total_hotkey_stake_state:
+            total_hotkey_stake_state[hotkey] = {}
+
+        total_coldkey_stake_state = cwtensor_state[&#34;TotalColdkeyStake&#34;]
+        if not wallet.coldkeypub.address in total_coldkey_stake_state:
+            total_coldkey_stake_state[wallet.coldkeypub.address] = {}
+
+        curr_total_hotkey_stake = self.query_cwtensor(
+            name=&#34;TotalHotkeyStake&#34;,
+            params=[hotkey],
+            block=min(self.block_number - 1, 0),
+        )
+        curr_total_coldkey_stake = self.query_cwtensor(
+            name=&#34;TotalColdkeyStake&#34;,
+            params=[wallet.coldkeypub.address],
+            block=min(self.block_number - 1, 0),
+        )
+
+        total_hotkey_stake_state[hotkey][self.block_number] = (
+            curr_total_hotkey_stake.value + amount.boot
+        )
+        total_coldkey_stake_state[wallet.coldkeypub.address][self.block_number] = (
+            curr_total_coldkey_stake.value + amount.boot
+        )
+
+        # Remove from free balance
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][wallet.coldkeypub.address][&#34;data&#34;][
+            &#34;free&#34;
+        ][self.block_number] = (bal - amount).boot
+
+        return True
+
+    def _do_unstake(
+        self,
+        wallet: &#34;Wallet&#34;,
+        hotkey: str,
+        amount: &#34;Balance&#34;,
+        wait_for_finalization: bool = False,
+    ) -&gt; bool:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+
+        bal = self.get_balance(wallet.coldkeypub.address)
+        curr_stake = self.get_stake_for_coldkey_and_hotkey(
+            hotkey=hotkey, coldkey=wallet.coldkeypub.address
+        )
+        if curr_stake is None:
+            curr_stake = Balance(0)
+
+        if curr_stake &lt; amount:
+            raise Exception(&#34;Insufficient funds&#34;)
+
+        stake_state = cwtensor_state[&#34;Stake&#34;]
+
+        if curr_stake.boot == 0:
+            return True
+
+        # Unstake the funds
+        # We know that the hotkey has stake, so we can just remove it
+        stake_state[hotkey][wallet.coldkeypub.address][self.block_number] = (
+            curr_stake - amount
+        ).boot
+        # Add to the free balance
+        if wallet.coldkeypub.address not in self.chain_state[&#34;System&#34;][&#34;Account&#34;]:
+            self.chain_state[&#34;System&#34;][&#34;Account&#34;][wallet.coldkeypub.address] = {
+                &#34;data&#34;: {&#34;free&#34;: {}}
+            }
+
+        # Remove from total stake storage
+        cwtensor_state[&#34;TotalStake&#34;][self.block_number] = (
+            self._get_most_recent_storage(cwtensor_state[&#34;TotalStake&#34;]) - amount.boot
+        )
+
+        total_hotkey_stake_state = cwtensor_state[&#34;TotalHotkeyStake&#34;]
+        if not hotkey in total_hotkey_stake_state:
+            total_hotkey_stake_state[hotkey] = {}
+            total_hotkey_stake_state[hotkey][
+                self.block_number
+            ] = 0  # Shouldn&#39;t happen
+
+        total_coldkey_stake_state = cwtensor_state[&#34;TotalColdkeyStake&#34;]
+        if not wallet.coldkeypub.address in total_coldkey_stake_state:
+            total_coldkey_stake_state[wallet.coldkeypub.address] = {}
+            total_coldkey_stake_state[wallet.coldkeypub.address][
+                self.block_number
+            ] = amount.boot  # Shouldn&#39;t happen
+
+        total_hotkey_stake_state[hotkey][self.block_number] = (
+            self._get_most_recent_storage(
+                cwtensor_state[&#34;TotalHotkeyStake&#34;][hotkey]
+            )
+            - amount.boot
+        )
+        total_coldkey_stake_state[wallet.coldkeypub.address][self.block_number] = (
+            self._get_most_recent_storage(
+                cwtensor_state[&#34;TotalColdkeyStake&#34;][wallet.coldkeypub.address]
+            )
+            - amount.boot
+        )
+
+        self.chain_state[&#34;System&#34;][&#34;Account&#34;][wallet.coldkeypub.address][&#34;data&#34;][
+            &#34;free&#34;
+        ][self.block_number] = (bal + amount).boot
+
+        return True
+
+    def get_delegate_by_hotkey(
+        self, hotkey: str, block: Optional[int] = None
+    ) -&gt; Optional[&#34;DelegateInfo&#34;]:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+
+        if hotkey not in cwtensor_state[&#34;Delegates&#34;]:
+            return None
+
+        newest_state = self._get_most_recent_storage(
+            cwtensor_state[&#34;Delegates&#34;][hotkey], block
+        )
+        if newest_state is None:
+            return None
+
+        nom_result = []
+        nominators = cwtensor_state[&#34;Stake&#34;][hotkey]
+        for nominator in nominators:
+            nom_amount = self.get_stake_for_coldkey_and_hotkey(
+                hotkey=hotkey, coldkey=nominator, block=block
+            )
+            if nom_amount is not None and nom_amount.boot &gt; 0:
+                nom_result.append((nominator, nom_amount))
+
+        registered_subnets = []
+        for subnet in self.get_all_subnet_netuids(block=block):
+            uid = self.get_uid_for_hotkey_on_subnet(
+                hotkey=hotkey, netuid=subnet, block=block
+            )
+
+            if uid is not None:
+                registered_subnets.append((subnet, uid))
+
+        info = DelegateInfo(
+            hotkey=hotkey,
+            total_stake=self.get_total_stake_for_hotkey(address=hotkey)
+            or Balance(0),
+            nominators=nom_result,
+            owner=self.get_hotkey_owner(hotkey=hotkey, block=block),
+            take=0.18,
+            validator_permits=[
+                subnet
+                for subnet, uid in registered_subnets
+                if self.neuron_has_validator_permit(uid=uid, netuid=subnet, block=block)
+            ],
+            registrations=[subnet for subnet, _ in registered_subnets],
+            return_per_giga=Balance.from_gboot(1234567),  # Doesn&#39;t matter for mock?
+            total_daily_return=Balance.from_gboot(1234567),  # Doesn&#39;t matter for mock?
+        )
+
+        return info
+
+    def get_delegates(self, block: Optional[int] = None) -&gt; List[&#34;DelegateInfo&#34;]:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        delegates_info = []
+        for hotkey in cwtensor_state[&#34;Delegates&#34;]:
+            info = self.get_delegate_by_hotkey(hotkey=hotkey, block=block)
+            if info is not None:
+                delegates_info.append(info)
+
+        return delegates_info
+
+    def get_delegated(
+        self, coldkey: str, block: Optional[int] = None
+    ) -&gt; List[Tuple[&#34;DelegateInfo&#34;, &#34;Balance&#34;]]:
+        &#34;&#34;&#34;Returns the list of delegates that a given coldkey is staked to.&#34;&#34;&#34;
+        delegates = self.get_delegates(block=block)
+
+        result = []
+        for delegate in delegates:
+            if coldkey in delegate.nominators:
+                result.append((delegate, delegate.nominators[coldkey]))
+
+        return result
+
+    def get_all_subnets_info(self, block: Optional[int] = None) -&gt; List[SubnetInfo]:
+        cwtensor_state = self.chain_state[&#34;CwtensorModule&#34;]
+        result = []
+        for subnet in cwtensor_state[&#34;NetworksAdded&#34;]:
+            info = self.get_subnet_info(netuid=subnet, block=block)
+            if info is not None:
+                result.append(info)
+
+        return result
+
+    def get_subnet_info(
+        self, netuid: int, block: Optional[int] = None
+    ) -&gt; Optional[SubnetInfo]:
+        if not self.subnet_exists(netuid=netuid, block=block):
+            return None
+
+        def query_subnet_info(name: str) -&gt; Optional[object]:
+            return self.query_cwtensor(name=name, block=block, params=[netuid]).value
+
+        info = SubnetInfo(
+            netuid=netuid,
+            rho=query_subnet_info(name=&#34;Rho&#34;),
+            kappa=query_subnet_info(name=&#34;Kappa&#34;),
+            difficulty=query_subnet_info(name=&#34;Difficulty&#34;),
+            immunity_period=query_subnet_info(name=&#34;ImmunityPeriod&#34;),
+            max_allowed_validators=query_subnet_info(name=&#34;MaxAllowedValidators&#34;),
+            min_allowed_weights=query_subnet_info(name=&#34;MinAllowedWeights&#34;),
+            max_weight_limit=query_subnet_info(name=&#34;MaxWeightLimit&#34;),
+            subnetwork_n=query_subnet_info(name=&#34;SubnetworkN&#34;),
+            max_n=query_subnet_info(name=&#34;MaxAllowedUids&#34;),
+            blocks_since_epoch=query_subnet_info(name=&#34;BlocksSinceLastStep&#34;),
+            tempo=query_subnet_info(name=&#34;Tempo&#34;),
+            modality=query_subnet_info(name=&#34;NetworkModality&#34;),
+            emission_value=query_subnet_info(name=&#34;EmissionValues&#34;),
+            burn=query_subnet_info(name=&#34;Burn&#34;),
+            owner=query_subnet_info(name=&#34;SubnetOwner&#34;),
+        )
+
+        return info
+
+    def _do_serve_prometheus(
+        self,
+        wallet: &#34;Wallet&#34;,
+        call_params: &#34;PrometheusServeCallParams&#34;,
+        wait_for_finalization: bool = True,
+    ) -&gt; Tuple[bool, Optional[str]]:
+        return True, None
+
+    def _do_set_weights(
+        self,
+        wallet: &#34;Wallet&#34;,
+        uids: List[int],
+        vals: List[int],
+        netuid: int,
+        version_key: int = __version_as_int__,
+        wait_for_finalization: bool = True,
+    ) -&gt; Tuple[bool, Optional[str]]:
+        return True, None
+
+    def _do_serve_axon(
+        self,
+        wallet: &#34;Wallet&#34;,
+        call_params: &#34;AxonServeCallParams&#34;,
+        wait_for_finalization: bool = True,
+    ) -&gt; Tuple[bool, Optional[str]]:
+        return True, None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.cwtensor.cwtensor" href="../cwtensor.html#cybertensor.cwtensor.cwtensor">cwtensor</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.block_number"><code class="name">var <span class="ident">block_number</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.chain_state"><code class="name">var <span class="ident">chain_state</span> : <a title="cybertensor.mock.cwtensor_mock.MockChainState" href="#cybertensor.mock.cwtensor_mock.MockChainState">MockChainState</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.commit"><code class="name flex">
+<span>def <span class="ident">commit</span></span>(<span>self, wallet: Wallet, netuid: int, data: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.create_subnet"><code class="name flex">
+<span>def <span class="ident">create_subnet</span></span>(<span>self, netuid: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.do_block_step"><code class="name flex">
+<span>def <span class="ident">do_block_step</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.force_register_neuron"><code class="name flex">
+<span>def <span class="ident">force_register_neuron</span></span>(<span>self, netuid: int, hotkey: str, coldkey: str, stake: Union[ForwardRef('Balance'), float, int] = GPUSSY0.000000000, balance: Union[ForwardRef('Balance'), float, int] = GPUSSY0.000000000) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Force register a neuron on the mock chain, returning the UID.</p></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.force_set_balance"><code class="name flex">
+<span>def <span class="ident">force_set_balance</span></span>(<span>self, address: str, balance: Union[ForwardRef('Balance'), float, int] = GPUSSY0.000000000) ‑> Tuple[bool, Optional[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[bool, Optional[str]]</code></dt>
+<dd>(success, err_msg)</dd>
+</dl></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.get_balances"><code class="name flex">
+<span>def <span class="ident">get_balances</span></span>(<span>self, block: int = None) ‑> Dict[str, <a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.get_commitment"><code class="name flex">
+<span>def <span class="ident">get_commitment</span></span>(<span>self, netuid: int, uid: int, block: Optional[int] = None) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.get_delegated"><code class="name flex">
+<span>def <span class="ident">get_delegated</span></span>(<span>self, coldkey: str, block: Optional[int] = None) ‑> List[Tuple[<a title="cybertensor.chain_data.DelegateInfo" href="../chain_data.html#cybertensor.chain_data.DelegateInfo">DelegateInfo</a>, <a title="cybertensor.utils.balance.Balance" href="../utils/balance.html#cybertensor.utils.balance.Balance">Balance</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the list of delegates that a given coldkey is staked to.</p></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.neuron_for_uid_lite"><code class="name flex">
+<span>def <span class="ident">neuron_for_uid_lite</span></span>(<span>self, uid: int, netuid: int, block: Optional[int] = None) ‑> Optional[<a title="cybertensor.chain_data.NeuronInfoLite" href="../chain_data.html#cybertensor.chain_data.NeuronInfoLite">NeuronInfoLite</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.query_constant"><code class="name flex">
+<span>def <span class="ident">query_constant</span></span>(<span>self, module_name: str, constant_name: str, block: Optional[int] = None) ‑> Optional[object]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.query_cwtensor"><code class="name flex">
+<span>def <span class="ident">query_cwtensor</span></span>(<span>self, name: str, block: Optional[int] = None, params: Optional[List[object]] = []) ‑> <a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.query_map_cwtensor"><code class="name flex">
+<span>def <span class="ident">query_map_cwtensor</span></span>(<span>self, name: str, block: Optional[int] = None, params: Optional[List[object]] = []) ‑> Optional[<a title="cybertensor.mock.cwtensor_mock.MockMapResult" href="#cybertensor.mock.cwtensor_mock.MockMapResult">MockMapResult</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Note: Double map requires one param</p></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.set_difficulty"><code class="name flex">
+<span>def <span class="ident">set_difficulty</span></span>(<span>self, netuid: int, difficulty: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.setup"><code class="name flex">
+<span>def <span class="ident">setup</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensor.sudo_force_set_balance"><code class="name flex">
+<span>def <span class="ident">sudo_force_set_balance</span></span>(<span>self, address: str, balance: Union[ForwardRef('Balance'), float, int] = GPUSSY0.000000000) ‑> Tuple[bool, Optional[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[bool, Optional[str]]</code></dt>
+<dd>(success, err_msg)</dd>
+</dl></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="cybertensor.cwtensor.cwtensor" href="../cwtensor.html#cybertensor.cwtensor.cwtensor">cwtensor</a></b></code>:
+<ul class="hlist">
+<li><code><a title="cybertensor.cwtensor.cwtensor.add_stake" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.add_stake">add_stake</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.add_stake_multiple" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.add_stake_multiple">add_stake_multiple</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.block" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.block">block</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.bonds" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.bonds">bonds</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.burned_register" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.burned_register">burned_register</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.close" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.close">close</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.connect_websocket" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.connect_websocket">connect_websocket</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.delegate" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.delegate">delegate</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.determine_chain_endpoint_and_network" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.determine_chain_endpoint_and_network">determine_chain_endpoint_and_network</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.difficulty" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.difficulty">difficulty</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.does_hotkey_exist" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.does_hotkey_exist">does_hotkey_exist</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_all_neurons_for_pubkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_all_neurons_for_pubkey">get_all_neurons_for_pubkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_all_subnet_netuids" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_all_subnet_netuids">get_all_subnet_netuids</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_all_subnets_info" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_all_subnets_info">get_all_subnets_info</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_all_uids_for_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_all_uids_for_hotkey">get_all_uids_for_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_axon_info" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_axon_info">get_axon_info</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_balance" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_balance">get_balance</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_block_hash" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_block_hash">get_block_hash</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_current_block" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_current_block">get_current_block</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_delegate_by_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_delegate_by_hotkey">get_delegate_by_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_delegate_take" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_delegate_take">get_delegate_take</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_delegates" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_delegates">get_delegates</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_emission_value_by_subnet" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_emission_value_by_subnet">get_emission_value_by_subnet</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_existential_deposit" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_existential_deposit">get_existential_deposit</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_hotkey_owner" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_hotkey_owner">get_hotkey_owner</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_netuids_for_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_netuids_for_hotkey">get_netuids_for_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_neuron_for_pubkey_and_subnet" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_neuron_for_pubkey_and_subnet">get_neuron_for_pubkey_and_subnet</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_nominators_for_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_nominators_for_hotkey">get_nominators_for_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_prometheus_info" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_prometheus_info">get_prometheus_info</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_stake" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_stake">get_stake</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_stake_for_coldkey_and_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_stake_for_coldkey_and_hotkey">get_stake_for_coldkey_and_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkey">get_stake_info_for_coldkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkeys" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_stake_info_for_coldkeys">get_stake_info_for_coldkeys</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_hyperparameters" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_subnet_hyperparameters">get_subnet_hyperparameters</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_info" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_subnet_info">get_subnet_info</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_subnet_owner" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_subnet_owner">get_subnet_owner</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_subnets" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_subnets">get_subnets</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_total_stake_for_coldkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_total_stake_for_coldkey">get_total_stake_for_coldkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_total_stake_for_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_total_stake_for_hotkey">get_total_stake_for_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_total_subnets" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_total_subnets">get_total_subnets</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_transfer_fee" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_transfer_fee">get_transfer_fee</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.get_uid_for_hotkey_on_subnet" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.get_uid_for_hotkey_on_subnet">get_uid_for_hotkey_on_subnet</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.help" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.help">help</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.is_hotkey_delegate" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.is_hotkey_delegate">is_hotkey_delegate</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.is_hotkey_registered" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.is_hotkey_registered">is_hotkey_registered</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.is_hotkey_registered_any" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.is_hotkey_registered_any">is_hotkey_registered_any</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.is_hotkey_registered_on_subnet" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.is_hotkey_registered_on_subnet">is_hotkey_registered_on_subnet</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.max_weight_limit" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.max_weight_limit">max_weight_limit</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.metagraph" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.metagraph">metagraph</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.min_allowed_weights" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.min_allowed_weights">min_allowed_weights</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.neuron_for_uid" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.neuron_for_uid">neuron_for_uid</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.neurons" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.neurons">neurons</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.neurons_lite" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.neurons_lite">neurons_lite</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.nominate" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.nominate">nominate</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.recycle" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.recycle">recycle</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.register" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.register">register</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.register_subnetwork" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.register_subnetwork">register_subnetwork</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.root_register" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.root_register">root_register</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.root_set_weights" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.root_set_weights">root_set_weights</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.serve" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.serve">serve</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.serve_axon" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.serve_axon">serve_axon</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.set_hyperparameter" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.set_hyperparameter">set_hyperparameter</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.set_weights" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.set_weights">set_weights</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.subnet_exists" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.subnet_exists">subnet_exists</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.subnetwork_n" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.subnetwork_n">subnetwork_n</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.swap_hotkey" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.swap_hotkey">swap_hotkey</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.tempo" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.tempo">tempo</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.total_issuance" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.total_issuance">total_issuance</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.total_stake" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.total_stake">total_stake</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.transfer" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.transfer">transfer</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.tx_rate_limit" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.tx_rate_limit">tx_rate_limit</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.undelegate" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.undelegate">undelegate</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.unstake" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.unstake">unstake</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.unstake_multiple" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.unstake_multiple">unstake_multiple</a></code></li>
+<li><code><a title="cybertensor.cwtensor.cwtensor.weights" href="../cwtensor.html#cybertensor.cwtensor.cwtensor.weights">weights</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState"><code class="flex name class">
+<span>class <span class="ident">MockCwtensorState</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MockCwtensorState(TypedDict):
+    Rho: Dict[int, Dict[BlockNumber, int]]  # netuid -&gt; block -&gt; rho
+    Kappa: Dict[int, Dict[BlockNumber, int]]  # netuid -&gt; block -&gt; kappa
+    Difficulty: Dict[int, Dict[BlockNumber, int]]  # netuid -&gt; block -&gt; difficulty
+    ImmunityPeriod: Dict[
+        int, Dict[BlockNumber, int]
+    ]  # netuid -&gt; block -&gt; immunity_period
+    ValidatorBatchSize: Dict[
+        int, Dict[BlockNumber, int]
+    ]  # netuid -&gt; block -&gt; validator_batch_size
+    Active: Dict[int, Dict[BlockNumber, bool]]  # (netuid, uid), block -&gt; active
+    Stake: Dict[str, Dict[str, Dict[int, int]]]  # (hotkey, coldkey) -&gt; block -&gt; stake
+
+    Delegates: Dict[str, Dict[int, float]]  # address -&gt; block -&gt; delegate_take
+
+    NetworksAdded: Dict[int, Dict[BlockNumber, bool]]  # netuid -&gt; block -&gt; added</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Active"><code class="name">var <span class="ident">Active</span> : Dict[int, Dict[int, bool]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Delegates"><code class="name">var <span class="ident">Delegates</span> : Dict[str, Dict[int, float]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Difficulty"><code class="name">var <span class="ident">Difficulty</span> : Dict[int, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.ImmunityPeriod"><code class="name">var <span class="ident">ImmunityPeriod</span> : Dict[int, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Kappa"><code class="name">var <span class="ident">Kappa</span> : Dict[int, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.NetworksAdded"><code class="name">var <span class="ident">NetworksAdded</span> : Dict[int, Dict[int, bool]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Rho"><code class="name">var <span class="ident">Rho</span> : Dict[int, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.Stake"><code class="name">var <span class="ident">Stake</span> : Dict[str, Dict[str, Dict[int, int]]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorState.ValidatorBatchSize"><code class="name">var <span class="ident">ValidatorBatchSize</span> : Dict[int, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorValue"><code class="flex name class">
+<span>class <span class="ident">MockCwtensorValue</span></span>
+<span>(</span><span>value: Optional[Any])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MockCwtensorValue(value: Optional[Any])</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class MockCwtensorValue:
+    value: Optional[Any]</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockCwtensorValue.value"><code class="name">var <span class="ident">value</span> : Optional[Any]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockMapResult"><code class="flex name class">
+<span>class <span class="ident">MockMapResult</span></span>
+<span>(</span><span>records: Optional[List[Tuple[Union[Any, <a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a>], Union[Any, <a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a>]]]] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MockMapResult:
+    records: Optional[List[Tuple[MockCwtensorValue, MockCwtensorValue]]]
+
+    def __init__(
+        self,
+        records: Optional[
+            List[Tuple[Union[Any, MockCwtensorValue], Union[Any, MockCwtensorValue]]]
+        ] = None,
+    ):
+        _records = [
+            (
+                (
+                    MockCwtensorValue(value=record[0]),
+                    MockCwtensorValue(value=record[1]),
+                )
+                # Make sure record is a tuple of MockCwtensorValue (dict with value attr)
+                if not (
+                    isinstance(record, tuple)
+                    and all(
+                        isinstance(item, dict) and hasattr(item, &#34;value&#34;)
+                        for item in record
+                    )
+                )
+                else record
+            )
+            for record in records
+        ]
+
+        self.records = _records
+
+    def __iter__(self):
+        return iter(self.records)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockMapResult.records"><code class="name">var <span class="ident">records</span> : Optional[List[Tuple[<a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a>, <a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a>]]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.MockSystemState"><code class="flex name class">
+<span>class <span class="ident">MockSystemState</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MockSystemState(TypedDict):
+    Account: Dict[str, Dict[int, int]]  # address -&gt; block -&gt; balance</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.MockSystemState.Account"><code class="name">var <span class="ident">Account</span> : Dict[str, Dict[int, int]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict"><code class="flex name class">
+<span>class <span class="ident">PrometheusInfoDict</span></span>
+<span>(</span><span>block: int, version: int, ip: int, port: int, ip_type: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>PrometheusInfoDict(block: int, version: int, ip: int, port: int, ip_type: int)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PrometheusInfoDict(InfoDict):
+    block: int
+    version: int
+    ip: int  # integer representation of ip address
+    port: int
+    ip_type: int
+
+    @classmethod
+    def default(cls):
+        return cls(block=0, version=0, ip=0, port=0, ip_type=0)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="cybertensor.mock.cwtensor_mock.InfoDict" href="#cybertensor.mock.cwtensor_mock.InfoDict">InfoDict</a></li>
+<li>collections.abc.Mapping</li>
+<li>collections.abc.Collection</li>
+<li>collections.abc.Sized</li>
+<li>collections.abc.Iterable</li>
+<li>collections.abc.Container</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.block"><code class="name">var <span class="ident">block</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip"><code class="name">var <span class="ident">ip</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams"><code class="flex name class">
+<span>class <span class="ident">PrometheusServeCallParams</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prometheus serve chain call parameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PrometheusServeCallParams(TypedDict):
+    &#34;&#34;&#34;
+    Prometheus serve chain call parameters.
+    &#34;&#34;&#34;
+
+    version: int
+    ip: int
+    port: int
+    ip_type: int
+    netuid: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip"><code class="name">var <span class="ident">ip</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip_type"><code class="name">var <span class="ident">ip_type</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.netuid"><code class="name">var <span class="ident">netuid</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.port"><code class="name">var <span class="ident">port</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.version"><code class="name">var <span class="ident">version</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="cybertensor.mock" href="index.html">cybertensor.mock</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict">AxonInfoDict</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.block" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.block">block</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.default" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.default">default</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.ip" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.ip">ip</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.ip_type" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder1" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder1">placeholder1</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder2" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.placeholder2">placeholder2</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.port" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.port">port</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.protocol" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.protocol">protocol</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonInfoDict.version" href="#cybertensor.mock.cwtensor_mock.AxonInfoDict.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams">AxonServeCallParams</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip">ip</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip_type" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams.netuid" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams.netuid">netuid</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams.port" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams.port">port</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.AxonServeCallParams.version" href="#cybertensor.mock.cwtensor_mock.AxonServeCallParams.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.InfoDict" href="#cybertensor.mock.cwtensor_mock.InfoDict">InfoDict</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.InfoDict.default" href="#cybertensor.mock.cwtensor_mock.InfoDict.default">default</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockChainState" href="#cybertensor.mock.cwtensor_mock.MockChainState">MockChainState</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockChainState.CwtensorModule" href="#cybertensor.mock.cwtensor_mock.MockChainState.CwtensorModule">CwtensorModule</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockChainState.System" href="#cybertensor.mock.cwtensor_mock.MockChainState.System">System</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor" href="#cybertensor.mock.cwtensor_mock.MockCwtensor">MockCwtensor</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.block_number" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.block_number">block_number</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.chain_state" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.chain_state">chain_state</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.commit" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.commit">commit</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.create_subnet" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.create_subnet">create_subnet</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.do_block_step" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.do_block_step">do_block_step</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.force_register_neuron" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.force_register_neuron">force_register_neuron</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.force_set_balance" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.force_set_balance">force_set_balance</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.get_balances" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.get_balances">get_balances</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.get_commitment" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.get_commitment">get_commitment</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.get_delegated" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.get_delegated">get_delegated</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.neuron_for_uid_lite" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.neuron_for_uid_lite">neuron_for_uid_lite</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.query_constant" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.query_constant">query_constant</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.query_cwtensor" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.query_cwtensor">query_cwtensor</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.query_map_cwtensor" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.query_map_cwtensor">query_map_cwtensor</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.reset" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.reset">reset</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.set_difficulty" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.set_difficulty">set_difficulty</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.setup" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.setup">setup</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensor.sudo_force_set_balance" href="#cybertensor.mock.cwtensor_mock.MockCwtensor.sudo_force_set_balance">sudo_force_set_balance</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState">MockCwtensorState</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Active" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Active">Active</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Delegates" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Delegates">Delegates</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Difficulty" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Difficulty">Difficulty</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.ImmunityPeriod" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.ImmunityPeriod">ImmunityPeriod</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Kappa" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Kappa">Kappa</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.NetworksAdded" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.NetworksAdded">NetworksAdded</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Rho" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Rho">Rho</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.Stake" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.Stake">Stake</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorState.ValidatorBatchSize" href="#cybertensor.mock.cwtensor_mock.MockCwtensorState.ValidatorBatchSize">ValidatorBatchSize</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue">MockCwtensorValue</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockCwtensorValue.value" href="#cybertensor.mock.cwtensor_mock.MockCwtensorValue.value">value</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockMapResult" href="#cybertensor.mock.cwtensor_mock.MockMapResult">MockMapResult</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockMapResult.records" href="#cybertensor.mock.cwtensor_mock.MockMapResult.records">records</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.MockSystemState" href="#cybertensor.mock.cwtensor_mock.MockSystemState">MockSystemState</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.MockSystemState.Account" href="#cybertensor.mock.cwtensor_mock.MockSystemState.Account">Account</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict">PrometheusInfoDict</a></code></h4>
+<ul class="two-column">
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.block" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.block">block</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.default" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.default">default</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip">ip</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip_type" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.port" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.port">port</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusInfoDict.version" href="#cybertensor.mock.cwtensor_mock.PrometheusInfoDict.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams">PrometheusServeCallParams</a></code></h4>
+<ul class="">
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip">ip</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip_type" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.ip_type">ip_type</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.netuid" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.netuid">netuid</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.port" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.port">port</a></code></li>
+<li><code><a title="cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.version" href="#cybertensor.mock.cwtensor_mock.PrometheusServeCallParams.version">version</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
